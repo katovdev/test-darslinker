@@ -67,7 +67,8 @@ export function Header() {
   const pathname = usePathname();
 
   const t = translations[language];
-  const currentLang = languages.find((l) => l.code === language) || languages[0];
+  const currentLang =
+    languages.find((l) => l.code === language) || languages[0];
 
   // Close language dropdown when clicking outside
   useEffect(() => {
@@ -101,7 +102,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -117,7 +118,7 @@ export function Header() {
               key={item.key}
               href={item.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
+                "hover:text-primary text-sm font-medium transition-colors",
                 isActiveLink(item.href)
                   ? "text-primary"
                   : "text-muted-foreground"
@@ -134,7 +135,7 @@ export function Header() {
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
+              className="hover:bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors"
             >
               <img
                 src={currentLang.flag}
@@ -151,13 +152,13 @@ export function Header() {
             </button>
 
             {isLangOpen && (
-              <div className="absolute right-0 top-full mt-1 w-28 rounded-md border bg-popover p-1 shadow-md">
+              <div className="bg-popover absolute top-full right-0 mt-1 w-28 rounded-md border p-1 shadow-md">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
                     onClick={() => handleLanguageChange(lang.code)}
                     className={cn(
-                      "flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent",
+                      "hover:bg-accent flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors",
                       language === lang.code && "bg-accent"
                     )}
                   >
@@ -195,7 +196,7 @@ export function Header() {
                   href={item.href}
                   onClick={() => setIsMobileOpen(false)}
                   className={cn(
-                    "text-lg font-medium transition-colors hover:text-primary",
+                    "hover:text-primary text-lg font-medium transition-colors",
                     isActiveLink(item.href)
                       ? "text-primary"
                       : "text-muted-foreground"
@@ -207,7 +208,9 @@ export function Header() {
 
               {/* Mobile Language Selector */}
               <div className="mt-4 border-t pt-4">
-                <p className="mb-2 text-sm text-muted-foreground">Til / Language</p>
+                <p className="text-muted-foreground mb-2 text-sm">
+                  Til / Language
+                </p>
                 <div className="flex gap-2">
                   {languages.map((lang) => (
                     <button

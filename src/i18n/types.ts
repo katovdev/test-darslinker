@@ -60,11 +60,51 @@ export interface Translations {
     register: string;
     phone: string;
     password: string;
+    confirmPassword: string;
     forgotPassword: string;
     noAccount: string;
     hasAccount: string;
     signUp: string;
     signIn: string;
+    firstName: string;
+    lastName: string;
+    enterPhone: string;
+    enterPassword: string;
+    continue: string;
+    createAccount: string;
+    welcomeBack: string;
+    otpTitle: string;
+    otpDescription: string;
+    otpPlaceholder: string;
+    verifyOtp: string;
+    resendOtp: string;
+    goToTelegram: string;
+    alreadyHaveCode: string;
+    verifying: string;
+    loggingIn: string;
+    registering: string;
+    // Validation messages
+    phoneRequired: string;
+    phoneInvalid: string;
+    passwordRequired: string;
+    passwordMinLength: string;
+    passwordRequirements: string;
+    passwordMismatch: string;
+    firstNameRequired: string;
+    firstNameMinLength: string;
+    firstNameInvalid: string;
+    lastNameRequired: string;
+    lastNameMinLength: string;
+    lastNameInvalid: string;
+    otpRequired: string;
+    otpInvalid: string;
+    // Error messages
+    invalidCredentials: string;
+    userNotFound: string;
+    userAlreadyExists: string;
+    registrationFailed: string;
+    otpVerificationFailed: string;
+    loginFailed: string;
   };
   profile: {
     editProfile: string;
@@ -98,5 +138,91 @@ export interface Translations {
     russian: string;
     applyChanges: string;
     updated: string;
+  };
+  home: {
+    heroTitle: string;
+    heroSubtitle: string;
+    getStarted: string;
+    watchVideo: string;
+    // Features
+    featuresTitle: string;
+    featuresSubtitle: string;
+    featureAI: string;
+    featureAIDesc: string;
+    featurePayments: string;
+    featurePaymentsDesc: string;
+    featureAnalytics: string;
+    featureAnalyticsDesc: string;
+    featureCourses: string;
+    featureCoursesDesc: string;
+    featureStudents: string;
+    featureStudentsDesc: string;
+    featureCertificates: string;
+    featureCertificatesDesc: string;
+    featureQuiz: string;
+    featureQuizDesc: string;
+    featureChat: string;
+    featureChatDesc: string;
+    featureSecurity: string;
+    featureSecurityDesc: string;
+    // Articles
+    articlesTitle: string;
+    articlesSubtitle: string;
+    viewAllArticles: string;
+    // Contact
+    contactTitle: string;
+    contactSubtitle: string;
+    contactName: string;
+    contactPhone: string;
+    contactMessage: string;
+    contactSubmit: string;
+    contactSuccess: string;
+    // Navigation
+    navHome: string;
+    navAbout: string;
+    navBlog: string;
+    navContact: string;
+    navPricing: string;
+    // Footer
+    footerRights: string;
+    footerPrivacy: string;
+    footerTerms: string;
+  };
+  pricing: {
+    title: string;
+    subtitle: string;
+    monthly: string;
+    yearly: string;
+    perMonth: string;
+    // Plans
+    planMinimal: string;
+    planStandard: string;
+    planPro: string;
+    planCorporate: string;
+    recommended: string;
+    contactUs: string;
+    choosePlan: string;
+    // Features
+    courses: string;
+    admins: string;
+    students: string;
+    support: string;
+    analytics: string;
+    onlineMeetings: string;
+    certificates: string;
+    chat: string;
+    paymentIntegration: string;
+    aiFeatures: string;
+    contentSecurity: string;
+    customBranding: string;
+    seo: string;
+    customDomain: string;
+    unlimited: string;
+  };
+  stats: {
+    activeCourses: string;
+    totalStudents: string;
+    totalRevenue: string;
+    averageRating: string;
   };
 }

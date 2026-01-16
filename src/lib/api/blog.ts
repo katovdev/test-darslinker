@@ -171,7 +171,9 @@ class BlogAPI {
   /**
    * Get category by ID
    */
-  async getCategoryById(id: string): Promise<{ success: boolean; data: Category }> {
+  async getCategoryById(
+    id: string
+  ): Promise<{ success: boolean; data: Category }> {
     try {
       return await api.get(blogEndpoints.getCategoryById(id));
     } catch (error) {
@@ -183,7 +185,9 @@ class BlogAPI {
   /**
    * Get category by slug
    */
-  async getCategoryBySlug(slug: string): Promise<{ success: boolean; data: Category }> {
+  async getCategoryBySlug(
+    slug: string
+  ): Promise<{ success: boolean; data: Category }> {
     try {
       return await api.get(blogEndpoints.getCategoryBySlug(slug));
     } catch (error) {
@@ -239,7 +243,10 @@ class BlogAPI {
    */
   async updateBlog(id: string, blogData: Partial<Blog>): Promise<BlogResponse> {
     try {
-      return await api.put<BlogResponse>(blogEndpoints.updateBlog(id), blogData);
+      return await api.put<BlogResponse>(
+        blogEndpoints.updateBlog(id),
+        blogData
+      );
     } catch (error) {
       logger.error("Error updating blog:", error);
       throw error;

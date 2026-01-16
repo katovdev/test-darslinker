@@ -77,7 +77,8 @@ function normalizeError(error: unknown): ErrorInfo {
   if (error && typeof error === "object") {
     const obj = error as Record<string, unknown>;
     return {
-      message: (obj.message as string) || (obj.error as string) || "Unknown error",
+      message:
+        (obj.message as string) || (obj.error as string) || "Unknown error",
       stack: (obj.stack as string) || null,
       name: (obj.name as string) || "ObjectError",
       status: (obj.status as number) || null,

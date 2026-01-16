@@ -23,7 +23,11 @@ function formatNumber(num: number): string {
   return num.toString();
 }
 
-export function ArticleCard({ article, index = 0, className }: ArticleCardProps) {
+export function ArticleCard({
+  article,
+  index = 0,
+  className,
+}: ArticleCardProps) {
   const isFirstCard = index === 0;
   const isLastCard = index === 5;
 
@@ -42,7 +46,7 @@ export function ArticleCard({ article, index = 0, className }: ArticleCardProps)
       <CardHeader className="pb-2">
         <CardTitle
           className={cn(
-            "line-clamp-2 transition-colors group-hover:text-primary",
+            "group-hover:text-primary line-clamp-2 transition-colors",
             isFirstCard ? "text-xl md:text-2xl" : "text-lg"
           )}
         >
@@ -60,7 +64,7 @@ export function ArticleCard({ article, index = 0, className }: ArticleCardProps)
           {article.description}
         </p>
 
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex items-center justify-between text-xs">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <Eye className="h-3.5 w-3.5" />

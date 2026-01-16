@@ -37,8 +37,7 @@ export function validateInput(
     case "phone": {
       // Remove all non-digits
       const phoneDigits = sanitized.replace(/\D/g, "");
-      const isValidPhone =
-        phoneDigits.length >= 9 && phoneDigits.length <= 15;
+      const isValidPhone = phoneDigits.length >= 9 && phoneDigits.length <= 15;
       return {
         isValid: isValidPhone,
         sanitized: phoneDigits,

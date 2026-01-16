@@ -1,4 +1,9 @@
-import { blogAPI, type Blog, type BlogsResponse, type BlogQueryParams } from "@/lib/api/blog";
+import {
+  blogAPI,
+  type Blog,
+  type BlogsResponse,
+  type BlogQueryParams,
+} from "@/lib/api/blog";
 import { cacheConfig } from "@/lib/api/config";
 import { logger } from "@/lib/logger";
 

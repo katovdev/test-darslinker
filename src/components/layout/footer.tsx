@@ -68,7 +68,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t bg-card">
+    <footer className="bg-card border-t">
       <div className="container py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Logo */}
@@ -78,7 +78,7 @@ export function Footer() {
                 dars<span className="text-primary">linker</span>
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Online ta&apos;lim platformasi
             </p>
           </div>
@@ -90,7 +90,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   {t.mainPage}
                 </Link>
@@ -98,7 +98,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#about"
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   {t.about}
                 </Link>
@@ -106,7 +106,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#contact"
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   {t.contact}
                 </Link>
@@ -114,7 +114,7 @@ export function Footer() {
               <li>
                 <Link
                   href={config.routes.login}
-                  className="text-muted-foreground transition-colors hover:text-primary"
+                  className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   {t.login}
                 </Link>
@@ -126,15 +126,15 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-semibold">Aloqa</h3>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2 text-muted-foreground">
+              <li className="text-muted-foreground flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
                 <span>{t.address}</span>
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground">
+              <li className="text-muted-foreground flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0" />
                 <a
                   href="tel:+998338880133"
-                  className="transition-colors hover:text-primary"
+                  className="hover:text-primary transition-colors"
                 >
                   +998 33 888 01 33
                 </a>
@@ -147,7 +147,7 @@ export function Footer() {
                 href="https://instagram.com/darslinker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                className="bg-accent text-muted-foreground hover:bg-primary hover:text-primary-foreground flex h-9 w-9 items-center justify-center rounded-full transition-colors"
                 aria-label="Instagram"
               >
                 <svg
@@ -163,7 +163,7 @@ export function Footer() {
                 href="https://t.me/darslinker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                className="bg-accent text-muted-foreground hover:bg-primary hover:text-primary-foreground flex h-9 w-9 items-center justify-center rounded-full transition-colors"
                 aria-label="Telegram"
               >
                 <svg
@@ -199,7 +199,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
+        <div className="text-muted-foreground mt-8 border-t pt-8 text-center text-sm">
           <p>
             &copy; {currentYear} Darslinker. {t.rightsReserved}
           </p>

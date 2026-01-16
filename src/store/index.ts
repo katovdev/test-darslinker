@@ -24,6 +24,7 @@ interface AppState {
   user: User | null;
   isAuthenticated: boolean;
   authToken: string | null;
+  refreshToken: string | null;
 
   // UI state
   loading: boolean;
@@ -35,6 +36,12 @@ interface AppState {
   // Auth actions
   setUser: (user: User | null) => void;
   setAuthToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
+  setAuth: (data: {
+    user: User;
+    authToken: string;
+    refreshToken?: string;
+  }) => void;
   logout: () => void;
 
   // UI actions
@@ -52,6 +59,7 @@ export const useAppStore = create<AppState>()(
       user: null,
       isAuthenticated: false,
       authToken: null,
+      refreshToken: null,
       loading: false,
       error: null,
       courses: [],
@@ -69,11 +77,22 @@ export const useAppStore = create<AppState>()(
           isAuthenticated: !!authToken,
         }),
 
+      setRefreshToken: (refreshToken) => set({ refreshToken }),
+
+      setAuth: ({ user, authToken, refreshToken }) =>
+        set({
+          user,
+          authToken,
+          refreshToken: refreshToken || null,
+          isAuthenticated: true,
+        }),
+
       logout: () =>
         set({
           user: null,
           isAuthenticated: false,
           authToken: null,
+          refreshToken: null,
           courses: [],
         }),
 
@@ -89,6 +108,7 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         user: state.user,
         authToken: state.authToken,
+        refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
     }
@@ -100,6 +120,7 @@ export const useUser = () => useAppStore((state) => state.user);
 export const useIsAuthenticated = () =>
   useAppStore((state) => state.isAuthenticated);
 export const useAuthToken = () => useAppStore((state) => state.authToken);
+export const useRefreshToken = () => useAppStore((state) => state.refreshToken);
 export const useLoading = () => useAppStore((state) => state.loading);
 export const useError = () => useAppStore((state) => state.error);
 export const useCourses = () => useAppStore((state) => state.courses);

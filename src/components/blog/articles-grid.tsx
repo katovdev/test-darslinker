@@ -47,7 +47,7 @@ export function ArticlesGrid({
   if (isLoading && showLoadingState) {
     return (
       <div className={cn("space-y-6", className)}>
-        <div className="flex items-center justify-center gap-2 text-muted-foreground">
+        <div className="text-muted-foreground flex items-center justify-center gap-2">
           <Loader2 className="h-5 w-5 animate-spin" />
           <span>Maqolalar yuklanmoqda...</span>
         </div>
@@ -69,12 +69,14 @@ export function ArticlesGrid({
           className
         )}
       >
-        <div className="rounded-full bg-destructive/10 p-4">
-          <BookOpen className="h-8 w-8 text-destructive" />
+        <div className="bg-destructive/10 rounded-full p-4">
+          <BookOpen className="text-destructive h-8 w-8" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Maqolalarni yuklashda xatolik</h3>
-          <p className="text-sm text-muted-foreground">{error}</p>
+          <h3 className="text-lg font-semibold">
+            Maqolalarni yuklashda xatolik
+          </h3>
+          <p className="text-muted-foreground text-sm">{error}</p>
         </div>
         <Button onClick={loadArticles} variant="outline" className="gap-2">
           <RefreshCw className="h-4 w-4" />
@@ -93,12 +95,14 @@ export function ArticlesGrid({
           className
         )}
       >
-        <div className="rounded-full bg-muted p-4">
-          <BookOpen className="h-8 w-8 text-muted-foreground" />
+        <div className="bg-muted rounded-full p-4">
+          <BookOpen className="text-muted-foreground h-8 w-8" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Hozircha maqolalar mavjud emas</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="text-lg font-semibold">
+            Hozircha maqolalar mavjud emas
+          </h3>
+          <p className="text-muted-foreground text-sm">
             Tez orada yangi va qiziqarli maqolalar qo&apos;shiladi
           </p>
         </div>
@@ -134,7 +138,7 @@ function ArticleCardSkeleton({ isLarge = false }: { isLarge?: boolean }) {
   return (
     <div
       className={cn(
-        "rounded-lg border bg-card p-4 space-y-4",
+        "bg-card space-y-4 rounded-lg border p-4",
         isLarge && "md:col-span-2 md:row-span-2"
       )}
     >

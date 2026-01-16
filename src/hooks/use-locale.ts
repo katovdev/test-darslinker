@@ -2,11 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import {
-  getTranslation,
-  type Locale,
-  defaultLocale,
-} from "@/i18n";
+import { getTranslation, type Locale, defaultLocale } from "@/i18n";
 
 interface LocaleState {
   locale: Locale;

@@ -17,3 +17,17 @@ export {
   type CategoriesResponse,
   type BlogQueryParams,
 } from "./blog";
+
+// Auth API
+export {
+  authApi,
+  authEndpoints,
+  type CheckUserRequest,
+  type CheckUserResponse,
+  type RegisterRequest,
+  type RegisterResponse,
+  type LoginRequest,
+  type VerifyOtpRequest,
+  type ChangePasswordRequest,
+  type AuthResponse,
+} from "./auth";
