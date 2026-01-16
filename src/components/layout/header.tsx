@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { config } from "@/config";
+import { useLocale, useSetLocale } from "@/hooks/use-locale";
+import type { Locale } from "@/i18n";
 
-type Language = "uz" | "ru" | "en";
+type Language = Locale;
 
 interface LanguageOption {
   code: Language;
@@ -60,7 +62,8 @@ const navItems: NavItem[] = [
 ];
 
 export function Header() {
-  const [language, setLanguage] = useState<Language>("uz");
+  const language = useLocale();
+  const setLanguage = useSetLocale();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -82,17 +85,8 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Load saved language from localStorage
-  useEffect(() => {
-    const savedLang = localStorage.getItem("language") as Language;
-    if (savedLang && languages.some((l) => l.code === savedLang)) {
-      setLanguage(savedLang);
-    }
-  }, []);
-
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
-    localStorage.setItem("language", lang);
     setIsLangOpen(false);
   };
 

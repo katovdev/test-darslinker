@@ -73,7 +73,6 @@ export function HomeHeader() {
                   className="text-white hover:bg-gray-700 focus:bg-gray-700"
                 >
                   <span className="flex items-center gap-2">
-                    <span>{lang.flag}</span>
                     <span>{lang.label}</span>
                   </span>
                 </SelectItem>

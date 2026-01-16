@@ -1,19 +1,30 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 
+// Pre-computed dot positions to avoid Math.random during render
+const DOT_POSITIONS = Array.from({ length: 20 }).map((_, i) => ({
+  left: ((i * 37 + 13) % 100),
+  top: ((i * 53 + 7) % 100),
+  delay: (i * 0.25) % 5,
+  duration: 3 + (i * 0.2) % 4,
+}));
+
 function NeonDots() {
+  const dots = useMemo(() => DOT_POSITIONS, []);
+
   return (
     <div className="pointer-events-none fixed inset-0 overflow-hidden">
-      {Array.from({ length: 20 }).map((_, i) => (
+      {dots.map((dot, i) => (
         <div
           key={i}
           className="neon-dot absolute h-1 w-1 rounded-full opacity-60"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${3 + Math.random() * 4}s`,
+            left: `${dot.left}%`,
+            top: `${dot.top}%`,
+            animationDelay: `${dot.delay}s`,
+            animationDuration: `${dot.duration}s`,
           }}
         />
       ))}

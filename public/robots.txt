@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /dashboard
+Disallow: /student/*
+Disallow: /api/*
+
+# Sitemap
+Sitemap: https://darslinker.uz/sitemap.xml

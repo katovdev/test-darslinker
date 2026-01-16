@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MapPin, Phone } from "lucide-react";
 import { config } from "@/config";
-
-type Language = "uz" | "ru" | "en";
+import { useLocale } from "@/hooks/use-locale";
 
 const translations = {
   uz: {
@@ -43,27 +41,7 @@ const paymentLogos = [
 ];
 
 export function Footer() {
-  const [language, setLanguage] = useState<Language>("uz");
-
-  // Load saved language from localStorage
-  useEffect(() => {
-    const savedLang = localStorage.getItem("language") as Language;
-    if (savedLang && ["uz", "ru", "en"].includes(savedLang)) {
-      setLanguage(savedLang);
-    }
-
-    // Listen for language changes
-    const handleStorageChange = () => {
-      const newLang = localStorage.getItem("language") as Language;
-      if (newLang && ["uz", "ru", "en"].includes(newLang)) {
-        setLanguage(newLang);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
+  const language = useLocale();
   const t = translations[language];
   const currentYear = new Date().getFullYear();
 

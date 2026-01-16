@@ -224,7 +224,10 @@ export default function TeacherLandingPage({ params }: PageProps) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="border-t px-4 py-4 md:hidden" style={{ borderColor: `${primaryColor}33` }}>
+          <div
+            className="border-t px-4 py-4 md:hidden"
+            style={{ borderColor: `${primaryColor}33` }}
+          >
             <nav className="flex flex-col gap-3">
               {navItems.map((item) => (
                 <a
@@ -298,7 +301,9 @@ export default function TeacherLandingPage({ params }: PageProps) {
 
             {/* Name & Title */}
             <div>
-              <h1 className="mb-2 text-3xl font-bold md:text-5xl">{fullName}</h1>
+              <h1 className="mb-2 text-3xl font-bold md:text-5xl">
+                {fullName}
+              </h1>
               {teacher.specialization && (
                 <p className="text-lg opacity-80">{teacher.specialization}</p>
               )}
@@ -324,7 +329,10 @@ export default function TeacherLandingPage({ params }: PageProps) {
               {teacher.totalStudents !== undefined && (
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <Users className="h-5 w-5" style={{ color: primaryColor }} />
+                    <Users
+                      className="h-5 w-5"
+                      style={{ color: primaryColor }}
+                    />
                     <span className="text-2xl font-bold">
                       {teacher.totalStudents}
                     </span>
@@ -349,12 +357,17 @@ export default function TeacherLandingPage({ params }: PageProps) {
               {teacher.experience && (
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <Award className="h-5 w-5" style={{ color: primaryColor }} />
+                    <Award
+                      className="h-5 w-5"
+                      style={{ color: primaryColor }}
+                    />
                     <span className="text-2xl font-bold">
                       {teacher.experience}
                     </span>
                   </div>
-                  <p className="text-sm opacity-60">{t("landing.experience")}</p>
+                  <p className="text-sm opacity-60">
+                    {t("landing.experience")}
+                  </p>
                 </div>
               )}
             </div>
@@ -378,7 +391,11 @@ export default function TeacherLandingPage({ params }: PageProps) {
 
       {/* About Section */}
       {(teacher.bio || landing?.aboutText) && (
-        <section id="about" className="py-16" style={{ backgroundColor: `${primaryColor}11` }}>
+        <section
+          id="about"
+          className="py-16"
+          style={{ backgroundColor: `${primaryColor}11` }}
+        >
           <div className="mx-auto max-w-4xl px-4">
             <h2
               className="mb-8 text-center text-2xl font-bold md:text-3xl"
@@ -386,7 +403,7 @@ export default function TeacherLandingPage({ params }: PageProps) {
             >
               {t("landing.aboutTeacher")}
             </h2>
-            <p className="whitespace-pre-line text-center leading-relaxed opacity-90">
+            <p className="text-center leading-relaxed whitespace-pre-line opacity-90">
               {landing?.aboutText || teacher.bio}
             </p>
           </div>
@@ -532,12 +549,21 @@ export default function TeacherLandingPage({ params }: PageProps) {
                 >
                   <CardContent className="p-4">
                     <div className="mb-3 flex items-center gap-3">
-                      <Award className="h-8 w-8" style={{ color: primaryColor }} />
+                      <Award
+                        className="h-8 w-8"
+                        style={{ color: primaryColor }}
+                      />
                       <div>
-                        <h3 className="font-semibold" style={{ color: textColor }}>
+                        <h3
+                          className="font-semibold"
+                          style={{ color: textColor }}
+                        >
                           {cert.title}
                         </h3>
-                        <p className="text-sm" style={{ color: `${textColor}88` }}>
+                        <p
+                          className="text-sm"
+                          style={{ color: `${textColor}88` }}
+                        >
                           {cert.organization}
                         </p>
                       </div>
@@ -583,7 +609,8 @@ export default function TeacherLandingPage({ params }: PageProps) {
                               : "opacity-30"
                           }`}
                           style={{
-                            color: i < testimonial.rating ? primaryColor : textColor,
+                            color:
+                              i < testimonial.rating ? primaryColor : textColor,
                           }}
                         />
                       ))}
@@ -594,7 +621,7 @@ export default function TeacherLandingPage({ params }: PageProps) {
                       className="mb-4 text-sm"
                       style={{ color: `${textColor}cc` }}
                     >
-                      "{testimonial.text}"
+                      &ldquo;{testimonial.text}&rdquo;
                     </p>
 
                     {/* Author */}

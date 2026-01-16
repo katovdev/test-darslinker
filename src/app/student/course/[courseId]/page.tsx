@@ -118,8 +118,8 @@ export default function CourseDetailPage() {
 
   const getCurrentLesson = (): Lesson | null => {
     if (progress?.currentLesson && course?.modules) {
-      for (const module of course.modules) {
-        const lesson = module.lessons?.find(
+      for (const mod of course.modules) {
+        const lesson = mod.lessons?.find(
           (l) => l._id === progress.currentLesson
         );
         if (lesson) return lesson;

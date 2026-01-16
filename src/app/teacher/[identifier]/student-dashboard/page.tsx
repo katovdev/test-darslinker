@@ -111,7 +111,10 @@ export default function TeacherStudentDashboard({ params }: PageProps) {
     (c) => c.progress?.isCompleted
   ).length;
   const inProgressCourses = courses.filter(
-    (c) => c.progress && !c.progress.isCompleted && c.progress.completionPercentage > 0
+    (c) =>
+      c.progress &&
+      !c.progress.isCompleted &&
+      c.progress.completionPercentage > 0
   ).length;
 
   if (!isAuthenticated) {
@@ -146,7 +149,10 @@ export default function TeacherStudentDashboard({ params }: PageProps) {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-64 border-gray-800 bg-gray-900">
+              <SheetContent
+                side="left"
+                className="w-64 border-gray-800 bg-gray-900"
+              >
                 <SheetHeader>
                   <SheetTitle style={{ color: primaryColor }}>
                     {logoText}
@@ -272,7 +278,10 @@ export default function TeacherStudentDashboard({ params }: PageProps) {
                   className="rounded-lg p-2"
                   style={{ backgroundColor: `${primaryColor}22` }}
                 >
-                  <BookOpen className="h-5 w-5" style={{ color: primaryColor }} />
+                  <BookOpen
+                    className="h-5 w-5"
+                    style={{ color: primaryColor }}
+                  />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-white">
@@ -376,9 +385,7 @@ export default function TeacherStudentDashboard({ params }: PageProps) {
                 <h3 className="mb-2 text-lg font-medium text-white">
                   {t("dashboard.noEnrolledCourses")}
                 </h3>
-                <p className="mb-4 text-gray-400">
-                  {t("course.noCourses")}
-                </p>
+                <p className="mb-4 text-gray-400">{t("course.noCourses")}</p>
                 <Link href={`/teacher/${identifier}`}>
                   <Button style={{ backgroundColor: primaryColor }}>
                     {t("course.browseCourses")}
@@ -393,10 +400,7 @@ export default function TeacherStudentDashboard({ params }: PageProps) {
                 const isCompleted = course.progress?.isCompleted;
 
                 return (
-                  <Link
-                    key={course._id}
-                    href={`/student/course/${course._id}`}
-                  >
+                  <Link key={course._id} href={`/student/course/${course._id}`}>
                     <Card className="h-full border-gray-800 bg-gray-800/50 transition-transform hover:scale-[1.02]">
                       {/* Thumbnail */}
                       <div className="relative aspect-video overflow-hidden rounded-t-lg">
@@ -431,7 +435,7 @@ export default function TeacherStudentDashboard({ params }: PageProps) {
 
                         {/* Completed badge */}
                         {isCompleted && (
-                          <div className="absolute right-2 top-2 rounded-full bg-green-500 p-1">
+                          <div className="absolute top-2 right-2 rounded-full bg-green-500 p-1">
                             <CheckCircle2 className="h-4 w-4 text-white" />
                           </div>
                         )}
