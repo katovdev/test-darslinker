@@ -348,4 +348,47 @@ export const en: Translations = {
     hoursAgo: "{count} hours ago",
     daysAgo: "{count} days ago",
   },
+
+  // Landing Page
+  landing: {
+    // Navigation
+    home: "Home",
+    about: "About",
+    certificates: "Certificates",
+    courses: "Courses",
+    testimonials: "Testimonials",
+    contact: "Contact",
+    // Buttons
+    login: "Login",
+    register: "Register",
+    startLearning: "Start Learning",
+    viewCourse: "View Course",
+    viewCourses: "View Courses",
+    enrollNow: "Enroll Now",
+    goToDashboard: "Go to Dashboard",
+    // Sections
+    aboutTeacher: "About Teacher",
+    availableCourses: "Available Courses",
+    certificatesSection: "Certificates & Qualifications",
+    testimonialsSection: "Student Testimonials",
+    contactSection: "Contact Me",
+    // Stats
+    students: "students",
+    rating: "Rating",
+    experience: "Experience",
+    // Course
+    price: "Price",
+    free: "Free",
+    lessons: "lessons",
+    enrolled: "enrolled",
+    // Footer
+    poweredBy: "Powered by DarsLinker",
+    // Error
+    teacherNotFound: "Teacher Not Found",
+    teacherNotFoundDesc:
+      "The teacher profile you're looking for doesn't exist or hasn't been set up yet.",
+    goToHome: "Go to Home",
+    // Loading
+    loading: "Loading...",
+  },
 };

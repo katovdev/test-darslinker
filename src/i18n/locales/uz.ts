@@ -351,4 +351,47 @@ export const uz: Translations = {
     hoursAgo: "{count} soat oldin",
     daysAgo: "{count} kun oldin",
   },
+
+  // Landing Page
+  landing: {
+    // Navigation
+    home: "Asosiy",
+    about: "Haqida",
+    certificates: "Sertifikatlar",
+    courses: "Kurslar",
+    testimonials: "Sharhlar",
+    contact: "Aloqa",
+    // Buttons
+    login: "Kirish",
+    register: "Ro'yxatdan o'tish",
+    startLearning: "O'rganishni boshlash",
+    viewCourse: "Kursni ko'rish",
+    viewCourses: "Kurslarni ko'rish",
+    enrollNow: "Hozir yozilish",
+    goToDashboard: "Dashboardga o'tish",
+    // Sections
+    aboutTeacher: "O'qituvchi haqida",
+    availableCourses: "Mavjud kurslar",
+    certificatesSection: "Sertifikatlar va malaka",
+    testimonialsSection: "O'quvchilar sharhlari",
+    contactSection: "Menga murojaat",
+    // Stats
+    students: "o'quvchi",
+    rating: "Reyting",
+    experience: "Tajriba",
+    // Course
+    price: "Narx",
+    free: "Bepul",
+    lessons: "ta dars",
+    enrolled: "ta o'quvchi",
+    // Footer
+    poweredBy: "DarsLinker platformasi orqali yaratilgan",
+    // Error
+    teacherNotFound: "O'qituvchi topilmadi",
+    teacherNotFoundDesc:
+      "Siz qidirayotgan o'qituvchi profili mavjud emas yoki hali sozlanmagan.",
+    goToHome: "Bosh sahifaga",
+    // Loading
+    loading: "Yuklanmoqda...",
+  },
 };

@@ -324,4 +324,44 @@ export interface Translations {
     hoursAgo: string;
     daysAgo: string;
   };
+  landing: {
+    // Navigation
+    home: string;
+    about: string;
+    certificates: string;
+    courses: string;
+    testimonials: string;
+    contact: string;
+    // Buttons
+    login: string;
+    register: string;
+    startLearning: string;
+    viewCourse: string;
+    viewCourses: string;
+    enrollNow: string;
+    goToDashboard: string;
+    // Sections
+    aboutTeacher: string;
+    availableCourses: string;
+    certificatesSection: string;
+    testimonialsSection: string;
+    contactSection: string;
+    // Stats
+    students: string;
+    rating: string;
+    experience: string;
+    // Course
+    price: string;
+    free: string;
+    lessons: string;
+    enrolled: string;
+    // Footer
+    poweredBy: string;
+    // Error
+    teacherNotFound: string;
+    teacherNotFoundDesc: string;
+    goToHome: string;
+    // Loading
+    loading: string;
+  };
 }

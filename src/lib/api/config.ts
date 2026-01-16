@@ -73,6 +73,12 @@ export const courseEndpoints = {
   getTeacherCourses: (identifier: string) => `/teachers/${identifier}/courses`,
 } as const;
 
+// Teacher Landing API endpoints (public)
+export const landingEndpoints = {
+  getPublicLanding: (identifier: string) => `/landing/public/${identifier}`,
+  getTeacherCourses: (identifier: string) => `/teachers/${identifier}/courses`,
+} as const;
+
 // Notification API endpoints
 export const notificationEndpoints = {
   getNotifications: (userId: string) => `/notifications/user/${userId}`,

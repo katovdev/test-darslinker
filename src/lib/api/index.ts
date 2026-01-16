@@ -67,5 +67,19 @@ export {
   type NotificationQueryParams,
 } from "./notifications";
 
+// Landing API (public teacher pages)
+export {
+  landingAPI,
+  type TeacherProfile,
+  type LandingSettings,
+  type TeacherCourse,
+  type PublicLandingResponse,
+  type TeacherCoursesResponse,
+} from "./landing";
+
 // Endpoint configurations
-export { courseEndpoints, notificationEndpoints } from "./config";
+export {
+  courseEndpoints,
+  notificationEndpoints,
+  landingEndpoints,
+} from "./config";

@@ -350,4 +350,47 @@ export const ru: Translations = {
     hoursAgo: "{count} часов назад",
     daysAgo: "{count} дней назад",
   },
+
+  // Landing Page
+  landing: {
+    // Navigation
+    home: "Главная",
+    about: "О себе",
+    certificates: "Сертификаты",
+    courses: "Курсы",
+    testimonials: "Отзывы",
+    contact: "Контакты",
+    // Buttons
+    login: "Войти",
+    register: "Регистрация",
+    startLearning: "Начать обучение",
+    viewCourse: "Посмотреть курс",
+    viewCourses: "Посмотреть курсы",
+    enrollNow: "Записаться сейчас",
+    goToDashboard: "Перейти в кабинет",
+    // Sections
+    aboutTeacher: "О преподавателе",
+    availableCourses: "Доступные курсы",
+    certificatesSection: "Сертификаты и квалификация",
+    testimonialsSection: "Отзывы студентов",
+    contactSection: "Связаться со мной",
+    // Stats
+    students: "студентов",
+    rating: "Рейтинг",
+    experience: "Опыт",
+    // Course
+    price: "Цена",
+    free: "Бесплатно",
+    lessons: "уроков",
+    enrolled: "записано",
+    // Footer
+    poweredBy: "Создано на платформе DarsLinker",
+    // Error
+    teacherNotFound: "Преподаватель не найден",
+    teacherNotFoundDesc:
+      "Профиль преподавателя не существует или ещё не настроен.",
+    goToHome: "На главную",
+    // Loading
+    loading: "Загрузка...",
+  },
 };
