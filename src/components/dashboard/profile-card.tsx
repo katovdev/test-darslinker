@@ -49,7 +49,7 @@ export function ProfileCard({
           </Avatar>
 
           {/* Info */}
-          <div className="mt-4 sm:ml-6 sm:mt-0">
+          <div className="mt-4 sm:mt-0 sm:ml-6">
             <h2 className="text-2xl font-bold text-white">
               {user?.firstName} {user?.lastName}
             </h2>
@@ -60,9 +60,7 @@ export function ProfileCard({
               <p className="mt-2 text-sm text-gray-300">{specialization}</p>
             )}
 
-            {location && (
-              <p className="text-sm text-gray-400">{location}</p>
-            )}
+            {location && <p className="text-sm text-gray-400">{location}</p>}
 
             {/* Rating */}
             {rating > 0 && (

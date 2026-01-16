@@ -85,7 +85,7 @@ export function DashboardSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-gray-800 bg-gray-900 pt-16">
+    <aside className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-800 bg-gray-900 pt-16">
       <div className="flex h-full flex-col overflow-y-auto px-3 py-6">
         <nav className="flex-1 space-y-1">
           {menuItems.map((item) => {

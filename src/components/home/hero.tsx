@@ -30,7 +30,7 @@ export function Hero() {
     <section className="relative overflow-hidden bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 px-4 py-20 sm:px-6 lg:px-8">
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-1/4 top-0 h-96 w-96 rounded-full bg-[#7EA2D4]/10 blur-3xl" />
+        <div className="absolute top-0 -left-1/4 h-96 w-96 rounded-full bg-[#7EA2D4]/10 blur-3xl" />
         <div className="absolute -right-1/4 bottom-0 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl" />
       </div>
 
@@ -92,7 +92,7 @@ export function Hero() {
               </p>
               {/* Hover glow effect */}
               <div
-                className={`pointer-events-none absolute -bottom-20 -right-20 h-40 w-40 rounded-full bg-gradient-to-r ${card.gradient} opacity-0 blur-3xl transition-opacity group-hover:opacity-20`}
+                className={`pointer-events-none absolute -right-20 -bottom-20 h-40 w-40 rounded-full bg-gradient-to-r ${card.gradient} opacity-0 blur-3xl transition-opacity group-hover:opacity-20`}
               />
             </div>
           ))}

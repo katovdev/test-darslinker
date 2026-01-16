@@ -43,6 +43,46 @@ export const blogEndpoints = {
   deleteCategory: (id: string) => `/categories/${id}`,
 } as const;
 
+// Course API endpoints
+export const courseEndpoints = {
+  // Public endpoints
+  getAllCourses: "/courses",
+  getCourseById: (id: string) => `/courses/${id}`,
+  getCourseBySlug: (slug: string) => `/courses/slug/${slug}`,
+
+  // Student endpoints (require authentication)
+  getEnrolledCourses: "/students/courses",
+  enrollInCourse: (courseId: string) => `/courses/${courseId}/enroll`,
+  getCourseProgress: (courseId: string) => `/courses/${courseId}/progress`,
+
+  // Lesson endpoints
+  getLessons: (courseId: string) => `/courses/${courseId}/lessons`,
+  getLessonById: (courseId: string, lessonId: string) =>
+    `/courses/${courseId}/lessons/${lessonId}`,
+  completeLesson: (courseId: string, lessonId: string) =>
+    `/courses/${courseId}/lessons/${lessonId}/complete`,
+
+  // Quiz endpoints
+  getQuiz: (lessonId: string) => `/lessons/${lessonId}/quiz`,
+  submitQuiz: (lessonId: string) => `/lessons/${lessonId}/quiz/submit`,
+  getQuizAttempts: (studentId: string, lessonId: string) =>
+    `/students/${studentId}/quiz-attempts/${lessonId}`,
+
+  // Teacher/Landing endpoints
+  getTeacherLanding: (identifier: string) => `/teachers/${identifier}/landing`,
+  getTeacherCourses: (identifier: string) => `/teachers/${identifier}/courses`,
+} as const;
+
+// Notification API endpoints
+export const notificationEndpoints = {
+  getNotifications: (userId: string) => `/notifications/user/${userId}`,
+  markAsRead: (notificationId: string) =>
+    `/notifications/${notificationId}/read`,
+  markAllAsRead: (userId: string) => `/notifications/user/${userId}/read-all`,
+  getUnreadCount: (userId: string) =>
+    `/notifications/user/${userId}/unread-count`,
+} as const;
+
 // Cache configuration
 export const cacheConfig = {
   defaultTTL: 5 * 60 * 1000, // 5 minutes

@@ -87,7 +87,7 @@ export function Features() {
               </p>
 
               {/* Decorative corner */}
-              <div className="absolute right-4 top-4 h-8 w-8 rounded-full border border-gray-700 opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="absolute top-4 right-4 h-8 w-8 rounded-full border border-gray-700 opacity-0 transition-opacity group-hover:opacity-100" />
             </div>
           ))}
         </div>

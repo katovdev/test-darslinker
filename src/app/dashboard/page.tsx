@@ -63,10 +63,7 @@ export default function DashboardPage() {
         <h2 className="mb-4 text-xl font-semibold text-white">
           {t("dashboard.activeCourses")}
         </h2>
-        <StatsCards
-          stats={stats || undefined}
-          isLoading={isLoading}
-        />
+        <StatsCards stats={stats || undefined} isLoading={isLoading} />
       </div>
 
       {/* Courses Section */}

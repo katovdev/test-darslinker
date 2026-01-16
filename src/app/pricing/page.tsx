@@ -108,9 +108,7 @@ export default function PricingPage() {
 
   const renderFeatureValue = (feature: PlanFeature) => {
     if (feature.included === "unlimited") {
-      return (
-        <span className="text-green-400">{t("pricing.unlimited")}</span>
-      );
+      return <span className="text-green-400">{t("pricing.unlimited")}</span>;
     }
     if (typeof feature.included === "string") {
       return <span className="font-medium text-white">{feature.included}</span>;

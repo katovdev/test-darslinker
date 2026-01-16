@@ -45,7 +45,7 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur-sm">
+    <header className="fixed top-0 right-0 left-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur-sm">
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
         {/* Left: Logo & Mobile Menu */}
         <div className="flex items-center gap-4">
@@ -116,7 +116,7 @@ export function DashboardHeader() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="relative flex items-center gap-2 pl-2 pr-3"
+                className="relative flex items-center gap-2 pr-3 pl-2"
               >
                 <Avatar className="h-8 w-8 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
                   <AvatarFallback className="bg-transparent text-sm font-medium text-white">
