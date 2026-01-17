@@ -5,10 +5,10 @@ import Link from "next/link";
 
 // Pre-computed dot positions to avoid Math.random during render
 const DOT_POSITIONS = Array.from({ length: 20 }).map((_, i) => ({
-  left: ((i * 37 + 13) % 100),
-  top: ((i * 53 + 7) % 100),
+  left: (i * 37 + 13) % 100,
+  top: (i * 53 + 7) % 100,
   delay: (i * 0.25) % 5,
-  duration: 3 + (i * 0.2) % 4,
+  duration: 3 + ((i * 0.2) % 4),
 }));
 
 function NeonDots() {

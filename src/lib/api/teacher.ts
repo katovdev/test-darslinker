@@ -490,7 +490,10 @@ class TeacherAPI {
    */
   async createCourse(data: CreateCourseRequest): Promise<CourseResponse> {
     try {
-      return await api.post<CourseResponse>(teacherEndpoints.createCourse, data);
+      return await api.post<CourseResponse>(
+        teacherEndpoints.createCourse,
+        data
+      );
     } catch (error) {
       logger.error("Error creating course:", error);
       throw error;
@@ -769,10 +772,7 @@ class TeacherAPI {
   /**
    * Reject a payment
    */
-  async rejectPayment(
-    id: string,
-    reason?: string
-  ): Promise<PaymentResponse> {
+  async rejectPayment(id: string, reason?: string): Promise<PaymentResponse> {
     try {
       return await api.post<PaymentResponse>(
         teacherEndpoints.rejectPayment(id),

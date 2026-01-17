@@ -8,11 +8,11 @@ import type { User } from "@/store";
 
 // Auth endpoints for OTP-only authentication
 export const authEndpoints = {
-  requestOtp: "/auth",           // POST - request OTP (sends to Telegram)
-  login: "/auth/login",          // POST - verify OTP and login
-  refresh: "/auth/refresh",      // POST - refresh tokens
-  logout: "/auth/logout",        // POST - logout
-  me: "/auth/me",                // GET - get current user
+  requestOtp: "auth", // POST - request OTP (sends to Telegram)
+  login: "auth/login", // POST - verify OTP and login
+  refresh: "auth/refresh", // POST - refresh tokens
+  logout: "auth/logout", // POST - logout
+  me: "auth/me", // GET - get current user
 } as const;
 
 // Request types

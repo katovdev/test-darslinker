@@ -15,7 +15,6 @@ import {
   ChevronDown,
   Lock,
   CheckCircle,
-  Loader2,
   RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,20 +29,18 @@ import {
 } from "@/components/ui/collapsible";
 import { useTranslations } from "@/hooks/use-locale";
 import {
-  courseAPI,
-  type Course,
-  type Module,
-  type Lesson,
-  type CourseProgress,
+  studentAPI,
+  type StudentCourse,
+  type StudentModule,
+  type StudentLesson,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 const lessonIcons: Record<string, typeof Play> = {
   video: Play,
+  text: FileText,
   quiz: HelpCircle,
-  assignment: FileText,
-  file: File,
-  reading: FileText,
+  assignment: File,
 };
 
 export default function CourseDetailPage() {
@@ -52,8 +49,7 @@ export default function CourseDetailPage() {
   const router = useRouter();
   const courseId = params.courseId as string;
 
-  const [course, setCourse] = useState<Course | null>(null);
-  const [progress, setProgress] = useState<CourseProgress | null>(null);
+  const [course, setCourse] = useState<StudentCourse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedModules, setExpandedModules] = useState<string[]>([]);
@@ -63,25 +59,18 @@ export default function CourseDetailPage() {
     setError(null);
 
     try {
-      const [courseRes, progressRes] = await Promise.all([
-        courseAPI.getCourseById(courseId),
-        courseAPI.getCourseProgress(courseId).catch(() => null),
-      ]);
+      const response = await studentAPI.getCourseById(courseId);
 
-      if (courseRes.success && courseRes.data) {
-        setCourse(courseRes.data);
+      if (response.success && response.data) {
+        setCourse(response.data);
 
         // Auto-expand first module or module with current lesson
-        if (courseRes.data.modules?.length > 0) {
-          const firstModuleId = courseRes.data.modules[0]._id;
+        if (response.data.modules?.length > 0) {
+          const firstModuleId = response.data.modules[0].id;
           setExpandedModules([firstModuleId]);
         }
       } else {
         setError(t("course.courseNotFound"));
-      }
-
-      if (progressRes?.success && progressRes.data) {
-        setProgress(progressRes.data);
       }
     } catch (err) {
       setError(t("course.loadError"));
@@ -105,22 +94,18 @@ export default function CourseDetailPage() {
     );
   };
 
-  const isLessonCompleted = (lessonId: string) => {
-    return progress?.completedLessons?.includes(lessonId) || false;
-  };
-
-  const getFirstLesson = (): Lesson | null => {
+  const getFirstLesson = (): StudentLesson | null => {
     if (!course?.modules?.length) return null;
     const firstModule = course.modules[0];
     if (!firstModule.lessons?.length) return null;
     return firstModule.lessons[0];
   };
 
-  const getCurrentLesson = (): Lesson | null => {
-    if (progress?.currentLesson && course?.modules) {
+  const getCurrentLesson = (): StudentLesson | null => {
+    if (course?.progress?.currentLessonId && course?.modules) {
       for (const mod of course.modules) {
         const lesson = mod.lessons?.find(
-          (l) => l._id === progress.currentLesson
+          (l) => l.id === course.progress?.currentLessonId
         );
         if (lesson) return lesson;
       }
@@ -135,8 +120,8 @@ export default function CourseDetailPage() {
       0
     ) || 0;
 
-  const completedLessonsCount = progress?.completedLessons?.length || 0;
-  const progressPercentage = progress?.completionPercentage || 0;
+  const completedLessonsCount = course?.progress?.completedLessons || 0;
+  const progressPercentage = course?.progress?.percentage || 0;
 
   // Loading state
   if (isLoading) {
@@ -216,9 +201,9 @@ export default function CourseDetailPage() {
       {/* Course Hero */}
       <Card className="overflow-hidden border-gray-800 bg-gray-800/30">
         <div className="relative aspect-video max-h-64 overflow-hidden bg-gray-700 md:aspect-auto md:h-64">
-          {course.thumbnail ? (
+          {course.thumbnailUrl ? (
             <img
-              src={course.thumbnail}
+              src={course.thumbnailUrl}
               alt={course.title}
               className="h-full w-full object-cover"
             />
@@ -250,13 +235,12 @@ export default function CourseDetailPage() {
 
           {course.modules?.map((module, moduleIndex) => (
             <ModuleCard
-              key={module._id}
+              key={module.id}
               module={module}
               moduleIndex={moduleIndex}
               courseId={courseId}
-              isExpanded={expandedModules.includes(module._id)}
-              onToggle={() => toggleModule(module._id)}
-              isLessonCompleted={isLessonCompleted}
+              isExpanded={expandedModules.includes(module.id)}
+              onToggle={() => toggleModule(module.id)}
             />
           ))}
 
@@ -298,7 +282,7 @@ export default function CourseDetailPage() {
                   className="w-full bg-[#7EA2D4] text-white hover:bg-[#5A85C7]"
                 >
                   <Link
-                    href={`/student/course/${courseId}/lesson/${currentLesson._id}`}
+                    href={`/student/course/${courseId}/lesson/${currentLesson.id}`}
                   >
                     {progressPercentage > 0
                       ? t("course.continueLearning")
@@ -324,21 +308,17 @@ export default function CourseDetailPage() {
                 </div>
               </div>
 
-              {course.totalDuration && (
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-yellow-500/10 p-2">
-                    <Clock className="h-5 w-5 text-yellow-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-400">
-                      {t("course.duration")}
-                    </p>
-                    <p className="font-medium text-white">
-                      {course.totalDuration}
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3">
+                <div className="rounded-lg bg-yellow-500/10 p-2">
+                  <Clock className="h-5 w-5 text-yellow-400" />
                 </div>
-              )}
+                <div>
+                  <p className="text-sm text-gray-400">{t("course.modules")}</p>
+                  <p className="font-medium text-white">
+                    {course.modules?.length || 0}
+                  </p>
+                </div>
+              </div>
 
               {course.teacher && (
                 <div className="flex items-center gap-3">
@@ -364,12 +344,11 @@ export default function CourseDetailPage() {
 }
 
 interface ModuleCardProps {
-  module: Module;
+  module: StudentModule;
   moduleIndex: number;
   courseId: string;
   isExpanded: boolean;
   onToggle: () => void;
-  isLessonCompleted: (lessonId: string) => boolean;
 }
 
 function ModuleCard({
@@ -378,12 +357,11 @@ function ModuleCard({
   courseId,
   isExpanded,
   onToggle,
-  isLessonCompleted,
 }: ModuleCardProps) {
   const t = useTranslations();
-  const completedCount =
-    module.lessons?.filter((l) => isLessonCompleted(l._id)).length || 0;
-  const totalCount = module.lessons?.length || 0;
+  const completedCount = module.progress?.completedLessons || 0;
+  const totalCount =
+    module.progress?.totalLessons || module.lessons?.length || 0;
 
   return (
     <Collapsible open={isExpanded} onOpenChange={onToggle}>
@@ -419,16 +397,16 @@ function ModuleCard({
             <div className="space-y-2">
               {module.lessons?.map((lesson, lessonIndex) => {
                 const Icon = lessonIcons[lesson.type] || FileText;
-                const completed = isLessonCompleted(lesson._id);
+                const completed = lesson.isCompleted;
                 const locked = lesson.isLocked;
 
                 return (
                   <Link
-                    key={lesson._id}
+                    key={lesson.id}
                     href={
                       locked
                         ? "#"
-                        : `/student/course/${courseId}/lesson/${lesson._id}`
+                        : `/student/course/${courseId}/lesson/${lesson.id}`
                     }
                     className={cn(
                       "flex items-center gap-3 rounded-lg p-3 transition-colors",
@@ -472,7 +450,7 @@ function ModuleCard({
                         >
                           {t(`lesson.${lesson.type}`)}
                         </Badge>
-                        {lesson.duration && <span>{lesson.duration}</span>}
+                        {lesson.duration && <span>{lesson.duration} min</span>}
                       </div>
                     </div>
 

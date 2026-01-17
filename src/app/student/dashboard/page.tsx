@@ -2,62 +2,75 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, Clock, Award, Loader2, RefreshCw } from "lucide-react";
+import { BookOpen, Clock, Award, RefreshCw, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "@/hooks/use-locale";
 import { useUser } from "@/store";
-import { courseAPI, type EnrolledCourse } from "@/lib/api";
+import { studentAPI, type Enrollment } from "@/lib/api";
 
 export default function StudentDashboardPage() {
   const t = useTranslations();
   const user = useUser();
-  const [courses, setCourses] = useState<EnrolledCourse[]>([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadCourses = async () => {
+  const loadEnrollments = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await courseAPI.getEnrolledCourses();
+      const response = await studentAPI.getEnrollments();
       if (response.success && response.data) {
-        setCourses(response.data);
+        setEnrollments(response.data);
       }
     } catch (err) {
       setError(t("course.loadError"));
-      console.error("Failed to load enrolled courses:", err);
+      console.error("Failed to load enrollments:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadCourses();
+    loadEnrollments();
   }, []);
 
   // Calculate stats
-  const totalCourses = courses.length;
-  const completedCourses = courses.filter(
-    (c) => c.progress?.isCompleted
+  const totalCourses = enrollments.length;
+  const completedCourses = enrollments.filter(
+    (e) => e.status === "completed"
   ).length;
-  const inProgressCourses = totalCourses - completedCourses;
+  const inProgressCourses = enrollments.filter(
+    (e) => e.status === "active"
+  ).length;
+  const averageProgress =
+    enrollments.length > 0
+      ? Math.round(
+          enrollments.reduce(
+            (sum, e) => sum + (e.progress?.percentage || 0),
+            0
+          ) / enrollments.length
+        )
+      : 0;
 
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
       <div>
         <h1 className="text-3xl font-bold text-white">
-          {t("dashboard.welcomeBack", { name: user?.firstName || "" })}
+          {t("dashboard.welcomeBack")
+            .replace("{name}", user?.firstName || "")
+            .replace("{{name}}", user?.firstName || "")}
         </h1>
         <p className="mt-1 text-gray-400">{t("dashboard.continueJourney")}</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="border-gray-800 bg-gray-800/30">
           <CardContent className="flex items-center gap-4 p-6">
             <div className="rounded-xl bg-blue-500/10 p-3">
@@ -97,6 +110,20 @@ export default function StudentDashboardPage() {
               <p className="text-sm text-gray-400">{t("course.completed")}</p>
               <p className="text-2xl font-bold text-white">
                 {completedCourses}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-gray-800 bg-gray-800/30">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="rounded-xl bg-purple-500/10 p-3">
+              <TrendingUp className="h-6 w-6 text-purple-400" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">{t("course.progress")}</p>
+              <p className="text-2xl font-bold text-white">
+                {averageProgress}%
               </p>
             </div>
           </CardContent>
@@ -149,7 +176,7 @@ export default function StudentDashboardPage() {
                 <p className="text-sm text-gray-400">{error}</p>
               </div>
               <Button
-                onClick={loadCourses}
+                onClick={loadEnrollments}
                 variant="outline"
                 className="gap-2 border-gray-700 text-white hover:bg-gray-800"
               >
@@ -161,7 +188,7 @@ export default function StudentDashboardPage() {
         )}
 
         {/* Empty State */}
-        {!isLoading && !error && courses.length === 0 && (
+        {!isLoading && !error && enrollments.length === 0 && (
           <Card className="border-gray-800 bg-gray-800/30">
             <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
               <div className="rounded-full bg-gray-800 p-4">
@@ -186,10 +213,10 @@ export default function StudentDashboardPage() {
         )}
 
         {/* Courses Grid */}
-        {!isLoading && !error && courses.length > 0 && (
+        {!isLoading && !error && enrollments.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {courses.slice(0, 6).map((course) => (
-              <CourseCard key={course._id} course={course} />
+            {enrollments.slice(0, 6).map((enrollment) => (
+              <EnrollmentCard key={enrollment.id} enrollment={enrollment} />
             ))}
           </div>
         )}
@@ -198,28 +225,20 @@ export default function StudentDashboardPage() {
   );
 }
 
-function CourseCard({ course }: { course: EnrolledCourse }) {
+function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
   const t = useTranslations();
-  const progress = course.progress?.completionPercentage || 0;
-  const isCompleted = course.progress?.isCompleted || false;
-
-  // Calculate total lessons
-  const totalLessons =
-    course.modules?.reduce(
-      (sum, module) => sum + (module.lessons?.length || 0),
-      0
-    ) ||
-    course.totalLessons ||
-    0;
+  const progress = enrollment.progress?.percentage || 0;
+  const isCompleted = enrollment.status === "completed";
+  const course = enrollment.course;
 
   return (
-    <Link href={`/student/course/${course._id}`}>
+    <Link href={`/student/course/${enrollment.courseId}`}>
       <Card className="h-full border-gray-800 bg-gray-800/30 transition-colors hover:bg-gray-800/50">
         {/* Thumbnail */}
         <div className="relative aspect-video overflow-hidden rounded-t-lg bg-gray-700">
-          {course.thumbnail ? (
+          {course.thumbnailUrl ? (
             <img
-              src={course.thumbnail}
+              src={course.thumbnailUrl}
               alt={course.title}
               className="h-full w-full object-cover"
             />
@@ -242,18 +261,20 @@ function CourseCard({ course }: { course: EnrolledCourse }) {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {/* Course Info */}
+          {/* Teacher Info */}
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <span>
+              {course.teacher.firstName} {course.teacher.lastName}
+            </span>
+          </div>
+
+          {/* Course Stats */}
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <span className="flex items-center gap-1">
               <BookOpen className="h-3 w-3" />
-              {totalLessons} {t("course.lessons")}
+              {enrollment.progress?.completedLessons || 0} /{" "}
+              {enrollment.progress?.totalLessons || 0} {t("course.lessons")}
             </span>
-            {course.totalDuration && (
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                {course.totalDuration}
-              </span>
-            )}
           </div>
 
           {/* Progress */}

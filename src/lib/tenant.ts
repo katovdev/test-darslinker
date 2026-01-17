@@ -99,10 +99,7 @@ export function isMainApp(): boolean {
 /**
  * Build a URL for a specific teacher subdomain
  */
-export function buildTeacherUrl(
-  username: string,
-  path: string = "/"
-): string {
+export function buildTeacherUrl(username: string, path: string = "/"): string {
   if (typeof window === "undefined") return path;
 
   const host = window.location.hostname;

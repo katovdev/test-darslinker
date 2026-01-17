@@ -120,7 +120,8 @@ export const useAppStore = create<AppState>()(
 
       // Tenant actions
       setTenant: (tenant) => set({ tenant }),
-      setIsTeacherSubdomain: (isTeacherSubdomain) => set({ isTeacherSubdomain }),
+      setIsTeacherSubdomain: (isTeacherSubdomain) =>
+        set({ isTeacherSubdomain }),
 
       // UI actions
       setLoading: (loading) => set({ loading }),

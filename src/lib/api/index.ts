@@ -37,11 +37,9 @@ export {
   type RequestOtpRequest,
   type RequestOtpResponse,
   type LoginRequest,
-  type LoginResponse,
+  type AuthResponse,
   type RefreshRequest,
-  type RefreshResponse,
   type MeResponse,
-  type AuthUser,
 } from "./auth";
 
 // Course API (legacy)
@@ -86,7 +84,7 @@ export {
   type LandingSettings,
   type TeacherCourse,
   type PublicLandingResponse,
-  type TeacherCoursesResponse,
+  type TeacherCoursesResponse as LandingCoursesResponse,
 } from "./landing";
 
 // Public API (teacher subdomain - no auth)

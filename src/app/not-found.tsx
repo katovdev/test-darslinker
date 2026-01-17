@@ -22,8 +22,8 @@ export default function NotFound() {
 
         <h1 className="mb-2 text-3xl font-bold">Sahifa topilmadi</h1>
         <p className="mb-8 max-w-md text-gray-400">
-          Siz qidirayotgan sahifa mavjud emas yoki ko&apos;chirilgan bo&apos;lishi
-          mumkin.
+          Siz qidirayotgan sahifa mavjud emas yoki ko&apos;chirilgan
+          bo&apos;lishi mumkin.
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">

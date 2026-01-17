@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Home, BookOpen, Bell, User, LogOut, Menu } from "lucide-react";
+import {
+  Home,
+  BookOpen,
+  Bell,
+  User,
+  LogOut,
+  Menu,
+  CreditCard,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -19,13 +28,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useIsAuthenticated, useUser, useAppStore } from "@/store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  useIsAuthenticated,
+  useUser,
+  useAppStore,
+  useTenant,
+  useIsTeacherSubdomain,
+} from "@/store";
 import { useTranslations } from "@/hooks/use-locale";
+import { publicAPI } from "@/lib/api";
+import {
+  getSubdomain,
+  isTeacherSubdomain as checkTeacherSubdomain,
+} from "@/lib/tenant";
 
 const navItems = [
   { href: "/student/dashboard", icon: Home, labelKey: "dashboard" },
   { href: "/student/courses", icon: BookOpen, labelKey: "myCourses" },
+  { href: "/student/payments", icon: CreditCard, labelKey: "payments" },
   { href: "/student/notifications", icon: Bell, labelKey: "notifications" },
 ];
 
@@ -38,16 +59,48 @@ export default function StudentLayout({
   const t = useTranslations();
   const isAuthenticated = useIsAuthenticated();
   const user = useUser();
+  const tenant = useTenant();
+  const isOnTeacherSubdomain = useIsTeacherSubdomain();
   const logout = useAppStore((state) => state.logout);
+  const setTenant = useAppStore((state) => state.setTenant);
+  const setIsTeacherSubdomain = useAppStore(
+    (state) => state.setIsTeacherSubdomain
+  );
+  const [isLoadingTenant, setIsLoadingTenant] = useState(true);
 
+  // Load tenant info on mount
   useEffect(() => {
-    if (!isAuthenticated) {
+    const loadTenant = async () => {
+      const isTeacher = checkTeacherSubdomain();
+      setIsTeacherSubdomain(isTeacher);
+
+      if (isTeacher) {
+        try {
+          const response = await publicAPI.getTenant();
+          if (response.success && response.data) {
+            setTenant(response.data);
+          }
+        } catch (error) {
+          console.error("Failed to load tenant:", error);
+        }
+      }
+      setIsLoadingTenant(false);
+    };
+
+    loadTenant();
+  }, [setTenant, setIsTeacherSubdomain]);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated && !isLoadingTenant) {
       router.push("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isLoadingTenant, router]);
 
   const handleLogout = () => {
     logout();
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("refresh_token");
     router.push("/login");
   };
 
@@ -57,13 +110,19 @@ export default function StudentLayout({
     return first + last || "?";
   };
 
-  if (!isAuthenticated) {
+  // Loading state
+  if (!isAuthenticated || isLoadingTenant) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-600 border-t-[#7EA2D4]" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#7EA2D4]" />
       </div>
     );
   }
+
+  // Get brand colors from tenant
+  const primaryColor = tenant?.primaryColor || "#7EA2D4";
+  const logoUrl = tenant?.logoUrl;
+  const businessName = tenant?.businessName || "Darslinker";
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -88,7 +147,9 @@ export default function StudentLayout({
                 className="w-64 border-gray-800 bg-gray-900"
               >
                 <SheetHeader>
-                  <SheetTitle className="text-white">Darslinker</SheetTitle>
+                  <SheetTitle className="text-white">
+                    {isOnTeacherSubdomain ? businessName : "Darslinker"}
+                  </SheetTitle>
                 </SheetHeader>
                 <nav className="mt-6 space-y-2">
                   {navItems.map((item) => (
@@ -108,9 +169,15 @@ export default function StudentLayout({
             {/* Logo */}
             <Link
               href="/student/dashboard"
-              className="text-xl font-bold text-white"
+              className="flex items-center gap-2 text-xl font-bold text-white"
             >
-              Darslinker
+              {logoUrl ? (
+                <img src={logoUrl} alt={businessName} className="h-8 w-auto" />
+              ) : (
+                <span style={{ color: primaryColor }}>
+                  {isOnTeacherSubdomain ? businessName : "Darslinker"}
+                </span>
+              )}
             </Link>
           </div>
 
@@ -136,6 +203,7 @@ export default function StudentLayout({
                 className="flex items-center gap-2 text-gray-400 hover:text-white"
               >
                 <Avatar className="h-8 w-8 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
+                  {user?.avatar && <AvatarImage src={user.avatar} />}
                   <AvatarFallback className="bg-transparent text-sm font-medium text-white">
                     {getInitials()}
                   </AvatarFallback>

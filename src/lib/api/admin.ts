@@ -245,7 +245,7 @@ class AdminAPI {
       const searchParams = new URLSearchParams();
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null) {
             searchParams.append(key, String(value));
           }
         });
@@ -291,7 +291,7 @@ class AdminAPI {
       const searchParams = new URLSearchParams();
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null) {
             searchParams.append(key, String(value));
           }
         });
@@ -373,7 +373,7 @@ class AdminAPI {
       const searchParams = new URLSearchParams();
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (value !== undefined && value !== null) {
             searchParams.append(key, String(value));
           }
         });
