@@ -1,20 +1,17 @@
 /**
  * Auth Service
- * Handles authentication logic, validation, and phone formatting
+ * Handles OTP-only authentication logic, validation, and phone formatting
+ * Registration happens via Telegram bot - this only handles login
  */
 
 import { authApi, type AuthResponse } from "@/lib/api";
 import { useAppStore } from "@/store";
 
 // Validation patterns
-const NAME_PATTERN = /^[a-zA-Z\u0400-\u04FF\u00C0-\u017F]+$/;
 const PHONE_DIGITS_ONLY = /[^0-9]/g;
 
-// Telegram bots for OTP
-export const TELEGRAM_BOTS = {
-  login: "Darslinker_sbot",
-  register: "Darslinker_cbot",
-} as const;
+// Single Telegram bot for OTP (both login and registration handled by same bot)
+export const TELEGRAM_BOT = "DarslinkerBot";
 
 /**
  * Format phone number as XX XXX XX XX
@@ -53,43 +50,6 @@ export const validators = {
     return null;
   },
 
-  password: (value: string): string | null => {
-    if (!value) return "passwordRequired";
-    if (value.length < 6) return "passwordMinLength";
-    if (!/[a-zA-Z]/.test(value) || !/[0-9]/.test(value)) {
-      return "passwordRequirements";
-    }
-    return null;
-  },
-
-  passwordSimple: (value: string): string | null => {
-    if (!value) return "passwordRequired";
-    return null;
-  },
-
-  confirmPassword: (
-    password: string,
-    confirmPassword: string
-  ): string | null => {
-    if (!confirmPassword) return "passwordRequired";
-    if (password !== confirmPassword) return "passwordMismatch";
-    return null;
-  },
-
-  firstName: (value: string): string | null => {
-    if (!value.trim()) return "firstNameRequired";
-    if (value.trim().length < 3) return "firstNameMinLength";
-    if (!NAME_PATTERN.test(value.trim())) return "firstNameInvalid";
-    return null;
-  },
-
-  lastName: (value: string): string | null => {
-    if (!value.trim()) return "lastNameRequired";
-    if (value.trim().length < 3) return "lastNameMinLength";
-    if (!NAME_PATTERN.test(value.trim())) return "lastNameInvalid";
-    return null;
-  },
-
   otp: (value: string): string | null => {
     if (!value) return "otpRequired";
     if (!/^\d{6}$/.test(value)) return "otpInvalid";
@@ -110,8 +70,11 @@ export function saveAuthData(response: AuthResponse): void {
   }
 
   // Update Zustand store
-  const { setUser, setAuthToken } = useAppStore.getState();
+  const { setUser, setAuthToken, setRefreshToken } = useAppStore.getState();
   setAuthToken(response.accessToken);
+  if (response.refreshToken) {
+    setRefreshToken(response.refreshToken);
+  }
   setUser(response.user);
 }
 
@@ -127,67 +90,25 @@ export function clearAuthData(): void {
 }
 
 /**
- * Check if user exists by phone number
+ * Request OTP - sends code via Telegram bot
  */
-export async function checkUser(phone: string) {
+export async function requestOtp(phone: string) {
   const fullPhone = formatFullPhoneNumber(getPhoneDigits(phone));
-  return authApi.checkUser(fullPhone);
+  return authApi.requestOtp(fullPhone);
 }
 
 /**
- * Login with phone and password
+ * Verify OTP and login
  */
-export async function login(phone: string, password: string) {
+export async function verifyOtp(phone: string, code: string) {
   const fullPhone = formatFullPhoneNumber(getPhoneDigits(phone));
-  const response = await authApi.login(fullPhone, password);
+  const response = await authApi.login(fullPhone, code);
 
   if (response.success && response.accessToken && response.user) {
     saveAuthData(response);
   }
 
   return response;
-}
-
-/**
- * Register new user
- */
-export async function register(data: {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  password: string;
-  role?: "student" | "teacher";
-}) {
-  const fullPhone = formatFullPhoneNumber(getPhoneDigits(data.phone));
-  return authApi.register({
-    firstName: data.firstName.trim(),
-    lastName: data.lastName.trim(),
-    phone: fullPhone,
-    password: data.password,
-    role: data.role || "teacher",
-  });
-}
-
-/**
- * Verify OTP during registration
- */
-export async function verifyOtp(phone: string, otp: string) {
-  const fullPhone = formatFullPhoneNumber(getPhoneDigits(phone));
-  const response = await authApi.verifyRegistrationOtp(fullPhone, otp);
-
-  if (response.success && response.accessToken && response.user) {
-    saveAuthData(response);
-  }
-
-  return response;
-}
-
-/**
- * Resend OTP
- */
-export async function resendOtp(phone: string) {
-  const fullPhone = formatFullPhoneNumber(getPhoneDigits(phone));
-  return authApi.resendRegistrationOtp(fullPhone);
 }
 
 /**
@@ -203,6 +124,46 @@ export async function logout() {
   }
 }
 
+/**
+ * Get current user from API
+ */
+export async function getCurrentUser() {
+  return authApi.me();
+}
+
+/**
+ * Refresh access token
+ */
+export async function refreshToken() {
+  const token = localStorage.getItem("refresh_token");
+  if (!token) {
+    throw new Error("No refresh token available");
+  }
+
+  const response = await authApi.refreshToken(token);
+
+  if (response.success && response.accessToken) {
+    localStorage.setItem("auth_token", response.accessToken);
+    const { setAuthToken } = useAppStore.getState();
+    setAuthToken(response.accessToken);
+
+    if (response.refreshToken) {
+      localStorage.setItem("refresh_token", response.refreshToken);
+      const { setRefreshToken } = useAppStore.getState();
+      setRefreshToken(response.refreshToken);
+    }
+  }
+
+  return response;
+}
+
+/**
+ * Open Telegram bot for OTP or registration
+ */
+export function openTelegramBot() {
+  window.open(`https://t.me/${TELEGRAM_BOT}`, "_blank");
+}
+
 export default {
   formatPhoneNumber,
   getPhoneDigits,
@@ -210,11 +171,11 @@ export default {
   validators,
   saveAuthData,
   clearAuthData,
-  checkUser,
-  login,
-  register,
+  requestOtp,
   verifyOtp,
-  resendOtp,
   logout,
-  TELEGRAM_BOTS,
+  getCurrentUser,
+  refreshToken,
+  openTelegramBot,
+  TELEGRAM_BOT,
 };

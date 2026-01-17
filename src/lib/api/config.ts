@@ -12,7 +12,111 @@ export const apiConfig = {
   retryDelay: isDevelopment ? 1000 : 2000,
 } as const;
 
-// Blog API endpoints
+// Auth API endpoints (OTP-only)
+export const authEndpoints = {
+  requestOtp: "/auth",
+  login: "/auth/login",
+  refresh: "/auth/refresh",
+  logout: "/auth/logout",
+  me: "/auth/me",
+} as const;
+
+// Public endpoints (on teacher subdomain - no auth required)
+export const publicEndpoints = {
+  getTenant: "/public/tenant",
+  getCourses: "/public/courses",
+  getCourseBySlug: (slug: string) => `/public/courses/${slug}`,
+  getModuleBySlug: (courseSlug: string, moduleSlug: string) =>
+    `/public/courses/${courseSlug}/modules/${moduleSlug}`,
+  getLessonBySlug: (courseSlug: string, moduleSlug: string, lessonSlug: string) =>
+    `/public/courses/${courseSlug}/modules/${moduleSlug}/lessons/${lessonSlug}`,
+} as const;
+
+// Student endpoints (require authentication)
+export const studentEndpoints = {
+  profile: "/student/profile",
+  updateProfile: "/student/profile",
+  enrollments: "/student/enrollments",
+  enroll: (courseId: string) => `/student/courses/${courseId}/enroll`,
+  courseById: (id: string) => `/student/courses/${id}`,
+  lessonById: (id: string) => `/student/lessons/${id}`,
+  completeLesson: (id: string) => `/student/lessons/${id}/complete`,
+  progress: "/student/progress",
+  courseProgress: (courseId: string) => `/student/courses/${courseId}/progress`,
+  // Payments
+  payments: "/student/payments",
+  submitPayment: "/student/payments",
+  paymentById: (id: string) => `/student/payments/${id}`,
+} as const;
+
+// Teacher endpoints (require teacher role)
+export const teacherEndpoints = {
+  // Dashboard & Profile
+  dashboard: "/teacher/dashboard",
+  profile: "/teacher/profile",
+  updateProfile: "/teacher/profile",
+  branding: "/teacher/branding",
+  updateBranding: "/teacher/branding",
+  // Students
+  students: "/teacher/students",
+  studentById: (id: string) => `/teacher/students/${id}`,
+  // Courses
+  courses: "/teacher/courses",
+  courseById: (id: string) => `/teacher/courses/${id}`,
+  createCourse: "/teacher/courses",
+  updateCourse: (id: string) => `/teacher/courses/${id}`,
+  deleteCourse: (id: string) => `/teacher/courses/${id}`,
+  publishCourse: (id: string) => `/teacher/courses/${id}/publish`,
+  unpublishCourse: (id: string) => `/teacher/courses/${id}/unpublish`,
+  // Modules
+  modules: "/teacher/modules",
+  moduleById: (id: string) => `/teacher/modules/${id}`,
+  createModule: "/teacher/modules",
+  updateModule: (id: string) => `/teacher/modules/${id}`,
+  deleteModule: (id: string) => `/teacher/modules/${id}`,
+  reorderModules: (courseId: string) => `/teacher/courses/${courseId}/modules/reorder`,
+  // Lessons
+  lessons: "/teacher/lessons",
+  lessonById: (id: string) => `/teacher/lessons/${id}`,
+  createLesson: "/teacher/lessons",
+  updateLesson: (id: string) => `/teacher/lessons/${id}`,
+  deleteLesson: (id: string) => `/teacher/lessons/${id}`,
+  reorderLessons: (moduleId: string) => `/teacher/modules/${moduleId}/lessons/reorder`,
+  // Payments
+  payments: "/teacher/payments",
+  paymentById: (id: string) => `/teacher/payments/${id}`,
+  approvePayment: (id: string) => `/teacher/payments/${id}/approve`,
+  rejectPayment: (id: string) => `/teacher/payments/${id}/reject`,
+  // Stats
+  stats: "/teacher/stats",
+} as const;
+
+// Onboarding endpoints (become a teacher)
+export const onboardingEndpoints = {
+  request: "/onboarding/request",
+  complete: "/onboarding/complete",
+  status: "/onboarding/status",
+} as const;
+
+// Admin endpoints (require admin role)
+export const adminEndpoints = {
+  // Dashboard
+  dashboard: "/admin/dashboard",
+  stats: "/admin/stats",
+  // Teachers
+  teachers: "/admin/teachers",
+  teacherById: (id: string) => `/admin/teachers/${id}`,
+  // Teacher Requests
+  teacherRequests: "/admin/teacher-requests",
+  teacherRequestById: (id: string) => `/admin/teacher-requests/${id}`,
+  approveRequest: (id: string) => `/admin/teacher-requests/${id}/approve`,
+  rejectRequest: (id: string) => `/admin/teacher-requests/${id}/reject`,
+  // Users
+  users: "/admin/users",
+  userById: (id: string) => `/admin/users/${id}`,
+} as const;
+
+// Blog API endpoints (legacy - keep for compatibility)
 export const blogEndpoints = {
   // Public endpoints
   getAllBlogs: "/blogs",
@@ -43,7 +147,7 @@ export const blogEndpoints = {
   deleteCategory: (id: string) => `/categories/${id}`,
 } as const;
 
-// Course API endpoints
+// Course API endpoints (legacy - keep for compatibility)
 export const courseEndpoints = {
   // Public endpoints
   getAllCourses: "/courses",

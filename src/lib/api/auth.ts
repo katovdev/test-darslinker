@@ -1,62 +1,38 @@
 /**
  * Auth API
- * Authentication-related API calls
+ * Authentication-related API calls for OTP-only authentication via Telegram
  */
 
 import { api } from "./client";
 import type { User } from "@/store";
 
-// Auth endpoints
+// Auth endpoints for OTP-only authentication
 export const authEndpoints = {
-  checkUser: "/auth/check-user",
-  register: "/auth/register",
-  verifyRegistrationOtp: "/auth/verify-registration-otp",
-  resendRegistrationOtp: "/auth/resend-registration-otp",
-  login: "/auth/login",
-  logout: "/auth/logout",
-  changePassword: "/auth/change-password",
-  refreshToken: "/auth/refresh-token",
+  requestOtp: "/auth",           // POST - request OTP (sends to Telegram)
+  login: "/auth/login",          // POST - verify OTP and login
+  refresh: "/auth/refresh",      // POST - refresh tokens
+  logout: "/auth/logout",        // POST - logout
+  me: "/auth/me",                // GET - get current user
 } as const;
 
 // Request types
-export interface CheckUserRequest {
-  identifier: string;
-}
-
-export interface RegisterRequest {
-  firstName: string;
-  lastName: string;
+export interface RequestOtpRequest {
   phone: string;
-  password: string;
-  role: "student" | "teacher";
 }
 
 export interface LoginRequest {
-  identifier: string;
-  password: string;
+  phone: string;
+  code: string;
 }
 
-export interface VerifyOtpRequest {
-  identifier: string;
-  otp: string;
-}
-
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+export interface RefreshRequest {
+  refreshToken: string;
 }
 
 // Response types
-export interface CheckUserResponse {
-  exists: boolean;
-  next?: "login" | "verify" | "register";
-  user?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-  };
+export interface RequestOtpResponse {
+  success: boolean;
+  message?: string;
 }
 
 export interface AuthResponse {
@@ -67,54 +43,23 @@ export interface AuthResponse {
   message?: string;
 }
 
-export interface RegisterResponse {
-  success: boolean;
-  message?: string;
-  user?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-  };
+export interface MeResponse {
+  user: User;
 }
 
 // Auth API methods
 export const authApi = {
   /**
-   * Check if user exists by phone/email
+   * Request OTP - sends code via Telegram bot
    */
-  checkUser: (identifier: string) =>
-    api.post<CheckUserResponse>(authEndpoints.checkUser, { identifier }),
+  requestOtp: (phone: string) =>
+    api.post<RequestOtpResponse>(authEndpoints.requestOtp, { phone }),
 
   /**
-   * Register new user
+   * Verify OTP and login
    */
-  register: (data: RegisterRequest) =>
-    api.post<RegisterResponse>(authEndpoints.register, data),
-
-  /**
-   * Verify OTP during registration
-   */
-  verifyRegistrationOtp: (identifier: string, otp: string) =>
-    api.post<AuthResponse>(authEndpoints.verifyRegistrationOtp, {
-      identifier,
-      otp,
-    }),
-
-  /**
-   * Resend OTP for registration
-   */
-  resendRegistrationOtp: (identifier: string) =>
-    api.post<{ success: boolean; message?: string }>(
-      authEndpoints.resendRegistrationOtp,
-      { identifier }
-    ),
-
-  /**
-   * Login with password
-   */
-  login: (identifier: string, password: string) =>
-    api.post<AuthResponse>(authEndpoints.login, { identifier, password }),
+  login: (phone: string, code: string) =>
+    api.post<AuthResponse>(authEndpoints.login, { phone, code }),
 
   /**
    * Logout current user
@@ -122,19 +67,15 @@ export const authApi = {
   logout: () => api.post<{ success: boolean }>(authEndpoints.logout),
 
   /**
-   * Change password
-   */
-  changePassword: (data: ChangePasswordRequest) =>
-    api.patch<{ success: boolean; message?: string }>(
-      authEndpoints.changePassword,
-      data
-    ),
-
-  /**
    * Refresh access token
    */
   refreshToken: (refreshToken: string) =>
-    api.post<AuthResponse>(authEndpoints.refreshToken, { refreshToken }),
+    api.post<AuthResponse>(authEndpoints.refresh, { refreshToken }),
+
+  /**
+   * Get current user
+   */
+  me: () => api.get<MeResponse>(authEndpoints.me),
 };
 
 export default authApi;

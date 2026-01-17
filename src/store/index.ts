@@ -8,6 +8,9 @@ export interface User {
   phone: string;
   role: "student" | "teacher" | "admin";
   avatar?: string;
+  // Teacher-specific fields
+  username?: string;
+  businessName?: string;
 }
 
 export interface Course {
@@ -19,12 +22,25 @@ export interface Course {
   progress?: number;
 }
 
+export interface TenantInfo {
+  teacherId: string;
+  username: string;
+  businessName: string | null;
+  logoUrl: string | null;
+  primaryColor: string | null;
+  secondaryColor: string | null;
+}
+
 interface AppState {
   // Auth state
   user: User | null;
   isAuthenticated: boolean;
   authToken: string | null;
   refreshToken: string | null;
+
+  // Tenant state (for teacher subdomains)
+  tenant: TenantInfo | null;
+  isTeacherSubdomain: boolean;
 
   // UI state
   loading: boolean;
@@ -44,6 +60,10 @@ interface AppState {
   }) => void;
   logout: () => void;
 
+  // Tenant actions
+  setTenant: (tenant: TenantInfo | null) => void;
+  setIsTeacherSubdomain: (isTeacherSubdomain: boolean) => void;
+
   // UI actions
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
@@ -60,6 +80,8 @@ export const useAppStore = create<AppState>()(
       isAuthenticated: false,
       authToken: null,
       refreshToken: null,
+      tenant: null,
+      isTeacherSubdomain: false,
       loading: false,
       error: null,
       courses: [],
@@ -96,6 +118,10 @@ export const useAppStore = create<AppState>()(
           courses: [],
         }),
 
+      // Tenant actions
+      setTenant: (tenant) => set({ tenant }),
+      setIsTeacherSubdomain: (isTeacherSubdomain) => set({ isTeacherSubdomain }),
+
       // UI actions
       setLoading: (loading) => set({ loading }),
       setError: (error) => set({ error }),
@@ -121,6 +147,9 @@ export const useIsAuthenticated = () =>
   useAppStore((state) => state.isAuthenticated);
 export const useAuthToken = () => useAppStore((state) => state.authToken);
 export const useRefreshToken = () => useAppStore((state) => state.refreshToken);
+export const useTenant = () => useAppStore((state) => state.tenant);
+export const useIsTeacherSubdomain = () =>
+  useAppStore((state) => state.isTeacherSubdomain);
 export const useLoading = () => useAppStore((state) => state.loading);
 export const useError = () => useAppStore((state) => state.error);
 export const useCourses = () => useAppStore((state) => state.courses);

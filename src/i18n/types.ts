@@ -70,6 +70,7 @@ export interface Translations {
     lastName: string;
     enterPhone: string;
     enterPassword: string;
+    enterOtp: string;
     continue: string;
     createAccount: string;
     welcomeBack: string;
@@ -79,10 +80,24 @@ export interface Translations {
     verifyOtp: string;
     resendOtp: string;
     goToTelegram: string;
+    openTelegram: string;
     alreadyHaveCode: string;
     verifying: string;
     loggingIn: string;
     registering: string;
+    // OTP-only auth
+    sendOtp: string;
+    otpSent: string;
+    otpSentToTelegram: string;
+    otpResent: string;
+    changePhone: string;
+    // Registration via Telegram
+    registerViaTelegram: string;
+    telegramBotDescription: string;
+    registerStep1: string;
+    registerStep2: string;
+    registerStep3: string;
+    openTelegramToRegister: string;
     // Validation messages
     phoneRequired: string;
     phoneInvalid: string;
