@@ -36,6 +36,16 @@ export const publicEndpoints = {
     `public/courses/${courseSlug}/modules/${moduleSlug}/lessons/${lessonSlug}`,
 } as const;
 
+// Path-based public endpoints (no subdomain required)
+export const publicPathEndpoints = {
+  getTeacherLanding: (username: string) => `u/${username}`,
+  getTeacherCourses: (username: string) => `u/${username}/courses`,
+  getCourseByPath: (username: string, courseSlug: string) =>
+    `u/${username}/courses/${courseSlug}`,
+  getLessonByPath: (username: string, courseSlug: string, lessonSlug: string) =>
+    `u/${username}/courses/${courseSlug}/${lessonSlug}`,
+} as const;
+
 // Student endpoints (require authentication)
 export const studentEndpoints = {
   profile: "student/profile",
@@ -180,12 +190,6 @@ export const courseEndpoints = {
 
   // Teacher/Landing endpoints
   getTeacherLanding: (identifier: string) => `teachers/${identifier}/landing`,
-  getTeacherCourses: (identifier: string) => `teachers/${identifier}/courses`,
-} as const;
-
-// Teacher Landing API endpoints (public)
-export const landingEndpoints = {
-  getPublicLanding: (identifier: string) => `landing/public/${identifier}`,
   getTeacherCourses: (identifier: string) => `teachers/${identifier}/courses`,
 } as const;
 

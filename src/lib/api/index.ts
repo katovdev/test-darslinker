@@ -7,13 +7,13 @@ export {
   blogEndpoints,
   cacheConfig,
   publicEndpoints,
+  publicPathEndpoints,
   studentEndpoints,
   teacherEndpoints,
   onboardingEndpoints,
   adminEndpoints,
   courseEndpoints,
   notificationEndpoints,
-  landingEndpoints,
 } from "./config";
 
 // Blog API
@@ -38,7 +38,7 @@ export {
   type RequestOtpResponse,
   type LoginRequest,
   type AuthResponse,
-  type RefreshRequest,
+  type RefreshResponse,
   type MeResponse,
 } from "./auth";
 
@@ -77,16 +77,6 @@ export {
   type NotificationQueryParams,
 } from "./notifications";
 
-// Landing API (public teacher pages)
-export {
-  landingAPI,
-  type TeacherProfile,
-  type LandingSettings,
-  type TeacherCourse,
-  type PublicLandingResponse,
-  type TeacherCoursesResponse as LandingCoursesResponse,
-} from "./landing";
-
 // Public API (teacher subdomain - no auth)
 export {
   publicAPI,
@@ -105,6 +95,23 @@ export {
   type PublicLessonResponse,
   type PublicCoursesQueryParams,
 } from "./public";
+
+// Path-based Public API (username routes - no auth)
+export {
+  publicPathAPI,
+  type PathTeacher,
+  type TeacherStats as PathTeacherStats,
+  type PathCourse,
+  type PathModule,
+  type PathLesson,
+  type PathCourseDetail,
+  type PathLessonDetail,
+  type LessonNavigation,
+  type TeacherLandingResponse,
+  type TeacherCoursesResponse as PathTeacherCoursesResponse,
+  type CourseByPathResponse,
+  type LessonByPathResponse,
+} from "./public-path";
 
 // Student API (requires auth)
 export {

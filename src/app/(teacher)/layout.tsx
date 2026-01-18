@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useIsAuthenticated, useUser, useAppStore } from "@/store";
+import { useIsAuthenticated, useUser, useAppStore, useHasHydrated } from "@/store";
 import { useTranslations } from "@/hooks/use-locale";
 import { cn } from "@/lib/utils";
 
@@ -52,12 +52,16 @@ export default function TeacherLayout({
   const pathname = usePathname();
   const t = useTranslations();
   const isAuthenticated = useIsAuthenticated();
+  const hasHydrated = useHasHydrated();
   const user = useUser();
   const logout = useAppStore((state) => state.logout);
   const [isLoading, setIsLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    // Only check after hydration is complete
+    if (!hasHydrated) return;
+
     if (!isAuthenticated) {
       router.push("/login");
       return;
@@ -69,12 +73,17 @@ export default function TeacherLayout({
     }
 
     setIsLoading(false);
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, hasHydrated, user, router]);
 
-  const handleLogout = () => {
-    logout();
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("refresh_token");
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear httpOnly cookies
+      const { logout: logoutApi } = await import("@/services/auth");
+      await logoutApi();
+    } catch {
+      // Ignore errors, clear local state anyway
+      logout();
+    }
     router.push("/login");
   };
 
@@ -84,7 +93,7 @@ export default function TeacherLayout({
     return first + last || "?";
   };
 
-  if (isLoading || !isAuthenticated || !user) {
+  if (!hasHydrated || isLoading || !isAuthenticated || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="text-center">

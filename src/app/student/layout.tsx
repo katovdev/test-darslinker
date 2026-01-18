@@ -35,6 +35,7 @@ import {
   useAppStore,
   useTenant,
   useIsTeacherSubdomain,
+  useHasHydrated,
 } from "@/store";
 import { useTranslations } from "@/hooks/use-locale";
 import { publicAPI } from "@/lib/api";
@@ -58,6 +59,7 @@ export default function StudentLayout({
   const router = useRouter();
   const t = useTranslations();
   const isAuthenticated = useIsAuthenticated();
+  const hasHydrated = useHasHydrated();
   const user = useUser();
   const tenant = useTenant();
   const isOnTeacherSubdomain = useIsTeacherSubdomain();
@@ -90,15 +92,21 @@ export default function StudentLayout({
   }, [setTenant, setIsTeacherSubdomain]);
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoadingTenant) {
+    // Only redirect after hydration is complete
+    if (hasHydrated && !isAuthenticated && !isLoadingTenant) {
       router.push("/login");
     }
-  }, [isAuthenticated, isLoadingTenant, router]);
+  }, [isAuthenticated, hasHydrated, isLoadingTenant, router]);
 
-  const handleLogout = () => {
-    logout();
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("refresh_token");
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear httpOnly cookies
+      const { logout: logoutApi } = await import("@/services/auth");
+      await logoutApi();
+    } catch {
+      // Ignore errors, clear local state anyway
+      logout();
+    }
     router.push("/login");
   };
 
@@ -108,7 +116,7 @@ export default function StudentLayout({
     return first + last || "?";
   };
 
-  if (!isAuthenticated || isLoadingTenant) {
+  if (!hasHydrated || !isAuthenticated || isLoadingTenant) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="text-center">

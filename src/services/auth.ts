@@ -2,6 +2,8 @@
  * Auth Service
  * Handles OTP-only authentication logic, validation, and phone formatting
  * Registration happens via Telegram bot - this only handles login
+ *
+ * Authentication uses httpOnly cookies - tokens are NOT stored in JavaScript
  */
 
 import { authApi, type AuthResponse } from "@/lib/api";
@@ -58,33 +60,23 @@ export const validators = {
 };
 
 /**
- * Save auth data to storage and store
+ * Save user data to store (tokens are in httpOnly cookies, not accessible via JS)
  */
 export function saveAuthData(response: AuthResponse): void {
-  if (!response.accessToken || !response.user) return;
+  if (!response.data?.user) return;
 
-  // Save to localStorage
-  localStorage.setItem("auth_token", response.accessToken);
-  if (response.refreshToken) {
-    localStorage.setItem("refresh_token", response.refreshToken);
-  }
+  const { user } = response.data;
 
-  // Update Zustand store
-  const { setUser, setAuthToken, setRefreshToken } = useAppStore.getState();
-  setAuthToken(response.accessToken);
-  if (response.refreshToken) {
-    setRefreshToken(response.refreshToken);
-  }
-  setUser(response.user);
+  // Update Zustand store with user info only (tokens are in httpOnly cookies)
+  const { setUser, setIsAuthenticated } = useAppStore.getState();
+  setUser(user);
+  setIsAuthenticated(true);
 }
 
 /**
- * Clear auth data from storage and store
+ * Clear auth data from store
  */
 export function clearAuthData(): void {
-  localStorage.removeItem("auth_token");
-  localStorage.removeItem("refresh_token");
-
   const { logout } = useAppStore.getState();
   logout();
 }
@@ -99,12 +91,13 @@ export async function requestOtp(phone: string) {
 
 /**
  * Verify OTP and login
+ * Tokens are set as httpOnly cookies by the server
  */
 export async function verifyOtp(phone: string, code: string) {
   const fullPhone = formatFullPhoneNumber(getPhoneDigits(phone));
   const response = await authApi.login(fullPhone, code);
 
-  if (response.success && response.accessToken && response.user) {
+  if (response.success && response.data?.user) {
     saveAuthData(response);
   }
 
@@ -113,6 +106,7 @@ export async function verifyOtp(phone: string, code: string) {
 
 /**
  * Logout current user
+ * Server will clear httpOnly cookies
  */
 export async function logout() {
   try {
@@ -126,35 +120,27 @@ export async function logout() {
 
 /**
  * Get current user from API
+ * Used to check if user is authenticated (has valid cookie)
  */
 export async function getCurrentUser() {
-  return authApi.me();
+  const response = await authApi.me();
+
+  if (response.success && response.data) {
+    // Update store with user data
+    const { setUser, setIsAuthenticated } = useAppStore.getState();
+    setUser(response.data);
+    setIsAuthenticated(true);
+  }
+
+  return response;
 }
 
 /**
  * Refresh access token
+ * Called automatically by API client on 401
  */
 export async function refreshToken() {
-  const token = localStorage.getItem("refresh_token");
-  if (!token) {
-    throw new Error("No refresh token available");
-  }
-
-  const response = await authApi.refreshToken(token);
-
-  if (response.success && response.accessToken) {
-    localStorage.setItem("auth_token", response.accessToken);
-    const { setAuthToken } = useAppStore.getState();
-    setAuthToken(response.accessToken);
-
-    if (response.refreshToken) {
-      localStorage.setItem("refresh_token", response.refreshToken);
-      const { setRefreshToken } = useAppStore.getState();
-      setRefreshToken(response.refreshToken);
-    }
-  }
-
-  return response;
+  return authApi.refreshToken();
 }
 
 /**

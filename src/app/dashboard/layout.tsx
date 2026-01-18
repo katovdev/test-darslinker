@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardHeader, DashboardSidebar } from "@/components/dashboard";
-import { useIsAuthenticated } from "@/store";
+import { useIsAuthenticated, useHasHydrated } from "@/store";
 
 export default function DashboardLayout({
   children,
@@ -12,16 +12,17 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const isAuthenticated = useIsAuthenticated();
+  const hasHydrated = useHasHydrated();
 
   useEffect(() => {
-    // Redirect to login if not authenticated
-    if (!isAuthenticated) {
+    // Only redirect after hydration is complete
+    if (hasHydrated && !isAuthenticated) {
       router.push("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, hasHydrated, router]);
 
-  // Don't render dashboard if not authenticated
-  if (!isAuthenticated) {
+  // Show loading while hydrating or if not authenticated
+  if (!hasHydrated || !isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-600 border-t-[#7EA2D4]" />

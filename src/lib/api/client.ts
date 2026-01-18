@@ -2,20 +2,26 @@ import ky, { type KyInstance, type Options } from "ky";
 import { apiConfig } from "./config";
 
 /**
- * Get auth token from storage
- */
-function getAuthToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("auth_token");
-}
-
-/**
  * Handle 401 unauthorized response
  */
 function handleUnauthorized(): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem("auth_token");
+  // Clear any local auth state
   window.location.href = "/login";
+}
+
+/**
+ * Try to refresh token on 401
+ */
+async function tryRefreshToken(): Promise<boolean> {
+  try {
+    const response = await ky.post(`${apiConfig.baseUrl}/auth/refresh`, {
+      credentials: "include",
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -25,6 +31,7 @@ function createApiClient(): KyInstance {
   return ky.create({
     prefixUrl: apiConfig.baseUrl,
     timeout: apiConfig.timeout,
+    credentials: "include", // Send cookies with every request
     retry: {
       limit: apiConfig.retryAttempts,
       methods: ["get", "post", "put", "delete"],
@@ -32,19 +39,24 @@ function createApiClient(): KyInstance {
       backoffLimit: apiConfig.retryDelay,
     },
     hooks: {
-      beforeRequest: [
-        (request) => {
-          // Add auth token if available
-          const token = getAuthToken();
-          if (token) {
-            request.headers.set("Authorization", `Bearer ${token}`);
-          }
-        },
-      ],
       afterResponse: [
-        async (_request, _options, response) => {
-          // Handle 401 unauthorized
+        async (request, options, response) => {
+          // Handle 401 unauthorized - try to refresh token
           if (response.status === 401) {
+            // Don't try refresh for auth endpoints themselves
+            const url = request.url;
+            if (url.includes("/auth/refresh") || url.includes("/auth/login")) {
+              handleUnauthorized();
+              return response;
+            }
+
+            // Try to refresh token
+            const refreshed = await tryRefreshToken();
+            if (refreshed) {
+              // Retry the original request
+              return ky(request, options);
+            }
+
             handleUnauthorized();
           }
           return response;

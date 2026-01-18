@@ -56,6 +56,12 @@ const nextConfig: NextConfig = {
         destination: "/student/dashboard",
         permanent: true,
       },
+      // Redirect old teacher routes to new path-based routes
+      {
+        source: "/teacher/:identifier",
+        destination: "/:identifier",
+        permanent: true,
+      },
     ];
   },
 };

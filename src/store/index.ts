@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface User {
   id: string;
@@ -7,6 +7,7 @@ export interface User {
   lastName: string;
   phone: string;
   role: "student" | "teacher" | "admin";
+  status?: "pending" | "active" | "blocked";
   avatar?: string;
   // Teacher-specific fields
   username?: string;
@@ -32,11 +33,12 @@ export interface TenantInfo {
 }
 
 interface AppState {
-  // Auth state
+  // Hydration state
+  _hasHydrated: boolean;
+
+  // Auth state (tokens are in httpOnly cookies, not stored in JS)
   user: User | null;
   isAuthenticated: boolean;
-  authToken: string | null;
-  refreshToken: string | null;
 
   // Tenant state (for teacher subdomains)
   tenant: TenantInfo | null;
@@ -49,15 +51,12 @@ interface AppState {
   // Data
   courses: Course[];
 
+  // Hydration action
+  setHasHydrated: (hasHydrated: boolean) => void;
+
   // Auth actions
   setUser: (user: User | null) => void;
-  setAuthToken: (token: string | null) => void;
-  setRefreshToken: (token: string | null) => void;
-  setAuth: (data: {
-    user: User;
-    authToken: string;
-    refreshToken?: string;
-  }) => void;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
   logout: () => void;
 
   // Tenant actions
@@ -76,15 +75,17 @@ export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       // Initial state
+      _hasHydrated: false,
       user: null,
       isAuthenticated: false,
-      authToken: null,
-      refreshToken: null,
       tenant: null,
       isTeacherSubdomain: false,
       loading: false,
       error: null,
       courses: [],
+
+      // Hydration action
+      setHasHydrated: (hasHydrated) => set({ _hasHydrated: hasHydrated }),
 
       // Auth actions
       setUser: (user) =>
@@ -93,28 +94,12 @@ export const useAppStore = create<AppState>()(
           isAuthenticated: !!user,
         }),
 
-      setAuthToken: (authToken) =>
-        set({
-          authToken,
-          isAuthenticated: !!authToken,
-        }),
-
-      setRefreshToken: (refreshToken) => set({ refreshToken }),
-
-      setAuth: ({ user, authToken, refreshToken }) =>
-        set({
-          user,
-          authToken,
-          refreshToken: refreshToken || null,
-          isAuthenticated: true,
-        }),
+      setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 
       logout: () =>
         set({
           user: null,
           isAuthenticated: false,
-          authToken: null,
-          refreshToken: null,
           courses: [],
         }),
 
@@ -132,22 +117,27 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "darslinker-storage",
+      // Use localStorage for user info (survives tab close)
+      // Actual auth is via httpOnly cookies which browser manages
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
+        // Only persist user info, NOT tokens (they're in httpOnly cookies)
         user: state.user,
-        authToken: state.authToken,
-        refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
 
 // Selector hooks for better performance
+export const useHasHydrated = () =>
+  useAppStore((state) => state._hasHydrated);
 export const useUser = () => useAppStore((state) => state.user);
 export const useIsAuthenticated = () =>
   useAppStore((state) => state.isAuthenticated);
-export const useAuthToken = () => useAppStore((state) => state.authToken);
-export const useRefreshToken = () => useAppStore((state) => state.refreshToken);
 export const useTenant = () => useAppStore((state) => state.tenant);
 export const useIsTeacherSubdomain = () =>
   useAppStore((state) => state.isTeacherSubdomain);

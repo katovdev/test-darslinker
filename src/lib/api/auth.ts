@@ -25,26 +25,35 @@ export interface LoginRequest {
   code: string;
 }
 
-export interface RefreshRequest {
-  refreshToken: string;
-}
-
 // Response types
 export interface RequestOtpResponse {
   success: boolean;
+  data?: {
+    userId: string;
+    message: string;
+  };
   message?: string;
 }
 
 export interface AuthResponse {
   success: boolean;
-  accessToken?: string;
-  refreshToken?: string;
-  user?: User;
+  data?: {
+    user: User;
+  };
+  message?: string;
+}
+
+export interface RefreshResponse {
+  success: boolean;
+  data?: {
+    message: string;
+  };
   message?: string;
 }
 
 export interface MeResponse {
-  user: User;
+  success: boolean;
+  data: User;
 }
 
 // Auth API methods
@@ -67,10 +76,10 @@ export const authApi = {
   logout: () => api.post<{ success: boolean }>(authEndpoints.logout),
 
   /**
-   * Refresh access token
+   * Refresh access token (uses httpOnly cookie, no body needed)
    */
-  refreshToken: (refreshToken: string) =>
-    api.post<AuthResponse>(authEndpoints.refresh, { refreshToken }),
+  refreshToken: () =>
+    api.post<RefreshResponse>(authEndpoints.refresh),
 
   /**
    * Get current user
