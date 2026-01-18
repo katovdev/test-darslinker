@@ -17,9 +17,7 @@ export function Hero() {
 
       <div className="mx-auto max-w-6xl">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left content */}
           <div className="text-center lg:text-left">
-            {/* Badge */}
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gray-700 bg-gray-800/50 px-4 py-1.5">
               <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
               <span className="text-sm text-gray-300">
