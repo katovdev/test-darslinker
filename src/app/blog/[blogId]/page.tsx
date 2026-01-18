@@ -5,25 +5,22 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
-  Home,
   Eye,
   Calendar,
   Share2,
   Loader2,
   RefreshCw,
-  BookOpen,
+  FileText,
   Check,
+  Tag,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslations } from "@/hooks/use-locale";
 import { blogAPI, type Blog, type BlogSection } from "@/lib/api/blog";
 import { blogService, type TransformedBlog } from "@/services/blog";
 import { toast } from "sonner";
+import { HomeHeader, HomeFooter } from "@/components/home";
 
-const VIEW_TRACKING_DELAY = 10000; // 10 seconds
+const VIEW_TRACKING_DELAY = 10000;
 
 export default function BlogDetailPage() {
   const t = useTranslations();
@@ -37,12 +34,10 @@ export default function BlogDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // View tracking refs
   const viewTracked = useRef(false);
   const startTime = useRef<number>(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Check if view was already tracked in this session
   const isViewTrackedInSession = useCallback(() => {
     if (typeof window === "undefined") return false;
     const trackedViews = sessionStorage.getItem("tracked_blog_views");
@@ -53,7 +48,6 @@ export default function BlogDetailPage() {
     return false;
   }, [blogId]);
 
-  // Mark view as tracked in session
   const markViewAsTracked = useCallback(() => {
     if (typeof window === "undefined") return;
     const trackedViews = sessionStorage.getItem("tracked_blog_views");
@@ -64,7 +58,6 @@ export default function BlogDetailPage() {
     }
   }, [blogId]);
 
-  // Track the view
   const trackView = useCallback(async () => {
     if (viewTracked.current || isViewTrackedInSession()) return;
 
@@ -74,22 +67,19 @@ export default function BlogDetailPage() {
     try {
       await blogAPI.trackBlogView(blogId);
     } catch {
-      // Silently fail - view tracking shouldn't disrupt UX
+      // Silently fail
     }
   }, [blogId, isViewTrackedInSession, markViewAsTracked]);
 
-  // Set up view tracking with 10 second delay
   useEffect(() => {
     if (!blogId || isViewTrackedInSession()) return;
 
     startTime.current = Date.now();
 
-    // Set timer to track view after 10 seconds
     timerRef.current = setTimeout(() => {
       trackView();
     }, VIEW_TRACKING_DELAY);
 
-    // Track view when leaving if enough time has passed
     const handleBeforeUnload = () => {
       if (Date.now() - startTime.current >= VIEW_TRACKING_DELAY) {
         trackView();
@@ -104,14 +94,12 @@ export default function BlogDetailPage() {
       }
       window.removeEventListener("beforeunload", handleBeforeUnload);
 
-      // Track view on unmount if enough time passed
       if (Date.now() - startTime.current >= VIEW_TRACKING_DELAY) {
         trackView();
       }
     };
   }, [blogId, trackView, isViewTrackedInSession]);
 
-  // Load blog data
   useEffect(() => {
     async function loadBlog() {
       if (!blogId) return;
@@ -125,7 +113,6 @@ export default function BlogDetailPage() {
         if (response.success && response.data) {
           setBlog(response.data);
 
-          // Load related blogs
           try {
             const relatedResponse = await blogService.getRelatedBlogs(
               response.data.id || response.data._id || blogId,
@@ -148,7 +135,7 @@ export default function BlogDetailPage() {
               setRelatedBlogs(transformed);
             }
           } catch {
-            // Related blogs are optional, don't fail the whole page
+            // Related blogs are optional
           }
         } else {
           setError(t("blog.notFound"));
@@ -164,7 +151,6 @@ export default function BlogDetailPage() {
     loadBlog();
   }, [blogId, t]);
 
-  // Handle share
   const handleShare = async () => {
     const url = window.location.href;
     const title = blog?.title || "Blog";
@@ -173,10 +159,9 @@ export default function BlogDetailPage() {
       try {
         await navigator.share({ title, url });
       } catch {
-        // User cancelled or error
+        // User cancelled
       }
     } else {
-      // Fallback to clipboard
       try {
         await navigator.clipboard.writeText(url);
         setCopied(true);
@@ -188,41 +173,33 @@ export default function BlogDetailPage() {
     }
   };
 
-  // Render blog sections
   const renderSections = (sections: BlogSection[]) => {
     return sections.map((section, index) => {
       const content = section.content || "";
       const type = section.type || "paragraph";
 
-      // Render based on type
       switch (type) {
         case "h1":
           return (
-            <h1 key={index} className="mt-8 mb-4 text-3xl font-bold text-white">
+            <h1 key={index} className="mt-10 mb-4 text-3xl font-bold text-white">
               {content}
             </h1>
           );
         case "h2":
           return (
-            <h2 key={index} className="mt-6 mb-3 text-2xl font-bold text-white">
+            <h2 key={index} className="mt-8 mb-3 text-2xl font-bold text-white">
               {content}
             </h2>
           );
         case "h3":
           return (
-            <h3
-              key={index}
-              className="mt-4 mb-2 text-xl font-semibold text-white"
-            >
+            <h3 key={index} className="mt-6 mb-2 text-xl font-semibold text-white">
               {content}
             </h3>
           );
         case "h4":
           return (
-            <h4
-              key={index}
-              className="mt-3 mb-2 text-lg font-semibold text-white"
-            >
+            <h4 key={index} className="mt-4 mb-2 text-lg font-semibold text-white">
               {content}
             </h4>
           );
@@ -230,7 +207,7 @@ export default function BlogDetailPage() {
           return (
             <pre
               key={index}
-              className="my-4 overflow-x-auto rounded-lg bg-gray-800 p-4 text-sm text-gray-300"
+              className="my-6 overflow-x-auto rounded-xl border border-gray-700 bg-gray-800/50 p-4 text-sm text-gray-300"
             >
               <code>{content}</code>
             </pre>
@@ -239,18 +216,17 @@ export default function BlogDetailPage() {
           return (
             <blockquote
               key={index}
-              className="my-4 border-l-4 border-[#7EA2D4] pl-4 text-gray-400 italic"
+              className="my-6 border-l-4 border-blue-500 bg-blue-500/5 py-4 pl-6 pr-4 text-gray-300 italic"
             >
               {content}
             </blockquote>
           );
         default:
-          // Paragraph - split by newlines
           return content.split("\n").map((paragraph, pIndex) =>
             paragraph.trim() ? (
               <p
                 key={`${index}-${pIndex}`}
-                className="mb-4 leading-relaxed text-gray-300"
+                className="mb-4 text-lg leading-relaxed text-gray-300"
               >
                 {paragraph}
               </p>
@@ -260,7 +236,6 @@ export default function BlogDetailPage() {
     });
   };
 
-  // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("uz-UZ", {
@@ -274,22 +249,20 @@ export default function BlogDetailPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900">
-        <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur">
-          <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4">
-            <Skeleton className="h-8 w-32 bg-gray-700" />
-            <Skeleton className="h-8 w-8 rounded-full bg-gray-700" />
-          </div>
-        </header>
-        <main className="mx-auto max-w-4xl px-4 py-8">
-          <Skeleton className="mb-4 h-10 w-3/4 bg-gray-700" />
-          <div className="mb-8 flex gap-4">
-            <Skeleton className="h-5 w-24 bg-gray-700" />
-            <Skeleton className="h-5 w-24 bg-gray-700" />
-          </div>
-          <div className="space-y-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-4 w-full bg-gray-700" />
-            ))}
+        <HomeHeader />
+        <main className="mx-auto max-w-3xl px-4 py-12">
+          <div className="animate-pulse space-y-6">
+            <div className="h-5 w-20 rounded-full bg-gray-700" />
+            <div className="h-10 w-3/4 rounded bg-gray-700" />
+            <div className="flex gap-4">
+              <div className="h-5 w-24 rounded bg-gray-700" />
+              <div className="h-5 w-24 rounded bg-gray-700" />
+            </div>
+            <div className="space-y-3 pt-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="h-4 w-full rounded bg-gray-700/50" />
+              ))}
+            </div>
           </div>
         </main>
       </div>
@@ -300,25 +273,11 @@ export default function BlogDetailPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-900">
-        <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur">
-          <div className="mx-auto flex h-16 max-w-4xl items-center px-4">
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="text-gray-400 hover:text-white"
-            >
-              <Link href="/blog">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("blog.backToBlogs")}
-              </Link>
-            </Button>
-          </div>
-        </header>
-        <main className="mx-auto max-w-4xl px-4 py-16">
+        <HomeHeader />
+        <main className="mx-auto max-w-3xl px-4 py-20">
           <div className="flex flex-col items-center justify-center gap-4 text-center">
-            <div className="rounded-full bg-red-500/10 p-4">
-              <BookOpen className="h-8 w-8 text-red-500" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
+              <FileText className="h-8 w-8 text-red-400" />
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-white">
@@ -326,24 +285,24 @@ export default function BlogDetailPage() {
               </h3>
               <p className="text-sm text-gray-400">{error}</p>
             </div>
-            <div className="flex gap-2">
-              <Button
+            <div className="flex gap-3">
+              <button
                 onClick={() => router.refresh()}
-                variant="outline"
-                className="gap-2 border-gray-700 text-white hover:bg-gray-800"
+                className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700"
               >
                 <RefreshCw className="h-4 w-4" />
                 {t("blog.retry")}
-              </Button>
-              <Button
-                asChild
-                className="bg-[#7EA2D4] text-white hover:bg-[#5A85C7]"
+              </button>
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-blue-500/25"
               >
-                <Link href="/blog">{t("blog.backToBlogs")}</Link>
-              </Button>
+                {t("blog.backToBlogs")}
+              </Link>
             </div>
           </div>
         </main>
+        <HomeFooter />
       </div>
     );
   }
@@ -352,91 +311,88 @@ export default function BlogDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="text-gray-400 hover:text-white"
-            >
-              <Link href="/blog">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t("blog.backToBlogs")}
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="ghost"
-              size="icon"
-              className="text-gray-400 hover:text-white"
-            >
-              <Link href="/">
-                <Home className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleShare}
-            className="text-gray-400 hover:text-white"
+      <HomeHeader />
+
+      {/* Article Header */}
+      <header className="relative border-b border-gray-800 px-4 py-12 sm:px-6 lg:px-8">
+        {/* Background gradient */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute left-1/2 top-0 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl" />
+        </div>
+
+        <div className="mx-auto max-w-3xl">
+          {/* Back link */}
+          <Link
+            href="/blog"
+            className="mb-6 inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
           >
-            {copied ? (
-              <Check className="h-4 w-4 text-green-500" />
-            ) : (
-              <Share2 className="h-4 w-4" />
-            )}
-          </Button>
+            <ArrowLeft className="h-4 w-4" />
+            {t("blog.backToBlogs")}
+          </Link>
+
+          {/* Category badge */}
+          {blog.categoryId && (
+            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">
+              <Tag className="h-3.5 w-3.5" />
+              {blog.categoryId.name}
+            </div>
+          )}
+
+          {/* Title */}
+          <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+            {blog.title}
+          </h1>
+
+          {/* Meta */}
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <span className="flex items-center gap-1.5">
+              <Calendar className="h-4 w-4" />
+              {formatDate(blog.createdAt)}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Eye className="h-4 w-4" />
+              {(blog.multiViews || 0).toLocaleString()} {t("blog.views")}
+            </span>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-1.5 transition-colors hover:text-white"
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-green-400" />
+              ) : (
+                <Share2 className="h-4 w-4" />
+              )}
+              {copied ? t("blog.linkCopied") : "Share"}
+            </button>
+          </div>
+
+          {/* Tags */}
+          {blog.tags && blog.tags.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {blog.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="rounded-lg border border-gray-700 bg-gray-800/50 px-3 py-1 text-xs text-gray-400"
+                >
+                  {tag.label}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="mx-auto max-w-4xl px-4 py-8">
-        {/* Title */}
-        <h1 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-          {blog.title}
-        </h1>
-
-        {/* Meta */}
-        <div className="mb-8 flex flex-wrap items-center gap-4 text-sm text-gray-400">
-          <span className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" />
-            {formatDate(blog.createdAt)}
-          </span>
-          <span className="flex items-center gap-1">
-            <Eye className="h-4 w-4" />
-            {(blog.multiViews || 0).toLocaleString()} {t("blog.views")}
-          </span>
-          {blog.categoryId && (
-            <Badge variant="secondary">{blog.categoryId.name}</Badge>
+      {/* Article Content */}
+      <main className="px-4 py-12 sm:px-6 lg:px-8">
+        <article className="mx-auto max-w-3xl">
+          {/* Subtitle */}
+          {blog.subtitle && (
+            <p className="mb-8 text-xl leading-relaxed text-gray-400">
+              {blog.subtitle}
+            </p>
           )}
-        </div>
 
-        {/* Tags */}
-        {blog.tags && blog.tags.length > 0 && (
-          <div className="mb-8 flex flex-wrap gap-2">
-            {blog.tags.map((tag, index) => (
-              <Badge
-                key={index}
-                variant="outline"
-                className="border-gray-700 text-gray-400"
-              >
-                {tag.label}
-              </Badge>
-            ))}
-          </div>
-        )}
-
-        {/* Subtitle */}
-        {blog.subtitle && (
-          <p className="mb-8 text-lg text-gray-400">{blog.subtitle}</p>
-        )}
-
-        {/* Content */}
-        <article className="prose prose-invert max-w-none">
+          {/* Content */}
           {blog.sections && blog.sections.length > 0 ? (
             renderSections(blog.sections)
           ) : (
@@ -446,42 +402,40 @@ export default function BlogDetailPage() {
 
         {/* Related Blogs */}
         {relatedBlogs.length > 0 && (
-          <section className="mt-16 border-t border-gray-800 pt-8">
-            <h2 className="mb-6 text-2xl font-bold text-white">
+          <section className="mx-auto mt-20 max-w-3xl border-t border-gray-800 pt-12">
+            <h2 className="mb-8 text-2xl font-bold text-white">
               {t("blog.relatedArticles")}
             </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedBlogs.map((related) => (
                 <Link
                   key={related.id}
                   href={`/blog/${related.slug || related.id}`}
                   className="group"
                 >
-                  <Card className="h-full border-gray-800 bg-gray-800/30 transition-colors hover:bg-gray-800/50">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="line-clamp-2 text-base text-white group-hover:text-[#7EA2D4]">
-                        {related.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="mb-3 line-clamp-2 text-sm text-gray-400">
-                        {related.description}
-                      </p>
-                      <div className="flex items-center gap-3 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Eye className="h-3 w-3" />
-                          {related.views}
-                        </span>
-                        <span>{related.date}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <article className="h-full rounded-2xl border border-gray-700 bg-gray-800/30 p-5 transition-all duration-300 hover:border-gray-600 hover:bg-gray-800/50">
+                    <h3 className="font-semibold text-white transition-colors group-hover:text-blue-400 line-clamp-2">
+                      {related.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-gray-400 line-clamp-2">
+                      {related.description}
+                    </p>
+                    <div className="mt-4 flex items-center gap-3 text-xs text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" />
+                        {related.views}
+                      </span>
+                      <span>{related.date}</span>
+                    </div>
+                  </article>
                 </Link>
               ))}
             </div>
           </section>
         )}
       </main>
+
+      <HomeFooter />
     </div>
   );
 }

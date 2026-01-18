@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Check, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Check, X, Sparkles } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { HomeHeader, HomeFooter } from "@/components/home";
 
@@ -16,6 +14,7 @@ interface Plan {
   nameKey: string;
   price: string;
   recommended?: boolean;
+  color: string;
   features: PlanFeature[];
 }
 
@@ -23,6 +22,7 @@ const plans: Plan[] = [
   {
     nameKey: "planMinimal",
     price: "470,000",
+    color: "gray",
     features: [
       { key: "courses", included: "2" },
       { key: "admins", included: "3" },
@@ -33,17 +33,18 @@ const plans: Plan[] = [
       { key: "certificates", included: false },
       { key: "chat", included: false },
       { key: "paymentIntegration", included: false },
-      { key: "aiFeatures", included: false },
       { key: "contentSecurity", included: false },
       { key: "customBranding", included: false },
       { key: "seo", included: false },
       { key: "customDomain", included: false },
+      { key: "aiFeatures", included: false },
     ],
   },
   {
     nameKey: "planStandard",
     price: "870,000",
     recommended: true,
+    color: "blue",
     features: [
       { key: "courses", included: "4" },
       { key: "admins", included: "6" },
@@ -54,16 +55,17 @@ const plans: Plan[] = [
       { key: "certificates", included: true },
       { key: "chat", included: true },
       { key: "paymentIntegration", included: true },
-      { key: "aiFeatures", included: false },
       { key: "contentSecurity", included: false },
       { key: "customBranding", included: false },
       { key: "seo", included: false },
       { key: "customDomain", included: false },
+      { key: "aiFeatures", included: false },
     ],
   },
   {
     nameKey: "planPro",
     price: "1,270,000",
+    color: "purple",
     features: [
       { key: "courses", included: "8" },
       { key: "admins", included: "12" },
@@ -74,16 +76,17 @@ const plans: Plan[] = [
       { key: "certificates", included: true },
       { key: "chat", included: true },
       { key: "paymentIntegration", included: true },
-      { key: "aiFeatures", included: true },
       { key: "contentSecurity", included: true },
       { key: "customBranding", included: true },
       { key: "seo", included: false },
       { key: "customDomain", included: false },
+      { key: "aiFeatures", included: false },
     ],
   },
   {
     nameKey: "planCorporate",
     price: "custom",
+    color: "yellow",
     features: [
       { key: "courses", included: "unlimited" },
       { key: "admins", included: "unlimited" },
@@ -94,11 +97,11 @@ const plans: Plan[] = [
       { key: "certificates", included: true },
       { key: "chat", included: true },
       { key: "paymentIntegration", included: true },
-      { key: "aiFeatures", included: true },
       { key: "contentSecurity", included: true },
       { key: "customBranding", included: true },
       { key: "seo", included: true },
       { key: "customDomain", included: true },
+      { key: "aiFeatures", included: true },
     ],
   },
 ];
@@ -108,58 +111,78 @@ export default function PricingPage() {
 
   const renderFeatureValue = (feature: PlanFeature) => {
     if (feature.included === "unlimited") {
-      return <span className="text-green-400">{t("pricing.unlimited")}</span>;
+      return (
+        <span className="text-sm font-medium text-green-400">
+          {t("pricing.unlimited")}
+        </span>
+      );
     }
     if (typeof feature.included === "string") {
-      return <span className="font-medium text-white">{feature.included}</span>;
+      return (
+        <span className="text-sm font-semibold text-white">
+          {feature.included}
+        </span>
+      );
     }
     if (feature.included) {
-      return <Check className="h-5 w-5 text-green-400" />;
+      return (
+        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/20">
+          <Check className="h-3 w-3 text-green-400" />
+        </div>
+      );
     }
-    return <X className="h-5 w-5 text-gray-600" />;
+    return (
+      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-800">
+        <X className="h-3 w-3 text-gray-600" />
+      </div>
+    );
   };
 
   return (
     <div className="min-h-screen bg-gray-900">
       <HomeHeader />
 
-      <main className="px-4 py-12 sm:px-6 lg:px-8">
+      {/* Hero Section */}
+      <section className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        {/* Background gradient */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute left-1/2 top-0 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
+        </div>
+
+        <div className="mx-auto max-w-6xl text-center">
+          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-400">
+            {t("pricing.title")}
+          </span>
+          <h1 className="mt-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+            {t("pricing.title")}
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
+            {t("pricing.subtitle")}
+          </p>
+        </div>
+      </section>
+
+      {/* Pricing Cards */}
+      <section className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          {/* Back Button */}
-          <Link
-            href="/"
-            className="mb-8 inline-flex items-center gap-2 text-gray-400 transition-colors hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {t("common.back")}
-          </Link>
-
-          {/* Header */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-white sm:text-5xl">
-              {t("pricing.title")}
-            </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
-              {t("pricing.subtitle")}
-            </p>
-          </div>
-
-          {/* Pricing Cards */}
-          <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {plans.map((plan) => (
               <div
                 key={plan.nameKey}
-                className={`relative flex flex-col rounded-2xl border ${
+                className={`group relative flex flex-col rounded-2xl border p-6 transition-all duration-300 ${
                   plan.recommended
-                    ? "border-[#7EA2D4] bg-gray-800/70"
-                    : "border-gray-800 bg-gray-800/30"
-                } p-6`}
+                    ? "border-blue-500/50 bg-gradient-to-b from-blue-500/10 to-gray-800/50"
+                    : "border-gray-800 bg-gray-800/30 hover:border-gray-700 hover:bg-gray-800/50"
+                }`}
               >
                 {/* Recommended Badge */}
                 {plan.recommended && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#7EA2D4] to-[#5A85C7]">
-                    {t("pricing.recommended")}
-                  </Badge>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-blue-500/25">
+                      <Sparkles className="h-3 w-3" />
+                      {t("pricing.recommended")}
+                    </div>
+                  </div>
                 )}
 
                 {/* Plan Name */}
@@ -168,25 +191,39 @@ export default function PricingPage() {
                 </h3>
 
                 {/* Price */}
-                <div className="mt-4">
+                <div className="mt-4 mb-6">
                   {plan.price === "custom" ? (
                     <span className="text-2xl font-bold text-white">
                       {t("pricing.contactUs")}
                     </span>
                   ) : (
-                    <>
-                      <span className="text-3xl font-bold text-white">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-bold text-white">
                         {plan.price}
                       </span>
-                      <span className="ml-1 text-gray-400">
+                      <span className="text-sm text-gray-500">
                         so&apos;m/{t("pricing.perMonth")}
                       </span>
-                    </>
+                    </div>
                   )}
                 </div>
 
+                {/* CTA Button */}
+                <Link
+                  href="/register"
+                  className={`mb-6 inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
+                    plan.recommended
+                      ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30"
+                      : "border border-gray-700 bg-gray-800 text-white hover:border-gray-600 hover:bg-gray-700"
+                  }`}
+                >
+                  {plan.price === "custom"
+                    ? t("pricing.contactUs")
+                    : t("pricing.choosePlan")}
+                </Link>
+
                 {/* Features */}
-                <ul className="mt-6 flex-1 space-y-3">
+                <ul className="flex-1 space-y-3">
                   {plan.features.map((feature) => (
                     <li
                       key={feature.key}
@@ -199,27 +236,27 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-
-                {/* CTA Button */}
-                <Button
-                  asChild
-                  className={`mt-8 w-full ${
-                    plan.recommended
-                      ? "bg-gradient-to-r from-[#7EA2D4] to-[#5A85C7] text-white hover:opacity-90"
-                      : "bg-gray-700 text-white hover:bg-gray-600"
-                  }`}
-                >
-                  <Link href="/register">
-                    {plan.price === "custom"
-                      ? t("pricing.contactUs")
-                      : t("pricing.choosePlan")}
-                  </Link>
-                </Button>
               </div>
             ))}
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* FAQ or Additional Info Section */}
+      <section className="border-t border-gray-800 px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-2xl font-bold text-white">
+            {t("home.contactTitle")}
+          </h2>
+          <p className="mt-4 text-gray-400">{t("home.contactSubtitle")}</p>
+          <Link
+            href="/#contact"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30"
+          >
+            {t("home.contactSubmit")}
+          </Link>
+        </div>
+      </section>
 
       <HomeFooter />
     </div>
