@@ -102,14 +102,13 @@ export const uz: Translations = {
     changePhone: "Raqamni o'zgartirish",
     // Registration via Telegram
     registerViaTelegram:
-      "Ro'yxatdan o'tish Telegram bot orqali amalga oshiriladi. Hisob yaratish uchun quyidagi qadamlarni bajaring.",
+      "Telegram bot orqali ro'yxatdan o'ting va oson hisob yarating.",
     telegramBotDescription: "Darslinker rasmiy boti",
     registerStep1: "Telegram botimizni ochish uchun quyidagi tugmani bosing",
     registerStep2:
       "/start buyrug'ini yuboring va ro'yxatdan o'tish ko'rsatmalariga amal qiling",
     registerStep3: "Ro'yxatdan o'tgandan so'ng, kirish uchun bu yerga qayting",
-    openTelegramToRegister: "Ro'yxatdan o'tish uchun Telegramni ochish",
-    // Validation messages
+    openTelegramToRegister: "@DarslinkerBot",
     phoneRequired: "Telefon raqami kiritilishi shart",
     phoneInvalid: "Iltimos, 9 ta raqam kiriting",
     passwordRequired: "Parol kiritilishi shart",
@@ -179,8 +178,16 @@ export const uz: Translations = {
     heroTitle: "O'qituvchilar uchun eng yaxshi platforma",
     heroSubtitle:
       "Kurslaringizni yarating, o'quvchilarni boshqaring va daromadingizni oshiring",
+    heroBadge: "Zamonaviy ta'lim platformasi",
     getStarted: "Boshlash",
+    viewPricing: "Narxlarni ko'rish",
     watchVideo: "Videoni ko'rish",
+    // Stats
+    statStudents: "O'quvchilar",
+    statCourses: "Kurslar",
+    statCertificates: "Sertifikatlar",
+    // Features
+    featuresLabel: "Imkoniyatlar",
     featuresTitle: "Platforma imkoniyatlari",
     featuresSubtitle:
       "Bizning platformamiz sizga kerak bo'lgan barcha vositalarni taqdim etadi",
@@ -202,10 +209,12 @@ export const uz: Translations = {
     featureChatDesc: "O'quvchilar bilan real vaqtda muloqot",
     featureSecurity: "Xavfsizlik",
     featureSecurityDesc: "Kontentingiz himoyalangan",
+    articlesLabel: "Blog",
     articlesTitle: "Foydali maqolalar",
     articlesSubtitle:
       "O'qituvchilar uchun eng so'nggi yangiliklar va maslahatlar",
     viewAllArticles: "Barcha maqolalar",
+    contactLabel: "Bog'lanish",
     contactTitle: "Bog'lanish",
     contactSubtitle: "Savollaringiz bormi? Biz bilan bog'laning",
     contactName: "Ismingiz",
@@ -221,6 +230,8 @@ export const uz: Translations = {
     footerRights: "Barcha huquqlar himoyalangan",
     footerPrivacy: "Maxfiylik siyosati",
     footerTerms: "Foydalanish shartlari",
+    footerPlatform: "Platforma",
+    footerLegal: "Huquqiy",
   },
 
   // Pricing

@@ -12,7 +12,6 @@ import { useTranslations } from "@/hooks/use-locale";
 import authService, {
   formatPhoneNumber,
   validators,
-  TELEGRAM_BOT,
 } from "@/services/auth";
 
 type Step = "phone" | "otp";
@@ -129,25 +128,23 @@ export default function LoginPage() {
   };
 
   return (
-    <Card className="border-0 bg-white/5 shadow-xl backdrop-blur-sm">
-      <CardContent className="p-8">
-        <h1 className="mb-2 text-center text-2xl font-bold text-white">
+    <Card>
+      <CardContent className="p-6">
+        <h1 className="mb-1 text-center text-xl font-semibold">
           {t("auth.login")}
         </h1>
-        <p className="mb-6 text-center text-sm text-gray-400">
+        <p className="mb-6 text-center text-sm text-muted-foreground">
           {step === "phone" ? t("auth.enterPhone") : t("auth.enterOtp")}
         </p>
 
         {step === "phone" ? (
-          <form onSubmit={handleRequestOtp} className="space-y-6">
+          <form onSubmit={handleRequestOtp} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-gray-300">
-                {t("auth.phone")}
-              </Label>
+              <Label htmlFor="phone">{t("auth.phone")}</Label>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-4">
-                  <span className="text-lg">🇺🇿</span>
-                  <span className="text-sm text-gray-400">+998</span>
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-3">
+                  <span className="text-base">🇺🇿</span>
+                  <span className="text-sm text-muted-foreground">+998</span>
                 </div>
                 <Input
                   id="phone"
@@ -155,31 +152,25 @@ export default function LoginPage() {
                   value={phone}
                   onChange={handlePhoneChange}
                   placeholder="XX XXX XX XX"
-                  className="border-gray-600 bg-gray-800/50 pl-24 text-white placeholder:text-gray-500"
+                  className="pl-[5.5rem]"
                   autoComplete="tel"
                   autoFocus
                 />
               </div>
               {phoneError && (
-                <p className="text-sm text-red-400">{phoneError}</p>
+                <p className="text-sm text-destructive">{phoneError}</p>
               )}
             </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-[#7EA2D4] to-[#5A85C7] text-white hover:opacity-90"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? t("common.loading") : t("auth.sendOtp")}
             </Button>
           </form>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Success message */}
-            <div className="rounded-lg bg-green-900/20 p-4 text-center">
-              <p className="text-sm text-green-400">
-                {t("auth.otpSentToTelegram")}
-              </p>
+            <div className="rounded-md bg-success/10 p-3 text-center">
+              <p className="text-sm text-success">{t("auth.otpSentToTelegram")}</p>
             </div>
 
             {/* Telegram bot button */}
@@ -189,7 +180,7 @@ export default function LoginPage() {
               className="w-full bg-[#0088cc] text-white hover:bg-[#0077b3]"
             >
               <svg
-                className="mr-2 h-5 w-5"
+                className="mr-2 h-4 w-4"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -201,10 +192,10 @@ export default function LoginPage() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-gray-600" />
+                <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#1a1a1a] px-2 text-gray-400">
+                <span className="bg-card px-2 text-muted-foreground">
                   {t("auth.alreadyHaveCode")}
                 </span>
               </div>
@@ -218,19 +209,21 @@ export default function LoginPage() {
                   value={otp}
                   onChange={handleOtpChange}
                   placeholder={t("auth.otpPlaceholder")}
-                  className="border-gray-600 bg-gray-800/50 text-center text-xl tracking-widest text-white placeholder:text-gray-500"
+                  className="text-center text-lg tracking-widest"
                   maxLength={6}
                   autoComplete="one-time-code"
                   autoFocus
                 />
                 {otpError && (
-                  <p className="text-center text-sm text-red-400">{otpError}</p>
+                  <p className="text-center text-sm text-destructive">
+                    {otpError}
+                  </p>
                 )}
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#7EA2D4] to-[#5A85C7] text-white hover:opacity-90"
+                className="w-full"
                 disabled={isLoading || otp.length !== 6}
               >
                 {isLoading ? t("auth.verifying") : t("auth.verifyOtp")}
@@ -242,7 +235,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleBackToPhone}
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 {t("auth.changePhone")}
               </button>
@@ -250,7 +243,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleResendOtp}
                 disabled={isLoading}
-                className="text-[#7EA2D4] hover:underline disabled:opacity-50"
+                className="text-link hover:underline disabled:opacity-50"
               >
                 {t("auth.resendOtp")}
               </button>
@@ -259,12 +252,9 @@ export default function LoginPage() {
         )}
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             {t("auth.noAccount")}{" "}
-            <Link
-              href="/register"
-              className="font-medium text-[#7EA2D4] hover:underline"
-            >
+            <Link href="/register" className="font-medium text-link hover:underline">
               {t("auth.signUp")}
             </Link>
           </p>

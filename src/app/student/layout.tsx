@@ -39,9 +39,9 @@ import {
 import { useTranslations } from "@/hooks/use-locale";
 import { publicAPI } from "@/lib/api";
 import {
-  getSubdomain,
   isTeacherSubdomain as checkTeacherSubdomain,
 } from "@/lib/tenant";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/student/dashboard", icon: Home, labelKey: "dashboard" },
@@ -68,7 +68,6 @@ export default function StudentLayout({
   );
   const [isLoadingTenant, setIsLoadingTenant] = useState(true);
 
-  // Load tenant info on mount
   useEffect(() => {
     const loadTenant = async () => {
       const isTeacher = checkTeacherSubdomain();
@@ -90,7 +89,6 @@ export default function StudentLayout({
     loadTenant();
   }, [setTenant, setIsTeacherSubdomain]);
 
-  // Redirect to login if not authenticated
   useEffect(() => {
     if (!isAuthenticated && !isLoadingTenant) {
       router.push("/login");
@@ -110,55 +108,52 @@ export default function StudentLayout({
     return first + last || "?";
   };
 
-  // Loading state
   if (!isAuthenticated || isLoadingTenant) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
-        <Loader2 className="h-8 w-8 animate-spin text-[#7EA2D4]" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
-  // Get brand colors from tenant
-  const primaryColor = tenant?.primaryColor || "#7EA2D4";
   const logoUrl = tenant?.logoUrl;
   const businessName = tenant?.businessName || "Darslinker";
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 border-b bg-background">
+        <div className="mx-auto flex h-14 max-w-[900px] items-center justify-between px-4 sm:px-6">
           {/* Logo and Mobile Menu */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Mobile Menu */}
             <Sheet>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="icon"
-                  className="text-gray-400 hover:text-white lg:hidden"
+                  size="icon-sm"
+                  className="lg:hidden"
                 >
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="left"
-                className="w-64 border-gray-800 bg-gray-900"
+                className="w-64 border-border bg-sidebar p-0"
               >
-                <SheetHeader>
-                  <SheetTitle className="text-white">
+                <SheetHeader className="border-b px-4 py-3">
+                  <SheetTitle className="text-left text-base font-semibold">
                     {isOnTeacherSubdomain ? businessName : "Darslinker"}
                   </SheetTitle>
                 </SheetHeader>
-                <nav className="mt-6 space-y-2">
+                <nav className="p-2">
                   {navItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                      className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
-                      <item.icon className="h-5 w-5" />
+                      <item.icon className="h-4 w-4" />
                       {t(`sidebar.${item.labelKey}`)}
                     </Link>
                   ))}
@@ -169,14 +164,15 @@ export default function StudentLayout({
             {/* Logo */}
             <Link
               href="/student/dashboard"
-              className="flex items-center gap-2 text-xl font-bold text-white"
+              className="flex items-center gap-1 text-base font-semibold"
             >
               {logoUrl ? (
-                <img src={logoUrl} alt={businessName} className="h-8 w-auto" />
+                <img src={logoUrl} alt={businessName} className="h-6 w-auto" />
               ) : (
-                <span style={{ color: primaryColor }}>
-                  {isOnTeacherSubdomain ? businessName : "Darslinker"}
-                </span>
+                <>
+                  <span>{isOnTeacherSubdomain ? businessName : "dars"}</span>
+                  {!isOnTeacherSubdomain && <span className="text-link">linker</span>}
+                </>
               )}
             </Link>
           </div>
@@ -187,7 +183,10 @@ export default function StudentLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                className={cn(
+                  "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors",
+                  "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
               >
                 <item.icon className="h-4 w-4" />
                 {t(`sidebar.${item.labelKey}`)}
@@ -200,36 +199,33 @@ export default function StudentLayout({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 text-gray-400 hover:text-white"
+                className="flex items-center gap-2 px-2"
               >
-                <Avatar className="h-8 w-8 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
+                <Avatar className="h-7 w-7">
                   {user?.avatar && <AvatarImage src={user.avatar} />}
-                  <AvatarFallback className="bg-transparent text-sm font-medium text-white">
+                  <AvatarFallback className="bg-secondary text-xs font-medium">
                     {getInitials()}
                   </AvatarFallback>
                 </Avatar>
-                <span className="hidden sm:inline">
-                  {user?.firstName} {user?.lastName}
+                <span className="hidden text-sm sm:inline">
+                  {user?.firstName}
                 </span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-48 border-gray-800 bg-gray-900"
-            >
+            <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem asChild>
                 <Link
                   href="/student/profile"
-                  className="flex cursor-pointer items-center gap-2 text-gray-300"
+                  className="flex cursor-pointer items-center gap-2"
                 >
                   <User className="h-4 w-4" />
                   {t("sidebar.profile")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-gray-800" />
+              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}
-                className="flex cursor-pointer items-center gap-2 text-red-400 focus:text-red-400"
+                className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
               >
                 <LogOut className="h-4 w-4" />
                 {t("dashboard.logout")}
@@ -240,7 +236,7 @@ export default function StudentLayout({
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-[900px] px-4 py-6 sm:px-6">
         {children}
       </main>
     </div>

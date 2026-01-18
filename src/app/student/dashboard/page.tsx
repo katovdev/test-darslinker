@@ -39,7 +39,6 @@ export default function StudentDashboardPage() {
     loadEnrollments();
   }, []);
 
-  // Calculate stats
   const totalCourses = enrollments.length;
   const completedCourses = enrollments.filter(
     (e) => e.status === "completed"
@@ -58,73 +57,81 @@ export default function StudentDashboardPage() {
       : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-2xl font-semibold">
           {t("dashboard.welcomeBack")
             .replace("{name}", user?.firstName || "")
             .replace("{{name}}", user?.firstName || "")}
         </h1>
-        <p className="mt-1 text-gray-400">{t("dashboard.continueJourney")}</p>
+        <p className="mt-1 text-muted-foreground">
+          {t("dashboard.continueJourney")}
+        </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-gray-800 bg-gray-800/30">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-xl bg-blue-500/10 p-3">
-              <BookOpen className="h-6 w-6 text-blue-400" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-400">
-                {t("course.enrolledCourses")}
-              </p>
-              <p className="text-2xl font-bold text-white">{totalCourses}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-gray-800 bg-gray-800/30">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-xl bg-yellow-500/10 p-3">
-              <Clock className="h-6 w-6 text-yellow-400" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-400">
-                {t("dashboard.activeCourses")}
-              </p>
-              <p className="text-2xl font-bold text-white">
-                {inProgressCourses}
-              </p>
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-md bg-secondary p-2">
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  {t("course.enrolledCourses")}
+                </p>
+                <p className="text-xl font-semibold">{totalCourses}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-800 bg-gray-800/30">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-xl bg-green-500/10 p-3">
-              <Award className="h-6 w-6 text-green-400" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-400">{t("course.completed")}</p>
-              <p className="text-2xl font-bold text-white">
-                {completedCourses}
-              </p>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-md bg-secondary p-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  {t("dashboard.activeCourses")}
+                </p>
+                <p className="text-xl font-semibold">{inProgressCourses}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-800 bg-gray-800/30">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-xl bg-purple-500/10 p-3">
-              <TrendingUp className="h-6 w-6 text-purple-400" />
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-md bg-secondary p-2">
+                <Award className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  {t("course.completed")}
+                </p>
+                <p className="text-xl font-semibold">{completedCourses}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-400">{t("course.progress")}</p>
-              <p className="text-2xl font-bold text-white">
-                {averageProgress}%
-              </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-md bg-secondary p-2">
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  {t("course.progress")}
+                </p>
+                <p className="text-xl font-semibold">{averageProgress}%</p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -133,15 +140,8 @@ export default function StudentDashboardPage() {
       {/* Courses Section */}
       <div>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-white">
-            {t("course.myCourses")}
-          </h2>
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="border-gray-700 text-gray-300 hover:bg-gray-800"
-          >
+          <h2 className="text-lg font-semibold">{t("course.myCourses")}</h2>
+          <Button asChild variant="ghost" size="sm">
             <Link href="/student/courses">{t("dashboard.allCourses")}</Link>
           </Button>
         </div>
@@ -150,12 +150,12 @@ export default function StudentDashboardPage() {
         {isLoading && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 3 }).map((_, i) => (
-              <Card key={i} className="border-gray-800 bg-gray-800/30">
-                <CardContent className="p-6">
-                  <Skeleton className="mb-4 h-32 w-full rounded-lg bg-gray-700" />
-                  <Skeleton className="mb-2 h-5 w-3/4 bg-gray-700" />
-                  <Skeleton className="mb-4 h-4 w-1/2 bg-gray-700" />
-                  <Skeleton className="h-2 w-full bg-gray-700" />
+              <Card key={i}>
+                <CardContent className="p-4">
+                  <Skeleton className="mb-3 aspect-video w-full rounded-md" />
+                  <Skeleton className="mb-2 h-4 w-3/4" />
+                  <Skeleton className="mb-3 h-3 w-1/2" />
+                  <Skeleton className="h-1 w-full" />
                 </CardContent>
               </Card>
             ))}
@@ -164,23 +164,17 @@ export default function StudentDashboardPage() {
 
         {/* Error State */}
         {error && !isLoading && (
-          <Card className="border-gray-800 bg-gray-800/30">
+          <Card>
             <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
-              <div className="rounded-full bg-red-500/10 p-4">
-                <BookOpen className="h-8 w-8 text-red-500" />
+              <div className="rounded-md bg-destructive/10 p-3">
+                <BookOpen className="h-6 w-6 text-destructive" />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-white">
-                  {t("blog.errorTitle")}
-                </h3>
-                <p className="text-sm text-gray-400">{error}</p>
+              <div className="space-y-1">
+                <h3 className="font-semibold">{t("blog.errorTitle")}</h3>
+                <p className="text-sm text-muted-foreground">{error}</p>
               </div>
-              <Button
-                onClick={loadEnrollments}
-                variant="outline"
-                className="gap-2 border-gray-700 text-white hover:bg-gray-800"
-              >
-                <RefreshCw className="h-4 w-4" />
+              <Button onClick={loadEnrollments} variant="outline" size="sm">
+                <RefreshCw className="mr-2 h-4 w-4" />
                 {t("common.retry")}
               </Button>
             </CardContent>
@@ -189,23 +183,18 @@ export default function StudentDashboardPage() {
 
         {/* Empty State */}
         {!isLoading && !error && enrollments.length === 0 && (
-          <Card className="border-gray-800 bg-gray-800/30">
+          <Card>
             <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
-              <div className="rounded-full bg-gray-800 p-4">
-                <BookOpen className="h-8 w-8 text-gray-500" />
+              <div className="rounded-md bg-secondary p-3">
+                <BookOpen className="h-6 w-6 text-muted-foreground" />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-white">
-                  {t("course.noCourses")}
-                </h3>
-                <p className="text-sm text-gray-400">
+              <div className="space-y-1">
+                <h3 className="font-semibold">{t("course.noCourses")}</h3>
+                <p className="text-sm text-muted-foreground">
                   {t("dashboard.browseAllCourses")}
                 </p>
               </div>
-              <Button
-                asChild
-                className="bg-[#7EA2D4] text-white hover:bg-[#5A85C7]"
-              >
+              <Button asChild>
                 <Link href="/student/courses">{t("course.browseCourses")}</Link>
               </Button>
             </CardContent>
@@ -233,9 +222,9 @@ function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
 
   return (
     <Link href={`/student/course/${enrollment.courseId}`}>
-      <Card className="h-full border-gray-800 bg-gray-800/30 transition-colors hover:bg-gray-800/50">
+      <Card className="h-full transition-colors hover:bg-secondary/50">
         {/* Thumbnail */}
-        <div className="relative aspect-video overflow-hidden rounded-t-lg bg-gray-700">
+        <div className="relative aspect-video overflow-hidden rounded-t-lg bg-secondary">
           {course.thumbnailUrl ? (
             <img
               src={course.thumbnailUrl}
@@ -244,53 +233,48 @@ function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <BookOpen className="h-12 w-12 text-gray-600" />
+              <BookOpen className="h-10 w-10 text-muted-foreground" />
             </div>
           )}
           {isCompleted && (
-            <div className="absolute top-2 right-2 rounded-full bg-green-500 px-2 py-1 text-xs font-medium text-white">
+            <div className="absolute top-2 right-2 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-white">
               {t("course.completed")}
             </div>
           )}
         </div>
 
-        <CardHeader className="pb-2">
-          <CardTitle className="line-clamp-2 text-base text-white">
+        <CardHeader className="p-4 pb-2">
+          <CardTitle className="line-clamp-2 text-sm font-semibold">
             {course.title}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 p-4 pt-0">
           {/* Teacher Info */}
-          <div className="flex items-center gap-2 text-xs text-gray-400">
-            <span>
-              {course.teacher.firstName} {course.teacher.lastName}
-            </span>
-          </div>
+          <p className="text-xs text-muted-foreground">
+            {course.teacher.firstName} {course.teacher.lastName}
+          </p>
 
           {/* Course Stats */}
-          <div className="flex items-center gap-4 text-xs text-gray-400">
-            <span className="flex items-center gap-1">
-              <BookOpen className="h-3 w-3" />
-              {enrollment.progress?.completedLessons || 0} /{" "}
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <BookOpen className="h-3 w-3" />
+            <span>
+              {enrollment.progress?.completedLessons || 0}/
               {enrollment.progress?.totalLessons || 0} {t("course.lessons")}
             </span>
           </div>
 
           {/* Progress */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-400">{t("course.progress")}</span>
-              <span className="text-white">{Math.round(progress)}%</span>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">{t("course.progress")}</span>
+              <span className="font-medium">{Math.round(progress)}%</span>
             </div>
-            <Progress value={progress} className="h-2 bg-gray-700" />
+            <Progress value={progress} />
           </div>
 
           {/* Action */}
-          <Button
-            className="w-full bg-[#7EA2D4] text-white hover:bg-[#5A85C7]"
-            size="sm"
-          >
+          <Button className="w-full" size="sm">
             {progress > 0
               ? t("course.continueLearning")
               : t("course.startCourse")}

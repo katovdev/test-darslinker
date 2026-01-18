@@ -4,42 +4,42 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 px-4 text-white">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
       <div className="text-center">
         {/* 404 Number */}
         <div className="mb-6">
-          <span className="text-8xl font-bold text-[#7EA2D4] opacity-30">
+          <span className="text-7xl font-semibold text-muted-foreground/20">
             404
           </span>
         </div>
 
         {/* Icon */}
         <div className="mb-6 flex justify-center">
-          <div className="rounded-full bg-[#7EA2D4]/20 p-4">
-            <Search className="h-12 w-12 text-[#7EA2D4]" />
+          <div className="rounded-md bg-secondary p-3">
+            <Search className="h-8 w-8 text-muted-foreground" />
           </div>
         </div>
 
-        <h1 className="mb-2 text-3xl font-bold">Sahifa topilmadi</h1>
-        <p className="mb-8 max-w-md text-gray-400">
+        <h1 className="mb-2 text-xl font-semibold">Sahifa topilmadi</h1>
+        <p className="mb-8 max-w-md text-sm text-muted-foreground">
           Siz qidirayotgan sahifa mavjud emas yoki ko&apos;chirilgan
           bo&apos;lishi mumkin.
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Link href="/">
-            <Button className="gap-2 bg-[#7EA2D4] text-white hover:bg-[#5A85C7]">
-              <Home className="h-4 w-4" />
+          <Button asChild>
+            <Link href="/">
+              <Home className="mr-2 h-4 w-4" />
               Bosh sahifa
-            </Button>
-          </Link>
+            </Link>
+          </Button>
 
-          <Link href="/blog">
-            <Button variant="outline" className="gap-2 border-gray-700">
-              <BookOpen className="h-4 w-4" />
+          <Button variant="outline" asChild>
+            <Link href="/blog">
+              <BookOpen className="mr-2 h-4 w-4" />
               Maqolalar
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </div>

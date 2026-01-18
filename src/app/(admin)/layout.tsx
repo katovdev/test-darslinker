@@ -8,7 +8,6 @@ import {
   Users,
   UserPlus,
   GraduationCap,
-  Settings,
   LogOut,
   Menu,
   Loader2,
@@ -57,7 +56,6 @@ export default function AdminLayout({
   const [isLoading, setIsLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Check authentication and role
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/login");
@@ -65,7 +63,6 @@ export default function AdminLayout({
     }
 
     if (user && user.role !== "admin") {
-      // Not an admin, redirect based on role
       if (user.role === "teacher") {
         router.push("/teacher/dashboard");
       } else {
@@ -90,33 +87,32 @@ export default function AdminLayout({
     return first + last || "?";
   };
 
-  // Loading state
   if (isLoading || !isAuthenticated || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
-        <Loader2 className="h-8 w-8 animate-spin text-[#7EA2D4]" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       {/* Sidebar - Desktop */}
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 border-r border-gray-800 bg-gray-900 lg:block">
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-60 border-r bg-sidebar lg:block">
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex h-16 items-center border-b border-gray-800 px-6">
+          <div className="flex h-14 items-center border-b px-4">
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-2 text-xl font-bold text-[#7EA2D4]"
+              className="flex items-center gap-2 text-base font-semibold"
             >
-              <Shield className="h-6 w-6" />
+              <Shield className="h-5 w-5 text-muted-foreground" />
               Admin
             </Link>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 space-y-1 p-4">
+          <nav className="flex-1 space-y-0.5 p-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -124,13 +120,13 @@ export default function AdminLayout({
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                     isActive
-                      ? "bg-[#7EA2D4]/10 text-[#7EA2D4]"
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                      ? "bg-accent font-medium text-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
                   )}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="h-4 w-4" />
                   {t(`admin.${item.labelKey}`)}
                 </Link>
               );
@@ -138,19 +134,19 @@ export default function AdminLayout({
           </nav>
 
           {/* User Section */}
-          <div className="border-t border-gray-800 p-4">
+          <div className="border-t p-4">
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
+              <Avatar className="h-9 w-9">
                 {user?.avatar && <AvatarImage src={user.avatar} />}
-                <AvatarFallback className="bg-transparent text-sm font-medium text-white">
+                <AvatarFallback className="bg-secondary text-sm font-medium">
                   {getInitials()}
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-white">
+                <p className="truncate text-sm font-medium">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="truncate text-xs text-gray-400">
+                <p className="truncate text-xs text-muted-foreground">
                   {t("admin.admin")}
                 </p>
               </div>
@@ -158,7 +154,7 @@ export default function AdminLayout({
             <Button
               onClick={handleLogout}
               variant="ghost"
-              className="mt-3 w-full justify-start gap-2 text-red-400 hover:bg-red-500/10 hover:text-red-400"
+              className="mt-3 w-full justify-start gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
             >
               <LogOut className="h-4 w-4" />
               {t("dashboard.logout")}
@@ -168,30 +164,26 @@ export default function AdminLayout({
       </aside>
 
       {/* Header - Mobile */}
-      <header className="sticky top-0 z-40 border-b border-gray-800 bg-gray-900/95 backdrop-blur lg:hidden">
-        <div className="flex h-16 items-center justify-between px-4">
+      <header className="sticky top-0 z-40 border-b bg-background lg:hidden">
+        <div className="flex h-14 items-center justify-between px-4">
           {/* Mobile Menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-gray-400 hover:text-white"
-              >
+              <Button variant="ghost" size="icon-sm">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-64 border-gray-800 bg-gray-900 p-0"
+              className="w-64 border-border bg-sidebar p-0"
             >
-              <SheetHeader className="border-b border-gray-800 px-6 py-4">
-                <SheetTitle className="flex items-center gap-2 text-left text-xl font-bold text-[#7EA2D4]">
-                  <Shield className="h-6 w-6" />
+              <SheetHeader className="border-b px-4 py-3">
+                <SheetTitle className="flex items-center gap-2 text-left text-base font-semibold">
+                  <Shield className="h-5 w-5 text-muted-foreground" />
                   Admin
                 </SheetTitle>
               </SheetHeader>
-              <nav className="space-y-1 p-4">
+              <nav className="space-y-0.5 p-2">
                 {navItems.map((item) => {
                   const isActive = pathname === item.href;
                   return (
@@ -200,13 +192,13 @@ export default function AdminLayout({
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                        "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                         isActive
-                          ? "bg-[#7EA2D4]/10 text-[#7EA2D4]"
-                          : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                          ? "bg-accent font-medium text-foreground"
+                          : "text-muted-foreground hover:bg-accent hover:text-foreground"
                       )}
                     >
-                      <item.icon className="h-5 w-5" />
+                      <item.icon className="h-4 w-4" />
                       {t(`admin.${item.labelKey}`)}
                     </Link>
                   );
@@ -218,45 +210,38 @@ export default function AdminLayout({
           {/* Logo */}
           <Link
             href="/admin/dashboard"
-            className="flex items-center gap-2 text-xl font-bold text-[#7EA2D4]"
+            className="flex items-center gap-2 text-base font-semibold"
           >
-            <Shield className="h-5 w-5" />
+            <Shield className="h-5 w-5 text-muted-foreground" />
             Admin
           </Link>
 
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-gray-400 hover:text-white"
-              >
-                <Avatar className="h-8 w-8 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
+              <Button variant="ghost" size="icon-sm">
+                <Avatar className="h-7 w-7">
                   {user?.avatar && <AvatarImage src={user.avatar} />}
-                  <AvatarFallback className="bg-transparent text-sm font-medium text-white">
+                  <AvatarFallback className="bg-secondary text-xs font-medium">
                     {getInitials()}
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-48 border-gray-800 bg-gray-900"
-            >
+            <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem asChild>
                 <Link
                   href="/admin/stats"
-                  className="flex cursor-pointer items-center gap-2 text-gray-300"
+                  className="flex cursor-pointer items-center gap-2"
                 >
                   <BarChart3 className="h-4 w-4" />
                   {t("admin.analytics")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-gray-800" />
+              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}
-                className="flex cursor-pointer items-center gap-2 text-red-400 focus:text-red-400"
+                className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
               >
                 <LogOut className="h-4 w-4" />
                 {t("dashboard.logout")}
@@ -267,8 +252,8 @@ export default function AdminLayout({
       </header>
 
       {/* Main Content */}
-      <main className="lg:pl-64">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="lg:pl-60">
+        <div className="mx-auto max-w-[900px] px-4 py-6 sm:px-6">
           {children}
         </div>
       </main>

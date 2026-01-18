@@ -1,40 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { ArticlesGrid } from "@/components/blog";
 import { useTranslations } from "@/hooks/use-locale";
-import { ArrowRight } from "lucide-react";
 
 export function ArticlesSection() {
   const t = useTranslations();
 
   return (
-    <section className="bg-gray-900 px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Section Header */}
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+    <section className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      {/* Background */}
+      <div className="absolute inset-0 -z-10 bg-gray-800" />
+
+      <div className="mx-auto max-w-6xl">
+        {/* Section header */}
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            <span className="inline-block rounded-full bg-green-500/10 px-4 py-1.5 text-sm font-medium text-green-400">
+              {t("home.articlesLabel") || "Blog"}
+            </span>
+            <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
               {t("home.articlesTitle")}
             </h2>
-            <p className="mt-2 text-lg text-gray-400">
-              {t("home.articlesSubtitle")}
-            </p>
           </div>
-          <Button
-            asChild
-            variant="outline"
-            className="border-gray-600 bg-transparent text-white hover:bg-white/10"
+          <Link
+            href="/blog"
+            className="group inline-flex items-center gap-2 text-blue-400 transition-colors hover:text-blue-300"
           >
-            <Link href="/blog">
-              {t("home.viewAllArticles")}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+            {t("home.viewAllArticles")}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
-        {/* Articles Grid */}
+        {/* Articles grid */}
         <div className="mt-12">
           <ArticlesGrid limit={3} />
         </div>

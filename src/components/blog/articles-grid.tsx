@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, RefreshCw, BookOpen } from "lucide-react";
+import { RefreshCw, FileText, Loader2 } from "lucide-react";
 import { ArticleCard } from "./article-card";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { blogService, type TransformedBlog } from "@/services/blog";
 import { cn } from "@/lib/utils";
 
@@ -43,118 +41,64 @@ export function ArticlesGrid({
     loadArticles();
   }, [limit]);
 
-  // Loading state
   if (isLoading && showLoadingState) {
     return (
-      <div className={cn("space-y-6", className)}>
-        <div className="text-muted-foreground flex items-center justify-center gap-2">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          <span>Maqolalar yuklanmoqda...</span>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: limit }).map((_, i) => (
-            <ArticleCardSkeleton key={i} isLarge={i === 0} />
-          ))}
-        </div>
+      <div className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}>
+        {Array.from({ length: limit }).map((_, i) => (
+          <div
+            key={i}
+            className="animate-pulse rounded-2xl border border-gray-700 bg-gray-800/30 p-5"
+          >
+            <div className="mb-3 h-5 w-20 rounded-full bg-gray-700" />
+            <div className="h-6 w-4/5 rounded bg-gray-700" />
+            <div className="mt-3 space-y-2">
+              <div className="h-4 w-full rounded bg-gray-700/50" />
+              <div className="h-4 w-3/4 rounded bg-gray-700/50" />
+            </div>
+            <div className="mt-4 flex gap-4">
+              <div className="h-4 w-16 rounded bg-gray-700/50" />
+              <div className="h-4 w-20 rounded bg-gray-700/50" />
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
 
-  // Error state
   if (error && articles.length === 0 && showErrorState) {
     return (
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center gap-4 py-12 text-center",
-          className
-        )}
-      >
-        <div className="bg-destructive/10 rounded-full p-4">
-          <BookOpen className="text-destructive h-8 w-8" />
+      <div className={cn("py-16 text-center", className)}>
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
+          <FileText className="h-8 w-8 text-red-400" />
         </div>
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold">
-            Maqolalarni yuklashda xatolik
-          </h3>
-          <p className="text-muted-foreground text-sm">{error}</p>
-        </div>
-        <Button onClick={loadArticles} variant="outline" className="gap-2">
+        <p className="text-gray-400">{error}</p>
+        <button
+          onClick={loadArticles}
+          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700"
+        >
           <RefreshCw className="h-4 w-4" />
           Qayta urinish
-        </Button>
+        </button>
       </div>
     );
   }
 
-  // Empty state
   if (!isLoading && articles.length === 0) {
     return (
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center gap-4 py-12 text-center",
-          className
-        )}
-      >
-        <div className="bg-muted rounded-full p-4">
-          <BookOpen className="text-muted-foreground h-8 w-8" />
+      <div className={cn("py-16 text-center", className)}>
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-800">
+          <FileText className="h-8 w-8 text-gray-500" />
         </div>
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold">
-            Hozircha maqolalar mavjud emas
-          </h3>
-          <p className="text-muted-foreground text-sm">
-            Tez orada yangi va qiziqarli maqolalar qo&apos;shiladi
-          </p>
-        </div>
-        <Button onClick={loadArticles} variant="outline" className="gap-2">
-          <RefreshCw className="h-4 w-4" />
-          Sahifani yangilash
-        </Button>
+        <p className="text-gray-500">Hozircha maqolalar mavjud emas</p>
       </div>
     );
   }
 
-  // Articles grid
   return (
-    <div
-      className={cn(
-        "grid gap-4 md:grid-cols-2 lg:grid-cols-3",
-        // First card spans 2 columns on larger screens
-        "[&>*:first-child]:md:col-span-2 [&>*:first-child]:md:row-span-2",
-        className
-      )}
-    >
-      {articles.map((article, index) => (
-        <ArticleCard key={article.id} article={article} index={index} />
+    <div className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}>
+      {articles.map((article) => (
+        <ArticleCard key={article.id} article={article} />
       ))}
-    </div>
-  );
-}
-
-/**
- * Skeleton for article card loading state
- */
-function ArticleCardSkeleton({ isLarge = false }: { isLarge?: boolean }) {
-  return (
-    <div
-      className={cn(
-        "bg-card space-y-4 rounded-lg border p-4",
-        isLarge && "md:col-span-2 md:row-span-2"
-      )}
-    >
-      <Skeleton className={cn("h-6", isLarge ? "w-3/4" : "w-2/3")} />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-        {isLarge && <Skeleton className="h-4 w-4/5" />}
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2">
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-4 w-20" />
-        </div>
-        <Skeleton className="h-5 w-16 rounded-full" />
-      </div>
     </div>
   );
 }

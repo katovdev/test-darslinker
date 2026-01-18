@@ -178,8 +178,16 @@ export const ru: Translations = {
   home: {
     heroTitle: "Лучшая платформа для учителей",
     heroSubtitle: "Создавайте курсы, управляйте учениками и увеличивайте доход",
+    heroBadge: "Современная образовательная платформа",
     getStarted: "Начать",
+    viewPricing: "Смотреть цены",
     watchVideo: "Смотреть видео",
+    // Stats
+    statStudents: "Ученики",
+    statCourses: "Курсы",
+    statCertificates: "Сертификаты",
+    // Features
+    featuresLabel: "Возможности",
     featuresTitle: "Возможности платформы",
     featuresSubtitle:
       "Наша платформа предоставляет все необходимые инструменты",
@@ -202,9 +210,11 @@ export const ru: Translations = {
     featureChatDesc: "Общение с учениками в реальном времени",
     featureSecurity: "Безопасность",
     featureSecurityDesc: "Ваш контент защищён",
+    articlesLabel: "Блог",
     articlesTitle: "Полезные статьи",
     articlesSubtitle: "Последние новости и советы для учителей",
     viewAllArticles: "Все статьи",
+    contactLabel: "Контакты",
     contactTitle: "Связаться с нами",
     contactSubtitle: "Есть вопросы? Свяжитесь с нами",
     contactName: "Ваше имя",
@@ -220,6 +230,8 @@ export const ru: Translations = {
     footerRights: "Все права защищены",
     footerPrivacy: "Политика конфиденциальности",
     footerTerms: "Условия использования",
+    footerPlatform: "Платформа",
+    footerLegal: "Правовая информация",
   },
 
   // Pricing

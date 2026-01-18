@@ -158,9 +158,16 @@ export interface Translations {
   home: {
     heroTitle: string;
     heroSubtitle: string;
+    heroBadge: string;
     getStarted: string;
+    viewPricing: string;
     watchVideo: string;
+    // Stats
+    statStudents: string;
+    statCourses: string;
+    statCertificates: string;
     // Features
+    featuresLabel: string;
     featuresTitle: string;
     featuresSubtitle: string;
     featureAI: string;
@@ -182,10 +189,12 @@ export interface Translations {
     featureSecurity: string;
     featureSecurityDesc: string;
     // Articles
+    articlesLabel: string;
     articlesTitle: string;
     articlesSubtitle: string;
     viewAllArticles: string;
     // Contact
+    contactLabel: string;
     contactTitle: string;
     contactSubtitle: string;
     contactName: string;
@@ -203,6 +212,8 @@ export interface Translations {
     footerRights: string;
     footerPrivacy: string;
     footerTerms: string;
+    footerPlatform: string;
+    footerLegal: string;
   };
   pricing: {
     title: string;

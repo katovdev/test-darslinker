@@ -178,8 +178,16 @@ export const en: Translations = {
   home: {
     heroTitle: "The best platform for teachers",
     heroSubtitle: "Create your courses, manage students, and grow your income",
+    heroBadge: "Modern education platform",
     getStarted: "Get Started",
+    viewPricing: "View Pricing",
     watchVideo: "Watch Video",
+    // Stats
+    statStudents: "Students",
+    statCourses: "Courses",
+    statCertificates: "Certificates",
+    // Features
+    featuresLabel: "Features",
     featuresTitle: "Platform Features",
     featuresSubtitle: "Our platform provides all the tools you need",
     featureAI: "AI Assistant",
@@ -200,9 +208,11 @@ export const en: Translations = {
     featureChatDesc: "Real-time communication with students",
     featureSecurity: "Security",
     featureSecurityDesc: "Your content is protected",
+    articlesLabel: "Blog",
     articlesTitle: "Useful Articles",
     articlesSubtitle: "Latest news and tips for teachers",
     viewAllArticles: "View All Articles",
+    contactLabel: "Contact",
     contactTitle: "Contact Us",
     contactSubtitle: "Have questions? Get in touch with us",
     contactName: "Your Name",
@@ -218,6 +228,8 @@ export const en: Translations = {
     footerRights: "All rights reserved",
     footerPrivacy: "Privacy Policy",
     footerTerms: "Terms of Service",
+    footerPlatform: "Platform",
+    footerLegal: "Legal",
   },
 
   // Pricing

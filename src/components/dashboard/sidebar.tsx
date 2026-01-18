@@ -10,12 +10,7 @@ import {
   MessageSquare,
   Settings,
   ChevronDown,
-  Globe,
   BarChart3,
-  Users,
-  FileText,
-  Sparkles,
-  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/hooks/use-locale";
@@ -85,9 +80,9 @@ export function DashboardSidebar() {
   };
 
   return (
-    <aside className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-800 bg-gray-900 pt-16">
-      <div className="flex h-full flex-col overflow-y-auto px-3 py-6">
-        <nav className="flex-1 space-y-1">
+    <aside className="fixed top-0 left-0 z-40 h-screen w-60 border-r bg-sidebar pt-14">
+      <div className="flex h-full flex-col overflow-y-auto px-2 py-4">
+        <nav className="flex-1 space-y-0.5">
           {menuItems.map((item) => {
             const hasChildren = item.children && item.children.length > 0;
             const isExpanded = expandedItems.includes(item.labelKey);
@@ -100,14 +95,14 @@ export function DashboardSidebar() {
                     <button
                       onClick={() => toggleExpanded(item.labelKey)}
                       className={cn(
-                        "flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm font-medium transition-colors",
+                        "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm transition-colors",
                         isExpanded
-                          ? "bg-gray-800 text-white"
-                          : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
+                          ? "bg-accent text-foreground"
+                          : "text-muted-foreground hover:bg-accent hover:text-foreground"
                       )}
                     >
                       <span className="flex items-center gap-3">
-                        <item.icon className="h-5 w-5" />
+                        <item.icon className="h-4 w-4" />
                         {t(`sidebar.${item.labelKey}`)}
                       </span>
                       <ChevronDown
@@ -118,16 +113,16 @@ export function DashboardSidebar() {
                       />
                     </button>
                     {isExpanded && item.children && (
-                      <div className="mt-1 space-y-1 pl-12">
+                      <div className="mt-0.5 space-y-0.5 pl-10">
                         {item.children.map((child) => (
                           <Link
                             key={child.href}
                             href={child.href}
                             className={cn(
-                              "block rounded-lg px-4 py-2 text-sm transition-colors",
+                              "block rounded-md px-3 py-1.5 text-sm transition-colors",
                               isActive(child.href)
-                                ? "bg-[#7EA2D4]/10 text-[#7EA2D4]"
-                                : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
+                                ? "bg-accent font-medium text-foreground"
+                                : "text-muted-foreground hover:bg-accent hover:text-foreground"
                             )}
                           >
                             {t(`sidebar.${child.labelKey}`)}
@@ -140,13 +135,13 @@ export function DashboardSidebar() {
                   <Link
                     href={item.href || "#"}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors",
+                      "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                       itemIsActive
-                        ? "bg-[#7EA2D4]/10 text-[#7EA2D4]"
-                        : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
+                        ? "bg-accent font-medium text-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     )}
                   >
-                    <item.icon className="h-5 w-5" />
+                    <item.icon className="h-4 w-4" />
                     {t(`sidebar.${item.labelKey}`)}
                   </Link>
                 )}

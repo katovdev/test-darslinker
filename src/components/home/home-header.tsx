@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useTranslations, useLocale, useSetLocale } from "@/hooks/use-locale";
 import type { Locale } from "@/i18n";
 
@@ -32,16 +23,19 @@ export function HomeHeader() {
   const locale = useLocale();
   const setLocale = useSetLocale();
   const [isOpen, setIsOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   const currentLanguage = languages.find((l) => l.value === locale);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
-          <span className="text-2xl font-bold text-white">dars</span>
-          <span className="text-2xl font-bold text-[#7EA2D4]">linker</span>
+          <span className="text-xl font-bold text-white">dars</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+            linker
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -50,7 +44,7 @@ export function HomeHeader() {
             <Link
               key={item.key}
               href={item.href}
-              className="text-sm font-medium text-gray-300 transition-colors hover:text-white"
+              className="text-sm font-medium text-gray-400 transition-colors hover:text-white"
             >
               {t(`home.${item.key}`)}
             </Link>
@@ -58,71 +52,102 @@ export function HomeHeader() {
         </nav>
 
         {/* Right Side */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Language Selector */}
-          <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
-            <SelectTrigger className="w-auto gap-2 border-gray-700 bg-transparent text-white">
-              <span>{currentLanguage?.flag}</span>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="border-gray-700 bg-gray-800">
-              {languages.map((lang) => (
-                <SelectItem
-                  key={lang.value}
-                  value={lang.value}
-                  className="text-white hover:bg-gray-700 focus:bg-gray-700"
-                >
-                  <span className="flex items-center gap-2">
-                    <span>{lang.label}</span>
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+            >
+              <span className="text-base">{currentLanguage?.flag}</span>
+              <ChevronDown className="h-4 w-4" />
+            </button>
+
+            {langOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setLangOpen(false)} />
+                <div className="absolute right-0 top-full z-20 mt-2 w-40 rounded-xl border border-gray-800 bg-gray-900 p-1 shadow-xl">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.value}
+                      onClick={() => {
+                        setLocale(lang.value);
+                        setLangOpen(false);
+                      }}
+                      className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                        locale === lang.value
+                          ? "bg-blue-500/10 text-blue-400"
+                          : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                      }`}
+                    >
+                      <span>{lang.flag}</span>
+                      <span>{lang.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
 
           {/* Login Button */}
-          <Button
-            asChild
-            className="hidden bg-gradient-to-r from-[#7EA2D4] to-[#5A85C7] text-white hover:opacity-90 sm:inline-flex"
+          <Link
+            href="/login"
+            className="hidden rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 sm:inline-flex"
           >
-            <Link href="/login">{t("auth.login")}</Link>
-          </Button>
+            {t("auth.login")}
+          </Link>
 
-          {/* Mobile Menu */}
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-white">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-72 border-gray-800 bg-gray-900"
-            >
-              <div className="flex flex-col gap-6 pt-8">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-lg font-medium text-gray-300 transition-colors hover:text-white"
-                  >
-                    {t(`home.${item.key}`)}
-                  </Link>
-                ))}
-                <Button
-                  asChild
-                  className="mt-4 bg-gradient-to-r from-[#7EA2D4] to-[#5A85C7] text-white hover:opacity-90"
-                >
-                  <Link href="/login" onClick={() => setIsOpen(false)}>
-                    {t("auth.login")}
-                  </Link>
-                </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+          {/* Get Started Button */}
+          <Link
+            href="/register"
+            className="hidden rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 sm:inline-flex"
+          >
+            {t("home.getStarted")}
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white md:hidden"
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="border-t border-gray-800 bg-gray-900 md:hidden">
+          <nav className="flex flex-col p-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+              >
+                {t(`home.${item.key}`)}
+              </Link>
+            ))}
+            <div className="mt-4 flex flex-col gap-2 border-t border-gray-800 pt-4">
+              <Link
+                href="/login"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-center text-sm font-medium text-white transition-colors hover:border-gray-600"
+              >
+                {t("auth.login")}
+              </Link>
+              <Link
+                href="/register"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3 text-center text-sm font-medium text-white shadow-lg shadow-blue-500/25"
+              >
+                {t("home.getStarted")}
+              </Link>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
