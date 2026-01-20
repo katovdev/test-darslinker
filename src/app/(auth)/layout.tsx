@@ -30,17 +30,7 @@ export default function AuthLayout({
   useEffect(() => {
     // Only redirect after hydration is complete
     if (hasHydrated && isAuthenticated && user) {
-      // Redirect based on user role
-      switch (user.role) {
-        case "admin":
-          router.push("/admin/dashboard");
-          break;
-        case "teacher":
-          router.push("/teacher/dashboard");
-          break;
-        default:
-          router.push("/student/dashboard");
-      }
+      router.push("/courses");
     }
   }, [isAuthenticated, hasHydrated, user, router]);
 

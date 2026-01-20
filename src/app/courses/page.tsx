@@ -32,7 +32,7 @@ export default function CoursesPage() {
     setError(null);
 
     try {
-      const response = await courseAPI.getGlobalCourses();
+      const response = await courseAPI.getCourses();
       if (response.success && response.data) {
         setCourses(response.data.all);
         setEnrolledCourses(response.data.enrolled);
@@ -277,8 +277,8 @@ interface CourseCardProps {
 function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
   const t = useTranslations();
 
-  // Build link to teacher's course page
-  const courseLink = `/t/${course.teacher.username}/courses/${course.slug}`;
+  // Course link (detail page not yet implemented)
+  const courseLink = "#";
 
   return (
     <Link href={courseLink} className="group relative block">

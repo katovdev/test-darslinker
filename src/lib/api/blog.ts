@@ -68,12 +68,11 @@ export interface BlogQueryParams {
   category?: string;
   limit?: number;
   page?: number;
-  archived?: boolean;
 }
 
 /**
  * Blog API Service
- * Handles all blog-related API calls
+ * Handles public blog-related API calls
  */
 class BlogAPI {
   /**
@@ -169,20 +168,6 @@ class BlogAPI {
   }
 
   /**
-   * Get category by ID
-   */
-  async getCategoryById(
-    id: string
-  ): Promise<{ success: boolean; data: Category }> {
-    try {
-      return await api.get(blogEndpoints.getCategoryById(id));
-    } catch (error) {
-      logger.error("Error fetching category:", error);
-      throw error;
-    }
-  }
-
-  /**
    * Get category by slug
    */
   async getCategoryBySlug(
@@ -220,124 +205,6 @@ class BlogAPI {
       return await api.get<BlogsResponse>(url);
     } catch (error) {
       logger.error("Error fetching blogs by category:", error);
-      throw error;
-    }
-  }
-
-  // Admin methods
-
-  /**
-   * Create new blog (Admin only)
-   */
-  async createBlog(blogData: Partial<Blog>): Promise<BlogResponse> {
-    try {
-      return await api.post<BlogResponse>(blogEndpoints.createBlog, blogData);
-    } catch (error) {
-      logger.error("Error creating blog:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Update blog (Admin only)
-   */
-  async updateBlog(id: string, blogData: Partial<Blog>): Promise<BlogResponse> {
-    try {
-      return await api.put<BlogResponse>(
-        blogEndpoints.updateBlog(id),
-        blogData
-      );
-    } catch (error) {
-      logger.error("Error updating blog:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Archive blog (Admin only)
-   */
-  async archiveBlog(id: string): Promise<{ success: boolean }> {
-    try {
-      return await api.put(blogEndpoints.archiveBlog(id));
-    } catch (error) {
-      logger.error("Error archiving blog:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Unarchive blog (Admin only)
-   */
-  async unarchiveBlog(id: string): Promise<{ success: boolean }> {
-    try {
-      return await api.put(blogEndpoints.unarchiveBlog(id));
-    } catch (error) {
-      logger.error("Error unarchiving blog:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Delete blog (Admin only)
-   */
-  async deleteBlog(id: string): Promise<{ success: boolean }> {
-    try {
-      return await api.delete(blogEndpoints.deleteBlog(id));
-    } catch (error) {
-      logger.error("Error deleting blog:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get archived blogs (Admin only)
-   */
-  async getArchivedBlogs(): Promise<BlogsResponse> {
-    try {
-      return await api.get<BlogsResponse>(blogEndpoints.getArchivedBlogs);
-    } catch (error) {
-      logger.error("Error fetching archived blogs:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Create category (Admin only)
-   */
-  async createCategory(
-    categoryData: Partial<Category>
-  ): Promise<{ success: boolean; data: Category }> {
-    try {
-      return await api.post(blogEndpoints.createCategory, categoryData);
-    } catch (error) {
-      logger.error("Error creating category:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Update category (Admin only)
-   */
-  async updateCategory(
-    id: string,
-    categoryData: Partial<Category>
-  ): Promise<{ success: boolean; data: Category }> {
-    try {
-      return await api.put(blogEndpoints.updateCategory(id), categoryData);
-    } catch (error) {
-      logger.error("Error updating category:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Delete category (Admin only)
-   */
-  async deleteCategory(id: string): Promise<{ success: boolean }> {
-    try {
-      return await api.delete(blogEndpoints.deleteCategory(id));
-    } catch (error) {
-      logger.error("Error deleting category:", error);
       throw error;
     }
   }

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { toast } from "sonner";
 import { useTranslations } from "@/hooks/use-locale";
 import authService, { formatPhoneNumber, validators } from "@/services/auth";
@@ -83,12 +82,7 @@ export default function LoginPage() {
 
       if (response.success && response.data?.user) {
         toast.success(t("auth.welcomeBack"));
-        const userRole = response.data.user.role;
-        if (userRole === "student") {
-          router.push("/student/dashboard");
-        } else {
-          router.push("/dashboard");
-        }
+        router.push("/courses");
       } else if (!response.success) {
         const errorCode = response.error?.code;
         const errorMessage =
@@ -269,12 +263,13 @@ export default function LoginPage() {
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-400">
           {t("auth.noAccount")}{" "}
-          <Link
-            href="/register"
+          <button
+            type="button"
+            onClick={openTelegramBot}
             className="font-medium text-blue-400 transition-colors hover:text-blue-300"
           >
-            {t("auth.signUp")}
-          </Link>
+            {t("auth.signUpViaTelegram")}
+          </button>
         </p>
       </div>
     </div>
