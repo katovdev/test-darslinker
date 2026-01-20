@@ -12,6 +12,8 @@ import {
   UserX,
   Shield,
   Trash2,
+  Eye,
+  X,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
@@ -33,7 +35,15 @@ export default function AdminUsersPage() {
   const [page, setPage] = useState(1);
 
   const [actionMenuId, setActionMenuId] = useState<string | null>(null);
+  const [actionMenuPosition, setActionMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
+  const [editingUser, setEditingUser] = useState<{
+    firstName: string;
+    lastName: string;
+    role: string;
+    status: string;
+  } | null>(null);
 
   const loadUsers = async () => {
     setIsLoading(true);
@@ -114,6 +124,58 @@ export default function AdminUsersPage() {
     const result = await adminService.deleteUser(userId);
     if (result) {
       setUsers((prev) => prev.filter((u) => u.id !== userId));
+    }
+
+    setIsUpdating(null);
+  };
+
+  const handleOpenActionMenu = (userId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    if (actionMenuId === userId) {
+      setActionMenuId(null);
+      setActionMenuPosition(null);
+    } else {
+      const rect = event.currentTarget.getBoundingClientRect();
+      setActionMenuPosition({
+        top: rect.bottom + 4,
+        left: rect.right - 192, // 192px = w-48 = 12rem
+      });
+      setActionMenuId(userId);
+    }
+  };
+
+  const handleViewUser = (user: AdminUser) => {
+    setSelectedUser(user);
+    setEditingUser({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      status: user.status,
+    });
+    setActionMenuId(null);
+  };
+
+  const handleSaveUser = async () => {
+    if (!selectedUser || !editingUser) return;
+
+    setIsUpdating(selectedUser.id);
+
+    const result = await adminService.updateUser(selectedUser.id, {
+      firstName: editingUser.firstName,
+      lastName: editingUser.lastName,
+      role: editingUser.role as "teacher" | "student" | "moderator" | "admin",
+      status: editingUser.status as "active" | "blocked" | "pending",
+    });
+
+    if (result) {
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === selectedUser.id
+            ? { ...u, ...editingUser }
+            : u
+        )
+      );
+      setSelectedUser(null);
+      setEditingUser(null);
     }
 
     setIsUpdating(null);
@@ -319,89 +381,17 @@ export default function AdminUsersPage() {
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="relative">
-                        <button
-                          onClick={() =>
-                            setActionMenuId(
-                              actionMenuId === user.id ? null : user.id
-                            )
-                          }
-                          disabled={isUpdating === user.id}
-                          className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
-                        >
-                          {isUpdating === user.id ? (
-                            <RefreshCw className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <MoreVertical className="h-4 w-4" />
-                          )}
-                        </button>
-
-                        {actionMenuId === user.id && (
-                          <>
-                            <div
-                              className="fixed inset-0 z-10"
-                              onClick={() => setActionMenuId(null)}
-                            />
-                            <div className="absolute right-0 z-20 mt-1 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl">
-                              {user.status === "active" ? (
-                                <button
-                                  onClick={() =>
-                                    handleStatusChange(user.id, "blocked")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                                >
-                                  <UserX className="h-4 w-4" />
-                                  Block User
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() =>
-                                    handleStatusChange(user.id, "active")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                                >
-                                  <UserCheck className="h-4 w-4" />
-                                  Activate User
-                                </button>
-                              )}
-
-                              {user.role !== "moderator" && (
-                                <button
-                                  onClick={() =>
-                                    handleRoleChange(user.id, "moderator")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-orange-400 hover:bg-gray-700"
-                                >
-                                  <Shield className="h-4 w-4" />
-                                  Make Moderator
-                                </button>
-                              )}
-
-                              {user.role !== "teacher" && (
-                                <button
-                                  onClick={() =>
-                                    handleRoleChange(user.id, "teacher")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                                >
-                                  <UserCheck className="h-4 w-4" />
-                                  Make Teacher
-                                </button>
-                              )}
-
-                              <div className="my-1 border-t border-gray-700" />
-
-                              <button
-                                onClick={() => handleDelete(user.id)}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                Delete User
-                              </button>
-                            </div>
-                          </>
+                      <button
+                        onClick={(e) => handleOpenActionMenu(user.id, e)}
+                        disabled={isUpdating === user.id}
+                        className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
+                      >
+                        {isUpdating === user.id ? (
+                          <RefreshCw className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <MoreVertical className="h-4 w-4" />
                         )}
-                      </div>
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -437,6 +427,223 @@ export default function AdminUsersPage() {
           </div>
         )}
       </div>
+
+      {/* Action Menu - Fixed Position */}
+      {actionMenuId && actionMenuPosition && (
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => {
+              setActionMenuId(null);
+              setActionMenuPosition(null);
+            }}
+          />
+          <div
+            className="fixed z-50 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl"
+            style={{
+              top: actionMenuPosition.top,
+              left: Math.max(8, actionMenuPosition.left),
+            }}
+          >
+            {(() => {
+              const user = users.find((u) => u.id === actionMenuId);
+              if (!user) return null;
+              return (
+                <>
+                  <button
+                    onClick={() => handleViewUser(user)}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-white hover:bg-gray-700"
+                  >
+                    <Eye className="h-4 w-4" />
+                    View Profile
+                  </button>
+
+                  <div className="my-1 border-t border-gray-700" />
+
+                  {user.status === "active" ? (
+                    <button
+                      onClick={() => handleStatusChange(user.id, "blocked")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
+                    >
+                      <UserX className="h-4 w-4" />
+                      Block User
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleStatusChange(user.id, "active")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                    >
+                      <UserCheck className="h-4 w-4" />
+                      Activate User
+                    </button>
+                  )}
+
+                  {user.role !== "moderator" && (
+                    <button
+                      onClick={() => handleRoleChange(user.id, "moderator")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-orange-400 hover:bg-gray-700"
+                    >
+                      <Shield className="h-4 w-4" />
+                      Make Moderator
+                    </button>
+                  )}
+
+                  {user.role !== "teacher" && (
+                    <button
+                      onClick={() => handleRoleChange(user.id, "teacher")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
+                    >
+                      <UserCheck className="h-4 w-4" />
+                      Make Teacher
+                    </button>
+                  )}
+
+                  <div className="my-1 border-t border-gray-700" />
+
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete User
+                  </button>
+                </>
+              );
+            })()}
+          </div>
+        </>
+      )}
+
+      {/* User Detail/Edit Modal */}
+      {selectedUser && editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-xl border border-gray-700 bg-gray-800 p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">
+                {t("admin.userProfile") || "User Profile"}
+              </h3>
+              <button
+                onClick={() => {
+                  setSelectedUser(null);
+                  setEditingUser(null);
+                }}
+                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              {/* Avatar & Basic Info */}
+              <div className="flex items-center gap-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-xl font-medium text-white">
+                  {selectedUser.firstName?.charAt(0)}
+                  {selectedUser.lastName?.charAt(0)}
+                </div>
+                <div>
+                  <p className="text-gray-400">ID: {selectedUser.id}</p>
+                  <p className="text-gray-400">{selectedUser.phone}</p>
+                  {selectedUser.username && (
+                    <p className="text-gray-500">@{selectedUser.username}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("auth.firstName") || "First Name"}
+                  </label>
+                  <input
+                    type="text"
+                    value={editingUser.firstName}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, firstName: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("auth.lastName") || "Last Name"}
+                  </label>
+                  <input
+                    type="text"
+                    value={editingUser.lastName}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, lastName: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("admin.role") || "Role"}
+                  </label>
+                  <select
+                    value={editingUser.role}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, role: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="student">{t("admin.student") || "Student"}</option>
+                    <option value="teacher">{t("admin.teacher") || "Teacher"}</option>
+                    <option value="moderator">Moderator</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("admin.status") || "Status"}
+                  </label>
+                  <select
+                    value={editingUser.status}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, status: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="pending">{t("admin.pending") || "Pending"}</option>
+                    <option value="active">{t("admin.active") || "Active"}</option>
+                    <option value="blocked">{t("admin.suspended") || "Blocked"}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="text-sm text-gray-500">
+                {t("admin.joined") || "Joined"}: {new Date(selectedUser.createdAt).toLocaleDateString()}
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => {
+                  setSelectedUser(null);
+                  setEditingUser(null);
+                }}
+                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+              >
+                {t("common.cancel") || "Cancel"}
+              </button>
+              <button
+                onClick={handleSaveUser}
+                disabled={isUpdating === selectedUser.id}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isUpdating === selectedUser.id ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  t("common.save") || "Save Changes"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
