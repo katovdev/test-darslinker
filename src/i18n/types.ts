@@ -288,9 +288,12 @@ export interface Translations {
   course: {
     title: string;
     myCourses: string;
+    allCourses: string;
     enrolledCourses: string;
     noCourses: string;
+    noCoursesDesc: string;
     browseCourses: string;
+    searchCourses: string;
     totalLessons: string;
     duration: string;
     teacher: string;
@@ -299,6 +302,7 @@ export interface Translations {
     startCourse: string;
     continueLearning: string;
     completed: string;
+    inProgress: string;
     locked: string;
     free: string;
     enroll: string;
@@ -306,6 +310,9 @@ export interface Translations {
     progress: string;
     courseNotFound: string;
     loadError: string;
+    noResults: string;
+    tryDifferentSearch: string;
+    clearFilters: string;
   };
   lesson: {
     title: string;

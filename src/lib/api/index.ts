@@ -64,6 +64,10 @@ export {
   type QuizAttemptsResponse,
   type QuizSubmitResponse,
   type CourseQueryParams,
+  // Global public courses
+  type GlobalCourse,
+  type GlobalCourseTeacher,
+  type GlobalCoursesResponse,
 } from "./courses";
 
 // Notification API

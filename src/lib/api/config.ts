@@ -1,8 +1,3 @@
-/**
- * API Configuration
- * Centralized configuration for API endpoints and settings
- */
-
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export const apiConfig = {
@@ -12,7 +7,6 @@ export const apiConfig = {
   retryDelay: isDevelopment ? 1000 : 2000,
 } as const;
 
-// Auth API endpoints (OTP-only)
 export const authEndpoints = {
   requestOtp: "auth",
   login: "auth/login",
@@ -21,7 +15,6 @@ export const authEndpoints = {
   me: "auth/me",
 } as const;
 
-// Public endpoints (on teacher subdomain - no auth required)
 export const publicEndpoints = {
   getTenant: "public/tenant",
   getCourses: "public/courses",
@@ -36,7 +29,6 @@ export const publicEndpoints = {
     `public/courses/${courseSlug}/modules/${moduleSlug}/lessons/${lessonSlug}`,
 } as const;
 
-// Path-based public endpoints (no subdomain required)
 export const publicPathEndpoints = {
   getTeacherLanding: (username: string) => `u/${username}`,
   getTeacherCourses: (username: string) => `u/${username}/courses`,
@@ -46,7 +38,6 @@ export const publicPathEndpoints = {
     `u/${username}/courses/${courseSlug}/${lessonSlug}`,
 } as const;
 
-// Student endpoints (require authentication)
 export const studentEndpoints = {
   profile: "student/profile",
   updateProfile: "student/profile",
@@ -57,13 +48,11 @@ export const studentEndpoints = {
   completeLesson: (id: string) => `student/lessons/${id}/complete`,
   progress: "student/progress",
   courseProgress: (courseId: string) => `student/courses/${courseId}/progress`,
-  // Payments
   payments: "student/payments",
   submitPayment: "student/payments",
   paymentById: (id: string) => `student/payments/${id}`,
 } as const;
 
-// Teacher endpoints (require teacher role)
 export const teacherEndpoints = {
   // Dashboard & Profile
   dashboard: "teacher/dashboard",
@@ -162,6 +151,9 @@ export const blogEndpoints = {
   deactivateCategory: (id: string) => `categories/${id}/deactivate`,
   deleteCategory: (id: string) => `categories/${id}`,
 } as const;
+
+// Global public courses endpoint
+export const globalCoursesEndpoint = "courses" as const;
 
 // Course API endpoints (legacy - keep for compatibility)
 export const courseEndpoints = {

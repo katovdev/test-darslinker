@@ -1,5 +1,5 @@
 import { api } from "./client";
-import { courseEndpoints } from "./config";
+import { courseEndpoints, globalCoursesEndpoint } from "./config";
 import { logger } from "../logger";
 
 // Types
@@ -112,6 +112,38 @@ export interface TeacherLanding {
   heroSubtitle?: string;
 }
 
+// Global public courses types
+export interface GlobalCourseTeacher {
+  id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  logoUrl: string | null;
+}
+
+export interface GlobalCourse {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  price: number;
+  type: string;
+  thumbnail: string | null;
+  createdAt: string;
+  teacher: GlobalCourseTeacher;
+  modulesCount: number;
+  lessonsCount: number;
+  totalDuration: number;
+}
+
+export interface GlobalCoursesResponse {
+  success: boolean;
+  data: {
+    all: GlobalCourse[];
+    enrolled: GlobalCourse[];
+  };
+}
+
 // Response types
 export interface CoursesResponse {
   success: boolean;
@@ -182,6 +214,18 @@ export interface CourseQueryParams {
  * Course API Service
  */
 class CourseAPI {
+  /**
+   * Get global public courses (all active + user's enrolled)
+   */
+  async getGlobalCourses(): Promise<GlobalCoursesResponse> {
+    try {
+      return await api.get<GlobalCoursesResponse>(globalCoursesEndpoint);
+    } catch (error) {
+      logger.error("Error fetching global courses:", error);
+      throw error;
+    }
+  }
+
   /**
    * Get all published courses
    */

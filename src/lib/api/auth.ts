@@ -26,7 +26,6 @@ export interface LoginRequest {
 export interface RequestOtpResponse {
   success: boolean;
   data?: {
-    userId: string;
     message: string;
   };
   message?: string;
