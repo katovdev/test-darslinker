@@ -28,17 +28,17 @@ export function ModeratorSidebar() {
 
   const navItems: NavItem[] = [
     {
-      href: "/_moderator",
+      href: "/moderator",
       label: t("moderator.dashboard") || "Dashboard",
       icon: LayoutDashboard,
     },
     {
-      href: "/_moderator/users",
+      href: "/moderator/users",
       label: t("moderator.users") || "Users",
       icon: Users,
     },
     {
-      href: "/_moderator/courses",
+      href: "/moderator/courses",
       label: t("moderator.courses") || "Courses",
       icon: BookOpen,
     },
@@ -50,8 +50,8 @@ export function ModeratorSidebar() {
   };
 
   const isActive = (href: string) => {
-    if (href === "/_moderator") {
-      return pathname === "/_moderator";
+    if (href === "/moderator") {
+      return pathname === "/moderator";
     }
     return pathname.startsWith(href);
   };

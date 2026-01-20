@@ -56,8 +56,8 @@ export function HomeHeader() {
   };
 
   const getAdminLink = () => {
-    if (user?.role === "admin") return "/_admin";
-    if (user?.role === "moderator") return "/_moderator";
+    if (user?.role === "admin") return "/admin";
+    if (user?.role === "moderator") return "/moderator";
     return null;
   };
 

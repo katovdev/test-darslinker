@@ -30,27 +30,27 @@ export function AdminSidebar() {
 
   const navItems: NavItem[] = [
     {
-      href: "/_admin",
+      href: "/admin",
       label: t("admin.dashboard") || "Dashboard",
       icon: LayoutDashboard,
     },
     {
-      href: "/_admin/users",
+      href: "/admin/users",
       label: t("admin.users") || "Users",
       icon: Users,
     },
     {
-      href: "/_admin/courses",
+      href: "/admin/courses",
       label: t("admin.courses") || "Courses",
       icon: BookOpen,
     },
     {
-      href: "/_admin/payments",
+      href: "/admin/payments",
       label: t("admin.payments") || "Payments",
       icon: CreditCard,
     },
     {
-      href: "/_admin/earnings",
+      href: "/admin/earnings",
       label: t("admin.earnings") || "Earnings",
       icon: DollarSign,
     },
@@ -62,8 +62,8 @@ export function AdminSidebar() {
   };
 
   const isActive = (href: string) => {
-    if (href === "/_admin") {
-      return pathname === "/_admin";
+    if (href === "/admin") {
+      return pathname === "/admin";
     }
     return pathname.startsWith(href);
   };
