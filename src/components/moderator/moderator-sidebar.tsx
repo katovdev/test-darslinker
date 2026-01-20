@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   BookOpen,
+  FileText,
   LogOut,
   Menu,
   X,
@@ -41,6 +42,11 @@ export function ModeratorSidebar() {
       href: "/moderator/courses",
       label: t("moderator.courses") || "Courses",
       icon: BookOpen,
+    },
+    {
+      href: "/moderator/blogs",
+      label: t("moderator.blogs") || "Blogs",
+      icon: FileText,
     },
   ];
 

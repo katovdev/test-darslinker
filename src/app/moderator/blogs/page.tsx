@@ -43,7 +43,7 @@ const initialFormData: BlogFormData = {
   thumbnail: "",
 };
 
-export default function AdminBlogsPage() {
+export default function ModeratorBlogsPage() {
   const t = useTranslations();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<BlogCategory[]>([]);
@@ -69,13 +69,11 @@ export default function AdminBlogsPage() {
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
-  // Create/Edit modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [formData, setFormData] = useState<BlogFormData>(initialFormData);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Category modal state
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryDescription, setNewCategoryDescription] = useState("");
@@ -101,10 +99,10 @@ export default function AdminBlogsPage() {
         setBlogs(response.data.blogs);
         setPagination(response.data.pagination);
       } else {
-        setError(t("admin.statsLoadError") || "Failed to load blogs");
+        setError(t("moderator.statsLoadError") || "Failed to load blogs");
       }
     } catch {
-      setError(t("admin.statsLoadError") || "Failed to load blogs");
+      setError(t("moderator.statsLoadError") || "Failed to load blogs");
     } finally {
       setIsLoading(false);
     }
@@ -116,9 +114,7 @@ export default function AdminBlogsPage() {
       if (response?.success && response.data) {
         setCategories(response.data.categories);
       }
-    } catch {
-      // Silent fail for categories
-    }
+    } catch {}
   };
 
   useEffect(() => {
@@ -386,10 +382,10 @@ export default function AdminBlogsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">
-            {t("admin.blogs") || "Blogs"}
+            {t("moderator.blogs") || "Blogs"}
           </h1>
           <p className="mt-1 text-gray-400">
-            {t("admin.blogsSubtitle") || "Manage blog posts"}
+            {t("moderator.blogsSubtitle") || "Manage blog posts"}
           </p>
         </div>
         <div className="flex gap-2">
@@ -415,7 +411,7 @@ export default function AdminBlogsPage() {
             onClick={handleOpenCreateModal}
           >
             <Plus className="h-4 w-4" />
-            {t("admin.createBlog") || "Create Blog"}
+            {t("moderator.createBlog") || "Create Blog"}
           </button>
         </div>
       </div>
@@ -468,7 +464,7 @@ export default function AdminBlogsPage() {
             className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
           >
             <option value="all">
-              {t("admin.allStatuses") || "All Statuses"}
+              {t("moderator.allStatuses") || "All Statuses"}
             </option>
             <option value="draft">Draft</option>
             <option value="published">Published</option>
@@ -733,7 +729,7 @@ export default function AdminBlogsPage() {
           <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-white">
-                {t("admin.blogDetails") || "Blog Details"}
+                {t("moderator.blogDetails") || "Blog Details"}
               </h3>
               <button
                 onClick={() => setSelectedBlog(null)}
@@ -836,6 +832,7 @@ export default function AdminBlogsPage() {
         </div>
       )}
 
+      {/* Create/Edit Blog Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
@@ -843,7 +840,7 @@ export default function AdminBlogsPage() {
               <h3 className="text-lg font-semibold text-white">
                 {editingBlog
                   ? "Edit Blog"
-                  : t("admin.createBlog") || "Create Blog"}
+                  : t("moderator.createBlog") || "Create Blog"}
               </h3>
               <button
                 onClick={handleCloseModal}
@@ -870,6 +867,7 @@ export default function AdminBlogsPage() {
                 />
               </div>
 
+              {/* Subtitle */}
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-300">
                   Subtitle
@@ -884,6 +882,7 @@ export default function AdminBlogsPage() {
                 />
               </div>
 
+              {/* Category and Status */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-gray-300">
@@ -927,6 +926,7 @@ export default function AdminBlogsPage() {
                 </div>
               </div>
 
+              {/* Thumbnail URL */}
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-300">
                   Thumbnail URL
@@ -943,6 +943,7 @@ export default function AdminBlogsPage() {
                 />
               </div>
 
+              {/* Content */}
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-300">
                   Content <span className="text-red-400">*</span>
@@ -991,6 +992,7 @@ export default function AdminBlogsPage() {
         </div>
       )}
 
+      {/* Category Management Modal */}
       {isCategoryModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
@@ -1006,6 +1008,7 @@ export default function AdminBlogsPage() {
               </button>
             </div>
 
+            {/* Create New Category */}
             <div className="mt-6 space-y-3 rounded-lg bg-gray-900 p-4">
               <h4 className="text-sm font-medium text-gray-300">
                 Create New Category
@@ -1045,6 +1048,7 @@ export default function AdminBlogsPage() {
               </button>
             </div>
 
+            {/* Existing Categories */}
             <div className="mt-6">
               <h4 className="mb-3 text-sm font-medium text-gray-300">
                 Existing Categories ({categories.length})
