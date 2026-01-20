@@ -1,16 +1,11 @@
-/**
- * Application configuration
- * Uses Next.js environment variables
- */
-
 export const config = {
   app: {
-    name: process.env.NEXT_PUBLIC_APP_NAME || "Dars Linker",
+    name: "Dars Linker",
     description: "O'zbekiston EdTech Platformasi",
-    version: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
+    version: "1.0.0",
   },
   api: {
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://api.darslinker.uz/api",
+    baseUrl: "https://api.darslinker.uz/api",
   },
   routes: {
     home: "/",
@@ -25,6 +20,7 @@ export const config = {
 export const UserRoles = {
   STUDENT: "student",
   TEACHER: "teacher",
+  MODERATOR: "moderator",
   ADMIN: "admin",
 } as const;
 

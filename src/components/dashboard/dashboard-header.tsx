@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useTranslations } from "@/hooks/use-locale";
-import { useUser, useAppStore } from "@/store";
+import { useUser } from "@/context/auth-context";
 import { logout } from "@/services/auth";
 import { DashboardSidebar } from "./sidebar";
 
@@ -47,9 +47,7 @@ export function DashboardHeader() {
   return (
     <header className="fixed top-0 right-0 left-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur-sm">
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
-        {/* Left: Logo & Mobile Menu */}
         <div className="flex items-center gap-4">
-          {/* Mobile Menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild className="lg:hidden">
               <Button variant="ghost" size="icon" className="text-white">
@@ -76,16 +74,13 @@ export function DashboardHeader() {
             </SheetContent>
           </Sheet>
 
-          {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-1">
             <span className="text-2xl font-bold text-white">dars</span>
             <span className="text-2xl font-bold text-[#7EA2D4]">linker</span>
           </Link>
         </div>
 
-        {/* Right: Actions */}
         <div className="flex items-center gap-2">
-          {/* Telegram Bot */}
           <Button
             variant="ghost"
             size="sm"
@@ -102,7 +97,6 @@ export function DashboardHeader() {
             </a>
           </Button>
 
-          {/* Notifications */}
           <Button
             variant="ghost"
             size="icon"
@@ -111,7 +105,6 @@ export function DashboardHeader() {
             <Bell className="h-5 w-5" />
           </Button>
 
-          {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

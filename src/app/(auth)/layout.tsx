@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
-import { useIsAuthenticated, useHasHydrated, useUser } from "@/store";
+import { useAuth } from "@/context/auth-context";
 
 function Logo() {
   return (
@@ -23,18 +23,14 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const isAuthenticated = useIsAuthenticated();
-  const hasHydrated = useHasHydrated();
-  const user = useUser();
+  const { isAuthenticated, hasHydrated, user } = useAuth();
 
   useEffect(() => {
-    // Only redirect after hydration is complete
     if (hasHydrated && isAuthenticated && user) {
       router.push("/courses");
     }
   }, [isAuthenticated, hasHydrated, user, router]);
 
-  // Show loading while hydrating or if authenticated (about to redirect)
   if (!hasHydrated || (isAuthenticated && user)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
@@ -50,7 +46,6 @@ export default function AuthLayout({
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-900">
-      {/* Background gradient */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/3 left-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-b from-blue-500/20 to-transparent blur-3xl" />
       </div>

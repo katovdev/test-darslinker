@@ -1,6 +1,11 @@
 import ky, { type KyInstance, type Options, HTTPError } from "ky";
 import { apiConfig } from "./config";
-import { useAppStore } from "@/store";
+import {
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  clearTokens,
+} from "@/lib/cookies";
 
 export interface ApiError {
   success: false;
@@ -37,17 +42,15 @@ async function parseErrorResponse(error: HTTPError): Promise<ApiError> {
 function handleUnauthorized(): void {
   if (typeof window === "undefined") return;
 
-  // Clear auth state from store
-  useAppStore.getState().logout();
+  clearTokens();
 
-  // Only redirect if not already on login page
   if (!window.location.pathname.includes("/login")) {
     window.location.href = "/login";
   }
 }
 
 async function tryRefreshToken(): Promise<boolean> {
-  const { refreshToken, setAccessToken } = useAppStore.getState();
+  const refreshToken = getRefreshToken();
 
   if (!refreshToken) return false;
 
@@ -85,8 +88,7 @@ function createApiClient(): KyInstance {
     hooks: {
       beforeRequest: [
         (request) => {
-          // Add Authorization header with access token from store
-          const { accessToken } = useAppStore.getState();
+          const accessToken = getAccessToken();
           if (accessToken) {
             request.headers.set("Authorization", `Bearer ${accessToken}`);
           }
@@ -96,13 +98,11 @@ function createApiClient(): KyInstance {
         async (request, options, response) => {
           if (response.status === 401) {
             const url = request.url;
-            // Don't try to refresh on auth endpoints
             if (url.includes("/auth/refresh") || url.includes("/auth/login")) {
               handleUnauthorized();
               return response;
             }
 
-            // Try to refresh token (up to 3 times per TODO.md)
             let refreshed = false;
             for (let i = 0; i < 3; i++) {
               refreshed = await tryRefreshToken();
@@ -110,8 +110,7 @@ function createApiClient(): KyInstance {
             }
 
             if (refreshed) {
-              // Retry the original request with new token
-              const { accessToken } = useAppStore.getState();
+              const accessToken = getAccessToken();
               const newRequest = new Request(request, {
                 headers: new Headers(request.headers),
               });

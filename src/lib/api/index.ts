@@ -1,10 +1,6 @@
-// API Client
 export { apiClient, api } from "./client";
-
-// Configuration
 export { apiConfig, blogEndpoints, cacheConfig } from "./config";
 
-// Auth API
 export {
   authApi,
   authEndpoints,
@@ -16,7 +12,6 @@ export {
   type MeResponse,
 } from "./auth";
 
-// Blog API
 export {
   blogAPI,
   type Blog,
@@ -30,10 +25,40 @@ export {
   type BlogQueryParams,
 } from "./blog";
 
-// Course API
 export {
   courseAPI,
   type GlobalCourse,
   type GlobalCourseTeacher,
   type GlobalCoursesResponse,
 } from "./courses";
+
+export {
+  adminApi,
+  type AdminStats,
+  type AdminUser,
+  type AdminUserDetail,
+  type AdminCourse,
+  type AdminCourseDetail,
+  type AdminPayment,
+  type AdminEarning,
+  type ListUsersParams as AdminListUsersParams,
+  type ListCoursesParams as AdminListCoursesParams,
+  type ListPaymentsParams,
+  type ListEarningsParams,
+  type UpdateUserInput as AdminUpdateUserInput,
+  type UpdateCourseStatusInput as AdminUpdateCourseStatusInput,
+  type UpdatePaymentInput,
+} from "./admin";
+
+export {
+  moderatorApi,
+  type ModeratorStats,
+  type ModeratorUser,
+  type ModeratorUserDetail,
+  type ModeratorCourse,
+  type ModeratorCourseDetail,
+  type ListUsersParams as ModeratorListUsersParams,
+  type ListCoursesParams as ModeratorListCoursesParams,
+  type UpdateUserStatusInput,
+  type UpdateCourseStatusInput as ModeratorUpdateCourseStatusInput,
+} from "./moderator";

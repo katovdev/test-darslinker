@@ -4,7 +4,7 @@
  */
 
 import { api } from "./client";
-import type { User } from "@/store";
+import type { User } from "@/context/auth-context";
 
 export const authEndpoints = {
   requestOtp: "auth",

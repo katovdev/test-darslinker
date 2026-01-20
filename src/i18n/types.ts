@@ -15,6 +15,8 @@ export interface Translations {
     close: string;
     comingSoon: string;
     fillRequiredFields: string;
+    refresh: string;
+    logout: string;
   };
   header: {
     newMeeting: string;
@@ -607,21 +609,35 @@ export interface Translations {
     requests: string;
     teachers: string;
     users: string;
+    courses: string;
+    payments: string;
+    earnings: string;
     analytics: string;
     admin: string;
     // Dashboard
+    dashboardTitle: string;
     dashboardSubtitle: string;
+    userStats: string;
+    courseStats: string;
+    paymentStats: string;
+    financialStats: string;
+    statsLoadError: string;
     totalUsers: string;
     totalTeachers: string;
     totalStudents: string;
+    moderators: string;
     totalCourses: string;
+    activeCourses: string;
+    totalPayments: string;
+    pendingPayments: string;
     totalRevenue: string;
+    teacherBalance: string;
     pendingRequests: string;
     recentUsers: string;
     recentTeachers: string;
     noRecentUsers: string;
     noRecentTeachers: string;
-    courses: string;
+    courses_count: string;
     students: string;
     teacher: string;
     student: string;
@@ -673,5 +689,29 @@ export interface Translations {
     courseCreation: string;
     topTeachers: string;
     noData: string;
+  };
+  moderator: {
+    // Navigation
+    dashboard: string;
+    users: string;
+    courses: string;
+    // Dashboard
+    dashboardTitle: string;
+    dashboardSubtitle: string;
+    statsLoadError: string;
+    userStats: string;
+    courseStats: string;
+    totalUsers: string;
+    teachers: string;
+    students: string;
+    pendingUsers: string;
+    blockedUsers: string;
+    totalCourses: string;
+    activeCourses: string;
+    draftCourses: string;
+    // Limited access
+    limitedAccess: string;
+    limitedAccessTitle: string;
+    limitedAccessDesc: string;
   };
 }

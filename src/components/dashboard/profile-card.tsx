@@ -3,7 +3,7 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useUser } from "@/store";
+import { useUser } from "@/context/auth-context";
 
 interface ProfileCardProps {
   rating?: number;
@@ -41,14 +41,12 @@ export function ProfileCard({
     <Card className="border-gray-800 bg-gray-800/30">
       <CardContent className="p-6">
         <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
-          {/* Avatar */}
           <Avatar className="h-24 w-24 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
             <AvatarFallback className="bg-transparent text-3xl font-bold text-white">
               {getInitials()}
             </AvatarFallback>
           </Avatar>
 
-          {/* Info */}
           <div className="mt-4 sm:mt-0 sm:ml-6">
             <h2 className="text-2xl font-bold text-white">
               {user?.firstName} {user?.lastName}
@@ -62,7 +60,6 @@ export function ProfileCard({
 
             {location && <p className="text-sm text-gray-400">{location}</p>}
 
-            {/* Rating */}
             {rating > 0 && (
               <div className="mt-3 flex items-center gap-2">
                 <div className="flex items-center gap-1">

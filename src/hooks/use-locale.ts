@@ -1,43 +1,62 @@
 "use client";
 
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { useCallback, useSyncExternalStore } from "react";
 import { getTranslation, type Locale, defaultLocale } from "@/i18n";
 
-interface LocaleState {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
+const LOCALE_KEY = "darslinker-locale";
+
+function getStoredLocale(): Locale {
+  if (typeof window === "undefined") return defaultLocale;
+  const stored = localStorage.getItem(LOCALE_KEY);
+  if (stored && (stored === "uz" || stored === "ru" || stored === "en")) {
+    return stored as Locale;
+  }
+  return defaultLocale;
 }
 
-export const useLocaleStore = create<LocaleState>()(
-  persist(
-    (set) => ({
-      locale: defaultLocale,
-      setLocale: (locale) => set({ locale }),
-    }),
-    {
-      name: "darslinker-locale",
-    }
-  )
-);
-
-/**
- * Hook to get current locale
- */
-export function useLocale() {
-  return useLocaleStore((state) => state.locale);
+function setStoredLocale(locale: Locale): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(LOCALE_KEY, locale);
 }
 
-/**
- * Hook to set locale
- */
+let globalLocale: Locale = defaultLocale;
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function getSnapshot(): Locale {
+  return globalLocale;
+}
+
+function getServerSnapshot(): Locale {
+  return defaultLocale;
+}
+
+function setGlobalLocale(locale: Locale) {
+  globalLocale = locale;
+  setStoredLocale(locale);
+  listeners.forEach((listener) => listener());
+}
+
+if (typeof window !== "undefined") {
+  globalLocale = getStoredLocale();
+}
+
+export function useLocale(): Locale {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
 export function useSetLocale() {
-  return useLocaleStore((state) => state.setLocale);
+  return useCallback((locale: Locale) => {
+    setGlobalLocale(locale);
+  }, []);
 }
 
-/**
- * Hook to get translation function
- */
 export function useTranslations() {
   const locale = useLocale();
 
@@ -46,9 +65,6 @@ export function useTranslations() {
   };
 }
 
-/**
- * Hook to get both locale and translation function
- */
 export function useI18n() {
   const locale = useLocale();
   const setLocale = useSetLocale();
@@ -59,3 +75,7 @@ export function useI18n() {
 
   return { locale, setLocale, t };
 }
+
+export const useLocaleStore = {
+  getState: () => ({ locale: globalLocale, setLocale: setGlobalLocale }),
+};
