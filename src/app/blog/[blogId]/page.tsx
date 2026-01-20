@@ -1,142 +1,52 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
-  Eye,
+  Heart,
   Calendar,
   Share2,
-  Loader2,
   RefreshCw,
   FileText,
   Check,
   Tag,
+  Loader2,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
-import { blogAPI, type Blog, type BlogSection } from "@/lib/api/blog";
 import { blogService, type TransformedBlog } from "@/services/blog";
 import { toast } from "sonner";
 import { HomeHeader, HomeFooter } from "@/components/home";
-
-const VIEW_TRACKING_DELAY = 10000;
+import { useAuth } from "@/context/auth-context";
 
 export default function BlogDetailPage() {
   const t = useTranslations();
   const params = useParams();
   const router = useRouter();
-  const blogId = params.blogId as string;
+  const { isAuthenticated } = useAuth();
+  const blogSlug = params.blogId as string;
 
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [relatedBlogs, setRelatedBlogs] = useState<TransformedBlog[]>([]);
+  const [blog, setBlog] = useState<
+    (TransformedBlog & { content?: string }) | null
+  >(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-
-  const viewTracked = useRef(false);
-  const startTime = useRef<number>(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const isViewTrackedInSession = useCallback(() => {
-    if (typeof window === "undefined") return false;
-    const trackedViews = sessionStorage.getItem("tracked_blog_views");
-    if (trackedViews) {
-      const views = JSON.parse(trackedViews) as string[];
-      return views.includes(blogId);
-    }
-    return false;
-  }, [blogId]);
-
-  const markViewAsTracked = useCallback(() => {
-    if (typeof window === "undefined") return;
-    const trackedViews = sessionStorage.getItem("tracked_blog_views");
-    const views = trackedViews ? (JSON.parse(trackedViews) as string[]) : [];
-    if (!views.includes(blogId)) {
-      views.push(blogId);
-      sessionStorage.setItem("tracked_blog_views", JSON.stringify(views));
-    }
-  }, [blogId]);
-
-  const trackView = useCallback(async () => {
-    if (viewTracked.current || isViewTrackedInSession()) return;
-
-    viewTracked.current = true;
-    markViewAsTracked();
-
-    try {
-      await blogAPI.trackBlogView(blogId);
-    } catch {
-      // Silently fail
-    }
-  }, [blogId, isViewTrackedInSession, markViewAsTracked]);
-
-  useEffect(() => {
-    if (!blogId || isViewTrackedInSession()) return;
-
-    startTime.current = Date.now();
-
-    timerRef.current = setTimeout(() => {
-      trackView();
-    }, VIEW_TRACKING_DELAY);
-
-    const handleBeforeUnload = () => {
-      if (Date.now() - startTime.current >= VIEW_TRACKING_DELAY) {
-        trackView();
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-
-      if (Date.now() - startTime.current >= VIEW_TRACKING_DELAY) {
-        trackView();
-      }
-    };
-  }, [blogId, trackView, isViewTrackedInSession]);
+  const [isLiking, setIsLiking] = useState(false);
 
   useEffect(() => {
     async function loadBlog() {
-      if (!blogId) return;
+      if (!blogSlug) return;
 
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await blogAPI.getBlogById(blogId);
+        const response = await blogService.getBlogBySlug(blogSlug);
 
         if (response.success && response.data) {
           setBlog(response.data);
-
-          try {
-            const relatedResponse = await blogService.getRelatedBlogs(
-              response.data.id || response.data._id || blogId,
-              3
-            );
-            if (relatedResponse.success && relatedResponse.data) {
-              const transformed: TransformedBlog[] = relatedResponse.data.map(
-                (b) => ({
-                  id: b.id || b._id || "",
-                  title: b.title,
-                  description: b.subtitle || "",
-                  views: b.multiViews || 0,
-                  date: new Date(b.createdAt).toLocaleDateString("uz-UZ"),
-                  category: b.categoryId?.name || null,
-                  slug: b.slug || b.id || b._id || "",
-                  tags: b.tags || [],
-                  isArchived: b.isArchive || false,
-                })
-              );
-              setRelatedBlogs(transformed);
-            }
-          } catch {
-            // Related blogs are optional
-          }
         } else {
           setError(t("blog.notFound"));
         }
@@ -149,7 +59,42 @@ export default function BlogDetailPage() {
     }
 
     loadBlog();
-  }, [blogId, t]);
+  }, [blogSlug, t]);
+
+  const handleLike = async () => {
+    if (!blog) return;
+
+    if (!isAuthenticated) {
+      toast.error(t("blog.loginToLike") || "Please login to like this article");
+      return;
+    }
+
+    setIsLiking(true);
+    try {
+      const response = await blogService.toggleLike(blog.id);
+
+      if (response.success) {
+        setBlog((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            isLiked: response.liked,
+            likesCount: response.likesCount ?? prev.likesCount,
+          };
+        });
+
+        if (response.liked) {
+          toast.success(t("blog.liked") || "Article liked!");
+        }
+      } else {
+        toast.error(t("blog.likeFailed") || "Failed to like article");
+      }
+    } catch {
+      toast.error(t("blog.likeFailed") || "Failed to like article");
+    } finally {
+      setIsLiking(false);
+    }
+  };
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -159,7 +104,6 @@ export default function BlogDetailPage() {
       try {
         await navigator.share({ title, url });
       } catch {
-        // User cancelled
       }
     } else {
       try {
@@ -173,78 +117,6 @@ export default function BlogDetailPage() {
     }
   };
 
-  const renderSections = (sections: BlogSection[]) => {
-    return sections.map((section, index) => {
-      const content = section.content || "";
-      const type = section.type || "paragraph";
-
-      switch (type) {
-        case "h1":
-          return (
-            <h1
-              key={index}
-              className="mt-10 mb-4 text-3xl font-bold text-white"
-            >
-              {content}
-            </h1>
-          );
-        case "h2":
-          return (
-            <h2 key={index} className="mt-8 mb-3 text-2xl font-bold text-white">
-              {content}
-            </h2>
-          );
-        case "h3":
-          return (
-            <h3
-              key={index}
-              className="mt-6 mb-2 text-xl font-semibold text-white"
-            >
-              {content}
-            </h3>
-          );
-        case "h4":
-          return (
-            <h4
-              key={index}
-              className="mt-4 mb-2 text-lg font-semibold text-white"
-            >
-              {content}
-            </h4>
-          );
-        case "code":
-          return (
-            <pre
-              key={index}
-              className="my-6 overflow-x-auto rounded-xl border border-gray-700 bg-gray-800/50 p-4 text-sm text-gray-300"
-            >
-              <code>{content}</code>
-            </pre>
-          );
-        case "quote":
-          return (
-            <blockquote
-              key={index}
-              className="my-6 border-l-4 border-blue-500 bg-blue-500/5 py-4 pr-4 pl-6 text-gray-300 italic"
-            >
-              {content}
-            </blockquote>
-          );
-        default:
-          return content.split("\n").map((paragraph, pIndex) =>
-            paragraph.trim() ? (
-              <p
-                key={`${index}-${pIndex}`}
-                className="mb-4 text-lg leading-relaxed text-gray-300"
-              >
-                {paragraph}
-              </p>
-            ) : null
-          );
-      }
-    });
-  };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("uz-UZ", {
@@ -254,7 +126,6 @@ export default function BlogDetailPage() {
     });
   };
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900">
@@ -278,7 +149,6 @@ export default function BlogDetailPage() {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="min-h-screen bg-gray-900">
@@ -340,10 +210,10 @@ export default function BlogDetailPage() {
           </Link>
 
           {/* Category badge */}
-          {blog.categoryId && (
+          {blog.category && (
             <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">
               <Tag className="h-3.5 w-3.5" />
-              {blog.categoryId.name}
+              {blog.category}
             </div>
           )}
 
@@ -356,12 +226,28 @@ export default function BlogDetailPage() {
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
-              {formatDate(blog.createdAt)}
+              {formatDate(blog.date)}
             </span>
-            <span className="flex items-center gap-1.5">
-              <Eye className="h-4 w-4" />
-              {(blog.multiViews || 0).toLocaleString()} {t("blog.views")}
-            </span>
+
+            {/* Like button */}
+            <button
+              onClick={handleLike}
+              disabled={isLiking}
+              className={`flex items-center gap-1.5 transition-colors ${
+                blog.isLiked ? "text-red-500" : "hover:text-red-400"
+              }`}
+            >
+              {isLiking ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Heart
+                  className={`h-4 w-4 ${blog.isLiked ? "fill-current" : ""}`}
+                />
+              )}
+              {blog.likesCount} {t("blog.likes") || "likes"}
+            </button>
+
+            {/* Share button */}
             <button
               onClick={handleShare}
               className="flex items-center gap-1.5 transition-colors hover:text-white"
@@ -371,23 +257,9 @@ export default function BlogDetailPage() {
               ) : (
                 <Share2 className="h-4 w-4" />
               )}
-              {copied ? t("blog.linkCopied") : "Share"}
+              {copied ? t("blog.linkCopied") : t("blog.share") || "Share"}
             </button>
           </div>
-
-          {/* Tags */}
-          {blog.tags && blog.tags.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {blog.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="rounded-lg border border-gray-700 bg-gray-800/50 px-3 py-1 text-xs text-gray-400"
-                >
-                  {tag.label}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
       </header>
 
@@ -395,53 +267,43 @@ export default function BlogDetailPage() {
       <main className="px-4 py-12 sm:px-6 lg:px-8">
         <article className="mx-auto max-w-3xl">
           {/* Subtitle */}
-          {blog.subtitle && (
+          {blog.description && (
             <p className="mb-8 text-xl leading-relaxed text-gray-400">
-              {blog.subtitle}
+              {blog.description}
             </p>
           )}
 
           {/* Content */}
-          {blog.sections && blog.sections.length > 0 ? (
-            renderSections(blog.sections)
+          {blog.content ? (
+            <div
+              className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-gray-300 prose-a:text-blue-400 prose-strong:text-white prose-code:text-blue-300"
+              dangerouslySetInnerHTML={{ __html: blog.content }}
+            />
           ) : (
             <p className="text-gray-400">{t("blog.noContent")}</p>
           )}
         </article>
 
-        {/* Related Blogs */}
-        {relatedBlogs.length > 0 && (
-          <section className="mx-auto mt-20 max-w-3xl border-t border-gray-800 pt-12">
-            <h2 className="mb-8 text-2xl font-bold text-white">
-              {t("blog.relatedArticles")}
-            </h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedBlogs.map((related) => (
-                <Link
-                  key={related.id}
-                  href={`/blog/${related.slug || related.id}`}
-                  className="group"
-                >
-                  <article className="h-full rounded-2xl border border-gray-700 bg-gray-800/30 p-5 transition-all duration-300 hover:border-gray-600 hover:bg-gray-800/50">
-                    <h3 className="line-clamp-2 font-semibold text-white transition-colors group-hover:text-blue-400">
-                      {related.title}
-                    </h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-gray-400">
-                      {related.description}
-                    </p>
-                    <div className="mt-4 flex items-center gap-3 text-xs text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <Eye className="h-3 w-3" />
-                        {related.views}
-                      </span>
-                      <span>{related.date}</span>
-                    </div>
-                  </article>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* Floating like button */}
+        <div className="fixed right-6 bottom-6 z-50">
+          <button
+            onClick={handleLike}
+            disabled={isLiking}
+            className={`flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all ${
+              blog.isLiked
+                ? "bg-red-500 text-white hover:bg-red-600"
+                : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-red-400"
+            }`}
+          >
+            {isLiking ? (
+              <Loader2 className="h-6 w-6 animate-spin" />
+            ) : (
+              <Heart
+                className={`h-6 w-6 ${blog.isLiked ? "fill-current" : ""}`}
+              />
+            )}
+          </button>
+        </div>
       </main>
 
       <HomeFooter />

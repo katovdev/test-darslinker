@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
 import {
   Search,
   Loader2,
@@ -14,7 +13,7 @@ import { ArticleCard } from "@/components/blog/article-card";
 import { HomeHeader, HomeFooter } from "@/components/home";
 import { useTranslations } from "@/hooks/use-locale";
 import { blogService, type TransformedBlog } from "@/services/blog";
-import { blogAPI, type Category } from "@/lib/api/blog";
+import type { BlogCategory } from "@/lib/api/blog";
 
 const BLOGS_PER_PAGE = 12;
 
@@ -27,7 +26,7 @@ interface PaginationInfo {
 export default function BlogPage() {
   const t = useTranslations();
   const [blogs, setBlogs] = useState<TransformedBlog[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,7 +47,7 @@ export default function BlogPage() {
           page: number;
           limit: number;
           search?: string;
-          category?: string;
+          categoryId?: string;
         } = {
           page,
           limit: BLOGS_PER_PAGE,
@@ -59,27 +58,13 @@ export default function BlogPage() {
         }
 
         if (selectedCategory && selectedCategory !== "all") {
-          params.category = selectedCategory;
+          params.categoryId = selectedCategory;
         }
 
         const response = await blogService.getAllBlogs(params);
 
         if (response.success && response.data) {
-          const transformedBlogs: TransformedBlog[] = response.data.map(
-            (blog) => ({
-              id: blog.id || blog._id || "",
-              title: blog.title,
-              description: blog.subtitle || "",
-              views: blog.multiViews || 0,
-              date: new Date(blog.createdAt).toLocaleDateString("uz-UZ"),
-              category: blog.categoryId?.name || null,
-              slug: blog.slug || blog.id || blog._id || "",
-              tags: blog.tags || [],
-              isArchived: blog.isArchive || false,
-            })
-          );
-
-          setBlogs(transformedBlogs);
+          setBlogs(response.data);
 
           if (response.pagination) {
             setPagination({
@@ -101,7 +86,7 @@ export default function BlogPage() {
 
   const loadCategories = async () => {
     try {
-      const response = await blogAPI.getCategories(true);
+      const response = await blogService.getCategories();
       if (response.success && response.data) {
         setCategories(response.data);
       }
@@ -132,9 +117,7 @@ export default function BlogPage() {
     <div className="min-h-screen bg-gray-900">
       <HomeHeader />
 
-      {/* Hero Section */}
       <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-green-500/10 to-transparent blur-3xl" />
         </div>
@@ -152,7 +135,6 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Search and Filter */}
       <section className="border-t border-gray-800 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-4 sm:flex-row">
@@ -189,7 +171,6 @@ export default function BlogPage() {
             </select>
           </div>
 
-          {/* Results Info */}
           {!isLoading && !error && (
             <p className="mt-6 text-sm text-gray-500">
               {t("blog.showingResults", {
@@ -201,10 +182,8 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Content */}
       <main className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          {/* Loading State */}
           {isLoading && (
             <div className="space-y-8">
               <div className="flex items-center justify-center gap-2 py-8 text-gray-400">
@@ -233,7 +212,6 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Error State */}
           {error && !isLoading && (
             <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
@@ -255,7 +233,6 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Empty State */}
           {!isLoading && !error && blogs.length === 0 && (
             <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-800">
@@ -283,7 +260,6 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Blog Grid */}
           {!isLoading && !error && blogs.length > 0 && (
             <>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -292,7 +268,6 @@ export default function BlogPage() {
                 ))}
               </div>
 
-              {/* Pagination */}
               {pagination.totalPages > 1 && (
                 <div className="mt-12 flex items-center justify-center gap-2">
                   <button

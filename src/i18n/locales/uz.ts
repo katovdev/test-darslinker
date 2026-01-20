@@ -317,10 +317,16 @@ export const uz: Translations = {
     next: "Keyingi",
     notFound: "Maqola topilmadi",
     views: "ko'rildi",
+    likes: "yoqtirish",
+    liked: "Maqola yoqtirildi!",
+    loginToLike: "Yoqtirish uchun tizimga kiring",
+    likeFailed: "Yoqtirishda xatolik",
+    share: "Ulashish",
     relatedArticles: "O'xshash maqolalar",
     noContent: "Maqola matni mavjud emas",
     linkCopied: "Havola nusxalandi!",
     copyFailed: "Havolani nusxalashda xatolik",
+    noBlogs: "Maqolalar topilmadi",
   },
 
   // Course

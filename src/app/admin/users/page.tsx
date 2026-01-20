@@ -170,7 +170,13 @@ export default function AdminUsersPage() {
       setUsers((prev) =>
         prev.map((u) =>
           u.id === selectedUser.id
-            ? { ...u, ...editingUser }
+            ? {
+                ...u,
+                firstName: editingUser.firstName,
+                lastName: editingUser.lastName,
+                role: editingUser.role as "teacher" | "student" | "moderator" | "admin",
+                status: editingUser.status as "active" | "blocked" | "pending",
+              }
             : u
         )
       );

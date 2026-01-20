@@ -317,10 +317,16 @@ export const ru: Translations = {
     next: "Вперёд",
     notFound: "Статья не найдена",
     views: "просмотров",
+    likes: "нравится",
+    liked: "Статья понравилась!",
+    loginToLike: "Войдите, чтобы поставить лайк",
+    likeFailed: "Не удалось поставить лайк",
+    share: "Поделиться",
     relatedArticles: "Похожие статьи",
     noContent: "Контент недоступен",
     linkCopied: "Ссылка скопирована!",
     copyFailed: "Не удалось скопировать ссылку",
+    noBlogs: "Статьи не найдены",
   },
 
   // Course

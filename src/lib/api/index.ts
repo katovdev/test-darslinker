@@ -13,16 +13,22 @@ export {
 } from "./auth";
 
 export {
-  blogAPI,
+  blogApi,
+  blogApi as blogAPI,
+  adminBlogApi,
   type Blog,
-  type BlogTag,
   type BlogCategory,
-  type BlogSection,
+  type BlogAuthor,
   type BlogsResponse,
   type BlogResponse,
-  type Category,
   type CategoriesResponse,
+  type CategoryResponse,
+  type LikeResponse,
   type BlogQueryParams,
+  type CreateBlogInput,
+  type UpdateBlogInput,
+  type CreateCategoryInput,
+  type UpdateCategoryInput,
 } from "./blog";
 
 export {

@@ -36,6 +36,7 @@ export interface Translations {
     editProfile: string;
     support: string;
     myCourses: string;
+    courses: string;
     payments: string;
     settings: string;
     language: string;
@@ -292,10 +293,16 @@ export interface Translations {
     next: string;
     notFound: string;
     views: string;
+    likes: string;
+    liked: string;
+    loginToLike: string;
+    likeFailed: string;
+    share: string;
     relatedArticles: string;
     noContent: string;
     linkCopied: string;
     copyFailed: string;
+    noBlogs: string;
   };
   course: {
     title: string;
@@ -699,6 +706,11 @@ export interface Translations {
     courseCreation: string;
     topTeachers: string;
     noData: string;
+    // Blogs
+    blogs: string;
+    blogsSubtitle: string;
+    blogDetails: string;
+    createBlog: string;
   };
   moderator: {
     // Navigation
@@ -723,5 +735,11 @@ export interface Translations {
     limitedAccess: string;
     limitedAccessTitle: string;
     limitedAccessDesc: string;
+    // Pages
+    usersSubtitle: string;
+    userDetails: string;
+    limitedUserAccess: string;
+    coursesSubtitle: string;
+    limitedCourseAccess: string;
   };
 }

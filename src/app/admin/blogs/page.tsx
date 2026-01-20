@@ -14,16 +14,23 @@ import {
   Trash2,
   Plus,
   X,
+  Heart,
+  Send,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
-import { blogAPI, type Blog, type Category } from "@/lib/api/blog";
+import {
+  adminBlogApi,
+  type Blog,
+  type BlogCategory,
+} from "@/lib/api/blog";
+import { toast } from "sonner";
 
-type StatusFilter = "all" | "active" | "archived";
+type StatusFilter = "all" | "draft" | "published" | "archived";
 
 export default function AdminBlogsPage() {
   const t = useTranslations();
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,22 +58,17 @@ export default function AdminBlogsPage() {
     setError(null);
 
     try {
-      const response = await blogAPI.getAllBlogs({
+      const response = await adminBlogApi.getBlogs({
         page,
         limit: 20,
         search: search || undefined,
-        category: categoryFilter === "all" ? undefined : categoryFilter,
+        categoryId: categoryFilter === "all" ? undefined : categoryFilter,
+        status: statusFilter === "all" ? undefined : statusFilter,
       });
 
-      if (response?.success) {
-        let filteredBlogs = response.data;
-        if (statusFilter === "active") {
-          filteredBlogs = filteredBlogs.filter((b) => !b.isArchive);
-        } else if (statusFilter === "archived") {
-          filteredBlogs = filteredBlogs.filter((b) => b.isArchive);
-        }
-        setBlogs(filteredBlogs);
-        setPagination(response.pagination || null);
+      if (response?.success && response.data) {
+        setBlogs(response.data.blogs);
+        setPagination(response.data.pagination);
       } else {
         setError(t("admin.statsLoadError") || "Failed to load blogs");
       }
@@ -79,11 +81,12 @@ export default function AdminBlogsPage() {
 
   const loadCategories = async () => {
     try {
-      const response = await blogAPI.getCategories(false);
-      if (response?.success) {
-        setCategories(response.data);
+      const response = await adminBlogApi.getCategories({ activeOnly: false });
+      if (response?.success && response.data) {
+        setCategories(response.data.categories);
       }
     } catch {
+      // Silent fail for categories
     }
   };
 
@@ -124,44 +127,81 @@ export default function AdminBlogsPage() {
     setActionMenuPosition(null);
   };
 
-  const handleArchive = async (blogId: string) => {
+  const handleUpdateStatus = async (
+    blogId: string,
+    status: "draft" | "published" | "archived"
+  ) => {
     setIsUpdating(blogId);
     setActionMenuId(null);
     setActionMenuPosition(null);
 
-    alert("Archive functionality will be available when the backend API is ready.");
+    try {
+      const response = await adminBlogApi.updateBlog(blogId, { status });
 
-    setIsUpdating(null);
+      if (response?.success) {
+        toast.success(`Blog ${status === "published" ? "published" : status === "archived" ? "archived" : "set to draft"}`);
+        loadBlogs();
+      } else {
+        toast.error("Failed to update blog status");
+      }
+    } catch {
+      toast.error("Failed to update blog status");
+    } finally {
+      setIsUpdating(null);
+    }
   };
 
   const handleDelete = async (blogId: string) => {
-    if (!confirm("Are you sure you want to delete this blog?")) return;
+    if (!confirm("Are you sure you want to delete this blog? This action cannot be undone.")) {
+      return;
+    }
 
     setIsUpdating(blogId);
     setActionMenuId(null);
     setActionMenuPosition(null);
 
-    alert("Delete functionality will be available when the backend API is ready.");
+    try {
+      const response = await adminBlogApi.deleteBlog(blogId);
 
-    setIsUpdating(null);
-  };
-
-  const getStatusBadge = (blog: Blog) => {
-    if (blog.isArchive) {
-      return (
-        <span className="rounded-full bg-gray-500/10 px-2 py-0.5 text-xs font-medium text-gray-400">
-          archived
-        </span>
-      );
+      if (response?.success) {
+        toast.success("Blog deleted successfully");
+        loadBlogs();
+      } else {
+        toast.error("Failed to delete blog");
+      }
+    } catch {
+      toast.error("Failed to delete blog");
+    } finally {
+      setIsUpdating(null);
     }
-    return (
-      <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-400">
-        active
-      </span>
-    );
   };
 
-  const formatDate = (dateString: string) => {
+  const getStatusBadge = (status: Blog["status"]) => {
+    switch (status) {
+      case "published":
+        return (
+          <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-400">
+            Published
+          </span>
+        );
+      case "archived":
+        return (
+          <span className="rounded-full bg-gray-500/10 px-2 py-0.5 text-xs font-medium text-gray-400">
+            Archived
+          </span>
+        );
+      case "draft":
+      default:
+        return (
+          <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-xs font-medium text-yellow-400">
+            Draft
+          </span>
+        );
+    }
+  };
+
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "-";
     return new Date(dateString).toLocaleDateString();
   };
 
@@ -189,7 +229,7 @@ export default function AdminBlogsPage() {
           </button>
           <button
             className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-            onClick={() => alert("Create blog functionality coming soon!")}
+            onClick={() => toast.info("Blog creation will be available soon!")}
           >
             <Plus className="h-4 w-4" />
             {t("admin.createBlog") || "Create Blog"}
@@ -247,10 +287,9 @@ export default function AdminBlogsPage() {
             <option value="all">
               {t("admin.allStatuses") || "All Statuses"}
             </option>
-            <option value="active">{t("admin.active") || "Active"}</option>
-            <option value="archived">
-              {t("teacher.status.archived") || "Archived"}
-            </option>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="archived">Archived</option>
           </select>
         </div>
       </div>
@@ -276,7 +315,7 @@ export default function AdminBlogsPage() {
                   Status
                 </th>
                 <th className="px-4 py-3 text-sm font-medium text-gray-400">
-                  Views
+                  Likes
                 </th>
                 <th className="px-4 py-3 text-sm font-medium text-gray-400">
                   Created
@@ -318,44 +357,45 @@ export default function AdminBlogsPage() {
               ) : (
                 blogs.map((blog) => (
                   <tr
-                    key={blog.id || blog._id}
+                    key={blog.id}
                     className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
                   >
                     <td className="px-4 py-3">
                       <div>
                         <p className="font-medium text-white">{blog.title}</p>
                         {blog.subtitle && (
-                          <p className="mt-1 text-sm text-gray-500 line-clamp-1">
+                          <p className="mt-1 line-clamp-1 text-sm text-gray-500">
                             {blog.subtitle}
                           </p>
                         )}
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      {blog.categoryId ? (
+                      {blog.category ? (
                         <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400">
-                          {blog.categoryId.name}
+                          {blog.category.name}
                         </span>
                       ) : (
                         <span className="text-gray-500">-</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">{getStatusBadge(blog)}</td>
-                    <td className="px-4 py-3 text-gray-300">
-                      {blog.multiViews || 0}
+                    <td className="px-4 py-3">{getStatusBadge(blog.status)}</td>
+                    <td className="px-4 py-3">
+                      <span className="flex items-center gap-1 text-gray-300">
+                        <Heart className="h-3.5 w-3.5" />
+                        {blog.likesCount || 0}
+                      </span>
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-400">
                       {formatDate(blog.createdAt)}
                     </td>
                     <td className="px-4 py-3">
                       <button
-                        onClick={(e) =>
-                          handleOpenActionMenu(blog.id || blog._id || "", e)
-                        }
-                        disabled={isUpdating === (blog.id || blog._id)}
+                        onClick={(e) => handleOpenActionMenu(blog.id, e)}
+                        disabled={isUpdating === blog.id}
                         className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
                       >
-                        {isUpdating === (blog.id || blog._id) ? (
+                        {isUpdating === blog.id ? (
                           <RefreshCw className="h-4 w-4 animate-spin" />
                         ) : (
                           <MoreVertical className="h-4 w-4" />
@@ -415,9 +455,7 @@ export default function AdminBlogsPage() {
             }}
           >
             {(() => {
-              const blog = blogs.find(
-                (b) => (b.id || b._id) === actionMenuId
-              );
+              const blog = blogs.find((b) => b.id === actionMenuId);
               if (!blog) return null;
               return (
                 <>
@@ -429,20 +467,20 @@ export default function AdminBlogsPage() {
                     View Details
                   </button>
 
-                  <a
-                    href={`/blog/${blog.slug || blog.id || blog._id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                  >
-                    <Eye className="h-4 w-4" />
-                    View on Site
-                  </a>
+                  {blog.status === "published" && (
+                    <a
+                      href={`/blog/${blog.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                    >
+                      <Eye className="h-4 w-4" />
+                      View on Site
+                    </a>
+                  )}
 
                   <button
-                    onClick={() =>
-                      alert("Edit functionality coming soon!")
-                    }
+                    onClick={() => toast.info("Edit functionality coming soon!")}
                     className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
                   >
                     <Edit className="h-4 w-4" />
@@ -451,20 +489,50 @@ export default function AdminBlogsPage() {
 
                   <div className="my-1 border-t border-gray-700" />
 
-                  <button
-                    onClick={() =>
-                      handleArchive(blog.id || blog._id || "")
-                    }
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                  >
-                    <Archive className="h-4 w-4" />
-                    {blog.isArchive ? "Unarchive" : "Archive"}
-                  </button>
+                  {blog.status === "draft" && (
+                    <button
+                      onClick={() => handleUpdateStatus(blog.id, "published")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                    >
+                      <Send className="h-4 w-4" />
+                      Publish
+                    </button>
+                  )}
+
+                  {blog.status === "published" && (
+                    <button
+                      onClick={() => handleUpdateStatus(blog.id, "draft")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
+                    >
+                      <Edit className="h-4 w-4" />
+                      Unpublish (Draft)
+                    </button>
+                  )}
+
+                  {blog.status !== "archived" && (
+                    <button
+                      onClick={() => handleUpdateStatus(blog.id, "archived")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
+                    >
+                      <Archive className="h-4 w-4" />
+                      Archive
+                    </button>
+                  )}
+
+                  {blog.status === "archived" && (
+                    <button
+                      onClick={() => handleUpdateStatus(blog.id, "draft")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                      Restore to Draft
+                    </button>
+                  )}
+
+                  <div className="my-1 border-t border-gray-700" />
 
                   <button
-                    onClick={() =>
-                      handleDelete(blog.id || blog._id || "")
-                    }
+                    onClick={() => handleDelete(blog.id)}
                     className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -477,7 +545,6 @@ export default function AdminBlogsPage() {
         </>
       )}
 
-      {/* Blog Detail Modal */}
       {selectedBlog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
@@ -504,19 +571,20 @@ export default function AdminBlogsPage() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {getStatusBadge(selectedBlog)}
-                {selectedBlog.categoryId && (
+                {getStatusBadge(selectedBlog.status)}
+                {selectedBlog.category && (
                   <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400">
-                    {selectedBlog.categoryId.name}
+                    {selectedBlog.category.name}
                   </span>
                 )}
               </div>
 
               <div className="grid grid-cols-2 gap-4 rounded-lg bg-gray-900 p-4">
                 <div>
-                  <p className="text-sm text-gray-500">Views</p>
-                  <p className="text-lg font-semibold text-white">
-                    {selectedBlog.multiViews || 0}
+                  <p className="text-sm text-gray-500">Likes</p>
+                  <p className="flex items-center gap-1 text-lg font-semibold text-white">
+                    <Heart className="h-4 w-4" />
+                    {selectedBlog.likesCount || 0}
                   </p>
                 </div>
                 <div>
@@ -525,11 +593,11 @@ export default function AdminBlogsPage() {
                     {formatDate(selectedBlog.createdAt)}
                   </p>
                 </div>
-                {selectedBlog.updatedAt && (
+                {selectedBlog.publishedAt && (
                   <div>
-                    <p className="text-sm text-gray-500">Last Updated</p>
+                    <p className="text-sm text-gray-500">Published</p>
                     <p className="text-white">
-                      {formatDate(selectedBlog.updatedAt)}
+                      {formatDate(selectedBlog.publishedAt)}
                     </p>
                   </div>
                 )}
@@ -541,36 +609,21 @@ export default function AdminBlogsPage() {
                 )}
               </div>
 
-              {selectedBlog.tags && selectedBlog.tags.length > 0 && (
-                <div>
-                  <p className="mb-2 text-sm text-gray-500">Tags</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedBlog.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="rounded-full bg-gray-700 px-2 py-0.5 text-xs text-gray-300"
-                      >
-                        {tag.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <div>
+                <p className="text-sm text-gray-500">Author</p>
+                <p className="text-white">
+                  {selectedBlog.author.firstName} {selectedBlog.author.lastName}
+                </p>
+              </div>
 
-              {selectedBlog.sections && selectedBlog.sections.length > 0 && (
+              {selectedBlog.content && (
                 <div>
-                  <p className="mb-2 text-sm text-gray-500">
-                    Content Preview ({selectedBlog.sections.length} sections)
-                  </p>
+                  <p className="mb-2 text-sm text-gray-500">Content Preview</p>
                   <div className="max-h-48 overflow-y-auto rounded-lg bg-gray-900 p-4">
                     <div
                       className="prose prose-invert prose-sm max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html:
-                          selectedBlog.sections[0]?.content?.substring(
-                            0,
-                            500
-                          ) + "...",
+                        __html: selectedBlog.content.substring(0, 500) + "...",
                       }}
                     />
                   </div>
@@ -585,14 +638,16 @@ export default function AdminBlogsPage() {
               >
                 {t("common.close") || "Close"}
               </button>
-              <a
-                href={`/blog/${selectedBlog.slug || selectedBlog.id || selectedBlog._id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-              >
-                View on Site
-              </a>
+              {selectedBlog.status === "published" && (
+                <a
+                  href={`/blog/${selectedBlog.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                >
+                  View on Site
+                </a>
+              )}
             </div>
           </div>
         </div>

@@ -15,14 +15,13 @@ export const authEndpoints = {
 
 export const blogEndpoints = {
   getAllBlogs: "blogs",
-  getFeaturedBlogs: "blogs/featured",
-  getBlogById: (id: string) => `blogs/${id}`,
-  getRelatedBlogs: (id: string) => `blogs/${id}/related`,
-  trackBlogView: (id: string) => `blogs/${id}/view`,
-  getCategories: "categories",
-  getCategoryById: (id: string) => `categories/${id}`,
-  getCategoryBySlug: (slug: string) => `categories/slug/${slug}`,
-  getBlogsByCategory: (categoryId: string) => `categories/${categoryId}/blogs`,
+  getBlogBySlug: (slug: string) => `blogs/by-slug/${slug}`,
+  toggleLike: (id: string) => `blogs/${id}/like`,
+  getCategories: "blogs/categories",
+  adminBlogs: "admin/blogs",
+  adminBlogById: (id: string) => `admin/blogs/${id}`,
+  adminCategories: "admin/blog-categories",
+  adminCategoryById: (id: string) => `admin/blog-categories/${id}`,
 } as const;
 
 export const coursesEndpoint = "courses" as const;

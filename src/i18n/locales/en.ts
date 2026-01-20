@@ -314,10 +314,16 @@ export const en: Translations = {
     next: "Next",
     notFound: "Article not found",
     views: "views",
+    likes: "likes",
+    liked: "Article liked!",
+    loginToLike: "Please login to like this article",
+    likeFailed: "Failed to like article",
+    share: "Share",
     relatedArticles: "Related Articles",
     noContent: "No content available",
     linkCopied: "Link copied!",
     copyFailed: "Failed to copy link",
+    noBlogs: "No blogs found",
   },
 
   // Course

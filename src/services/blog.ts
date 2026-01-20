@@ -1,24 +1,25 @@
 import {
-  blogAPI,
+  blogApi,
   type Blog,
   type BlogsResponse,
   type BlogQueryParams,
+  type BlogCategory,
 } from "@/lib/api/blog";
 import { cacheConfig } from "@/lib/api/config";
 import { logger } from "@/lib/logger";
 
-// Types for transformed data
 export interface TransformedBlog {
   id: string;
   title: string;
   description: string;
-  views: number;
+  likesCount: number;
   date: string;
   category: string | null;
   slug: string;
-  tags: Array<{ label: string; value: string }>;
+  thumbnail?: string | null;
   isArchived: boolean;
   isFallback?: boolean;
+  isLiked?: boolean;
 }
 
 interface CacheEntry<T> {
@@ -26,33 +27,23 @@ interface CacheEntry<T> {
   timestamp: number;
 }
 
-/**
- * Blog Service
- * Handles blog-related business logic and data transformation
- */
 class BlogService {
   private cache = new Map<string, CacheEntry<unknown>>();
   private cacheTimeout = cacheConfig.defaultTTL;
 
-  /**
-   * Get cache key for a request
-   */
+
   private getCacheKey(method: string, params: unknown = {}): string {
     return `${method}_${JSON.stringify(params)}`;
   }
 
-  /**
-   * Check if cached data is still valid
-   */
+
   private isCacheValid<T>(cacheEntry: CacheEntry<T> | undefined): boolean {
     return (
       !!cacheEntry && Date.now() - cacheEntry.timestamp < this.cacheTimeout
     );
   }
 
-  /**
-   * Get cached data or fetch from API
-   */
+
   private async getCachedOrFetch<T>(
     cacheKey: string,
     fetchFn: () => Promise<T>
@@ -73,7 +64,6 @@ class BlogService {
     } catch (error) {
       logger.error("API request failed:", error);
 
-      // If API fails and we have stale cache, use it
       if (cached) {
         logger.warn("API failed, using stale cache");
         return cached.data;
@@ -83,28 +73,28 @@ class BlogService {
     }
   }
 
-  /**
-   * Transform blog data for landing page display
-   */
-  private transformBlogsForLanding(blogs: Blog[]): TransformedBlog[] {
-    return blogs.map((blog) => ({
-      id: blog.id || blog._id || "",
+
+  private transformBlog(blog: Blog): TransformedBlog {
+    return {
+      id: blog.id,
       title: blog.title,
-      description:
-        blog.subtitle ||
-        this.truncateText(blog.sections?.[0]?.content || "", 100),
-      views: blog.multiViews || 0,
-      date: this.formatDate(blog.createdAt),
-      category: blog.categoryId?.name || null,
-      slug: blog.slug || blog.id || blog._id || "",
-      tags: blog.tags || [],
+      description: blog.subtitle || "",
+      likesCount: blog.likesCount || 0,
+      date: this.formatDate(blog.publishedAt || blog.createdAt),
+      category: blog.category?.name || null,
+      slug: blog.slug,
+      thumbnail: blog.thumbnail,
       isArchived: blog.isArchive || false,
-    }));
+      isLiked: blog.isLiked || false,
+    };
   }
 
-  /**
-   * Get fallback blogs when API is unavailable
-   */
+
+  private transformBlogs(blogs: Blog[]): TransformedBlog[] {
+    return blogs.map((blog) => this.transformBlog(blog));
+  }
+
+
   private getFallbackBlogs(limit = 6): TransformedBlog[] {
     const fallbackBlogs: TransformedBlog[] = [
       {
@@ -112,11 +102,10 @@ class BlogService {
         title: "Samarali Dars O'tish Usullari",
         description:
           "O'qituvchilar uchun samarali dars o'tish metodlari va zamonaviy yondashuvlar haqida batafsil ma'lumot",
-        views: 1245,
+        likesCount: 24,
         date: "15/12/2024",
         category: "Ta'lim metodikasi",
         slug: "samarali-dars-otish",
-        tags: [{ label: "Metodika", value: "metodika" }],
         isArchived: false,
         isFallback: true,
       },
@@ -125,11 +114,10 @@ class BlogService {
         title: "Raqamli Ta'lim Vositalari",
         description:
           "Zamonaviy raqamli texnologiyalardan ta'limda foydalanish va ularning samaradorligi",
-        views: 987,
+        likesCount: 18,
         date: "12/12/2024",
         category: "Texnologiya",
         slug: "raqamli-talim-vositalari",
-        tags: [{ label: "Texnologiya", value: "texnologiya" }],
         isArchived: false,
         isFallback: true,
       },
@@ -138,11 +126,10 @@ class BlogService {
         title: "O'quvchilar Motivatsiyasi",
         description:
           "O'quvchilarni darsga qiziqtirish va motivatsiyasini oshirish bo'yicha amaliy maslahatlar",
-        views: 1567,
+        likesCount: 32,
         date: "10/12/2024",
         category: "Psixologiya",
         slug: "oquvchilar-motivatsiyasi",
-        tags: [{ label: "Motivatsiya", value: "motivatsiya" }],
         isArchived: false,
         isFallback: true,
       },
@@ -151,11 +138,10 @@ class BlogService {
         title: "Onlayn Darslar Tashkil Etish",
         description:
           "Masofaviy ta'lim sharoitida sifatli onlayn darslar o'tkazish bo'yicha ko'rsatmalar",
-        views: 2134,
+        likesCount: 45,
         date: "08/12/2024",
         category: "Onlayn ta'lim",
         slug: "onlayn-darslar-tashkil-etish",
-        tags: [{ label: "Onlayn", value: "onlayn" }],
         isArchived: false,
         isFallback: true,
       },
@@ -164,11 +150,10 @@ class BlogService {
         title: "Baholash Tizimlari",
         description:
           "O'quvchilar bilimini obyektiv baholash usullari va zamonaviy baholash tizimlari",
-        views: 876,
+        likesCount: 15,
         date: "05/12/2024",
         category: "Baholash",
         slug: "baholash-tizimlari",
-        tags: [{ label: "Baholash", value: "baholash" }],
         isArchived: false,
         isFallback: true,
       },
@@ -177,11 +162,10 @@ class BlogService {
         title: "Kreativ Dars Rejalashtirish",
         description:
           "Ijodiy va qiziqarli dars rejalarini tuzish, interaktiv mashg'ulotlar o'tkazish",
-        views: 1432,
+        likesCount: 28,
         date: "03/12/2024",
         category: "Rejalashtirish",
         slug: "kreativ-dars-rejalashtirish",
-        tags: [{ label: "Kreativlik", value: "kreativlik" }],
         isArchived: false,
         isFallback: true,
       },
@@ -190,18 +174,8 @@ class BlogService {
     return fallbackBlogs.slice(0, Math.min(limit, fallbackBlogs.length));
   }
 
-  /**
-   * Truncate text to specified length
-   */
-  private truncateText(text: string, maxLength: number): string {
-    if (!text || text.length <= maxLength) return text || "";
-    return text.substring(0, maxLength).trim() + "...";
-  }
 
-  /**
-   * Format date for display
-   */
-  private formatDate(date: string | Date): string {
+  private formatDate(date: string | Date | null | undefined): string {
     if (!date) return "";
 
     try {
@@ -216,9 +190,7 @@ class BlogService {
     }
   }
 
-  /**
-   * Get featured blogs for landing page with fallback content
-   */
+
   async getFeaturedBlogsForLanding(limit = 6): Promise<TransformedBlog[]> {
     const cacheKey = this.getCacheKey("featuredBlogs", { limit });
 
@@ -226,12 +198,12 @@ class BlogService {
       logger.log("Fetching featured blogs from API...");
 
       const response = await this.getCachedOrFetch(cacheKey, () =>
-        blogAPI.getFeaturedBlogs(limit)
+        blogApi.getBlogs({ limit, page: 1 })
       );
 
-      if (response?.success && response.data?.length > 0) {
-        logger.log("Got real blogs from API:", response.data.length);
-        return this.transformBlogsForLanding(response.data);
+      if (response?.success && response.data?.blogs?.length > 0) {
+        logger.log("Got real blogs from API:", response.data.blogs.length);
+        return this.transformBlogs(response.data.blogs);
       } else {
         logger.log("No real blogs found, using fallback");
         return this.getFallbackBlogs(limit);
@@ -242,85 +214,140 @@ class BlogService {
     }
   }
 
-  /**
-   * Get all blogs with pagination and filtering
-   */
-  async getAllBlogs(params: BlogQueryParams = {}): Promise<BlogsResponse> {
+
+  async getAllBlogs(params: BlogQueryParams = {}): Promise<{
+    success: boolean;
+    data: TransformedBlog[];
+    pagination?: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
     const cacheKey = this.getCacheKey("allBlogs", params);
-    return this.getCachedOrFetch(cacheKey, () => blogAPI.getAllBlogs(params));
-  }
 
-  /**
-   * Get single blog by ID
-   */
-  async getBlogById(id: string) {
-    const cacheKey = this.getCacheKey("blogById", { id });
-
-    const response = await this.getCachedOrFetch(cacheKey, () =>
-      blogAPI.getBlogById(id)
-    );
-
-    // Track view asynchronously (fire and forget)
-    this.trackBlogView(id);
-
-    return response;
-  }
-
-  /**
-   * Track blog view (fire and forget)
-   */
-  async trackBlogView(id: string): Promise<void> {
     try {
-      await blogAPI.trackBlogView(id);
-    } catch {
-      // Silently fail
-      logger.debug("View tracking failed");
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        blogApi.getBlogs(params)
+      );
+
+      if (response?.success && response.data?.blogs) {
+        return {
+          success: true,
+          data: this.transformBlogs(response.data.blogs),
+          pagination: response.data.pagination,
+        };
+      }
+
+      return {
+        success: false,
+        data: [],
+      };
+    } catch (error) {
+      logger.error("Failed to fetch blogs:", error);
+      return {
+        success: false,
+        data: [],
+      };
     }
   }
 
-  /**
-   * Get related blogs
-   */
-  async getRelatedBlogs(id: string, limit = 5) {
-    const cacheKey = this.getCacheKey("relatedBlogs", { id, limit });
-    return this.getCachedOrFetch(cacheKey, () =>
-      blogAPI.getRelatedBlogs(id, limit)
-    );
+
+  async getBlogBySlug(slug: string): Promise<{
+    success: boolean;
+    data?: TransformedBlog & { content?: string };
+  }> {
+    const cacheKey = this.getCacheKey("blogBySlug", { slug });
+
+    try {
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        blogApi.getBlogBySlug(slug)
+      );
+
+      if (response?.success && response.data) {
+        return {
+          success: true,
+          data: {
+            ...this.transformBlog(response.data),
+            content: response.data.content,
+          },
+        };
+      }
+
+      return { success: false };
+    } catch (error) {
+      logger.error("Failed to fetch blog:", error);
+      return { success: false };
+    }
   }
 
-  /**
-   * Get all categories
-   */
-  async getCategories(activeOnly = true) {
-    const cacheKey = this.getCacheKey("categories", { activeOnly });
-    return this.getCachedOrFetch(cacheKey, () =>
-      blogAPI.getCategories(activeOnly)
-    );
+
+  async toggleLike(blogId: string): Promise<{
+    success: boolean;
+    liked?: boolean;
+    likesCount?: number;
+  }> {
+    try {
+      const response = await blogApi.toggleLike(blogId);
+
+      if (response?.success && response.data) {
+        this.clearCachePattern("allBlogs");
+        this.clearCachePattern("featuredBlogs");
+        this.clearCachePattern("blogBySlug");
+
+        return {
+          success: true,
+          liked: response.data.liked,
+          likesCount: response.data.likesCount,
+        };
+      }
+
+      return { success: false };
+    } catch (error) {
+      logger.error("Failed to toggle like:", error);
+      return { success: false };
+    }
   }
 
-  /**
-   * Get blogs by category
-   */
-  async getBlogsByCategory(categoryId: string, params: BlogQueryParams = {}) {
-    const cacheKey = this.getCacheKey("blogsByCategory", {
-      categoryId,
-      ...params,
-    });
-    return this.getCachedOrFetch(cacheKey, () =>
-      blogAPI.getBlogsByCategory(categoryId, params)
-    );
+
+  async getCategories(): Promise<{
+    success: boolean;
+    data: BlogCategory[];
+  }> {
+    const cacheKey = this.getCacheKey("categories", {});
+
+    try {
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        blogApi.getCategories()
+      );
+
+      if (response?.success && response.data?.categories) {
+        return {
+          success: true,
+          data: response.data.categories,
+        };
+      }
+
+      return {
+        success: true,
+        data: [],
+      };
+    } catch (error) {
+      logger.error("Failed to fetch categories:", error);
+      return {
+        success: true,
+        data: [],
+      };
+    }
   }
 
-  /**
-   * Clear all cache
-   */
+
   clearCache(): void {
     this.cache.clear();
   }
 
-  /**
-   * Clear specific cache entries by pattern
-   */
+
   clearCachePattern(pattern: string): void {
     for (const key of this.cache.keys()) {
       if (key.includes(pattern)) {
@@ -329,9 +356,7 @@ class BlogService {
     }
   }
 
-  /**
-   * Get cache statistics
-   */
+
   getCacheStats() {
     const now = Date.now();
     let validEntries = 0;
@@ -355,6 +380,5 @@ class BlogService {
   }
 }
 
-// Export singleton instance
 export const blogService = new BlogService();
 export default blogService;
