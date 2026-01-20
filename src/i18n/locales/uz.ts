@@ -143,6 +143,9 @@ export const uz: Translations = {
     phone: "Telefon raqami",
     saveChanges: "O'zgarishlarni saqlash",
     updated: "Profil muvaffaqiyatli yangilandi!",
+    level: "Daraja",
+    telegramNote:
+      "Profil ma'lumotlari Telegram bot orqali boshqariladi. Ma'lumotlaringizni yangilash uchun Telegram botdan foydalaning.",
   },
 
   // Errors

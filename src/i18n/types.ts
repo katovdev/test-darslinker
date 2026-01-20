@@ -132,6 +132,8 @@ export interface Translations {
     phone: string;
     saveChanges: string;
     updated: string;
+    level: string;
+    telegramNote: string;
   };
   errors: {
     generalError: string;

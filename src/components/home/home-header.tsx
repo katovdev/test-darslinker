@@ -8,9 +8,7 @@ import {
   X,
   ChevronDown,
   User,
-  LayoutDashboard,
   BookOpen,
-  Settings,
   LogOut,
   Shield,
 } from "lucide-react";
@@ -127,7 +125,6 @@ export function HomeHeader() {
           {!isLoading && (
             <>
               {isAuthenticated && user ? (
-                /* Profile Dropdown */
                 <div className="relative hidden sm:block">
                   <button
                     onClick={() => setProfileOpen(!profileOpen)}
@@ -158,12 +155,12 @@ export function HomeHeader() {
 
                         <div className="py-1">
                           <Link
-                            href="/dashboard"
+                            href="/me"
                             onClick={() => setProfileOpen(false)}
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
                           >
-                            <LayoutDashboard className="h-4 w-4" />
-                            {t("sidebar.dashboard") || "Dashboard"}
+                            <User className="h-4 w-4" />
+                            {t("sidebar.profile") || "Profil"}
                           </Link>
                           <Link
                             href="/courses"
@@ -172,22 +169,6 @@ export function HomeHeader() {
                           >
                             <BookOpen className="h-4 w-4" />
                             {t("sidebar.courses") || "Kurslar"}
-                          </Link>
-                          <Link
-                            href="/dashboard/profile"
-                            onClick={() => setProfileOpen(false)}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
-                          >
-                            <User className="h-4 w-4" />
-                            {t("sidebar.profile") || "Profil"}
-                          </Link>
-                          <Link
-                            href="/dashboard/settings"
-                            onClick={() => setProfileOpen(false)}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
-                          >
-                            <Settings className="h-4 w-4" />
-                            {t("sidebar.settings") || "Sozlamalar"}
                           </Link>
 
                           {getAdminLink() && (
@@ -218,7 +199,6 @@ export function HomeHeader() {
                   )}
                 </div>
               ) : (
-                /* Login/Register Buttons */
                 <>
                   <Link
                     href="/login"
@@ -262,7 +242,6 @@ export function HomeHeader() {
 
             <div className="mt-4 flex flex-col gap-2 border-t border-gray-800 pt-4">
               {!isLoading && isAuthenticated && user ? (
-                /* Mobile - Logged In */
                 <>
                   <div className="mb-2 flex items-center gap-3 px-4 py-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 font-medium text-white">
@@ -276,12 +255,12 @@ export function HomeHeader() {
                     </div>
                   </div>
                   <Link
-                    href="/dashboard"
+                    href="/me"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
                   >
-                    <LayoutDashboard className="h-4 w-4" />
-                    {t("sidebar.dashboard") || "Dashboard"}
+                    <User className="h-4 w-4" />
+                    {t("sidebar.profile") || "Profil"}
                   </Link>
                   <Link
                     href="/courses"
@@ -315,7 +294,6 @@ export function HomeHeader() {
                   </button>
                 </>
               ) : (
-                /* Mobile - Logged Out */
                 <>
                   <Link
                     href="/login"

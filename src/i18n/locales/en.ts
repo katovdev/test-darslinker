@@ -144,6 +144,9 @@ export const en: Translations = {
     phone: "Phone Number",
     saveChanges: "Save Changes",
     updated: "Profile updated successfully!",
+    level: "Level",
+    telegramNote:
+      "Profile information is managed through Telegram bot. To update your details, please use the Telegram bot.",
   },
 
   // Errors

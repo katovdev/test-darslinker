@@ -28,6 +28,16 @@ export interface User {
   avatar?: string;
   username?: string;
   businessName?: string;
+  // Student-only fields
+  teacherId?: string;
+  points?: number;
+  level?: number;
+  // Teacher-only fields
+  logoUrl?: string;
+  primaryColor?: string;
+  specialization?: string;
+  telegramUsername?: string;
+  balance?: number;
 }
 
 interface AuthState {
