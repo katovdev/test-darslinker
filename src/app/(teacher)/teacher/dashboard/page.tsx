@@ -54,7 +54,9 @@ export default function TeacherDashboardPage() {
     setError(null);
 
     try {
-      const response = await teacherAPI.getDashboard({ period: selectedPeriod });
+      const response = await teacherAPI.getDashboard({
+        period: selectedPeriod,
+      });
       if (response.success && response.data) {
         setDashboard(response.data);
       }
@@ -328,7 +330,8 @@ export default function TeacherDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {dashboard?.recentStudents && dashboard.recentStudents.length > 0 ? (
+            {dashboard?.recentStudents &&
+            dashboard.recentStudents.length > 0 ? (
               <div className="space-y-3">
                 {dashboard.recentStudents.slice(0, 5).map((student) => (
                   <div
@@ -350,8 +353,8 @@ export default function TeacherDashboardPage() {
                           </span>
                           {student.telegramUsername && (
                             <span className="flex items-center gap-1">
-                              <MessageCircle className="h-3 w-3" />
-                              @{student.telegramUsername}
+                              <MessageCircle className="h-3 w-3" />@
+                              {student.telegramUsername}
                             </span>
                           )}
                         </div>
@@ -394,7 +397,8 @@ export default function TeacherDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {dashboard?.recentPayments && dashboard.recentPayments.length > 0 ? (
+            {dashboard?.recentPayments &&
+            dashboard.recentPayments.length > 0 ? (
               <div className="space-y-3">
                 {dashboard.recentPayments.slice(0, 5).map((payment) => (
                   <div

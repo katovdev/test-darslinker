@@ -362,12 +362,15 @@ class TeacherAPI {
   /**
    * Get teacher dashboard data
    */
-  async getDashboard(params?: DashboardQueryParams): Promise<DashboardResponse> {
+  async getDashboard(
+    params?: DashboardQueryParams
+  ): Promise<DashboardResponse> {
     try {
       const searchParams = new URLSearchParams();
       if (params) {
         if (params.period) searchParams.append("period", params.period);
-        if (params.startDate) searchParams.append("startDate", params.startDate);
+        if (params.startDate)
+          searchParams.append("startDate", params.startDate);
         if (params.endDate) searchParams.append("endDate", params.endDate);
       }
 
