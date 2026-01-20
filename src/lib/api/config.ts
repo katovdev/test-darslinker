@@ -6,7 +6,7 @@
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export const apiConfig = {
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/api",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://api.darslinker.uz/api",
   timeout: isDevelopment ? 10000 : 15000,
   retryAttempts: isDevelopment ? 3 : 2,
   retryDelay: isDevelopment ? 1000 : 2000,
