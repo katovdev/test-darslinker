@@ -148,13 +148,13 @@ export default function CoursesPage() {
           {/* Search and Filters */}
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative max-w-md flex-1">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+              <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
               <input
                 type="text"
                 placeholder={t("course.searchCourses") || "Search courses..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pl-12 pr-4 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pr-4 pl-12 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -345,8 +345,7 @@ function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
             <div className="flex items-center gap-1">
               <BookOpen className="h-4 w-4" />
               <span>
-                {course.lessonsCount}{" "}
-                {t("course.lessons") || "lessons"}
+                {course.lessonsCount} {t("course.lessons") || "lessons"}
               </span>
             </div>
             <div className="flex items-center gap-1">

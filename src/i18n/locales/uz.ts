@@ -341,7 +341,8 @@ export const uz: Translations = {
     // Global courses page
     exploreCourses: "Kurslarni kashf qiling",
     allCoursesTitle: "Ajoyib kurslarni toping",
-    allCoursesSubtitle: "Mutaxassis o'qituvchilardan o'rganing va bilimingizni kengaytiring",
+    allCoursesSubtitle:
+      "Mutaxassis o'qituvchilardan o'rganing va bilimingizni kengaytiring",
     totalCourses: "Jami kurslar",
     teachers: "O'qituvchilar",
     totalDuration: "Jami davomiylik",

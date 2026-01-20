@@ -313,6 +313,17 @@ export interface Translations {
     noResults: string;
     tryDifferentSearch: string;
     clearFilters: string;
+    // Global courses page
+    exploreCourses: string;
+    allCoursesTitle: string;
+    allCoursesSubtitle: string;
+    totalCourses: string;
+    teachers: string;
+    totalDuration: string;
+    myEnrolled: string;
+    noEnrolled: string;
+    noEnrolledDesc: string;
+    viewCourse: string;
   };
   lesson: {
     title: string;

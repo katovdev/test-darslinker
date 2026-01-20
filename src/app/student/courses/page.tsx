@@ -149,7 +149,9 @@ export default function StudentCoursesPage() {
                   <p className="text-2xl font-bold text-white">
                     {averageProgress}%
                   </p>
-                  <p className="text-xs text-gray-500">{t("course.progress")}</p>
+                  <p className="text-xs text-gray-500">
+                    {t("course.progress")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -165,13 +167,13 @@ export default function StudentCoursesPage() {
           {/* Filters */}
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative max-w-md flex-1">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+              <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
               <input
                 type="text"
                 placeholder={t("course.searchCourses")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pl-12 pr-4 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pr-4 pl-12 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
