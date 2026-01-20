@@ -17,6 +17,7 @@ export interface Translations {
     fillRequiredFields: string;
     refresh: string;
     logout: string;
+    error: string;
   };
   header: {
     newMeeting: string;
@@ -130,10 +131,17 @@ export interface Translations {
     firstName: string;
     lastName: string;
     phone: string;
+    username: string;
+    usernameHint: string;
+    phoneCannotChange: string;
     saveChanges: string;
     updated: string;
     level: string;
     telegramNote: string;
+    changeAvatar: string;
+    deleteAvatar: string;
+    invalidImageType: string;
+    imageTooLarge: string;
   };
   errors: {
     generalError: string;

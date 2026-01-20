@@ -16,6 +16,7 @@ export const ru: Translations = {
     fillRequiredFields: "Пожалуйста, заполните все обязательные поля",
     refresh: "Обновить",
     logout: "Выход",
+    error: "Что-то пошло не так. Попробуйте снова.",
   },
 
   // Header
@@ -142,11 +143,18 @@ export const ru: Translations = {
     firstName: "Имя",
     lastName: "Фамилия",
     phone: "Номер телефона",
+    username: "Имя пользователя",
+    usernameHint: "Только строчные буквы, цифры, подчёркивания и дефисы",
+    phoneCannotChange: "Номер телефона нельзя изменить",
     saveChanges: "Сохранить изменения",
     updated: "Профиль успешно обновлён!",
     level: "Уровень",
     telegramNote:
-      "Информация профиля управляется через Telegram-бот. Для обновления данных используйте Telegram-бот.",
+      "Номер телефона и имя пользователя Telegram управляются через Telegram-бот.",
+    changeAvatar: "Изменить фото",
+    deleteAvatar: "Удалить фото",
+    invalidImageType: "Пожалуйста, выберите файл изображения",
+    imageTooLarge: "Изображение должно быть меньше 5 МБ",
   },
 
   // Errors

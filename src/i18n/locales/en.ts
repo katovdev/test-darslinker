@@ -16,6 +16,7 @@ export const en: Translations = {
     fillRequiredFields: "Please fill in all required fields",
     refresh: "Refresh",
     logout: "Logout",
+    error: "Something went wrong. Please try again.",
   },
 
   // Header
@@ -142,11 +143,18 @@ export const en: Translations = {
     firstName: "First Name",
     lastName: "Last Name",
     phone: "Phone Number",
+    username: "Username",
+    usernameHint: "Only lowercase letters, numbers, underscores and hyphens",
+    phoneCannotChange: "Phone number cannot be changed",
     saveChanges: "Save Changes",
     updated: "Profile updated successfully!",
     level: "Level",
     telegramNote:
-      "Profile information is managed through Telegram bot. To update your details, please use the Telegram bot.",
+      "Phone number and Telegram username are managed through the Telegram bot.",
+    changeAvatar: "Change photo",
+    deleteAvatar: "Delete photo",
+    invalidImageType: "Please select an image file",
+    imageTooLarge: "Image must be less than 5MB",
   },
 
   // Errors

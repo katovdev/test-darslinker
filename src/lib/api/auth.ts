@@ -1,8 +1,3 @@
-/**
- * Auth API
- * Authentication-related API calls for OTP-only authentication via Telegram
- */
-
 import { api } from "./client";
 import type { User } from "@/context/auth-context";
 
@@ -12,6 +7,8 @@ export const authEndpoints = {
   refresh: "auth/refresh",
   logout: "auth/logout",
   me: "auth/me",
+  updateProfile: "auth/profile",
+  avatar: "auth/avatar",
 } as const;
 
 export interface RequestOtpRequest {
@@ -62,6 +59,32 @@ export interface MeResponse {
   data: User;
 }
 
+export interface UpdateProfileRequest {
+  firstName?: string;
+  lastName?: string;
+  username?: string | null;
+}
+
+export interface UpdateProfileResponse {
+  success: boolean;
+  data?: User;
+  error?: {
+    code: string;
+    message: string;
+  };
+}
+
+export interface AvatarResponse {
+  success: boolean;
+  data?: {
+    avatar: string;
+  };
+  error?: {
+    code: string;
+    message: string;
+  };
+}
+
 export const authApi = {
   requestOtp: (phone: string) =>
     api.post<RequestOtpResponse>(authEndpoints.requestOtp, { phone }),
@@ -74,6 +97,17 @@ export const authApi = {
   refreshToken: () => api.post<RefreshResponse>(authEndpoints.refresh),
 
   me: () => api.get<MeResponse>(authEndpoints.me),
+
+  updateProfile: (data: UpdateProfileRequest) =>
+    api.patch<UpdateProfileResponse>(authEndpoints.updateProfile, data),
+
+  uploadAvatar: async (file: File): Promise<AvatarResponse> => {
+    const formData = new FormData();
+    formData.append("avatar", file);
+    return api.upload<AvatarResponse>(authEndpoints.avatar, formData);
+  },
+
+  deleteAvatar: () => api.delete<{ success: boolean }>(authEndpoints.avatar),
 };
 
 export default authApi;

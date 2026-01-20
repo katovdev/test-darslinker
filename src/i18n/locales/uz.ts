@@ -16,6 +16,7 @@ export const uz: Translations = {
     fillRequiredFields: "Iltimos, barcha majburiy maydonlarni to'ldiring",
     refresh: "Yangilash",
     logout: "Chiqish",
+    error: "Xatolik yuz berdi. Qayta urinib ko'ring.",
   },
 
   // Header
@@ -141,11 +142,18 @@ export const uz: Translations = {
     firstName: "Ism",
     lastName: "Familiya",
     phone: "Telefon raqami",
+    username: "Foydalanuvchi nomi",
+    usernameHint: "Faqat kichik harflar, raqamlar, tagchiziq va tire",
+    phoneCannotChange: "Telefon raqamini o'zgartirib bo'lmaydi",
     saveChanges: "O'zgarishlarni saqlash",
     updated: "Profil muvaffaqiyatli yangilandi!",
     level: "Daraja",
     telegramNote:
-      "Profil ma'lumotlari Telegram bot orqali boshqariladi. Ma'lumotlaringizni yangilash uchun Telegram botdan foydalaning.",
+      "Telefon raqami va Telegram foydalanuvchi nomi Telegram bot orqali boshqariladi.",
+    changeAvatar: "Rasmni o'zgartirish",
+    deleteAvatar: "Rasmni o'chirish",
+    invalidImageType: "Iltimos, rasm faylini tanlang",
+    imageTooLarge: "Rasm 5MB dan kichik bo'lishi kerak",
   },
 
   // Errors

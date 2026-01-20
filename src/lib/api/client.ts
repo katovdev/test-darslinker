@@ -196,6 +196,17 @@ export const api = {
       throw error;
     }
   },
+
+  upload: async <T>(url: string, formData: FormData, options?: Options): Promise<T> => {
+    try {
+      return await apiClient.post(url, { body: formData, ...options }).json<T>();
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        return parseErrorResponse(error) as T;
+      }
+      throw error;
+    }
+  },
 };
 
 export default apiClient;
