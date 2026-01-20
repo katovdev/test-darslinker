@@ -37,7 +37,7 @@ async function parseErrorResponse(error: HTTPError): Promise<ApiError> {
 function handleUnauthorized(): void {
   if (typeof window === "undefined") return;
 
-  // Clear auth state from store to prevent redirect loop
+  // Clear auth state from store
   useAppStore.getState().logout();
 
   // Only redirect if not already on login page
@@ -47,11 +47,26 @@ function handleUnauthorized(): void {
 }
 
 async function tryRefreshToken(): Promise<boolean> {
+  const { refreshToken, setAccessToken } = useAppStore.getState();
+
+  if (!refreshToken) return false;
+
   try {
     const response = await ky.post(`${apiConfig.baseUrl}/auth/refresh`, {
-      credentials: "include",
+      json: { refreshToken },
     });
-    return response.ok;
+
+    if (response.ok) {
+      const data = (await response.json()) as {
+        success: boolean;
+        data?: { accessToken: string };
+      };
+      if (data.success && data.data?.accessToken) {
+        setAccessToken(data.data.accessToken);
+        return true;
+      }
+    }
+    return false;
   } catch {
     return false;
   }
@@ -61,7 +76,6 @@ function createApiClient(): KyInstance {
   return ky.create({
     prefixUrl: apiConfig.baseUrl,
     timeout: apiConfig.timeout,
-    credentials: "include",
     retry: {
       limit: apiConfig.retryAttempts,
       methods: ["get", "post", "put", "delete"],
@@ -69,18 +83,40 @@ function createApiClient(): KyInstance {
       backoffLimit: apiConfig.retryDelay,
     },
     hooks: {
+      beforeRequest: [
+        (request) => {
+          // Add Authorization header with access token from store
+          const { accessToken } = useAppStore.getState();
+          if (accessToken) {
+            request.headers.set("Authorization", `Bearer ${accessToken}`);
+          }
+        },
+      ],
       afterResponse: [
         async (request, options, response) => {
           if (response.status === 401) {
             const url = request.url;
+            // Don't try to refresh on auth endpoints
             if (url.includes("/auth/refresh") || url.includes("/auth/login")) {
               handleUnauthorized();
               return response;
             }
 
-            const refreshed = await tryRefreshToken();
+            // Try to refresh token (up to 3 times per TODO.md)
+            let refreshed = false;
+            for (let i = 0; i < 3; i++) {
+              refreshed = await tryRefreshToken();
+              if (refreshed) break;
+            }
+
             if (refreshed) {
-              return ky(request, options);
+              // Retry the original request with new token
+              const { accessToken } = useAppStore.getState();
+              const newRequest = new Request(request, {
+                headers: new Headers(request.headers),
+              });
+              newRequest.headers.set("Authorization", `Bearer ${accessToken}`);
+              return ky(newRequest, options);
             }
 
             handleUnauthorized();

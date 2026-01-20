@@ -3,7 +3,7 @@
  * Handles OTP-only authentication logic, validation, and phone formatting
  * Registration happens via Telegram bot - this only handles login
  *
- * Authentication uses httpOnly cookies - tokens are NOT stored in JavaScript
+ * Tokens are stored in sessionStorage per TODO.md for security
  */
 
 import { authApi, type AuthResponse } from "@/lib/api";
@@ -60,17 +60,19 @@ export const validators = {
 };
 
 /**
- * Save user data to store (tokens are in httpOnly cookies, not accessible via JS)
+ * Save user data and tokens to store (sessionStorage per TODO.md)
  */
 export function saveAuthData(response: AuthResponse): void {
   if (!response.data?.user) return;
 
-  const { user } = response.data;
+  const { user, accessToken, refreshToken } = response.data;
 
-  // Update Zustand store with user info only (tokens are in httpOnly cookies)
-  const { setUser, setIsAuthenticated } = useAppStore.getState();
+  // Update Zustand store with user info and tokens
+  const { setUser, setTokens } = useAppStore.getState();
   setUser(user);
-  setIsAuthenticated(true);
+  if (accessToken && refreshToken) {
+    setTokens(accessToken, refreshToken);
+  }
 }
 
 /**

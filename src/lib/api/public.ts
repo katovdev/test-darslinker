@@ -1,6 +1,6 @@
 /**
  * Public API Module
- * Handles public endpoints for teacher subdomains (no auth required)
+ * Handles public endpoints (no auth required)
  */
 
 import { api } from "./client";
@@ -10,15 +10,6 @@ import { logger } from "../logger";
 // ============================================================================
 // Types
 // ============================================================================
-
-export interface TenantInfo {
-  teacherId: string;
-  username: string;
-  businessName: string | null;
-  logoUrl: string | null;
-  primaryColor: string | null;
-  secondaryColor: string | null;
-}
 
 export interface PublicTeacher {
   id: string;
@@ -107,11 +98,6 @@ export interface PublicLessonDetail extends PublicLesson {
 }
 
 // Response types
-export interface TenantResponse {
-  success: boolean;
-  data: TenantInfo;
-}
-
 export interface PublicCoursesResponse {
   success: boolean;
   data: PublicCourse[];
@@ -151,23 +137,11 @@ export interface PublicCoursesQueryParams {
 
 /**
  * Public API Service
- * For accessing public content on teacher subdomains
+ * For accessing public course content
  */
 class PublicAPI {
   /**
-   * Get tenant information for the current subdomain
-   */
-  async getTenant(): Promise<TenantResponse> {
-    try {
-      return await api.get<TenantResponse>(publicEndpoints.getTenant);
-    } catch (error) {
-      logger.error("Error fetching tenant:", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get all published courses for the current tenant
+   * Get all published courses
    */
   async getCourses(
     params: PublicCoursesQueryParams = {}

@@ -16,7 +16,6 @@ export const authEndpoints = {
 } as const;
 
 export const publicEndpoints = {
-  getTenant: "public/tenant",
   getCourses: "public/courses",
   getCourseBySlug: (slug: string) => `public/courses/${slug}`,
   getModuleBySlug: (courseSlug: string, moduleSlug: string) =>

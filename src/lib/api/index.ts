@@ -81,10 +81,9 @@ export {
   type NotificationQueryParams,
 } from "./notifications";
 
-// Public API (teacher subdomain - no auth)
+// Public API (no auth)
 export {
   publicAPI,
-  type TenantInfo,
   type PublicTeacher,
   type PublicCourse,
   type PublicModule,
@@ -92,7 +91,6 @@ export {
   type PublicCourseDetail,
   type PublicModuleDetail,
   type PublicLessonDetail,
-  type TenantResponse,
   type PublicCoursesResponse,
   type PublicCourseResponse,
   type PublicModuleResponse,

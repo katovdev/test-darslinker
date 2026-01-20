@@ -23,26 +23,15 @@ export interface Course {
   progress?: number;
 }
 
-export interface TenantInfo {
-  teacherId: string;
-  username: string;
-  businessName: string | null;
-  logoUrl: string | null;
-  primaryColor: string | null;
-  secondaryColor: string | null;
-}
-
 interface AppState {
   // Hydration state
   _hasHydrated: boolean;
 
-  // Auth state (tokens are in httpOnly cookies, not stored in JS)
+  // Auth state - tokens stored in sessionStorage per TODO.md
   user: User | null;
   isAuthenticated: boolean;
-
-  // Tenant state (for teacher subdomains)
-  tenant: TenantInfo | null;
-  isTeacherSubdomain: boolean;
+  accessToken: string | null;
+  refreshToken: string | null;
 
   // UI state
   loading: boolean;
@@ -57,11 +46,9 @@ interface AppState {
   // Auth actions
   setUser: (user: User | null) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
+  setTokens: (accessToken: string, refreshToken: string) => void;
+  setAccessToken: (accessToken: string) => void;
   logout: () => void;
-
-  // Tenant actions
-  setTenant: (tenant: TenantInfo | null) => void;
-  setIsTeacherSubdomain: (isTeacherSubdomain: boolean) => void;
 
   // UI actions
   setLoading: (loading: boolean) => void;
@@ -78,8 +65,8 @@ export const useAppStore = create<AppState>()(
       _hasHydrated: false,
       user: null,
       isAuthenticated: false,
-      tenant: null,
-      isTeacherSubdomain: false,
+      accessToken: null,
+      refreshToken: null,
       loading: false,
       error: null,
       courses: [],
@@ -96,17 +83,19 @@ export const useAppStore = create<AppState>()(
 
       setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 
+      setTokens: (accessToken, refreshToken) =>
+        set({ accessToken, refreshToken, isAuthenticated: true }),
+
+      setAccessToken: (accessToken) => set({ accessToken }),
+
       logout: () =>
         set({
           user: null,
           isAuthenticated: false,
+          accessToken: null,
+          refreshToken: null,
           courses: [],
         }),
-
-      // Tenant actions
-      setTenant: (tenant) => set({ tenant }),
-      setIsTeacherSubdomain: (isTeacherSubdomain) =>
-        set({ isTeacherSubdomain }),
 
       // UI actions
       setLoading: (loading) => set({ loading }),
@@ -117,13 +106,14 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "darslinker-storage",
-      // Use localStorage for user info (survives tab close)
-      // Actual auth is via httpOnly cookies which browser manages
-      storage: createJSONStorage(() => localStorage),
+      // Use sessionStorage per TODO.md for security
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
-        // Only persist user info, NOT tokens (they're in httpOnly cookies)
+        // Persist user info and tokens in sessionStorage
         user: state.user,
         isAuthenticated: state.isAuthenticated,
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
@@ -137,9 +127,8 @@ export const useHasHydrated = () => useAppStore((state) => state._hasHydrated);
 export const useUser = () => useAppStore((state) => state.user);
 export const useIsAuthenticated = () =>
   useAppStore((state) => state.isAuthenticated);
-export const useTenant = () => useAppStore((state) => state.tenant);
-export const useIsTeacherSubdomain = () =>
-  useAppStore((state) => state.isTeacherSubdomain);
+export const useAccessToken = () => useAppStore((state) => state.accessToken);
+export const useRefreshToken = () => useAppStore((state) => state.refreshToken);
 export const useLoading = () => useAppStore((state) => state.loading);
 export const useError = () => useAppStore((state) => state.error);
 export const useCourses = () => useAppStore((state) => state.courses);
