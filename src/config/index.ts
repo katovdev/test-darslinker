@@ -10,7 +10,7 @@ export const config = {
     version: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
   },
   api: {
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/api",
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://api.darslinker.uz/api",
   },
   routes: {
     home: "/",
