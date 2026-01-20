@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTranslations } from "@/hooks/use-locale";
+import { useAuth } from "@/context/auth-context";
 import authService, { formatPhoneNumber, validators } from "@/services/auth";
 
 type Step = "phone" | "otp";
@@ -11,6 +12,7 @@ type Step = "phone" | "otp";
 export default function LoginPage() {
   const router = useRouter();
   const t = useTranslations();
+  const { setUser } = useAuth();
 
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
@@ -81,6 +83,7 @@ export default function LoginPage() {
       const response = await authService.verifyOtp(phone, otp);
 
       if (response.success && response.data?.user) {
+        setUser(response.data.user);
         toast.success(t("auth.welcomeBack"));
         router.push("/courses");
       } else if (!response.success) {
@@ -181,14 +184,12 @@ export default function LoginPage() {
         </form>
       ) : (
         <div className="space-y-4">
-          {/* Success message */}
           <div className="rounded-xl border border-green-500/20 bg-green-500/10 p-3 text-center">
             <p className="text-sm text-green-400">
               {t("auth.otpSentToTelegram")}
             </p>
           </div>
 
-          {/* Telegram bot button */}
           <button
             type="button"
             onClick={openTelegramBot}
@@ -200,7 +201,6 @@ export default function LoginPage() {
             {t("auth.openTelegram")}
           </button>
 
-          {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-700" />
@@ -212,7 +212,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* OTP form */}
           <form onSubmit={handleVerifyOtp} className="space-y-4">
             <div className="space-y-2">
               <input
@@ -239,7 +238,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Back and resend buttons */}
           <div className="flex items-center justify-between text-sm">
             <button
               type="button"
