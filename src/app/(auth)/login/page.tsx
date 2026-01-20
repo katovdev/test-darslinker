@@ -81,10 +81,15 @@ export default function LoginPage() {
     try {
       const response = await authService.verifyOtp(phone, otp);
 
-      if (response.success) {
+      if (response.success && response.data?.user) {
         toast.success(t("auth.welcomeBack"));
-        router.push("/dashboard");
-      } else {
+        const userRole = response.data.user.role;
+        if (userRole === "student") {
+          router.push("/student/dashboard");
+        } else {
+          router.push("/dashboard");
+        }
+      } else if (!response.success) {
         const errorCode = response.error?.code;
         const errorMessage =
           errorCode && t(`errors.${errorCode}`) !== `errors.${errorCode}`
