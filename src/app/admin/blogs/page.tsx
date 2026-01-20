@@ -18,11 +18,7 @@ import {
   Send,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
-import {
-  adminBlogApi,
-  type Blog,
-  type BlogCategory,
-} from "@/lib/api/blog";
+import { adminBlogApi, type Blog, type BlogCategory } from "@/lib/api/blog";
 import { toast } from "sonner";
 
 type StatusFilter = "all" | "draft" | "published" | "archived";
@@ -139,7 +135,9 @@ export default function AdminBlogsPage() {
       const response = await adminBlogApi.updateBlog(blogId, { status });
 
       if (response?.success) {
-        toast.success(`Blog ${status === "published" ? "published" : status === "archived" ? "archived" : "set to draft"}`);
+        toast.success(
+          `Blog ${status === "published" ? "published" : status === "archived" ? "archived" : "set to draft"}`
+        );
         loadBlogs();
       } else {
         toast.error("Failed to update blog status");
@@ -152,7 +150,11 @@ export default function AdminBlogsPage() {
   };
 
   const handleDelete = async (blogId: string) => {
-    if (!confirm("Are you sure you want to delete this blog? This action cannot be undone.")) {
+    if (
+      !confirm(
+        "Are you sure you want to delete this blog? This action cannot be undone."
+      )
+    ) {
       return;
     }
 
@@ -480,7 +482,9 @@ export default function AdminBlogsPage() {
                   )}
 
                   <button
-                    onClick={() => toast.info("Edit functionality coming soon!")}
+                    onClick={() =>
+                      toast.info("Edit functionality coming soon!")
+                    }
                     className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
                   >
                     <Edit className="h-4 w-4" />

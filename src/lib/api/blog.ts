@@ -124,8 +124,12 @@ function buildQueryString(params: Record<string, unknown>): string {
 
 export const blogApi = {
   getBlogs: (params?: BlogQueryParams) => {
-    const query = params ? buildQueryString(params as Record<string, unknown>) : "";
-    return api.get<BlogsResponse>(`${blogEndpoints.getAllBlogs}${query ? `?${query}` : ""}`);
+    const query = params
+      ? buildQueryString(params as Record<string, unknown>)
+      : "";
+    return api.get<BlogsResponse>(
+      `${blogEndpoints.getAllBlogs}${query ? `?${query}` : ""}`
+    );
   },
 
   getBlogBySlug: (slug: string) => {
@@ -137,16 +141,23 @@ export const blogApi = {
   },
 
   getCategories: (params?: { page?: number; limit?: number }) => {
-    const query = params ? buildQueryString(params as Record<string, unknown>) : "";
-    return api.get<CategoriesResponse>(`${blogEndpoints.getCategories}${query ? `?${query}` : ""}`);
+    const query = params
+      ? buildQueryString(params as Record<string, unknown>)
+      : "";
+    return api.get<CategoriesResponse>(
+      `${blogEndpoints.getCategories}${query ? `?${query}` : ""}`
+    );
   },
 };
 
-
 export const adminBlogApi = {
   getBlogs: (params?: BlogQueryParams) => {
-    const query = params ? buildQueryString(params as Record<string, unknown>) : "";
-    return api.get<BlogsResponse>(`${blogEndpoints.adminBlogs}${query ? `?${query}` : ""}`);
+    const query = params
+      ? buildQueryString(params as Record<string, unknown>)
+      : "";
+    return api.get<BlogsResponse>(
+      `${blogEndpoints.adminBlogs}${query ? `?${query}` : ""}`
+    );
   },
 
   getBlog: (id: string) => {
@@ -167,9 +178,17 @@ export const adminBlogApi = {
     );
   },
 
-  getCategories: (params?: { page?: number; limit?: number; activeOnly?: boolean }) => {
-    const query = params ? buildQueryString(params as Record<string, unknown>) : "";
-    return api.get<CategoriesResponse>(`${blogEndpoints.adminCategories}${query ? `?${query}` : ""}`);
+  getCategories: (params?: {
+    page?: number;
+    limit?: number;
+    activeOnly?: boolean;
+  }) => {
+    const query = params
+      ? buildQueryString(params as Record<string, unknown>)
+      : "";
+    return api.get<CategoriesResponse>(
+      `${blogEndpoints.adminCategories}${query ? `?${query}` : ""}`
+    );
   },
 
   getCategory: (id: string) => {
@@ -181,7 +200,10 @@ export const adminBlogApi = {
   },
 
   updateCategory: (id: string, input: UpdateCategoryInput) => {
-    return api.patch<CategoryResponse>(blogEndpoints.adminCategoryById(id), input);
+    return api.patch<CategoryResponse>(
+      blogEndpoints.adminCategoryById(id),
+      input
+    );
   },
 
   deleteCategory: (id: string) => {

@@ -31,18 +31,15 @@ class BlogService {
   private cache = new Map<string, CacheEntry<unknown>>();
   private cacheTimeout = cacheConfig.defaultTTL;
 
-
   private getCacheKey(method: string, params: unknown = {}): string {
     return `${method}_${JSON.stringify(params)}`;
   }
-
 
   private isCacheValid<T>(cacheEntry: CacheEntry<T> | undefined): boolean {
     return (
       !!cacheEntry && Date.now() - cacheEntry.timestamp < this.cacheTimeout
     );
   }
-
 
   private async getCachedOrFetch<T>(
     cacheKey: string,
@@ -73,7 +70,6 @@ class BlogService {
     }
   }
 
-
   private transformBlog(blog: Blog): TransformedBlog {
     return {
       id: blog.id,
@@ -89,11 +85,9 @@ class BlogService {
     };
   }
 
-
   private transformBlogs(blogs: Blog[]): TransformedBlog[] {
     return blogs.map((blog) => this.transformBlog(blog));
   }
-
 
   private getFallbackBlogs(limit = 6): TransformedBlog[] {
     const fallbackBlogs: TransformedBlog[] = [
@@ -174,7 +168,6 @@ class BlogService {
     return fallbackBlogs.slice(0, Math.min(limit, fallbackBlogs.length));
   }
 
-
   private formatDate(date: string | Date | null | undefined): string {
     if (!date) return "";
 
@@ -189,7 +182,6 @@ class BlogService {
       return "";
     }
   }
-
 
   async getFeaturedBlogsForLanding(limit = 6): Promise<TransformedBlog[]> {
     const cacheKey = this.getCacheKey("featuredBlogs", { limit });
@@ -213,7 +205,6 @@ class BlogService {
       return this.getFallbackBlogs(limit);
     }
   }
-
 
   async getAllBlogs(params: BlogQueryParams = {}): Promise<{
     success: boolean;
@@ -253,7 +244,6 @@ class BlogService {
     }
   }
 
-
   async getBlogBySlug(slug: string): Promise<{
     success: boolean;
     data?: TransformedBlog & { content?: string };
@@ -282,7 +272,6 @@ class BlogService {
     }
   }
 
-
   async toggleLike(blogId: string): Promise<{
     success: boolean;
     liked?: boolean;
@@ -309,7 +298,6 @@ class BlogService {
       return { success: false };
     }
   }
-
 
   async getCategories(): Promise<{
     success: boolean;
@@ -342,11 +330,9 @@ class BlogService {
     }
   }
 
-
   clearCache(): void {
     this.cache.clear();
   }
-
 
   clearCachePattern(pattern: string): void {
     for (const key of this.cache.keys()) {
@@ -355,7 +341,6 @@ class BlogService {
       }
     }
   }
-
 
   getCacheStats() {
     const now = Date.now();

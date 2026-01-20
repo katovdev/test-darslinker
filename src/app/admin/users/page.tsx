@@ -35,7 +35,10 @@ export default function AdminUsersPage() {
   const [page, setPage] = useState(1);
 
   const [actionMenuId, setActionMenuId] = useState<string | null>(null);
-  const [actionMenuPosition, setActionMenuPosition] = useState<{ top: number; left: number } | null>(null);
+  const [actionMenuPosition, setActionMenuPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const [editingUser, setEditingUser] = useState<{
@@ -129,7 +132,10 @@ export default function AdminUsersPage() {
     setIsUpdating(null);
   };
 
-  const handleOpenActionMenu = (userId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOpenActionMenu = (
+    userId: string,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     if (actionMenuId === userId) {
       setActionMenuId(null);
       setActionMenuPosition(null);
@@ -174,7 +180,11 @@ export default function AdminUsersPage() {
                 ...u,
                 firstName: editingUser.firstName,
                 lastName: editingUser.lastName,
-                role: editingUser.role as "teacher" | "student" | "moderator" | "admin",
+                role: editingUser.role as
+                  | "teacher"
+                  | "student"
+                  | "moderator"
+                  | "admin",
                 status: editingUser.status as "active" | "blocked" | "pending",
               }
             : u
@@ -564,7 +574,10 @@ export default function AdminUsersPage() {
                     type="text"
                     value={editingUser.firstName}
                     onChange={(e) =>
-                      setEditingUser({ ...editingUser, firstName: e.target.value })
+                      setEditingUser({
+                        ...editingUser,
+                        firstName: e.target.value,
+                      })
                     }
                     className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
                   />
@@ -577,7 +590,10 @@ export default function AdminUsersPage() {
                     type="text"
                     value={editingUser.lastName}
                     onChange={(e) =>
-                      setEditingUser({ ...editingUser, lastName: e.target.value })
+                      setEditingUser({
+                        ...editingUser,
+                        lastName: e.target.value,
+                      })
                     }
                     className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
                   />
@@ -596,8 +612,12 @@ export default function AdminUsersPage() {
                     }
                     className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
                   >
-                    <option value="student">{t("admin.student") || "Student"}</option>
-                    <option value="teacher">{t("admin.teacher") || "Teacher"}</option>
+                    <option value="student">
+                      {t("admin.student") || "Student"}
+                    </option>
+                    <option value="teacher">
+                      {t("admin.teacher") || "Teacher"}
+                    </option>
                     <option value="moderator">Moderator</option>
                     <option value="admin">Admin</option>
                   </select>
@@ -613,15 +633,22 @@ export default function AdminUsersPage() {
                     }
                     className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
                   >
-                    <option value="pending">{t("admin.pending") || "Pending"}</option>
-                    <option value="active">{t("admin.active") || "Active"}</option>
-                    <option value="blocked">{t("admin.suspended") || "Blocked"}</option>
+                    <option value="pending">
+                      {t("admin.pending") || "Pending"}
+                    </option>
+                    <option value="active">
+                      {t("admin.active") || "Active"}
+                    </option>
+                    <option value="blocked">
+                      {t("admin.suspended") || "Blocked"}
+                    </option>
                   </select>
                 </div>
               </div>
 
               <div className="text-sm text-gray-500">
-                {t("admin.joined") || "Joined"}: {new Date(selectedUser.createdAt).toLocaleDateString()}
+                {t("admin.joined") || "Joined"}:{" "}
+                {new Date(selectedUser.createdAt).toLocaleDateString()}
               </div>
             </div>
 

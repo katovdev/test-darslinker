@@ -103,8 +103,7 @@ export default function BlogDetailPage() {
     if (navigator.share) {
       try {
         await navigator.share({ title, url });
-      } catch {
-      }
+      } catch {}
     } else {
       try {
         await navigator.clipboard.writeText(url);
@@ -276,7 +275,7 @@ export default function BlogDetailPage() {
           {/* Content */}
           {blog.content ? (
             <div
-              className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-gray-300 prose-a:text-blue-400 prose-strong:text-white prose-code:text-blue-300"
+              className="prose prose-invert prose-lg prose-headings:text-white prose-p:text-gray-300 prose-a:text-blue-400 prose-strong:text-white prose-code:text-blue-300 max-w-none"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             />
           ) : (
