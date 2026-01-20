@@ -39,6 +39,7 @@ export const en: Translations = {
     editProfile: "Edit Profile",
     support: "Support",
     myCourses: "My Courses",
+    courses: "Courses",
     payments: "Payments",
     settings: "Settings",
     language: "Language",
@@ -667,6 +668,10 @@ export const en: Translations = {
     courses: "Courses",
     payments: "Payments",
     earnings: "Earnings",
+    blogs: "Blogs",
+    blogsSubtitle: "Manage blog posts",
+    blogDetails: "Blog Details",
+    createBlog: "Create Blog",
     analytics: "Analytics",
     admin: "Admin",
     // Dashboard
@@ -767,6 +772,15 @@ export const en: Translations = {
     totalCourses: "Total Courses",
     activeCourses: "Active Courses",
     draftCourses: "Draft Courses",
+    // Users page
+    usersSubtitle: "Manage user status",
+    userDetails: "User Details",
+    limitedUserAccess:
+      "As a moderator, you can only change user status. Role changes and user deletion require admin access.",
+    // Courses page
+    coursesSubtitle: "Manage course status",
+    limitedCourseAccess:
+      "As a moderator, you can only change course status. Course deletion and price management require admin access.",
     // Limited access
     limitedAccess: "Limited access. Financial data is restricted.",
     limitedAccessTitle: "Limited Access",

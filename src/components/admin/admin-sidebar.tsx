@@ -8,6 +8,7 @@ import {
   BookOpen,
   CreditCard,
   DollarSign,
+  FileText,
   LogOut,
   Menu,
   X,
@@ -53,6 +54,11 @@ export function AdminSidebar() {
       href: "/admin/earnings",
       label: t("admin.earnings") || "Earnings",
       icon: DollarSign,
+    },
+    {
+      href: "/admin/blogs",
+      label: t("admin.blogs") || "Blogs",
+      icon: FileText,
     },
   ];
 

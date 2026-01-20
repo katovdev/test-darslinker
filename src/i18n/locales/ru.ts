@@ -39,6 +39,7 @@ export const ru: Translations = {
     editProfile: "Редактировать профиль",
     support: "Поддержка",
     myCourses: "Мои курсы",
+    courses: "Курсы",
     payments: "Платежи",
     settings: "Настройки",
     language: "Язык",
@@ -673,6 +674,10 @@ export const ru: Translations = {
     courses: "Курсы",
     payments: "Платежи",
     earnings: "Доходы",
+    blogs: "Блоги",
+    blogsSubtitle: "Управление блог-постами",
+    blogDetails: "Детали блога",
+    createBlog: "Создать блог",
     analytics: "Аналитика",
     admin: "Админ",
     // Dashboard
@@ -773,6 +778,15 @@ export const ru: Translations = {
     totalCourses: "Всего курсов",
     activeCourses: "Активные курсы",
     draftCourses: "Черновики курсов",
+    // Users page
+    usersSubtitle: "Управление статусом пользователей",
+    userDetails: "Детали пользователя",
+    limitedUserAccess:
+      "Как модератор, вы можете только изменять статус пользователя. Изменение ролей и удаление требуют прав администратора.",
+    // Courses page
+    coursesSubtitle: "Управление статусом курсов",
+    limitedCourseAccess:
+      "Как модератор, вы можете только изменять статус курса. Удаление курсов и управление ценами требуют прав администратора.",
     // Limited access
     limitedAccess: "Ограниченный доступ. Финансовые данные недоступны.",
     limitedAccessTitle: "Ограниченный доступ",

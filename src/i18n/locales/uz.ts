@@ -39,6 +39,7 @@ export const uz: Translations = {
     editProfile: "Profilni tahrirlash",
     support: "Yordam",
     myCourses: "Mening kurslarim",
+    courses: "Kurslar",
     payments: "To'lovlar",
     settings: "Sozlamalar",
     language: "Til",
@@ -671,6 +672,10 @@ export const uz: Translations = {
     courses: "Kurslar",
     payments: "To'lovlar",
     earnings: "Daromadlar",
+    blogs: "Bloglar",
+    blogsSubtitle: "Blog postlarini boshqarish",
+    blogDetails: "Blog tafsilotlari",
+    createBlog: "Blog yaratish",
     analytics: "Tahlil",
     admin: "Admin",
     // Dashboard
@@ -772,6 +777,15 @@ export const uz: Translations = {
     totalCourses: "Jami kurslar",
     activeCourses: "Faol kurslar",
     draftCourses: "Qoralama kurslar",
+    // Users page
+    usersSubtitle: "Foydalanuvchi holatini boshqarish",
+    userDetails: "Foydalanuvchi tafsilotlari",
+    limitedUserAccess:
+      "Moderator sifatida siz faqat foydalanuvchi holatini o'zgartira olasiz. Rol o'zgartirishlari va o'chirish admin huquqini talab qiladi.",
+    // Courses page
+    coursesSubtitle: "Kurs holatini boshqarish",
+    limitedCourseAccess:
+      "Moderator sifatida siz faqat kurs holatini o'zgartira olasiz. Kursni o'chirish va narx boshqaruvi admin huquqini talab qiladi.",
     // Limited access
     limitedAccess: "Cheklangan kirish. Moliyaviy ma'lumotlar mavjud emas.",
     limitedAccessTitle: "Cheklangan kirish",
