@@ -1,0 +1,442 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Users,
+  Search,
+  RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+  MoreVertical,
+  UserCheck,
+  UserX,
+  Shield,
+  Trash2,
+} from "lucide-react";
+import { useTranslations } from "@/hooks/use-locale";
+import { adminService } from "@/services/admin";
+import type { AdminUser, Pagination } from "@/lib/api/admin";
+
+type RoleFilter = "all" | "teacher" | "student" | "moderator" | "admin";
+type StatusFilter = "all" | "pending" | "active" | "blocked";
+
+export default function AdminUsersPage() {
+  const t = useTranslations();
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [page, setPage] = useState(1);
+
+  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
+  const [isUpdating, setIsUpdating] = useState<string | null>(null);
+
+  const loadUsers = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const data = await adminService.listUsers({
+        page,
+        limit: 20,
+        role: roleFilter === "all" ? undefined : roleFilter,
+        status: statusFilter === "all" ? undefined : statusFilter,
+        search: search || undefined,
+      });
+
+      if (data) {
+        setUsers(data.users);
+        setPagination(data.pagination);
+      } else {
+        setError(t("admin.statsLoadError") || "Failed to load users");
+      }
+    } catch {
+      setError(t("admin.statsLoadError") || "Failed to load users");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadUsers();
+  }, [page, roleFilter, statusFilter]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPage(1);
+    loadUsers();
+  };
+
+  const handleStatusChange = async (
+    userId: string,
+    newStatus: "active" | "blocked"
+  ) => {
+    setIsUpdating(userId);
+    setActionMenuId(null);
+
+    const result = await adminService.updateUser(userId, { status: newStatus });
+    if (result) {
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
+      );
+    }
+
+    setIsUpdating(null);
+  };
+
+  const handleRoleChange = async (
+    userId: string,
+    newRole: "teacher" | "student" | "moderator" | "admin"
+  ) => {
+    setIsUpdating(userId);
+    setActionMenuId(null);
+
+    const result = await adminService.updateUser(userId, { role: newRole });
+    if (result) {
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+      );
+    }
+
+    setIsUpdating(null);
+  };
+
+  const handleDelete = async (userId: string) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
+    setIsUpdating(userId);
+    setActionMenuId(null);
+
+    const result = await adminService.deleteUser(userId);
+    if (result) {
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
+    }
+
+    setIsUpdating(null);
+  };
+
+  const getRoleBadge = (role: string) => {
+    const styles: Record<string, string> = {
+      admin: "bg-red-500/10 text-red-400",
+      moderator: "bg-orange-500/10 text-orange-400",
+      teacher: "bg-blue-500/10 text-blue-400",
+      student: "bg-green-500/10 text-green-400",
+    };
+    return (
+      <span
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[role] || "bg-gray-500/10 text-gray-400"}`}
+      >
+        {role}
+      </span>
+    );
+  };
+
+  const getStatusBadge = (status: string) => {
+    const styles: Record<string, string> = {
+      active: "bg-green-500/10 text-green-400",
+      pending: "bg-yellow-500/10 text-yellow-400",
+      blocked: "bg-red-500/10 text-red-400",
+    };
+    return (
+      <span
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || "bg-gray-500/10 text-gray-400"}`}
+      >
+        {status}
+      </span>
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">
+            {t("admin.users") || "Users"}
+          </h1>
+          <p className="mt-1 text-gray-400">
+            {t("admin.usersSubtitle") || "Manage all users"}
+          </p>
+        </div>
+        <button
+          onClick={loadUsers}
+          disabled={isLoading}
+          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+        >
+          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+          {t("common.refresh") || "Refresh"}
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <form onSubmit={handleSearch} className="flex flex-1 gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("admin.searchUsers") || "Search users..."}
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            />
+          </div>
+          <button
+            type="submit"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            {t("blog.search") || "Search"}
+          </button>
+        </form>
+
+        <div className="flex gap-2">
+          <select
+            value={roleFilter}
+            onChange={(e) => {
+              setRoleFilter(e.target.value as RoleFilter);
+              setPage(1);
+            }}
+            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+          >
+            <option value="all">{t("admin.allRoles") || "All Roles"}</option>
+            <option value="admin">Admin</option>
+            <option value="moderator">Moderator</option>
+            <option value="teacher">{t("admin.teacher") || "Teacher"}</option>
+            <option value="student">{t("admin.student") || "Student"}</option>
+          </select>
+
+          <select
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value as StatusFilter);
+              setPage(1);
+            }}
+            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+          >
+            <option value="all">
+              {t("admin.allStatuses") || "All Statuses"}
+            </option>
+            <option value="active">{t("admin.active") || "Active"}</option>
+            <option value="pending">{t("admin.pending") || "Pending"}</option>
+            <option value="blocked">{t("admin.suspended") || "Blocked"}</option>
+          </select>
+        </div>
+      </div>
+
+      {error && (
+        <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4">
+          <p className="text-red-400">{error}</p>
+        </div>
+      )}
+
+      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-800 text-left">
+                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                  User
+                </th>
+                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                  Phone
+                </th>
+                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                  Role
+                </th>
+                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                  Status
+                </th>
+                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                  Joined
+                </th>
+                <th className="px-4 py-3 text-sm font-medium text-gray-400"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="border-b border-gray-800">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 animate-pulse rounded-full bg-gray-700" />
+                        <div className="h-4 w-32 animate-pulse rounded bg-gray-700" />
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="h-4 w-24 animate-pulse rounded bg-gray-700" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="h-4 w-20 animate-pulse rounded bg-gray-700" />
+                    </td>
+                    <td className="px-4 py-3" />
+                  </tr>
+                ))
+              ) : users.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-12 text-center">
+                    <Users className="mx-auto h-12 w-12 text-gray-600" />
+                    <p className="mt-2 text-gray-400">
+                      {t("admin.noUsers") || "No users found"}
+                    </p>
+                  </td>
+                </tr>
+              ) : (
+                users.map((user) => (
+                  <tr
+                    key={user.id}
+                    className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
+                  >
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-white">
+                          {user.firstName?.charAt(0)}
+                          {user.lastName?.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="font-medium text-white">
+                            {user.firstName} {user.lastName}
+                          </p>
+                          {user.username && (
+                            <p className="text-sm text-gray-500">
+                              @{user.username}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-gray-300">{user.phone}</td>
+                    <td className="px-4 py-3">{getRoleBadge(user.role)}</td>
+                    <td className="px-4 py-3">{getStatusBadge(user.status)}</td>
+                    <td className="px-4 py-3 text-sm text-gray-400">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="relative">
+                        <button
+                          onClick={() =>
+                            setActionMenuId(
+                              actionMenuId === user.id ? null : user.id
+                            )
+                          }
+                          disabled={isUpdating === user.id}
+                          className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
+                        >
+                          {isUpdating === user.id ? (
+                            <RefreshCw className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <MoreVertical className="h-4 w-4" />
+                          )}
+                        </button>
+
+                        {actionMenuId === user.id && (
+                          <>
+                            <div
+                              className="fixed inset-0 z-10"
+                              onClick={() => setActionMenuId(null)}
+                            />
+                            <div className="absolute right-0 z-20 mt-1 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl">
+                              {user.status === "active" ? (
+                                <button
+                                  onClick={() =>
+                                    handleStatusChange(user.id, "blocked")
+                                  }
+                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
+                                >
+                                  <UserX className="h-4 w-4" />
+                                  Block User
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleStatusChange(user.id, "active")
+                                  }
+                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                                >
+                                  <UserCheck className="h-4 w-4" />
+                                  Activate User
+                                </button>
+                              )}
+
+                              {user.role !== "moderator" && (
+                                <button
+                                  onClick={() =>
+                                    handleRoleChange(user.id, "moderator")
+                                  }
+                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-orange-400 hover:bg-gray-700"
+                                >
+                                  <Shield className="h-4 w-4" />
+                                  Make Moderator
+                                </button>
+                              )}
+
+                              {user.role !== "teacher" && (
+                                <button
+                                  onClick={() =>
+                                    handleRoleChange(user.id, "teacher")
+                                  }
+                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
+                                >
+                                  <UserCheck className="h-4 w-4" />
+                                  Make Teacher
+                                </button>
+                              )}
+
+                              <div className="my-1 border-t border-gray-700" />
+
+                              <button
+                                onClick={() => handleDelete(user.id)}
+                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                Delete User
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {pagination && pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
+            <p className="text-sm text-gray-400">
+              Page {pagination.page} of {pagination.totalPages} (
+              {pagination.total} users)
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPage(page - 1)}
+                disabled={page <= 1}
+                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                {t("blog.previous") || "Previous"}
+              </button>
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page >= pagination.totalPages}
+                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+              >
+                {t("blog.next") || "Next"}
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

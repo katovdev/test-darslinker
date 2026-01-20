@@ -237,7 +237,6 @@ export default function MePage() {
       <Card className="border-gray-800 bg-gray-800/50">
         <CardContent className="p-6">
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-            {/* Avatar with upload */}
             <div className="relative">
               <Avatar className="h-24 w-24 bg-gradient-to-br from-blue-400 to-blue-600">
                 {user?.avatar ? (
@@ -257,7 +256,7 @@ export default function MePage() {
                 disabled={isUploadingAvatar}
               />
 
-              <div className="absolute -bottom-1 -right-1 flex gap-1">
+              <div className="absolute -right-1 -bottom-1 flex gap-1">
                 <button
                   onClick={handleAvatarClick}
                   disabled={isUploadingAvatar}
@@ -437,7 +436,12 @@ export default function MePage() {
                     id="username"
                     value={formData.username}
                     onChange={(e) =>
-                      setFormData({ ...formData, username: e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, "") })
+                      setFormData({
+                        ...formData,
+                        username: e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9_-]/g, ""),
+                      })
                     }
                     className="mt-1 border-gray-700 bg-gray-900/50 text-white"
                     placeholder="username"
@@ -447,9 +451,7 @@ export default function MePage() {
                   </p>
                 </div>
                 <div>
-                  <Label className="text-gray-400">
-                    {t("profile.phone")}
-                  </Label>
+                  <Label className="text-gray-400">{t("profile.phone")}</Label>
                   <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-gray-500">
                     {user?.phone || "-"}
                   </div>
