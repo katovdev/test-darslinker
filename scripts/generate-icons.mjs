@@ -1,11 +1,11 @@
-import sharp from 'sharp';
-import { mkdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import sharp from "sharp";
+import { mkdirSync, existsSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const publicDir = join(__dirname, '..', 'public');
-const iconsDir = join(publicDir, 'icons');
+const publicDir = join(__dirname, "..", "public");
+const iconsDir = join(publicDir, "icons");
 
 // Ensure icons directory exists
 if (!existsSync(iconsDir)) {
@@ -30,14 +30,11 @@ const sizes = [16, 32, 72, 96, 128, 144, 152, 192, 384, 512];
 async function generateIcons() {
   const svgBuffer = Buffer.from(svgIcon);
 
-  console.log('Generating icons...');
+  console.log("Generating icons...");
 
   for (const size of sizes) {
     const outputPath = join(iconsDir, `icon-${size}x${size}.png`);
-    await sharp(svgBuffer)
-      .resize(size, size)
-      .png()
-      .toFile(outputPath);
+    await sharp(svgBuffer).resize(size, size).png().toFile(outputPath);
     console.log(`  Created: icons/icon-${size}x${size}.png`);
   }
 
@@ -45,22 +42,22 @@ async function generateIcons() {
   await sharp(svgBuffer)
     .resize(16, 16)
     .png()
-    .toFile(join(publicDir, 'favicon-16x16.png'));
-  console.log('  Created: favicon-16x16.png');
+    .toFile(join(publicDir, "favicon-16x16.png"));
+  console.log("  Created: favicon-16x16.png");
 
   // Create favicon-32x32.png
   await sharp(svgBuffer)
     .resize(32, 32)
     .png()
-    .toFile(join(publicDir, 'favicon-32x32.png'));
-  console.log('  Created: favicon-32x32.png');
+    .toFile(join(publicDir, "favicon-32x32.png"));
+  console.log("  Created: favicon-32x32.png");
 
   // Create apple-touch-icon.png (180x180)
   await sharp(svgBuffer)
     .resize(180, 180)
     .png()
-    .toFile(join(publicDir, 'apple-touch-icon.png'));
-  console.log('  Created: apple-touch-icon.png');
+    .toFile(join(publicDir, "apple-touch-icon.png"));
+  console.log("  Created: apple-touch-icon.png");
 
   // Create OG image (1200x630)
   const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
@@ -83,10 +80,10 @@ async function generateIcons() {
   await sharp(Buffer.from(ogSvg))
     .resize(1200, 630)
     .png()
-    .toFile(join(publicDir, 'og-image.png'));
-  console.log('  Created: og-image.png');
+    .toFile(join(publicDir, "og-image.png"));
+  console.log("  Created: og-image.png");
 
-  console.log('Done!');
+  console.log("Done!");
 }
 
 generateIcons().catch(console.error);

@@ -39,9 +39,7 @@ import {
 } from "@/store";
 import { useTranslations } from "@/hooks/use-locale";
 import { publicAPI } from "@/lib/api";
-import {
-  isTeacherSubdomain as checkTeacherSubdomain,
-} from "@/lib/tenant";
+import { isTeacherSubdomain as checkTeacherSubdomain } from "@/lib/tenant";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -133,26 +131,22 @@ export default function StudentLayout({
   const businessName = tenant?.businessName || "Darslinker";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-background">
+      <header className="bg-background sticky top-0 z-50 border-b">
         <div className="mx-auto flex h-14 max-w-[900px] items-center justify-between px-4 sm:px-6">
           {/* Logo and Mobile Menu */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  className="lg:hidden"
-                >
+                <Button variant="ghost" size="icon-sm" className="lg:hidden">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="left"
-                className="w-64 border-border bg-sidebar p-0"
+                className="border-border bg-sidebar w-64 p-0"
               >
                 <SheetHeader className="border-b px-4 py-3">
                   <SheetTitle className="text-left text-base font-semibold">
@@ -164,7 +158,7 @@ export default function StudentLayout({
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      className="text-muted-foreground hover:bg-accent hover:text-foreground flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors"
                     >
                       <item.icon className="h-4 w-4" />
                       {t(`sidebar.${item.labelKey}`)}
@@ -184,7 +178,9 @@ export default function StudentLayout({
               ) : (
                 <>
                   <span>{isOnTeacherSubdomain ? businessName : "dars"}</span>
-                  {!isOnTeacherSubdomain && <span className="text-link">linker</span>}
+                  {!isOnTeacherSubdomain && (
+                    <span className="text-link">linker</span>
+                  )}
                 </>
               )}
             </Link>
@@ -210,10 +206,7 @@ export default function StudentLayout({
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="flex items-center gap-2 px-2"
-              >
+              <Button variant="ghost" className="flex items-center gap-2 px-2">
                 <Avatar className="h-7 w-7">
                   {user?.avatar && <AvatarImage src={user.avatar} />}
                   <AvatarFallback className="bg-secondary text-xs font-medium">
@@ -238,7 +231,7 @@ export default function StudentLayout({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}
-                className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
+                className="text-destructive focus:text-destructive flex cursor-pointer items-center gap-2"
               >
                 <LogOut className="h-4 w-4" />
                 {t("dashboard.logout")}

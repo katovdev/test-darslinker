@@ -133,8 +133,7 @@ export const useAppStore = create<AppState>()(
 );
 
 // Selector hooks for better performance
-export const useHasHydrated = () =>
-  useAppStore((state) => state._hasHydrated);
+export const useHasHydrated = () => useAppStore((state) => state._hasHydrated);
 export const useUser = () => useAppStore((state) => state.user);
 export const useIsAuthenticated = () =>
   useAppStore((state) => state.isAuthenticated);

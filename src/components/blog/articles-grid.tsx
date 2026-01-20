@@ -43,7 +43,9 @@ export function ArticlesGrid({
 
   if (isLoading && showLoadingState) {
     return (
-      <div className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}>
+      <div
+        className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}
+      >
         {Array.from({ length: limit }).map((_, i) => (
           <div
             key={i}

@@ -136,7 +136,7 @@ export default function BlogPage() {
       <section className="relative px-4 py-16 sm:px-6 lg:px-8">
         {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-green-500/10 to-transparent blur-3xl" />
+          <div className="absolute top-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-green-500/10 to-transparent blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-6xl text-center">
@@ -158,13 +158,13 @@ export default function BlogPage() {
           <div className="flex flex-col gap-4 sm:flex-row">
             <form onSubmit={handleSearch} className="flex flex-1 gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+                <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
                   placeholder={t("blog.searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pl-12 pr-4 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pr-4 pl-12 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               <button
@@ -178,7 +178,7 @@ export default function BlogPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white outline-none transition-colors focus:border-blue-500 sm:w-48"
+              className="rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white transition-colors outline-none focus:border-blue-500 sm:w-48"
             >
               <option value="all">{t("blog.allCategories")}</option>
               {categories.map((cat) => (
@@ -305,7 +305,10 @@ export default function BlogPage() {
                   </button>
 
                   <div className="flex items-center gap-1">
-                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                    {Array.from(
+                      { length: pagination.totalPages },
+                      (_, i) => i + 1
+                    )
                       .filter((p) => {
                         const current = pagination.page;
                         return (

@@ -127,7 +127,7 @@ export default function LessonPage() {
     try {
       // Calculate score locally (backend should also validate)
       const questions = lesson.quiz.questions;
-      let correctCount = 0;
+      const correctCount = 0;
 
       // For now, simulate quiz submission
       // In real implementation, this would call an API endpoint

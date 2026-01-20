@@ -6,16 +6,14 @@
 import { api } from "./client";
 import type { User } from "@/store";
 
-// Auth endpoints for OTP-only authentication
 export const authEndpoints = {
-  requestOtp: "auth", // POST - request OTP (sends to Telegram)
-  login: "auth/login", // POST - verify OTP and login
-  refresh: "auth/refresh", // POST - refresh tokens
-  logout: "auth/logout", // POST - logout
-  me: "auth/me", // GET - get current user
+  requestOtp: "auth",
+  login: "auth/login",
+  refresh: "auth/refresh",
+  logout: "auth/logout",
+  me: "auth/me",
 } as const;
 
-// Request types
 export interface RequestOtpRequest {
   phone: string;
 }
@@ -25,7 +23,6 @@ export interface LoginRequest {
   code: string;
 }
 
-// Response types
 export interface RequestOtpResponse {
   success: boolean;
   data?: {
@@ -33,6 +30,10 @@ export interface RequestOtpResponse {
     message: string;
   };
   message?: string;
+  error?: {
+    code: string;
+    message: string;
+  };
 }
 
 export interface AuthResponse {
@@ -41,6 +42,10 @@ export interface AuthResponse {
     user: User;
   };
   message?: string;
+  error?: {
+    code: string;
+    message: string;
+  };
 }
 
 export interface RefreshResponse {
@@ -56,34 +61,17 @@ export interface MeResponse {
   data: User;
 }
 
-// Auth API methods
 export const authApi = {
-  /**
-   * Request OTP - sends code via Telegram bot
-   */
   requestOtp: (phone: string) =>
     api.post<RequestOtpResponse>(authEndpoints.requestOtp, { phone }),
 
-  /**
-   * Verify OTP and login
-   */
   login: (phone: string, code: string) =>
     api.post<AuthResponse>(authEndpoints.login, { phone, code }),
 
-  /**
-   * Logout current user
-   */
   logout: () => api.post<{ success: boolean }>(authEndpoints.logout),
 
-  /**
-   * Refresh access token (uses httpOnly cookie, no body needed)
-   */
-  refreshToken: () =>
-    api.post<RefreshResponse>(authEndpoints.refresh),
+  refreshToken: () => api.post<RefreshResponse>(authEndpoints.refresh),
 
-  /**
-   * Get current user
-   */
   me: () => api.get<MeResponse>(authEndpoints.me),
 };
 

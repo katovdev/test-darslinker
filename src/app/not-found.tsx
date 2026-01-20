@@ -4,24 +4,24 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center px-4">
       <div className="text-center">
         {/* 404 Number */}
         <div className="mb-6">
-          <span className="text-7xl font-semibold text-muted-foreground/20">
+          <span className="text-muted-foreground/20 text-7xl font-semibold">
             404
           </span>
         </div>
 
         {/* Icon */}
         <div className="mb-6 flex justify-center">
-          <div className="rounded-md bg-secondary p-3">
-            <Search className="h-8 w-8 text-muted-foreground" />
+          <div className="bg-secondary rounded-md p-3">
+            <Search className="text-muted-foreground h-8 w-8" />
           </div>
         </div>
 
         <h1 className="mb-2 text-xl font-semibold">Sahifa topilmadi</h1>
-        <p className="mb-8 max-w-md text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-8 max-w-md text-sm">
           Siz qidirayotgan sahifa mavjud emas yoki ko&apos;chirilgan
           bo&apos;lishi mumkin.
         </p>

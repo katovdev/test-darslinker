@@ -85,10 +85,14 @@ export function Features() {
               className="group relative rounded-2xl border border-gray-800 bg-gray-800/30 p-6 transition-all duration-300 hover:border-gray-700 hover:bg-gray-800/50"
             >
               {/* Gradient hover effect */}
-              <div className={`absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-10`} />
+              <div
+                className={`absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-10`}
+              />
 
               {/* Icon */}
-              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.bgColor}`}>
+              <div
+                className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.bgColor}`}
+              >
                 <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
               </div>
 
@@ -96,12 +100,12 @@ export function Features() {
               <h3 className="mb-2 text-lg font-semibold text-white">
                 {t(`home.${feature.key}`)}
               </h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="leading-relaxed text-gray-400">
                 {t(`home.${feature.key}Desc`)}
               </p>
 
               {/* Number indicator */}
-              <div className="absolute right-6 top-6 text-4xl font-bold text-gray-800/50">
+              <div className="absolute top-6 right-6 text-4xl font-bold text-gray-800/50">
                 {String(index + 1).padStart(2, "0")}
               </div>
             </div>

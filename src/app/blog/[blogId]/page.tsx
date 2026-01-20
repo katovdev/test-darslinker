@@ -181,7 +181,10 @@ export default function BlogDetailPage() {
       switch (type) {
         case "h1":
           return (
-            <h1 key={index} className="mt-10 mb-4 text-3xl font-bold text-white">
+            <h1
+              key={index}
+              className="mt-10 mb-4 text-3xl font-bold text-white"
+            >
               {content}
             </h1>
           );
@@ -193,13 +196,19 @@ export default function BlogDetailPage() {
           );
         case "h3":
           return (
-            <h3 key={index} className="mt-6 mb-2 text-xl font-semibold text-white">
+            <h3
+              key={index}
+              className="mt-6 mb-2 text-xl font-semibold text-white"
+            >
               {content}
             </h3>
           );
         case "h4":
           return (
-            <h4 key={index} className="mt-4 mb-2 text-lg font-semibold text-white">
+            <h4
+              key={index}
+              className="mt-4 mb-2 text-lg font-semibold text-white"
+            >
               {content}
             </h4>
           );
@@ -216,7 +225,7 @@ export default function BlogDetailPage() {
           return (
             <blockquote
               key={index}
-              className="my-6 border-l-4 border-blue-500 bg-blue-500/5 py-4 pl-6 pr-4 text-gray-300 italic"
+              className="my-6 border-l-4 border-blue-500 bg-blue-500/5 py-4 pr-4 pl-6 text-gray-300 italic"
             >
               {content}
             </blockquote>
@@ -317,7 +326,7 @@ export default function BlogDetailPage() {
       <header className="relative border-b border-gray-800 px-4 py-12 sm:px-6 lg:px-8">
         {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-0 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl" />
+          <div className="absolute top-0 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-3xl">
@@ -414,10 +423,10 @@ export default function BlogDetailPage() {
                   className="group"
                 >
                   <article className="h-full rounded-2xl border border-gray-700 bg-gray-800/30 p-5 transition-all duration-300 hover:border-gray-600 hover:bg-gray-800/50">
-                    <h3 className="font-semibold text-white transition-colors group-hover:text-blue-400 line-clamp-2">
+                    <h3 className="line-clamp-2 font-semibold text-white transition-colors group-hover:text-blue-400">
                       {related.title}
                     </h3>
-                    <p className="mt-2 text-sm text-gray-400 line-clamp-2">
+                    <p className="mt-2 line-clamp-2 text-sm text-gray-400">
                       {related.description}
                     </p>
                     <div className="mt-4 flex items-center gap-3 text-xs text-gray-500">

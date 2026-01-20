@@ -73,7 +73,10 @@ export function ContactForm() {
             <div className="grid gap-6 sm:grid-cols-2">
               {/* Name */}
               <div>
-                <label htmlFor="name" className="mb-2 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
                   {t("home.contactName")}
                 </label>
                 <input
@@ -84,13 +87,16 @@ export function ContactForm() {
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder={t("home.contactName")}
-                  className="w-full rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               {/* Phone */}
               <div>
-                <label htmlFor="phone" className="mb-2 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="phone"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
                   {t("home.contactPhone")}
                 </label>
                 <div className="relative">
@@ -104,7 +110,7 @@ export function ContactForm() {
                     value={formData.phone}
                     onChange={handlePhoneChange}
                     placeholder="XX XXX XX XX"
-                    className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pl-24 pr-4 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pr-4 pl-24 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -112,7 +118,10 @@ export function ContactForm() {
 
             {/* Message */}
             <div className="mt-6">
-              <label htmlFor="message" className="mb-2 block text-sm font-medium text-gray-300">
+              <label
+                htmlFor="message"
+                className="mb-2 block text-sm font-medium text-gray-300"
+              >
                 {t("home.contactMessage")}
               </label>
               <textarea
@@ -123,7 +132,7 @@ export function ContactForm() {
                 }
                 rows={5}
                 placeholder={t("home.contactMessage")}
-                className="w-full resize-none rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full resize-none rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
 

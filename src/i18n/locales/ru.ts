@@ -154,6 +154,16 @@ export const ru: Translations = {
     notFound: "Запрашиваемый ресурс не найден.",
     serverError: "Ошибка сервера. Попробуйте позже.",
     validationError: "Проверьте введённые данные.",
+    // API error codes
+    USER_NOT_FOUND:
+      "Номер не найден. Пожалуйста, зарегистрируйтесь через Telegram бота.",
+    TEACHER_NOT_FOUND: "Преподаватель не найден.",
+    INVALID_OTP: "Неверный код. Попробуйте снова.",
+    OTP_EXPIRED: "Код истёк. Запросите новый.",
+    USER_BLOCKED: "Ваш аккаунт заблокирован. Обратитесь в поддержку.",
+    INVALID_CREDENTIALS: "Неверные данные.",
+    NOT_ENROLLED: "Вы не записаны к этому преподавателю.",
+    UNKNOWN_ERROR: "Произошла неизвестная ошибка.",
   },
 
   // Network

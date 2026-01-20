@@ -65,7 +65,7 @@ export default function StudentDashboardPage() {
             .replace("{name}", user?.firstName || "")
             .replace("{{name}}", user?.firstName || "")}
         </h1>
-        <p className="mt-1 text-muted-foreground">
+        <p className="text-muted-foreground mt-1">
           {t("dashboard.continueJourney")}
         </p>
       </div>
@@ -75,11 +75,11 @@ export default function StudentDashboardPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-md bg-secondary p-2">
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <div className="bg-secondary rounded-md p-2">
+                <BookOpen className="text-muted-foreground h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("course.enrolledCourses")}
                 </p>
                 <p className="text-xl font-semibold">{totalCourses}</p>
@@ -91,11 +91,11 @@ export default function StudentDashboardPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-md bg-secondary p-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
+              <div className="bg-secondary rounded-md p-2">
+                <Clock className="text-muted-foreground h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("dashboard.activeCourses")}
                 </p>
                 <p className="text-xl font-semibold">{inProgressCourses}</p>
@@ -107,11 +107,11 @@ export default function StudentDashboardPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-md bg-secondary p-2">
-                <Award className="h-4 w-4 text-muted-foreground" />
+              <div className="bg-secondary rounded-md p-2">
+                <Award className="text-muted-foreground h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("course.completed")}
                 </p>
                 <p className="text-xl font-semibold">{completedCourses}</p>
@@ -123,11 +123,11 @@ export default function StudentDashboardPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-md bg-secondary p-2">
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <div className="bg-secondary rounded-md p-2">
+                <TrendingUp className="text-muted-foreground h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("course.progress")}
                 </p>
                 <p className="text-xl font-semibold">{averageProgress}%</p>
@@ -166,12 +166,12 @@ export default function StudentDashboardPage() {
         {error && !isLoading && (
           <Card>
             <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
-              <div className="rounded-md bg-destructive/10 p-3">
-                <BookOpen className="h-6 w-6 text-destructive" />
+              <div className="bg-destructive/10 rounded-md p-3">
+                <BookOpen className="text-destructive h-6 w-6" />
               </div>
               <div className="space-y-1">
                 <h3 className="font-semibold">{t("blog.errorTitle")}</h3>
-                <p className="text-sm text-muted-foreground">{error}</p>
+                <p className="text-muted-foreground text-sm">{error}</p>
               </div>
               <Button onClick={loadEnrollments} variant="outline" size="sm">
                 <RefreshCw className="mr-2 h-4 w-4" />
@@ -185,12 +185,12 @@ export default function StudentDashboardPage() {
         {!isLoading && !error && enrollments.length === 0 && (
           <Card>
             <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
-              <div className="rounded-md bg-secondary p-3">
-                <BookOpen className="h-6 w-6 text-muted-foreground" />
+              <div className="bg-secondary rounded-md p-3">
+                <BookOpen className="text-muted-foreground h-6 w-6" />
               </div>
               <div className="space-y-1">
                 <h3 className="font-semibold">{t("course.noCourses")}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {t("dashboard.browseAllCourses")}
                 </p>
               </div>
@@ -222,9 +222,9 @@ function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
 
   return (
     <Link href={`/student/course/${enrollment.courseId}`}>
-      <Card className="h-full transition-colors hover:bg-secondary/50">
+      <Card className="hover:bg-secondary/50 h-full transition-colors">
         {/* Thumbnail */}
-        <div className="relative aspect-video overflow-hidden rounded-t-lg bg-secondary">
+        <div className="bg-secondary relative aspect-video overflow-hidden rounded-t-lg">
           {course.thumbnailUrl ? (
             <img
               src={course.thumbnailUrl}
@@ -233,11 +233,11 @@ function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <BookOpen className="h-10 w-10 text-muted-foreground" />
+              <BookOpen className="text-muted-foreground h-10 w-10" />
             </div>
           )}
           {isCompleted && (
-            <div className="absolute top-2 right-2 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-white">
+            <div className="bg-success absolute top-2 right-2 rounded-md px-2 py-0.5 text-xs font-medium text-white">
               {t("course.completed")}
             </div>
           )}
@@ -251,12 +251,12 @@ function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
 
         <CardContent className="space-y-3 p-4 pt-0">
           {/* Teacher Info */}
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {course.teacher.firstName} {course.teacher.lastName}
           </p>
 
           {/* Course Stats */}
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center gap-1 text-xs">
             <BookOpen className="h-3 w-3" />
             <span>
               {enrollment.progress?.completedLessons || 0}/
@@ -267,7 +267,9 @@ function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
           {/* Progress */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">{t("course.progress")}</span>
+              <span className="text-muted-foreground">
+                {t("course.progress")}
+              </span>
               <span className="font-medium">{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} />

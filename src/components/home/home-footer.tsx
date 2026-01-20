@@ -6,7 +6,11 @@ import { Send, Instagram, Youtube } from "lucide-react";
 
 const socialLinks = [
   { icon: Send, href: "https://t.me/darslinker", label: "Telegram" },
-  { icon: Instagram, href: "https://instagram.com/darslinker", label: "Instagram" },
+  {
+    icon: Instagram,
+    href: "https://instagram.com/darslinker",
+    label: "Instagram",
+  },
   { icon: Youtube, href: "https://youtube.com/darslinker", label: "YouTube" },
 ];
 
@@ -40,11 +44,11 @@ export function HomeFooter() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-1">
               <span className="text-xl font-bold text-white">dars</span>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-xl font-bold text-transparent">
                 linker
               </span>
             </Link>
-            <p className="mt-4 max-w-md text-gray-400 leading-relaxed">
+            <p className="mt-4 max-w-md leading-relaxed text-gray-400">
               {t("home.heroSubtitle")}
             </p>
 
@@ -67,7 +71,7 @@ export function HomeFooter() {
           {/* Links */}
           {footerLinks.map((group) => (
             <div key={group.titleKey}>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+              <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-400 uppercase">
                 {t(`home.${group.titleKey}`) || group.titleKey}
               </h3>
               <ul className="space-y-3">
@@ -91,9 +95,7 @@ export function HomeFooter() {
           <p className="text-sm text-gray-500">
             &copy; {currentYear} Darslinker. {t("home.footerRights")}
           </p>
-          <p className="text-sm text-gray-600">
-            Made with ❤️ in Uzbekistan
-          </p>
+          <p className="text-sm text-gray-600">Made with ❤️ in Uzbekistan</p>
         </div>
       </div>
     </footer>

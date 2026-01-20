@@ -33,7 +33,7 @@ export function HomeHeader() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
           <span className="text-xl font-bold text-white">dars</span>
-          <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-xl font-bold text-transparent">
             linker
           </span>
         </Link>
@@ -65,8 +65,11 @@ export function HomeHeader() {
 
             {langOpen && (
               <>
-                <div className="fixed inset-0 z-10" onClick={() => setLangOpen(false)} />
-                <div className="absolute right-0 top-full z-20 mt-2 w-40 rounded-xl border border-gray-800 bg-gray-900 p-1 shadow-xl">
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setLangOpen(false)}
+                />
+                <div className="absolute top-full right-0 z-20 mt-2 w-40 rounded-xl border border-gray-800 bg-gray-900 p-1 shadow-xl">
                   {languages.map((lang) => (
                     <button
                       key={lang.value}

@@ -32,7 +32,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
       </h3>
 
       {/* Description */}
-      <p className="mt-2 text-sm leading-relaxed text-gray-400 line-clamp-2">
+      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-400">
         {article.description}
       </p>
 

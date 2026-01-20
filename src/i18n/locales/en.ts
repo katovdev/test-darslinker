@@ -154,6 +154,15 @@ export const en: Translations = {
     notFound: "The requested resource was not found.",
     serverError: "Server error. Please try again later.",
     validationError: "Please check your input.",
+    // API error codes
+    USER_NOT_FOUND: "Phone number not found. Please register via Telegram bot.",
+    TEACHER_NOT_FOUND: "Teacher not found.",
+    INVALID_OTP: "Invalid code. Please try again.",
+    OTP_EXPIRED: "Code expired. Please request a new one.",
+    USER_BLOCKED: "Your account is blocked. Please contact support.",
+    INVALID_CREDENTIALS: "Invalid credentials.",
+    NOT_ENROLLED: "You are not enrolled with this teacher.",
+    UNKNOWN_ERROR: "An unknown error occurred.",
   },
 
   // Network

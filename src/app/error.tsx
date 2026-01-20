@@ -17,16 +17,16 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center px-4">
       <div className="text-center">
         <div className="mb-6 flex justify-center">
-          <div className="rounded-md bg-destructive/10 p-3">
-            <AlertTriangle className="h-8 w-8 text-destructive" />
+          <div className="bg-destructive/10 rounded-md p-3">
+            <AlertTriangle className="text-destructive h-8 w-8" />
           </div>
         </div>
 
         <h1 className="mb-2 text-xl font-semibold">Xatolik yuz berdi</h1>
-        <p className="mb-8 max-w-md text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-8 max-w-md text-sm">
           Kechirasiz, kutilmagan xatolik yuz berdi. Iltimos, qaytadan urinib
           ko&apos;ring yoki bosh sahifaga qayting.
         </p>
@@ -46,7 +46,7 @@ export default function Error({
         </div>
 
         {error.digest && (
-          <p className="mt-8 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-8 text-xs">
             Error ID: {error.digest}
           </p>
         )}

@@ -80,7 +80,7 @@ export function DashboardSidebar() {
   };
 
   return (
-    <aside className="fixed top-0 left-0 z-40 h-screen w-60 border-r bg-sidebar pt-14">
+    <aside className="bg-sidebar fixed top-0 left-0 z-40 h-screen w-60 border-r pt-14">
       <div className="flex h-full flex-col overflow-y-auto px-2 py-4">
         <nav className="flex-1 space-y-0.5">
           {menuItems.map((item) => {
@@ -121,7 +121,7 @@ export function DashboardSidebar() {
                             className={cn(
                               "block rounded-md px-3 py-1.5 text-sm transition-colors",
                               isActive(child.href)
-                                ? "bg-accent font-medium text-foreground"
+                                ? "bg-accent text-foreground font-medium"
                                 : "text-muted-foreground hover:bg-accent hover:text-foreground"
                             )}
                           >
@@ -137,7 +137,7 @@ export function DashboardSidebar() {
                     className={cn(
                       "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                       itemIsActive
-                        ? "bg-accent font-medium text-foreground"
+                        ? "bg-accent text-foreground font-medium"
                         : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     )}
                   >

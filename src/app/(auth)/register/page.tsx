@@ -28,7 +28,10 @@ export default function RegisterPage() {
 
       <p className="mt-6 text-center text-sm text-gray-400">
         {t("auth.hasAccount")}{" "}
-        <Link href="/login" className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
+        <Link
+          href="/login"
+          className="font-medium text-blue-400 transition-colors hover:text-blue-300"
+        >
           {t("auth.signIn")}
         </Link>
       </p>

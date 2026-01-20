@@ -30,7 +30,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useIsAuthenticated, useUser, useAppStore, useHasHydrated } from "@/store";
+import {
+  useIsAuthenticated,
+  useUser,
+  useAppStore,
+  useHasHydrated,
+} from "@/store";
 import { useTranslations } from "@/hooks/use-locale";
 import { cn } from "@/lib/utils";
 
@@ -107,9 +112,9 @@ export default function TeacherLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Sidebar - Desktop */}
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-60 border-r bg-sidebar lg:block">
+      <aside className="bg-sidebar fixed inset-y-0 left-0 z-50 hidden w-60 border-r lg:block">
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-14 items-center border-b px-4">
@@ -133,7 +138,7 @@ export default function TeacherLayout({
                   className={cn(
                     "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                     isActive
-                      ? "bg-accent font-medium text-foreground"
+                      ? "bg-accent text-foreground font-medium"
                       : "text-muted-foreground hover:bg-accent hover:text-foreground"
                   )}
                 >
@@ -157,7 +162,7 @@ export default function TeacherLayout({
                 <p className="truncate text-sm font-medium">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="truncate text-xs text-muted-foreground">
+                <p className="text-muted-foreground truncate text-xs">
                   {user?.username ? `@${user.username}` : t("teacher.teacher")}
                 </p>
               </div>
@@ -165,7 +170,7 @@ export default function TeacherLayout({
             <Button
               onClick={handleLogout}
               variant="ghost"
-              className="mt-3 w-full justify-start gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive mt-3 w-full justify-start gap-2"
             >
               <LogOut className="h-4 w-4" />
               {t("dashboard.logout")}
@@ -175,7 +180,7 @@ export default function TeacherLayout({
       </aside>
 
       {/* Header - Mobile */}
-      <header className="sticky top-0 z-40 border-b bg-background lg:hidden">
+      <header className="bg-background sticky top-0 z-40 border-b lg:hidden">
         <div className="flex h-14 items-center justify-between px-4">
           {/* Mobile Menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -186,7 +191,7 @@ export default function TeacherLayout({
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-64 border-border bg-sidebar p-0"
+              className="border-border bg-sidebar w-64 p-0"
             >
               <SheetHeader className="border-b px-4 py-3">
                 <SheetTitle className="flex items-center gap-1 text-left text-base font-semibold">
@@ -205,7 +210,7 @@ export default function TeacherLayout({
                       className={cn(
                         "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                         isActive
-                          ? "bg-accent font-medium text-foreground"
+                          ? "bg-accent text-foreground font-medium"
                           : "text-muted-foreground hover:bg-accent hover:text-foreground"
                       )}
                     >
@@ -252,7 +257,7 @@ export default function TeacherLayout({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}
-                className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
+                className="text-destructive focus:text-destructive flex cursor-pointer items-center gap-2"
               >
                 <LogOut className="h-4 w-4" />
                 {t("dashboard.logout")}

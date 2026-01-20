@@ -153,6 +153,16 @@ export const uz: Translations = {
     notFound: "So'ralgan resurs topilmadi.",
     serverError: "Server xatosi. Keyinroq urinib ko'ring.",
     validationError: "Kiritilgan ma'lumotlarni tekshiring.",
+    // API error codes
+    USER_NOT_FOUND:
+      "Raqamingiz topilmadi. Iltimos, Telegram bot orqali ro'yxatdan o'ting.",
+    TEACHER_NOT_FOUND: "O'qituvchi topilmadi.",
+    INVALID_OTP: "Kod noto'g'ri. Qayta urinib ko'ring.",
+    OTP_EXPIRED: "Kod muddati tugagan. Yangi kod so'rang.",
+    USER_BLOCKED: "Hisobingiz bloklangan. Yordam uchun murojaat qiling.",
+    INVALID_CREDENTIALS: "Ma'lumotlar noto'g'ri.",
+    NOT_ENROLLED: "Siz bu o'qituvchiga yozilmagansiz.",
+    UNKNOWN_ERROR: "Noma'lum xatolik yuz berdi.",
   },
 
   // Network

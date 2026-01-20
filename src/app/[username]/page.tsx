@@ -3,13 +3,7 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Users,
-  BookOpen,
-  ChevronRight,
-  Menu,
-  X,
-} from "lucide-react";
+import { Users, BookOpen, ChevronRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

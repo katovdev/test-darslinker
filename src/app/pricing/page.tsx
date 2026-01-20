@@ -146,7 +146,7 @@ export default function PricingPage() {
       <section className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-0 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
+          <div className="absolute top-0 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-6xl text-center">

@@ -140,6 +140,15 @@ export interface Translations {
     notFound: string;
     serverError: string;
     validationError: string;
+    // API error codes
+    USER_NOT_FOUND: string;
+    TEACHER_NOT_FOUND: string;
+    INVALID_OTP: string;
+    OTP_EXPIRED: string;
+    USER_BLOCKED: string;
+    INVALID_CREDENTIALS: string;
+    NOT_ENROLLED: string;
+    UNKNOWN_ERROR: string;
   };
   network: {
     offline: string;

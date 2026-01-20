@@ -142,7 +142,10 @@ export default function CoursePublicPage({ params }: PageProps) {
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             <div className="space-y-4 lg:col-span-2">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-20 w-full rounded-lg bg-gray-700" />
+                <Skeleton
+                  key={i}
+                  className="h-20 w-full rounded-lg bg-gray-700"
+                />
               ))}
             </div>
             <Skeleton className="h-64 rounded-lg bg-gray-700" />
@@ -164,7 +167,8 @@ export default function CoursePublicPage({ params }: PageProps) {
             {t("course.courseNotFound")}
           </h1>
           <p className="mb-8 max-w-md text-gray-400">
-            The course you&apos;re looking for doesn&apos;t exist or has been removed.
+            The course you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <Link href={`/${username}`}>
             <Button
@@ -215,7 +219,9 @@ export default function CoursePublicPage({ params }: PageProps) {
               <Badge
                 className="mb-2"
                 style={{
-                  backgroundColor: course.price ? `${primaryColor}33` : primaryColor,
+                  backgroundColor: course.price
+                    ? `${primaryColor}33`
+                    : primaryColor,
                   color: course.price ? textColor : "#fff",
                 }}
               >
@@ -301,9 +307,7 @@ export default function CoursePublicPage({ params }: PageProps) {
                       className="w-full text-white"
                       style={{ backgroundColor: primaryColor }}
                     >
-                      <Link
-                        href={`/login?redirect=/${username}/${courseSlug}`}
-                      >
+                      <Link href={`/login?redirect=/${username}/${courseSlug}`}>
                         {t("landing.login")}
                       </Link>
                     </Button>

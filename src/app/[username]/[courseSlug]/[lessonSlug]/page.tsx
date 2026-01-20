@@ -109,7 +109,7 @@ export default function LessonPublicPage({ params }: PageProps) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 px-4 text-white">
         <div className="text-center">
-          <div className="mb-6 rounded-full bg-red-500/10 p-4 mx-auto w-fit">
+          <div className="mx-auto mb-6 w-fit rounded-full bg-red-500/10 p-4">
             <BookOpen className="h-8 w-8 text-red-500" />
           </div>
           <h1
@@ -119,9 +119,10 @@ export default function LessonPublicPage({ params }: PageProps) {
             {t("lesson.lessonNotFound")}
           </h1>
           <p className="mb-8 max-w-md text-gray-400">
-            The lesson you&apos;re looking for doesn&apos;t exist or has been removed.
+            The lesson you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
-          <div className="flex gap-2 justify-center">
+          <div className="flex justify-center gap-2">
             <Button
               onClick={loadData}
               variant="outline"
@@ -156,7 +157,10 @@ export default function LessonPublicPage({ params }: PageProps) {
             {teacher?.fullName}
           </Link>
           <span>/</span>
-          <Link href={`/${username}/${courseSlug}`} className="hover:text-white">
+          <Link
+            href={`/${username}/${courseSlug}`}
+            className="hover:text-white"
+          >
             {course.title}
           </Link>
           <span>/</span>
@@ -289,7 +293,9 @@ export default function LessonPublicPage({ params }: PageProps) {
             >
               <Link href={`/${username}/${courseSlug}/${navigation.prev.slug}`}>
                 <ChevronLeft className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">{navigation.prev.title}</span>
+                <span className="hidden sm:inline">
+                  {navigation.prev.title}
+                </span>
                 <span className="sm:hidden">{t("lesson.previousLesson")}</span>
               </Link>
             </Button>
@@ -304,7 +310,9 @@ export default function LessonPublicPage({ params }: PageProps) {
               style={{ backgroundColor: primaryColor }}
             >
               <Link href={`/${username}/${courseSlug}/${navigation.next.slug}`}>
-                <span className="hidden sm:inline">{navigation.next.title}</span>
+                <span className="hidden sm:inline">
+                  {navigation.next.title}
+                </span>
                 <span className="sm:hidden">{t("lesson.nextLesson")}</span>
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>

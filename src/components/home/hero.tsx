@@ -8,11 +8,11 @@ export function Hero() {
   const t = useTranslations();
 
   return (
-    <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-28 lg:pt-24">
+    <section className="relative overflow-hidden px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
       {/* Background gradient */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/20 to-transparent blur-3xl" />
-        <div className="absolute right-0 top-1/4 h-[400px] w-[400px] rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
+        <div className="absolute top-0 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/20 to-transparent blur-3xl" />
+        <div className="absolute top-1/4 right-0 h-[400px] w-[400px] rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
       </div>
 
       <div className="mx-auto max-w-6xl">
@@ -58,21 +58,27 @@ export function Hero() {
                   <Users className="h-5 w-5 text-blue-400" />
                   <span className="text-2xl font-bold text-white">500+</span>
                 </div>
-                <p className="mt-1 text-sm text-gray-500">{t("home.statStudents") || "Students"}</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {t("home.statStudents") || "Students"}
+                </p>
               </div>
               <div>
                 <div className="flex items-center justify-center gap-2 lg:justify-start">
                   <BookOpen className="h-5 w-5 text-green-400" />
                   <span className="text-2xl font-bold text-white">50+</span>
                 </div>
-                <p className="mt-1 text-sm text-gray-500">{t("home.statCourses") || "Courses"}</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {t("home.statCourses") || "Courses"}
+                </p>
               </div>
               <div>
                 <div className="flex items-center justify-center gap-2 lg:justify-start">
                   <Award className="h-5 w-5 text-yellow-400" />
                   <span className="text-2xl font-bold text-white">100+</span>
                 </div>
-                <p className="mt-1 text-sm text-gray-500">{t("home.statCertificates") || "Certificates"}</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {t("home.statCertificates") || "Certificates"}
+                </p>
               </div>
             </div>
           </div>
@@ -127,11 +133,21 @@ export function Hero() {
               </div>
 
               {/* Floating elements */}
-              <div className="absolute -left-4 top-1/4 rounded-xl border border-gray-700 bg-gray-800 p-3 shadow-lg">
+              <div className="absolute top-1/4 -left-4 rounded-xl border border-gray-700 bg-gray-800 p-3 shadow-lg">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <svg className="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500/20">
+                    <svg
+                      className="h-4 w-4 text-green-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
                   <span className="text-sm text-gray-300">Completed!</span>
@@ -140,7 +156,7 @@ export function Hero() {
 
               <div className="absolute -right-4 bottom-1/4 rounded-xl border border-gray-700 bg-gray-800 p-3 shadow-lg">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20">
                     <Award className="h-4 w-4 text-yellow-400" />
                   </div>
                   <span className="text-sm text-gray-300">New Badge!</span>
