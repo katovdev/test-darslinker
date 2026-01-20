@@ -147,6 +147,8 @@ export {
 export {
   teacherAPI,
   type TeacherDashboard,
+  type DashboardPeriod,
+  type DashboardQueryParams,
   type TeacherProfile as TeacherOwnProfile,
   type UpdateTeacherProfileRequest,
   type TeacherBranding,

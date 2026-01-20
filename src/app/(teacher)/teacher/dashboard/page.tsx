@@ -9,15 +9,37 @@ import {
   Clock,
   RefreshCw,
   ArrowUpRight,
+  Phone,
+  MessageCircle,
+  Calendar,
   TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useTranslations } from "@/hooks/use-locale";
 import { useUser } from "@/store";
-import { teacherAPI, type TeacherDashboard } from "@/lib/api";
+import {
+  teacherAPI,
+  type TeacherDashboard,
+  type DashboardPeriod,
+} from "@/lib/api";
 
 export default function TeacherDashboardPage() {
   const t = useTranslations();
@@ -25,13 +47,14 @@ export default function TeacherDashboardPage() {
   const [dashboard, setDashboard] = useState<TeacherDashboard | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [period, setPeriod] = useState<DashboardPeriod>("all");
 
-  const loadDashboard = async () => {
+  const loadDashboard = async (selectedPeriod: DashboardPeriod = period) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await teacherAPI.getDashboard();
+      const response = await teacherAPI.getDashboard({ period: selectedPeriod });
       if (response.success && response.data) {
         setDashboard(response.data);
       }
@@ -47,11 +70,27 @@ export default function TeacherDashboardPage() {
     loadDashboard();
   }, []);
 
+  const handlePeriodChange = (value: DashboardPeriod) => {
+    setPeriod(value);
+    loadDashboard(value);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("uz-UZ", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   // Loading state
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-64 bg-gray-700" />
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-64 bg-gray-700" />
+          <Skeleton className="h-10 w-40 bg-gray-700" />
+        </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-28 w-full bg-gray-700" />
@@ -80,7 +119,7 @@ export default function TeacherDashboardPage() {
             <p className="text-sm text-gray-400">{error}</p>
           </div>
           <Button
-            onClick={loadDashboard}
+            onClick={() => loadDashboard()}
             variant="outline"
             className="gap-2 border-gray-700 text-white hover:bg-gray-800"
           >
@@ -94,14 +133,35 @@ export default function TeacherDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white sm:text-3xl">
-          {t("dashboard.welcomeBack")
-            .replace("{name}", user?.firstName || "")
-            .replace("{{name}}", user?.firstName || "")}
-        </h1>
-        <p className="mt-1 text-gray-400">{t("teacher.dashboardSubtitle")}</p>
+      {/* Welcome Header with Period Filter */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white sm:text-3xl">
+            {t("dashboard.welcomeBack")
+              .replace("{name}", user?.firstName || "")
+              .replace("{{name}}", user?.firstName || "")}
+          </h1>
+          <p className="mt-1 text-gray-400">{t("teacher.dashboardSubtitle")}</p>
+        </div>
+        <Select value={period} onValueChange={handlePeriodChange}>
+          <SelectTrigger className="w-[180px] border-gray-700 bg-gray-800 text-white">
+            <SelectValue placeholder={t("teacher.filterByPeriod")} />
+          </SelectTrigger>
+          <SelectContent className="border-gray-700 bg-gray-800">
+            <SelectItem value="all" className="text-white hover:bg-gray-700">
+              {t("teacher.allTime")}
+            </SelectItem>
+            <SelectItem value="week" className="text-white hover:bg-gray-700">
+              {t("teacher.thisWeek")}
+            </SelectItem>
+            <SelectItem value="month" className="text-white hover:bg-gray-700">
+              {t("teacher.thisMonth")}
+            </SelectItem>
+            <SelectItem value="year" className="text-white hover:bg-gray-700">
+              {t("teacher.thisYear")}
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Stats Cards */}
@@ -171,13 +231,89 @@ export default function TeacherDashboardPage() {
         </Card>
       </div>
 
-      {/* Recent Activity */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent Enrollments */}
+      {/* Course Stats with Earnings */}
+      {dashboard?.courseStats && dashboard.courseStats.length > 0 && (
         <Card className="border-gray-800 bg-gray-800/30">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-white">
-              {t("teacher.recentEnrollments")}
+              {t("teacher.courseStats")}
+            </CardTitle>
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="gap-1 text-[#7EA2D4] hover:text-[#7EA2D4]"
+            >
+              <Link href="/teacher/courses">
+                {t("teacher.viewAll")}
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-gray-700 hover:bg-transparent">
+                    <TableHead className="text-gray-400">
+                      {t("teacher.courseName")}
+                    </TableHead>
+                    <TableHead className="text-gray-400">
+                      {t("teacher.status")}
+                    </TableHead>
+                    <TableHead className="text-right text-gray-400">
+                      {t("teacher.students")}
+                    </TableHead>
+                    <TableHead className="text-right text-gray-400">
+                      {t("teacher.earnings")}
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {dashboard.courseStats.map((course) => (
+                    <TableRow
+                      key={course.courseId}
+                      className="border-gray-700 hover:bg-gray-800/50"
+                    >
+                      <TableCell className="font-medium text-white">
+                        {course.courseName}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={
+                            course.status === "active"
+                              ? "border-green-500/20 bg-green-500/10 text-green-400"
+                              : course.status === "draft"
+                                ? "border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
+                                : "border-gray-500/20 bg-gray-500/10 text-gray-400"
+                          }
+                        >
+                          {t(`teacher.status.${course.status}`)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right text-gray-300">
+                        {course.studentsCount}
+                      </TableCell>
+                      <TableCell className="text-right text-green-400">
+                        {course.earnings.toLocaleString()} UZS
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Recent Students and Payments */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Recent Students */}
+        <Card className="border-gray-800 bg-gray-800/30">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-white">
+              {t("teacher.recentStudents")}
             </CardTitle>
             <Button
               asChild
@@ -192,25 +328,39 @@ export default function TeacherDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {dashboard?.recentEnrollments &&
-            dashboard.recentEnrollments.length > 0 ? (
-              <div className="space-y-4">
-                {dashboard.recentEnrollments.slice(0, 5).map((enrollment) => (
+            {dashboard?.recentStudents && dashboard.recentStudents.length > 0 ? (
+              <div className="space-y-3">
+                {dashboard.recentStudents.slice(0, 5).map((student) => (
                   <div
-                    key={enrollment.id}
-                    className="flex items-center justify-between rounded-lg bg-gray-800/50 p-3"
+                    key={student.enrollmentId}
+                    className="rounded-lg bg-gray-800/50 p-4"
                   >
-                    <div>
-                      <p className="font-medium text-white">
-                        {enrollment.studentName}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {enrollment.courseName}
-                      </p>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-medium text-white">
+                          {student.studentName}
+                        </p>
+                        <p className="truncate text-sm text-gray-400">
+                          {student.courseName}
+                        </p>
+                        <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Phone className="h-3 w-3" />
+                            {student.phone}
+                          </span>
+                          {student.telegramUsername && (
+                            <span className="flex items-center gap-1">
+                              <MessageCircle className="h-3 w-3" />
+                              @{student.telegramUsername}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <Calendar className="h-3 w-3" />
+                        {formatDate(student.enrolledAt)}
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-500">
-                      {new Date(enrollment.enrolledAt).toLocaleDateString()}
-                    </p>
                   </div>
                 ))}
               </div>
@@ -218,7 +368,7 @@ export default function TeacherDashboardPage() {
               <div className="py-8 text-center">
                 <Users className="mx-auto h-8 w-8 text-gray-600" />
                 <p className="mt-2 text-sm text-gray-400">
-                  {t("teacher.noRecentEnrollments")}
+                  {t("teacher.noRecentStudents")}
                 </p>
               </div>
             )}
@@ -244,34 +394,41 @@ export default function TeacherDashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {dashboard?.recentPayments &&
-            dashboard.recentPayments.length > 0 ? (
-              <div className="space-y-4">
+            {dashboard?.recentPayments && dashboard.recentPayments.length > 0 ? (
+              <div className="space-y-3">
                 {dashboard.recentPayments.slice(0, 5).map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex items-center justify-between rounded-lg bg-gray-800/50 p-3"
+                    className="flex items-center justify-between rounded-lg bg-gray-800/50 p-4"
                   >
-                    <div>
-                      <p className="font-medium text-white">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-white">
                         {payment.studentName}
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="truncate text-sm text-gray-400">
+                        {payment.courseName}
+                      </p>
+                      <p className="mt-1 text-sm font-medium text-green-400">
                         {payment.amount.toLocaleString()} UZS
                       </p>
                     </div>
-                    <Badge
-                      variant="outline"
-                      className={
-                        payment.status === "approved"
-                          ? "border-green-500/20 bg-green-500/10 text-green-400"
-                          : payment.status === "rejected"
-                            ? "border-red-500/20 bg-red-500/10 text-red-400"
-                            : "border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
-                      }
-                    >
-                      {t(`teacher.paymentStatus.${payment.status}`)}
-                    </Badge>
+                    <div className="flex flex-col items-end gap-2">
+                      <Badge
+                        variant="outline"
+                        className={
+                          payment.status === "approved"
+                            ? "border-green-500/20 bg-green-500/10 text-green-400"
+                            : payment.status === "rejected"
+                              ? "border-red-500/20 bg-red-500/10 text-red-400"
+                              : "border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
+                        }
+                      >
+                        {t(`teacher.paymentStatus.${payment.status}`)}
+                      </Badge>
+                      <span className="text-xs text-gray-500">
+                        {formatDate(payment.createdAt)}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -286,52 +443,6 @@ export default function TeacherDashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Course Stats */}
-      {dashboard?.courseStats && dashboard.courseStats.length > 0 && (
-        <Card className="border-gray-800 bg-gray-800/30">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-white">
-              {t("teacher.courseStats")}
-            </CardTitle>
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="gap-1 text-[#7EA2D4] hover:text-[#7EA2D4]"
-            >
-              <Link href="/teacher/courses">
-                {t("teacher.viewAll")}
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {dashboard.courseStats.slice(0, 6).map((course) => (
-                <div
-                  key={course.courseId}
-                  className="rounded-lg bg-gray-800/50 p-4"
-                >
-                  <h4 className="truncate font-medium text-white">
-                    {course.courseName}
-                  </h4>
-                  <div className="mt-2 flex items-center justify-between text-sm">
-                    <span className="text-gray-400">
-                      <Users className="mr-1 inline-block h-4 w-4" />
-                      {course.enrolledCount} {t("teacher.students")}
-                    </span>
-                    <span className="flex items-center text-green-400">
-                      <TrendingUp className="mr-1 h-4 w-4" />
-                      {Math.round(course.completionRate)}%
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }

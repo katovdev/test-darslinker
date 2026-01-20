@@ -14,17 +14,24 @@ import { logger } from "../logger";
 export interface TeacherDashboard {
   totalStudents: number;
   totalCourses: number;
+  publishedCourses: number;
+  totalEnrollments: number;
   totalRevenue: number;
   pendingPayments: number;
-  recentEnrollments: {
-    id: string;
+  recentStudents: {
+    enrollmentId: string;
+    studentId: string;
     studentName: string;
+    phone: string;
+    telegramUsername: string | null;
+    courseId: string;
     courseName: string;
     enrolledAt: string;
   }[];
   recentPayments: {
     id: string;
     studentName: string;
+    courseName: string;
     amount: number;
     status: "pending" | "approved" | "rejected";
     createdAt: string;
@@ -32,9 +39,19 @@ export interface TeacherDashboard {
   courseStats: {
     courseId: string;
     courseName: string;
-    enrolledCount: number;
-    completionRate: number;
+    status: string;
+    price: number;
+    studentsCount: number;
+    earnings: number;
   }[];
+}
+
+export type DashboardPeriod = "week" | "month" | "year" | "all";
+
+export interface DashboardQueryParams {
+  period?: DashboardPeriod;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface TeacherProfile {
@@ -345,9 +362,21 @@ class TeacherAPI {
   /**
    * Get teacher dashboard data
    */
-  async getDashboard(): Promise<DashboardResponse> {
+  async getDashboard(params?: DashboardQueryParams): Promise<DashboardResponse> {
     try {
-      return await api.get<DashboardResponse>(teacherEndpoints.dashboard);
+      const searchParams = new URLSearchParams();
+      if (params) {
+        if (params.period) searchParams.append("period", params.period);
+        if (params.startDate) searchParams.append("startDate", params.startDate);
+        if (params.endDate) searchParams.append("endDate", params.endDate);
+      }
+
+      const queryString = searchParams.toString();
+      const url = queryString
+        ? `${teacherEndpoints.dashboard}?${queryString}`
+        : teacherEndpoints.dashboard;
+
+      return await api.get<DashboardResponse>(url);
     } catch (error) {
       logger.error("Error fetching teacher dashboard:", error);
       throw error;

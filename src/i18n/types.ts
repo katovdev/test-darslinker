@@ -435,10 +435,21 @@ export interface Translations {
     pendingPayments: string;
     recentEnrollments: string;
     recentPayments: string;
+    recentStudents: string;
     courseStats: string;
     viewAll: string;
     noRecentEnrollments: string;
     noRecentPayments: string;
+    noRecentStudents: string;
+    // Date filter
+    filterByPeriod: string;
+    allTime: string;
+    thisWeek: string;
+    thisMonth: string;
+    thisYear: string;
+    // Course stats
+    courseName: string;
+    earnings: string;
     // Courses
     manageYourCourses: string;
     createCourse: string;
@@ -480,6 +491,7 @@ export interface Translations {
     // Course Status
     status: {
       draft: string;
+      active: string;
       published: string;
       archived: string;
     };

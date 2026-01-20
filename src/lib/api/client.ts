@@ -1,5 +1,6 @@
 import ky, { type KyInstance, type Options, HTTPError } from "ky";
 import { apiConfig } from "./config";
+import { useAppStore } from "@/store";
 
 export interface ApiError {
   success: false;
@@ -35,7 +36,14 @@ async function parseErrorResponse(error: HTTPError): Promise<ApiError> {
 
 function handleUnauthorized(): void {
   if (typeof window === "undefined") return;
-  window.location.href = "/login";
+
+  // Clear auth state from store to prevent redirect loop
+  useAppStore.getState().logout();
+
+  // Only redirect if not already on login page
+  if (!window.location.pathname.includes("/login")) {
+    window.location.href = "/login";
+  }
 }
 
 async function tryRefreshToken(): Promise<boolean> {

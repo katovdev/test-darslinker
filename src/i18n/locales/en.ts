@@ -468,10 +468,21 @@ export const en: Translations = {
     pendingPayments: "Pending Payments",
     recentEnrollments: "Recent Enrollments",
     recentPayments: "Recent Payments",
+    recentStudents: "Recent Students",
     courseStats: "Course Statistics",
     viewAll: "View All",
     noRecentEnrollments: "No recent enrollments",
     noRecentPayments: "No recent payments",
+    noRecentStudents: "No recent students",
+    // Date filter
+    filterByPeriod: "Filter by period",
+    allTime: "All Time",
+    thisWeek: "This Week",
+    thisMonth: "This Month",
+    thisYear: "This Year",
+    // Course stats
+    courseName: "Course Name",
+    earnings: "Earnings",
     // Courses
     manageYourCourses: "Manage your courses",
     createCourse: "Create Course",
@@ -514,6 +525,7 @@ export const en: Translations = {
     // Course Status
     status: {
       draft: "Draft",
+      active: "Published",
       published: "Published",
       archived: "Archived",
     },

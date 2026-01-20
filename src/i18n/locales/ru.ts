@@ -471,10 +471,21 @@ export const ru: Translations = {
     pendingPayments: "Ожидающие платежи",
     recentEnrollments: "Последние записи",
     recentPayments: "Последние платежи",
+    recentStudents: "Последние студенты",
     courseStats: "Статистика курсов",
     viewAll: "Смотреть все",
     noRecentEnrollments: "Нет последних записей",
     noRecentPayments: "Нет последних платежей",
+    noRecentStudents: "Нет последних студентов",
+    // Date filter
+    filterByPeriod: "Фильтр по периоду",
+    allTime: "Все время",
+    thisWeek: "На этой неделе",
+    thisMonth: "В этом месяце",
+    thisYear: "В этом году",
+    // Course stats
+    courseName: "Название курса",
+    earnings: "Доход",
     // Courses
     manageYourCourses: "Управляйте своими курсами",
     createCourse: "Создать курс",
@@ -518,6 +529,7 @@ export const ru: Translations = {
     // Course Status
     status: {
       draft: "Черновик",
+      active: "Опубликован",
       published: "Опубликован",
       archived: "В архиве",
     },

@@ -472,10 +472,21 @@ export const uz: Translations = {
     pendingPayments: "Kutilayotgan to'lovlar",
     recentEnrollments: "So'nggi yozilishlar",
     recentPayments: "So'nggi to'lovlar",
+    recentStudents: "So'nggi o'quvchilar",
     courseStats: "Kurs statistikasi",
     viewAll: "Barchasini ko'rish",
     noRecentEnrollments: "So'nggi yozilishlar yo'q",
     noRecentPayments: "So'nggi to'lovlar yo'q",
+    noRecentStudents: "So'nggi o'quvchilar yo'q",
+    // Date filter
+    filterByPeriod: "Davr bo'yicha filtrlash",
+    allTime: "Barcha vaqt",
+    thisWeek: "Bu hafta",
+    thisMonth: "Bu oy",
+    thisYear: "Bu yil",
+    // Course stats
+    courseName: "Kurs nomi",
+    earnings: "Daromad",
     // Courses
     manageYourCourses: "Kurslaringizni boshqaring",
     createCourse: "Kurs yaratish",
@@ -518,6 +529,7 @@ export const uz: Translations = {
     // Course Status
     status: {
       draft: "Qoralama",
+      active: "Nashr qilingan",
       published: "Nashr qilingan",
       archived: "Arxivlangan",
     },
