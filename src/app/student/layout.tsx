@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -33,13 +33,9 @@ import {
   useIsAuthenticated,
   useUser,
   useAppStore,
-  useTenant,
-  useIsTeacherSubdomain,
   useHasHydrated,
 } from "@/store";
 import { useTranslations } from "@/hooks/use-locale";
-import { publicAPI } from "@/lib/api";
-import { isTeacherSubdomain as checkTeacherSubdomain } from "@/lib/tenant";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -59,42 +55,14 @@ export default function StudentLayout({
   const isAuthenticated = useIsAuthenticated();
   const hasHydrated = useHasHydrated();
   const user = useUser();
-  const tenant = useTenant();
-  const isOnTeacherSubdomain = useIsTeacherSubdomain();
   const logout = useAppStore((state) => state.logout);
-  const setTenant = useAppStore((state) => state.setTenant);
-  const setIsTeacherSubdomain = useAppStore(
-    (state) => state.setIsTeacherSubdomain
-  );
-  const [isLoadingTenant, setIsLoadingTenant] = useState(true);
-
-  useEffect(() => {
-    const loadTenant = async () => {
-      const isTeacher = checkTeacherSubdomain();
-      setIsTeacherSubdomain(isTeacher);
-
-      if (isTeacher) {
-        try {
-          const response = await publicAPI.getTenant();
-          if (response.success && response.data) {
-            setTenant(response.data);
-          }
-        } catch (error) {
-          console.error("Failed to load tenant:", error);
-        }
-      }
-      setIsLoadingTenant(false);
-    };
-
-    loadTenant();
-  }, [setTenant, setIsTeacherSubdomain]);
 
   useEffect(() => {
     // Only redirect after hydration is complete
-    if (hasHydrated && !isAuthenticated && !isLoadingTenant) {
+    if (hasHydrated && !isAuthenticated) {
       router.push("/login");
     }
-  }, [isAuthenticated, hasHydrated, isLoadingTenant, router]);
+  }, [isAuthenticated, hasHydrated, router]);
 
   const handleLogout = async () => {
     try {
@@ -114,7 +82,7 @@ export default function StudentLayout({
     return first + last || "?";
   };
 
-  if (!hasHydrated || !isAuthenticated || isLoadingTenant) {
+  if (!hasHydrated || !isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="text-center">
@@ -126,9 +94,6 @@ export default function StudentLayout({
       </div>
     );
   }
-
-  const logoUrl = tenant?.logoUrl;
-  const businessName = tenant?.businessName || "Darslinker";
 
   return (
     <div className="bg-background min-h-screen">
@@ -150,7 +115,7 @@ export default function StudentLayout({
               >
                 <SheetHeader className="border-b px-4 py-3">
                   <SheetTitle className="text-left text-base font-semibold">
-                    {isOnTeacherSubdomain ? businessName : "Darslinker"}
+                    Darslinker
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="p-2">
@@ -173,16 +138,8 @@ export default function StudentLayout({
               href="/student/dashboard"
               className="flex items-center gap-1 text-base font-semibold"
             >
-              {logoUrl ? (
-                <img src={logoUrl} alt={businessName} className="h-6 w-auto" />
-              ) : (
-                <>
-                  <span>{isOnTeacherSubdomain ? businessName : "dars"}</span>
-                  {!isOnTeacherSubdomain && (
-                    <span className="text-link">linker</span>
-                  )}
-                </>
-              )}
+              <span>dars</span>
+              <span className="text-link">linker</span>
             </Link>
           </div>
 
