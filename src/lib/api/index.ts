@@ -77,3 +77,18 @@ export {
   type UpdateUserStatusInput,
   type UpdateCourseStatusInput as ModeratorUpdateCourseStatusInput,
 } from "./moderator";
+
+export {
+  courseContentApi,
+  type Module,
+  type ModuleDetail,
+  type CreateModuleInput,
+  type UpdateModuleInput,
+  type ReorderModuleItem,
+  type Lesson,
+  type LessonDetail,
+  type CreateLessonInput,
+  type UpdateLessonInput,
+  type ReorderLessonItem,
+  type CourseContentOverview,
+} from "./course-content";

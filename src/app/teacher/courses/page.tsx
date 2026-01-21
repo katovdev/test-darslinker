@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   BookOpen,
   Search,
@@ -10,17 +11,22 @@ import {
   Users,
   CreditCard,
   Layers,
+  Plus,
+  Settings,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { teacherService } from "@/services/teacher";
+import { CreateCourseModal } from "@/components/teacher/create-course-modal";
 import type { TeacherCourse, Pagination } from "@/lib/api/teacher";
 
 export default function TeacherCoursesPage() {
   const t = useTranslations();
+  const router = useRouter();
   const [courses, setCourses] = useState<TeacherCourse[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -124,14 +130,23 @@ export default function TeacherCoursesPage() {
             {t("teacher.coursesSubtitle") || "Manage your courses"}
           </p>
         </div>
-        <button
-          onClick={loadCourses}
-          disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
-        >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          {t("common.refresh") || "Refresh"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={loadCourses}
+            disabled={isLoading}
+            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          >
+            <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+            {t("common.refresh") || "Refresh"}
+          </button>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+          >
+            <Plus className="h-4 w-4" />
+            {t("teacher.createCourse") || "Yangi kurs"}
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row">
@@ -206,7 +221,7 @@ export default function TeacherCoursesPage() {
           {courses.map((course) => (
             <div
               key={course.id}
-              className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30 transition-colors hover:border-gray-700"
+              className="group overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30 transition-colors hover:border-gray-700"
             >
               <div className="relative h-40 bg-gray-700">
                 {course.thumbnail ? (
@@ -223,6 +238,15 @@ export default function TeacherCoursesPage() {
                 <div className="absolute top-2 right-2 flex gap-2">
                   {getStatusBadge(course.status)}
                   {getTypeBadge(course.type)}
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+                  <button
+                    onClick={() => router.push(`/teacher/courses/${course.id}`)}
+                    className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+                  >
+                    <Settings className="h-4 w-4" />
+                    {t("teacher.manageCourse") || "Boshqarish"}
+                  </button>
                 </div>
               </div>
               <div className="p-4">
@@ -294,6 +318,15 @@ export default function TeacherCoursesPage() {
           </div>
         </div>
       )}
+
+      <CreateCourseModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        onSuccess={(courseId) => {
+          loadCourses();
+          router.push(`/teacher/courses/${courseId}`);
+        }}
+      />
     </div>
   );
 }

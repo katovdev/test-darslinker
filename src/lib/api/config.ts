@@ -63,6 +63,22 @@ export const teacherEndpoints = {
   rejectPayment: (id: string) => `teacher/payments/${id}/reject`,
   earnings: "teacher/earnings",
   courses: "teacher/courses",
+  courseById: (id: string) => `teacher/courses/${id}`,
+} as const;
+
+export const courseContentEndpoints = {
+  // Course content overview
+  courseContent: (courseId: string) => `teacher/courses/${courseId}/content`,
+  // Modules
+  modules: (courseId: string) => `teacher/courses/${courseId}/modules`,
+  reorderModules: (courseId: string) =>
+    `teacher/courses/${courseId}/modules/reorder`,
+  moduleById: (moduleId: string) => `teacher/modules/${moduleId}`,
+  // Lessons
+  lessons: (moduleId: string) => `teacher/modules/${moduleId}/lessons`,
+  reorderLessons: (moduleId: string) =>
+    `teacher/modules/${moduleId}/lessons/reorder`,
+  lessonById: (lessonId: string) => `teacher/lessons/${lessonId}`,
 } as const;
 
 export const studentEndpoints = {

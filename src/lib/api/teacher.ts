@@ -131,6 +131,37 @@ export interface ListCoursesParams {
   search?: string;
 }
 
+export interface CreateCourseInput {
+  title: string;
+  description: string;
+  slug?: string;
+  thumbnail?: string | null;
+  type: "free" | "paid";
+  price?: number;
+  status?: "draft" | "active";
+}
+
+export interface UpdateCourseInput {
+  title?: string;
+  description?: string;
+  slug?: string;
+  thumbnail?: string | null;
+  type?: "free" | "paid";
+  price?: number;
+  status?: "draft" | "active";
+}
+
+export interface TeacherCourseDetail extends TeacherCourse {
+  modules: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    description: string | null;
+    order: number;
+    lessonsCount: number;
+  }>;
+}
+
 export const teacherApi = {
   getStats: () => api.get<SingleResponse<TeacherStats>>(teacherEndpoints.stats),
 
@@ -185,6 +216,26 @@ export const teacherApi = {
     api.put<SingleResponse<TeacherPayment>>(
       teacherEndpoints.rejectPayment(paymentId),
       { reason }
+    ),
+
+  // Course CRUD
+  getCourse: (courseId: string) =>
+    api.get<SingleResponse<TeacherCourseDetail>>(
+      teacherEndpoints.courseById(courseId)
+    ),
+
+  createCourse: (input: CreateCourseInput) =>
+    api.post<SingleResponse<TeacherCourse>>(teacherEndpoints.courses, input),
+
+  updateCourse: (courseId: string, input: UpdateCourseInput) =>
+    api.put<SingleResponse<TeacherCourse>>(
+      teacherEndpoints.courseById(courseId),
+      input
+    ),
+
+  deleteCourse: (courseId: string) =>
+    api.delete<{ success: boolean; message: string }>(
+      teacherEndpoints.courseById(courseId)
     ),
 };
 
