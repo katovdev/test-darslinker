@@ -711,6 +711,67 @@ export interface Translations {
     blogsSubtitle: string;
     blogDetails: string;
     createBlog: string;
+    // Users page
+    addUser: string;
+    userProfile: string;
+    role: string;
+    status: string;
+    // Courses page
+    addCourse: string;
+    // Settings page
+    settings: string;
+    settingsSubtitle: string;
+    siteSettings: string;
+    teacherPages: string;
+    settingsLoadError: string;
+    settingsSaved: string;
+    settingsSaveError: string;
+    seoSettings: string;
+    siteTitle: string;
+    siteDescription: string;
+    siteKeywords: string;
+    openGraph: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+    twitterCard: string;
+    cardType: string;
+    twitterSite: string;
+    googleAnalytics: string;
+    facebookPixel: string;
+    branding: string;
+    faviconUrl: string;
+    logoUrl: string;
+    footerText: string;
+    contactInfo: string;
+    supportEmail: string;
+    supportPhone: string;
+    address: string;
+    socialLinks: string;
+    featureFlags: string;
+    maintenanceMode: string;
+    maintenanceModeDesc: string;
+    registrationEnabled: string;
+    registrationEnabledDesc: string;
+    teachersLoadError: string;
+    teacherLoadError: string;
+    teacherSaved: string;
+    teacherSaveError: string;
+    editSettings: string;
+    editTeacherPage: string;
+    pageSeo: string;
+    metaTitle: string;
+    metaDescription: string;
+    bannerUrl: string;
+    tagline: string;
+    aboutText: string;
+    displaySettings: string;
+    showCoursesCount: string;
+    showStudentsCount: string;
+    showRating: string;
+    publicContact: string;
+    publicEmail: string;
+    publicPhone: string;
   };
   moderator: {
     // Navigation
