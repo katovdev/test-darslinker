@@ -15,6 +15,7 @@ import {
   Plus,
   X,
   Edit,
+  Layers,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
@@ -504,6 +505,13 @@ export default function AdminCoursesPage() {
                           icon={<Edit className="h-4 w-4" />}
                         >
                           Edit Course
+                        </ActionMenuItem>
+
+                        <ActionMenuItem
+                          href={`/admin/courses/${course.id}`}
+                          icon={<Layers className="h-4 w-4" />}
+                        >
+                          Manage Content
                         </ActionMenuItem>
 
                         <ActionMenuDivider />
