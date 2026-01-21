@@ -39,6 +39,15 @@ export {
 } from "./courses";
 
 export {
+  teacherPublicAPI,
+  type TeacherPublicProfile,
+  type TeacherCourse,
+  type TeacherStats,
+  type TeacherPageSettings,
+  type TeacherProfileResponse,
+} from "./teachers";
+
+export {
   adminApi,
   type AdminStats,
   type AdminUser,

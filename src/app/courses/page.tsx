@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback, memo } from "react";
 import Link from "next/link";
 import {
   BookOpen,
@@ -11,7 +11,6 @@ import {
   Play,
   User,
   CheckCircle,
-  Star,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { courseAPI, type GlobalCourse } from "@/lib/api";
@@ -19,6 +18,14 @@ import { HomeHeader, HomeFooter } from "@/components/home";
 import { CourseRatingBadge } from "@/components/course/rating-badge";
 
 type FilterTab = "all" | "enrolled";
+
+// Hoist formatDuration outside component to prevent recreation
+const formatDuration = (minutes: number) => {
+  if (minutes < 60) return `${minutes} min`;
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+};
 
 export default function CoursesPage() {
   const t = useTranslations();
@@ -29,7 +36,7 @@ export default function CoursesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
 
-  const loadCourses = async () => {
+  const loadCourses = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -45,23 +52,41 @@ export default function CoursesPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     loadCourses();
-  }, []);
+  }, [loadCourses]);
 
-  const displayCourses = activeTab === "all" ? courses : enrolledCourses;
-  const filteredCourses = displayCourses.filter((course) =>
-    course.title.toLowerCase().includes(searchQuery.toLowerCase())
+  // Memoize enrolled course IDs for O(1) lookup
+  const enrolledCourseIds = useMemo(
+    () => new Set(enrolledCourses.map((c) => c.id)),
+    [enrolledCourses]
   );
 
-  const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`;
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
-  };
+  const displayCourses = activeTab === "all" ? courses : enrolledCourses;
+
+  // Memoize filtered courses
+  const filteredCourses = useMemo(
+    () =>
+      displayCourses.filter((course) =>
+        course.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    [displayCourses, searchQuery]
+  );
+
+  // Memoize stats to prevent recalculation on every render
+  const stats = useMemo(
+    () => ({
+      totalCourses: courses.length,
+      enrolledCount: enrolledCourses.length,
+      teachersCount: new Set(courses.map((c) => c.teacher.id)).size,
+      totalDuration: formatDuration(
+        courses.reduce((sum, c) => sum + c.totalDuration, 0)
+      ),
+    }),
+    [courses, enrolledCourses]
+  );
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -92,7 +117,7 @@ export default function CoursesPage() {
               <div className="flex items-center justify-center gap-2">
                 <BookOpen className="h-5 w-5 text-blue-400" />
                 <span className="text-2xl font-bold text-white">
-                  {courses.length}
+                  {stats.totalCourses}
                 </span>
               </div>
               <p className="mt-1 text-sm text-gray-500">
@@ -103,7 +128,7 @@ export default function CoursesPage() {
               <div className="flex items-center justify-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-400" />
                 <span className="text-2xl font-bold text-white">
-                  {enrolledCourses.length}
+                  {stats.enrolledCount}
                 </span>
               </div>
               <p className="mt-1 text-sm text-gray-500">
@@ -114,7 +139,7 @@ export default function CoursesPage() {
               <div className="flex items-center justify-center gap-2">
                 <Users className="h-5 w-5 text-purple-400" />
                 <span className="text-2xl font-bold text-white">
-                  {new Set(courses.map((c) => c.teacher.id)).size}
+                  {stats.teachersCount}
                 </span>
               </div>
               <p className="mt-1 text-sm text-gray-500">
@@ -125,9 +150,7 @@ export default function CoursesPage() {
               <div className="flex items-center justify-center gap-2">
                 <Clock className="h-5 w-5 text-yellow-400" />
                 <span className="text-2xl font-bold text-white">
-                  {formatDuration(
-                    courses.reduce((sum, c) => sum + c.totalDuration, 0)
-                  )}
+                  {stats.totalDuration}
                 </span>
               </div>
               <p className="mt-1 text-sm text-gray-500">
@@ -246,8 +269,7 @@ export default function CoursesPage() {
                 <CourseCard
                   key={course.id}
                   course={course}
-                  isEnrolled={enrolledCourses.some((c) => c.id === course.id)}
-                  formatDuration={formatDuration}
+                  isEnrolled={enrolledCourseIds.has(course.id)}
                 />
               ))}
             </div>
@@ -263,13 +285,15 @@ export default function CoursesPage() {
 interface CourseCardProps {
   course: GlobalCourse;
   isEnrolled: boolean;
-  formatDuration: (minutes: number) => string;
 }
 
-function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
+// Memoized CourseCard to prevent unnecessary re-renders
+const CourseCard = memo(function CourseCard({
+  course,
+  isEnrolled,
+}: CourseCardProps) {
   const t = useTranslations();
-
-  const courseLink = `/courses/${course.slug}`;
+  const courseLink = `/teachers/${course.teacher.id}`;
 
   return (
     <Link href={courseLink} className="group relative block">
@@ -361,14 +385,14 @@ function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
                 </span>
               )}
             </div>
-            <button className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30">
+            <span className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all group-hover:shadow-xl group-hover:shadow-blue-500/30">
               {isEnrolled
                 ? t("course.continueLearning") || "Continue"
                 : t("course.viewCourse") || "View"}
-            </button>
+            </span>
           </div>
         </div>
       </div>
     </Link>
   );
-}
+});

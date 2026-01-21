@@ -26,6 +26,10 @@ export const blogEndpoints = {
 
 export const coursesEndpoint = "courses" as const;
 
+export const teacherPublicEndpoints = {
+  profile: (id: string) => `teachers/${id}`,
+} as const;
+
 export const adminEndpoints = {
   stats: "admin/stats",
   users: "admin/users",

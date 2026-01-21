@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import {
   Users,
   Search,
@@ -11,6 +11,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
+import { toast } from "sonner";
 import { teacherService } from "@/services/teacher";
 import type {
   TeacherStudent,
@@ -31,49 +32,84 @@ export default function TeacherStudentsPage() {
   const [searchInput, setSearchInput] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<string>("");
 
-  const loadCourses = async () => {
-    try {
-      const data = await teacherService.listCourses({ limit: 100 });
-      if (data) {
-        setCourses(data.courses);
+  // Memoized load students function
+  const loadStudents = useCallback(
+    async (currentPage: number, currentSearch: string, courseId: string) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await teacherService.listStudents({
+          page: currentPage,
+          limit: 20,
+          courseId: courseId || undefined,
+          search: currentSearch || undefined,
+        });
+
+        if (data) {
+          setStudents(data.students);
+          setPagination(data.pagination);
+        } else {
+          const errorMsg =
+            t("teacher.studentsLoadError") || "Failed to load students";
+          setError(errorMsg);
+          toast.error(errorMsg);
+        }
+      } catch {
+        const errorMsg =
+          t("teacher.studentsLoadError") || "Failed to load students";
+        setError(errorMsg);
+        toast.error(errorMsg);
+      } finally {
+        setIsLoading(false);
       }
-    } catch {
-      // Silent fail for courses
-    }
-  };
+    },
+    [t]
+  );
 
-  const loadStudents = async () => {
-    setIsLoading(true);
-    setError(null);
+  // Initial load: fetch courses and students in parallel
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true);
 
-    try {
-      const data = await teacherService.listStudents({
-        page,
-        limit: 20,
-        courseId: selectedCourse || undefined,
-        search: search || undefined,
-      });
+      // Parallel fetch courses and students
+      const [coursesResult, studentsResult] = await Promise.allSettled([
+        teacherService.listCourses({ limit: 100 }),
+        teacherService.listStudents({ page: 1, limit: 20 }),
+      ]);
 
-      if (data) {
-        setStudents(data.students);
-        setPagination(data.pagination);
+      // Handle courses result
+      if (coursesResult.status === "fulfilled" && coursesResult.value) {
+        setCourses(coursesResult.value.courses);
+      }
+
+      // Handle students result
+      if (studentsResult.status === "fulfilled" && studentsResult.value) {
+        setStudents(studentsResult.value.students);
+        setPagination(studentsResult.value.pagination);
       } else {
-        setError(t("teacher.studentsLoadError") || "Failed to load students");
+        const errorMsg =
+          t("teacher.studentsLoadError") || "Failed to load students";
+        setError(errorMsg);
       }
-    } catch {
-      setError(t("teacher.studentsLoadError") || "Failed to load students");
-    } finally {
+
       setIsLoading(false);
-    }
-  };
+    };
 
-  useEffect(() => {
-    loadCourses();
-  }, []);
+    loadInitialData();
+  }, [t]);
 
+  // Reload students when filters change (skip initial load)
   useEffect(() => {
-    loadStudents();
-  }, [page, search, selectedCourse]);
+    // Skip if this is the initial load (page 1, no search, no course filter)
+    if (page === 1 && !search && !selectedCourse) return;
+
+    loadStudents(page, search, selectedCourse);
+  }, [page, search, selectedCourse, loadStudents]);
+
+  const handleRefresh = useCallback(() => {
+    loadStudents(page, search, selectedCourse);
+  }, [page, search, selectedCourse, loadStudents]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +138,7 @@ export default function TeacherStudentsPage() {
           </p>
         </div>
         <button
-          onClick={loadStudents}
+          onClick={handleRefresh}
           disabled={isLoading}
           className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
         >

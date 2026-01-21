@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import {
   Users,
   BookOpen,
@@ -12,6 +12,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
+import { toast } from "sonner";
 import { teacherService } from "@/services/teacher";
 import type { TeacherStats } from "@/lib/api/teacher";
 
@@ -21,7 +22,7 @@ export default function TeacherDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadStats = async () => {
+  const loadStats = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -30,18 +31,24 @@ export default function TeacherDashboardPage() {
       if (data) {
         setStats(data);
       } else {
-        setError(t("teacher.statsLoadError") || "Failed to load statistics");
+        const errorMsg =
+          t("teacher.statsLoadError") || "Failed to load statistics";
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } catch {
-      setError(t("teacher.statsLoadError") || "Failed to load statistics");
+      const errorMsg =
+        t("teacher.statsLoadError") || "Failed to load statistics";
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     loadStats();
-  }, []);
+  }, [loadStats]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("uz-UZ").format(amount) + " UZS";
@@ -193,7 +200,14 @@ interface StatCardProps {
   isLarge?: boolean;
 }
 
-function StatCard({ icon: Icon, label, value, color, isLarge }: StatCardProps) {
+// Memoized StatCard to prevent unnecessary re-renders
+const StatCard = memo(function StatCard({
+  icon: Icon,
+  label,
+  value,
+  color,
+  isLarge,
+}: StatCardProps) {
   const colorClasses = {
     blue: "bg-blue-500/10 text-blue-400",
     green: "bg-green-500/10 text-green-400",
@@ -217,4 +231,4 @@ function StatCard({ icon: Icon, label, value, color, isLarge }: StatCardProps) {
       <p className="mt-1 text-2xl font-bold text-white">{value}</p>
     </div>
   );
-}
+});

@@ -57,14 +57,18 @@ export function QuizPlayer({ quiz, onComplete, onRetake }: QuizPlayerProps) {
   const currentQuestion = questions[currentIndex];
   const progress = ((currentIndex + 1) / questions.length) * 100;
 
+  // Use ref to track if quiz should auto-submit
+  const shouldAutoSubmitRef = React.useRef(false);
+
+  // Fixed timer effect - only recreate when result changes, not on every tick
   React.useEffect(() => {
-    if (timeRemaining === null || timeRemaining <= 0 || result) return;
+    if (timeRemaining === null || result) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev === null || prev <= 0) return prev;
         if (prev === 1) {
-          handleSubmit();
+          shouldAutoSubmitRef.current = true;
           return 0;
         }
         return prev - 1;
@@ -72,6 +76,14 @@ export function QuizPlayer({ quiz, onComplete, onRetake }: QuizPlayerProps) {
     }, 1000);
 
     return () => clearInterval(timer);
+  }, [result]); // Only depend on result, not timeRemaining
+
+  // Handle auto-submit when time runs out
+  React.useEffect(() => {
+    if (shouldAutoSubmitRef.current && timeRemaining === 0 && !result) {
+      shouldAutoSubmitRef.current = false;
+      handleSubmit();
+    }
   }, [timeRemaining, result]);
 
   const formatTime = (seconds: number): string => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -8,8 +8,6 @@ import {
   Clock,
   User,
   Play,
-  ChevronDown,
-  ChevronRight,
   ArrowLeft,
   CheckCircle,
   Lock,
@@ -25,7 +23,6 @@ import { RatingStats } from "@/components/course/rating-stats";
 import { ReviewsList } from "@/components/course/reviews-list";
 import { ReviewForm } from "@/components/course/review-form";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export default function CourseDetailPage() {
   const params = useParams();
@@ -41,24 +38,46 @@ export default function CourseDetailPage() {
   const [isEditingReview, setIsEditingReview] = useState(false);
   const [reviewKey, setReviewKey] = useState(0);
 
+  // Parallel data fetching - load course and prepare review fetch
   useEffect(() => {
-    const loadCourse = async () => {
+    if (!slug) return;
+
+    const loadData = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
         const response = await courseAPI.getCourses();
-        if (response.success && response.data) {
-          const foundCourse = response.data.all.find((c) => c.slug === slug);
-          if (foundCourse) {
-            setCourse(foundCourse);
-            setIsEnrolled(
-              response.data.enrolled.some((c) => c.id === foundCourse.id)
-            );
-          } else {
-            setError(t("course.courseNotFound") || "Course not found");
+        if (!response.success || !response.data) {
+          setError(t("course.loadError") || "Failed to load course");
+          return;
+        }
+
+        const foundCourse = response.data.all.find((c) => c.slug === slug);
+        if (!foundCourse) {
+          setError(t("course.courseNotFound") || "Course not found");
+          return;
+        }
+
+        const enrolled = response.data.enrolled.some(
+          (c) => c.id === foundCourse.id
+        );
+
+        // Fetch review in parallel if authenticated
+        let review: TransformedReview | null = null;
+        if (isAuthenticated) {
+          const reviewResponse = await reviewService.getMyReview(
+            foundCourse.id
+          );
+          if (reviewResponse.success) {
+            review = reviewResponse.data;
           }
         }
+
+        // Batch state updates
+        setCourse(foundCourse);
+        setIsEnrolled(enrolled);
+        setMyReview(review);
       } catch (err) {
         setError(t("course.loadError") || "Failed to load course");
         console.error("Failed to load course:", err);
@@ -67,23 +86,8 @@ export default function CourseDetailPage() {
       }
     };
 
-    if (slug) {
-      loadCourse();
-    }
-  }, [slug]);
-
-  useEffect(() => {
-    const loadMyReview = async () => {
-      if (course && isAuthenticated) {
-        const response = await reviewService.getMyReview(course.id);
-        if (response.success) {
-          setMyReview(response.data);
-        }
-      }
-    };
-
-    loadMyReview();
-  }, [course, isAuthenticated]);
+    loadData();
+  }, [slug, isAuthenticated, t]);
 
   const formatDuration = (minutes: number) => {
     if (minutes < 60) return `${minutes} min`;

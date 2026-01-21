@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   CreditCard,
   RefreshCw,
@@ -45,50 +45,79 @@ export default function TeacherPaymentsPage() {
   } | null>(null);
   const [isRejecting, setIsRejecting] = useState(false);
 
-  const loadCourses = async () => {
-    try {
-      const data = await teacherService.listCourses({ limit: 100 });
-      if (data) {
-        setCourses(data.courses);
+  // Memoized load payments function
+  const loadPayments = useCallback(
+    async (currentPage: number, status: string, courseId: string) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await teacherService.listPayments({
+          page: currentPage,
+          limit: 20,
+          status: (status as "pending" | "approved" | "rejected") || undefined,
+          courseId: courseId || undefined,
+        });
+
+        if (data) {
+          setPayments(data.payments);
+          setPagination(data.pagination);
+        } else {
+          const errorMsg =
+            t("teacher.paymentsLoadError") || "Failed to load payments";
+          setError(errorMsg);
+          toast.error(errorMsg);
+        }
+      } catch {
+        const errorMsg =
+          t("teacher.paymentsLoadError") || "Failed to load payments";
+        setError(errorMsg);
+        toast.error(errorMsg);
+      } finally {
+        setIsLoading(false);
       }
-    } catch {
-      // Silent fail
-    }
-  };
+    },
+    [t]
+  );
 
-  const loadPayments = async () => {
-    setIsLoading(true);
-    setError(null);
+  // Initial load: fetch courses and payments in parallel
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true);
 
-    try {
-      const data = await teacherService.listPayments({
-        page,
-        limit: 20,
-        status:
-          (statusFilter as "pending" | "approved" | "rejected") || undefined,
-        courseId: selectedCourse || undefined,
-      });
+      const [coursesResult, paymentsResult] = await Promise.allSettled([
+        teacherService.listCourses({ limit: 100 }),
+        teacherService.listPayments({ page: 1, limit: 20 }),
+      ]);
 
-      if (data) {
-        setPayments(data.payments);
-        setPagination(data.pagination);
+      if (coursesResult.status === "fulfilled" && coursesResult.value) {
+        setCourses(coursesResult.value.courses);
+      }
+
+      if (paymentsResult.status === "fulfilled" && paymentsResult.value) {
+        setPayments(paymentsResult.value.payments);
+        setPagination(paymentsResult.value.pagination);
       } else {
-        setError(t("teacher.paymentsLoadError") || "Failed to load payments");
+        const errorMsg =
+          t("teacher.paymentsLoadError") || "Failed to load payments";
+        setError(errorMsg);
       }
-    } catch {
-      setError(t("teacher.paymentsLoadError") || "Failed to load payments");
-    } finally {
+
       setIsLoading(false);
-    }
-  };
+    };
 
-  useEffect(() => {
-    loadCourses();
-  }, []);
+    loadInitialData();
+  }, [t]);
 
+  // Reload payments when filters change (skip initial)
   useEffect(() => {
-    loadPayments();
-  }, [page, statusFilter, selectedCourse]);
+    if (page === 1 && !statusFilter && !selectedCourse) return;
+    loadPayments(page, statusFilter, selectedCourse);
+  }, [page, statusFilter, selectedCourse, loadPayments]);
+
+  const handleRefresh = useCallback(() => {
+    loadPayments(page, statusFilter, selectedCourse);
+  }, [page, statusFilter, selectedCourse, loadPayments]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("uz-UZ", {
@@ -211,7 +240,7 @@ export default function TeacherPaymentsPage() {
           </p>
         </div>
         <button
-          onClick={loadPayments}
+          onClick={handleRefresh}
           disabled={isLoading}
           className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
         >
