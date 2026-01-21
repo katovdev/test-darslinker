@@ -115,6 +115,68 @@ export interface UpdateCourseStatusInput {
   status: "draft" | "active" | "approved" | "archived";
 }
 
+// Advice types
+export interface Advice {
+  id: string;
+  name: string;
+  phone: string;
+  comment: string | null;
+  status: "pending" | "contacted" | "resolved";
+  createdAt: string;
+}
+
+export interface AdviceStats {
+  total: number;
+  pending: number;
+  contacted: number;
+  resolved: number;
+  recent: number;
+}
+
+export interface ListAdviceParams {
+  page?: number;
+  limit?: number;
+  status?: "pending" | "contacted" | "resolved";
+  search?: string;
+}
+
+export interface UpdateAdviceStatusInput {
+  status: "pending" | "contacted" | "resolved";
+}
+
+// Teacher detail types for moderator view
+export interface ModeratorTeacher {
+  id: string;
+  phone: string;
+  firstName: string;
+  lastName: string;
+  username: string | null;
+  businessName: string | null;
+  logoUrl: string | null;
+  specialization: string | null;
+  status: "pending" | "active" | "blocked";
+  createdAt: string;
+  coursesCount: number;
+  studentsCount: number;
+}
+
+export interface ModeratorTeacherDetail extends ModeratorTeacher {
+  courses: Array<{
+    id: string;
+    title: string;
+    status: string;
+    enrollmentsCount: number;
+  }>;
+}
+
+export interface ListTeachersParams {
+  page?: number;
+  limit?: number;
+  status?: "pending" | "active" | "blocked";
+  search?: string;
+  sort?: "newest" | "oldest" | "name" | "courses";
+}
+
 export const moderatorApi = {
   getStats: () =>
     api.get<SingleResponse<ModeratorStats>>(moderatorEndpoints.stats),
@@ -168,6 +230,51 @@ export const moderatorApi = {
     api.patch<SingleResponse<ModeratorCourse>>(
       moderatorEndpoints.courseById(id),
       input
+    ),
+
+  // Advice endpoints
+  listAdvice: (params?: ListAdviceParams) => {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set("page", params.page.toString());
+    if (params?.limit) searchParams.set("limit", params.limit.toString());
+    if (params?.status) searchParams.set("status", params.status);
+    if (params?.search) searchParams.set("search", params.search);
+    const query = searchParams.toString();
+    return api.get<{
+      success: boolean;
+      data: { advice: Advice[]; pagination: Pagination };
+    }>(`${moderatorEndpoints.advice}${query ? `?${query}` : ""}`);
+  },
+
+  getAdviceStats: () =>
+    api.get<SingleResponse<AdviceStats>>(moderatorEndpoints.adviceStats),
+
+  updateAdviceStatus: (id: string, input: UpdateAdviceStatusInput) =>
+    api.patch<SingleResponse<Advice>>(moderatorEndpoints.adviceById(id), input),
+
+  deleteAdvice: (id: string) =>
+    api.delete<{ success: boolean; message: string }>(
+      moderatorEndpoints.adviceById(id)
+    ),
+
+  // Teacher endpoints
+  listTeachers: (params?: ListTeachersParams) => {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set("page", params.page.toString());
+    if (params?.limit) searchParams.set("limit", params.limit.toString());
+    if (params?.status) searchParams.set("status", params.status);
+    if (params?.search) searchParams.set("search", params.search);
+    if (params?.sort) searchParams.set("sort", params.sort);
+    const query = searchParams.toString();
+    return api.get<{
+      success: boolean;
+      data: { teachers: ModeratorTeacher[]; pagination: Pagination };
+    }>(`${moderatorEndpoints.teachers}${query ? `?${query}` : ""}`);
+  },
+
+  getTeacher: (id: string) =>
+    api.get<SingleResponse<ModeratorTeacherDetail>>(
+      moderatorEndpoints.teacherById(id)
     ),
 
   // NOTE: No payments or earnings endpoints for moderators

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -20,6 +20,8 @@ import { toast } from "sonner";
 import { HomeHeader, HomeFooter } from "@/components/home";
 import { useAuth } from "@/context/auth-context";
 
+const VIEW_TRACKING_DELAY = 10000; // 10 seconds before counting a view
+
 export default function BlogDetailPage() {
   const t = useTranslations();
   const params = useParams();
@@ -35,6 +37,65 @@ export default function BlogDetailPage() {
   const [copied, setCopied] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
 
+  // View tracking state
+  const viewTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const viewEligibleRef = useRef(false);
+  const currentBlogIdRef = useRef<string | null>(null);
+
+  const trackViewIfEligible = useCallback(() => {
+    if (viewEligibleRef.current && currentBlogIdRef.current) {
+      blogService.trackView(currentBlogIdRef.current);
+      viewEligibleRef.current = false;
+    }
+  }, []);
+
+  const startViewTimer = useCallback((blogId: string) => {
+    // Clear any existing timer
+    if (viewTimerRef.current) {
+      clearTimeout(viewTimerRef.current);
+    }
+
+    currentBlogIdRef.current = blogId;
+    viewEligibleRef.current = false;
+
+    // Start new timer - view counts after 10 seconds
+    viewTimerRef.current = setTimeout(() => {
+      viewEligibleRef.current = true;
+    }, VIEW_TRACKING_DELAY);
+  }, []);
+
+  // Setup view tracking on page unload
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        trackViewIfEligible();
+      }
+    };
+
+    const handleBeforeUnload = () => {
+      if (viewEligibleRef.current && currentBlogIdRef.current) {
+        // Use sendBeacon for reliable tracking on page unload
+        navigator.sendBeacon(
+          `${process.env.NEXT_PUBLIC_API_URL || "https://api.darslinker.uz/api"}/blogs/${currentBlogIdRef.current}/view`,
+          JSON.stringify({})
+        );
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (viewTimerRef.current) {
+        clearTimeout(viewTimerRef.current);
+      }
+      // Track view when component unmounts (navigation)
+      trackViewIfEligible();
+    };
+  }, [trackViewIfEligible]);
+
   useEffect(() => {
     async function loadBlog() {
       if (!blogSlug) return;
@@ -47,6 +108,8 @@ export default function BlogDetailPage() {
 
         if (response.success && response.data) {
           setBlog(response.data);
+          // Start view tracking timer when blog loads
+          startViewTimer(response.data.id);
         } else {
           setError("not_found");
         }
@@ -59,7 +122,7 @@ export default function BlogDetailPage() {
     }
 
     loadBlog();
-  }, [blogSlug]);
+  }, [blogSlug, startViewTimer]);
 
   const handleLike = async () => {
     if (!blog) return;

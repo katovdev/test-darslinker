@@ -10,6 +10,13 @@ import {
   type UpdateUserStatusInput,
   type UpdateCourseStatusInput,
   type Pagination,
+  type Advice,
+  type AdviceStats,
+  type ListAdviceParams,
+  type UpdateAdviceStatusInput,
+  type ModeratorTeacher,
+  type ModeratorTeacherDetail,
+  type ListTeachersParams,
 } from "@/lib/api/moderator";
 import { cacheConfig } from "@/lib/api/config";
 import { logger } from "@/lib/logger";
@@ -226,6 +233,119 @@ class ModeratorService {
       expiredEntries,
       cacheTimeout: this.cacheTimeout,
     };
+  }
+
+  // Advice methods
+  async listAdvice(
+    params?: ListAdviceParams
+  ): Promise<{ advice: Advice[]; pagination: Pagination } | null> {
+    const cacheKey = this.getCacheKey("advice", params);
+
+    try {
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        moderatorApi.listAdvice(params)
+      );
+
+      if (response?.success && response.data) {
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to fetch advice list:", error);
+      return null;
+    }
+  }
+
+  async getAdviceStats(): Promise<AdviceStats | null> {
+    const cacheKey = this.getCacheKey("adviceStats");
+
+    try {
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        moderatorApi.getAdviceStats()
+      );
+
+      if (response?.success && response.data) {
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to fetch advice stats:", error);
+      return null;
+    }
+  }
+
+  async updateAdviceStatus(
+    id: string,
+    input: UpdateAdviceStatusInput
+  ): Promise<Advice | null> {
+    try {
+      const response = await moderatorApi.updateAdviceStatus(id, input);
+
+      if (response?.success && response.data) {
+        this.clearCachePattern("advice");
+        this.clearCachePattern("adviceStats");
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to update advice status:", error);
+      return null;
+    }
+  }
+
+  async deleteAdvice(id: string): Promise<boolean> {
+    try {
+      const response = await moderatorApi.deleteAdvice(id);
+
+      if (response?.success) {
+        this.clearCachePattern("advice");
+        this.clearCachePattern("adviceStats");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      logger.error("Failed to delete advice:", error);
+      return false;
+    }
+  }
+
+  // Teacher methods
+  async listTeachers(
+    params?: ListTeachersParams
+  ): Promise<{ teachers: ModeratorTeacher[]; pagination: Pagination } | null> {
+    const cacheKey = this.getCacheKey("teachers", params);
+
+    try {
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        moderatorApi.listTeachers(params)
+      );
+
+      if (response?.success && response.data) {
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to fetch teachers list:", error);
+      return null;
+    }
+  }
+
+  async getTeacher(id: string): Promise<ModeratorTeacherDetail | null> {
+    const cacheKey = this.getCacheKey("teacher", { id });
+
+    try {
+      const response = await this.getCachedOrFetch(cacheKey, () =>
+        moderatorApi.getTeacher(id)
+      );
+
+      if (response?.success && response.data) {
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to fetch teacher details:", error);
+      return null;
+    }
   }
 }
 

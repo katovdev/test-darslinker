@@ -11,6 +11,8 @@ import {
   LogOut,
   Menu,
   X,
+  MessageSquare,
+  GraduationCap,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "@/hooks/use-locale";
@@ -40,6 +42,11 @@ export function ModeratorSidebar() {
       icon: Users,
     },
     {
+      href: "/moderator/teachers",
+      label: t("moderator.teachers") || "Teachers",
+      icon: GraduationCap,
+    },
+    {
       href: "/moderator/courses",
       label: t("moderator.courses") || "Courses",
       icon: BookOpen,
@@ -48,6 +55,11 @@ export function ModeratorSidebar() {
       href: "/moderator/blogs",
       label: t("moderator.blogs") || "Blogs",
       icon: FileText,
+    },
+    {
+      href: "/moderator/advice",
+      label: t("moderator.advice") || "Advice Requests",
+      icon: MessageSquare,
     },
     {
       href: "/moderator/settings",

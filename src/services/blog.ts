@@ -299,6 +299,16 @@ class BlogService {
     }
   }
 
+  async trackView(blogId: string): Promise<boolean> {
+    try {
+      const response = await blogApi.trackView(blogId);
+      return response?.success ?? false;
+    } catch (error) {
+      logger.error("Failed to track view:", error);
+      return false;
+    }
+  }
+
   async getCategories(): Promise<{
     success: boolean;
     data: BlogCategory[];

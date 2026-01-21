@@ -17,6 +17,7 @@ export const blogEndpoints = {
   getAllBlogs: "blogs",
   getBlogBySlug: (slug: string) => `blogs/by-slug/${slug}`,
   toggleLike: (id: string) => `blogs/${id}/like`,
+  trackView: (id: string) => `blogs/${id}/view`,
   getCategories: "blogs/categories",
   adminBlogs: "admin/blogs",
   adminBlogById: (id: string) => `admin/blogs/${id}`,
@@ -47,6 +48,11 @@ export const moderatorEndpoints = {
   userById: (id: string) => `moderator/users/${id}`,
   courses: "moderator/courses",
   courseById: (id: string) => `moderator/courses/${id}`,
+  teachers: "moderator/teachers",
+  teacherById: (id: string) => `moderator/teachers/${id}`,
+  advice: "moderator/advice",
+  adviceById: (id: string) => `moderator/advice/${id}`,
+  adviceStats: "moderator/advice/stats",
 } as const;
 
 export const teacherEndpoints = {

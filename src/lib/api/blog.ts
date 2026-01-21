@@ -140,6 +140,10 @@ export const blogApi = {
     return api.post<LikeResponse>(blogEndpoints.toggleLike(blogId));
   },
 
+  trackView: (blogId: string) => {
+    return api.post<{ success: boolean }>(blogEndpoints.trackView(blogId));
+  },
+
   getCategories: (params?: { page?: number; limit?: number }) => {
     const query = params
       ? buildQueryString(params as Record<string, unknown>)
