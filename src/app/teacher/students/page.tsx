@@ -12,7 +12,11 @@ import {
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { teacherService } from "@/services/teacher";
-import type { TeacherStudent, TeacherCourse, Pagination } from "@/lib/api/teacher";
+import type {
+  TeacherStudent,
+  TeacherCourse,
+  Pagination,
+} from "@/lib/api/teacher";
 
 export default function TeacherStudentsPage() {
   const t = useTranslations();
@@ -93,7 +97,8 @@ export default function TeacherStudentsPage() {
             {t("teacher.studentsTitle") || "My Students"}
           </h1>
           <p className="mt-1 text-gray-400">
-            {t("teacher.studentsSubtitle") || "Students enrolled in your courses"}
+            {t("teacher.studentsSubtitle") ||
+              "Students enrolled in your courses"}
           </p>
         </div>
         <button
@@ -109,13 +114,15 @@ export default function TeacherStudentsPage() {
       <div className="flex flex-col gap-4 sm:flex-row">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder={t("teacher.searchStudents") || "Search by name or phone..."}
+              placeholder={
+                t("teacher.searchStudents") || "Search by name or phone..."
+              }
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pl-10 pr-4 text-white placeholder-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
             />
           </div>
           <button
@@ -132,7 +139,7 @@ export default function TeacherStudentsPage() {
             setSelectedCourse(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allCourses") || "All Courses"}</option>
           {courses.map((course) => (
@@ -206,7 +213,9 @@ export default function TeacherStudentsPage() {
                   <p className="text-sm text-gray-400">
                     {enrollment.student.phone}
                     {enrollment.student.username && (
-                      <span className="ml-2">@{enrollment.student.username}</span>
+                      <span className="ml-2">
+                        @{enrollment.student.username}
+                      </span>
                     )}
                   </p>
                 </div>
@@ -223,7 +232,8 @@ export default function TeacherStudentsPage() {
                       </span>
                     ) : (
                       <span className="text-gray-500">
-                        {t("teacher.enrolledOn") || "Enrolled"}: {formatDate(enrollment.enrolledAt)}
+                        {t("teacher.enrolledOn") || "Enrolled"}:{" "}
+                        {formatDate(enrollment.enrolledAt)}
                       </span>
                     )}
                   </div>
@@ -237,7 +247,8 @@ export default function TeacherStudentsPage() {
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-400">
-            {t("common.showing") || "Showing"} {(pagination.page - 1) * pagination.limit + 1}-
+            {t("common.showing") || "Showing"}{" "}
+            {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
             {t("common.of") || "of"} {pagination.total}
           </p>

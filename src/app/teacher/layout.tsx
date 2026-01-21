@@ -24,7 +24,11 @@ export default function TeacherLayout({
     );
   }
 
-  if (!isAuthenticated || !user || (user.role !== "teacher" && user.role !== "admin")) {
+  if (
+    !isAuthenticated ||
+    !user ||
+    (user.role !== "teacher" && user.role !== "admin")
+  ) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="text-center">

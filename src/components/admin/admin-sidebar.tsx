@@ -9,6 +9,7 @@ import {
   CreditCard,
   DollarSign,
   FileText,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -59,6 +60,11 @@ export function AdminSidebar() {
       href: "/admin/blogs",
       label: t("admin.blogs") || "Blogs",
       icon: FileText,
+    },
+    {
+      href: "/admin/settings",
+      label: t("admin.settings") || "Settings",
+      icon: Settings,
     },
   ];
 

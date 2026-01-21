@@ -55,7 +55,8 @@ export default function TeacherDashboardPage() {
             {t("teacher.dashboardTitle") || "Teacher Dashboard"}
           </h1>
           <p className="mt-1 text-gray-400">
-            {t("teacher.dashboardSubtitle") || "Overview of your courses and earnings"}
+            {t("teacher.dashboardSubtitle") ||
+              "Overview of your courses and earnings"}
           </p>
         </div>
         <button

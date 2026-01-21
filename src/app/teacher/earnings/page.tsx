@@ -52,7 +52,8 @@ export default function TeacherEarningsPage() {
             {t("teacher.earningsTitle") || "My Earnings"}
           </h1>
           <p className="mt-1 text-gray-400">
-            {t("teacher.earningsSubtitle") || "Overview of your earnings and balance"}
+            {t("teacher.earningsSubtitle") ||
+              "Overview of your earnings and balance"}
           </p>
         </div>
         <button
@@ -168,9 +169,12 @@ export default function TeacherEarningsPage() {
                     className="flex items-center justify-between rounded-lg border border-gray-700 bg-gray-800/50 p-4"
                   >
                     <div>
-                      <p className="font-medium text-white">{item.course.title}</p>
+                      <p className="font-medium text-white">
+                        {item.course.title}
+                      </p>
                       <p className="mt-1 text-sm text-gray-400">
-                        {item.paymentsCount} {t("teacher.payments") || "payments"}
+                        {item.paymentsCount}{" "}
+                        {t("teacher.payments") || "payments"}
                       </p>
                     </div>
                     <p className="text-lg font-semibold text-green-400">

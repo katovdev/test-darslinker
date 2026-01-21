@@ -206,7 +206,9 @@ export default function ModeratorCoursesPage() {
               {t("teacher.status.draft") || "Draft"}
             </option>
             <option value="active">{t("admin.active") || "Active"}</option>
-            <option value="approved">{t("admin.approved") || "Approved"}</option>
+            <option value="approved">
+              {t("admin.approved") || "Approved"}
+            </option>
             <option value="archived">
               {t("teacher.status.archived") || "Archived"}
             </option>
@@ -440,7 +442,8 @@ export default function ModeratorCoursesPage() {
                     </button>
                   )}
 
-                  {(course.status === "active" || course.status === "approved") && (
+                  {(course.status === "active" ||
+                    course.status === "approved") && (
                     <button
                       onClick={() => handleStatusChange(course.id, "draft")}
                       className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"

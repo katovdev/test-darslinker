@@ -53,6 +53,12 @@ export const teacherEndpoints = {
   courses: "teacher/courses",
 } as const;
 
+export const settingsEndpoints = {
+  site: "settings/site",
+  teachers: "settings/teachers",
+  teacherById: (id: string) => `settings/teachers/${id}`,
+} as const;
+
 export const cacheConfig = {
   defaultTTL: 1 * 60 * 1000,
   maxSize: 100,

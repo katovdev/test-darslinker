@@ -196,7 +196,9 @@ export default function AdminCoursesPage() {
               {t("teacher.status.draft") || "Draft"}
             </option>
             <option value="active">{t("admin.active") || "Active"}</option>
-            <option value="approved">{t("admin.approved") || "Approved"}</option>
+            <option value="approved">
+              {t("admin.approved") || "Approved"}
+            </option>
             <option value="archived">
               {t("teacher.status.archived") || "Archived"}
             </option>
@@ -399,7 +401,8 @@ export default function AdminCoursesPage() {
                                 </button>
                               )}
 
-                              {(course.status === "active" || course.status === "approved") && (
+                              {(course.status === "active" ||
+                                course.status === "approved") && (
                                 <button
                                   onClick={() =>
                                     handleStatusChange(course.id, "draft")

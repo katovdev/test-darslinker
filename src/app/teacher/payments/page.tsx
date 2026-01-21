@@ -14,7 +14,11 @@ import {
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { teacherService } from "@/services/teacher";
-import type { TeacherPayment, TeacherCourse, Pagination } from "@/lib/api/teacher";
+import type {
+  TeacherPayment,
+  TeacherCourse,
+  Pagination,
+} from "@/lib/api/teacher";
 
 export default function TeacherPaymentsPage() {
   const t = useTranslations();
@@ -48,7 +52,8 @@ export default function TeacherPaymentsPage() {
       const data = await teacherService.listPayments({
         page,
         limit: 20,
-        status: (statusFilter as "pending" | "approved" | "rejected") || undefined,
+        status:
+          (statusFilter as "pending" | "approved" | "rejected") || undefined,
         courseId: selectedCourse || undefined,
       });
 
@@ -143,12 +148,16 @@ export default function TeacherPaymentsPage() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allStatuses") || "All Statuses"}</option>
           <option value="pending">{t("teacher.pending") || "Pending"}</option>
-          <option value="approved">{t("teacher.approved") || "Approved"}</option>
-          <option value="rejected">{t("teacher.rejected") || "Rejected"}</option>
+          <option value="approved">
+            {t("teacher.approved") || "Approved"}
+          </option>
+          <option value="rejected">
+            {t("teacher.rejected") || "Rejected"}
+          </option>
         </select>
 
         <select
@@ -157,7 +166,7 @@ export default function TeacherPaymentsPage() {
             setSelectedCourse(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allCourses") || "All Courses"}</option>
           {courses.map((course) => (
@@ -225,7 +234,8 @@ export default function TeacherPaymentsPage() {
                   </p>
                   {payment.rejectionReason && (
                     <p className="mt-2 text-sm text-red-400">
-                      {t("teacher.reason") || "Reason"}: {payment.rejectionReason}
+                      {t("teacher.reason") || "Reason"}:{" "}
+                      {payment.rejectionReason}
                     </p>
                   )}
                 </div>
@@ -252,7 +262,8 @@ export default function TeacherPaymentsPage() {
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-400">
-            {t("common.showing") || "Showing"} {(pagination.page - 1) * pagination.limit + 1}-
+            {t("common.showing") || "Showing"}{" "}
+            {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
             {t("common.of") || "of"} {pagination.total}
           </p>

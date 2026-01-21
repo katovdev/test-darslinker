@@ -7,6 +7,7 @@ import {
   Users,
   BookOpen,
   FileText,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -47,6 +48,11 @@ export function ModeratorSidebar() {
       href: "/moderator/blogs",
       label: t("moderator.blogs") || "Blogs",
       icon: FileText,
+    },
+    {
+      href: "/moderator/settings",
+      label: t("moderator.settings") || "Settings",
+      icon: Settings,
     },
   ];
 

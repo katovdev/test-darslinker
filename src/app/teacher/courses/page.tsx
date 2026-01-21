@@ -35,7 +35,9 @@ export default function TeacherCoursesPage() {
       const data = await teacherService.listCourses({
         page,
         limit: 20,
-        status: (statusFilter as "draft" | "active" | "approved" | "archived") || undefined,
+        status:
+          (statusFilter as "draft" | "active" | "approved" | "archived") ||
+          undefined,
         search: search || undefined,
       });
 
@@ -135,13 +137,13 @@ export default function TeacherCoursesPage() {
       <div className="flex flex-col gap-4 sm:flex-row">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder={t("teacher.searchCourses") || "Search courses..."}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pl-10 pr-4 text-white placeholder-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
             />
           </div>
           <button
@@ -158,12 +160,14 @@ export default function TeacherCoursesPage() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allStatuses") || "All Statuses"}</option>
           <option value="draft">{t("teacher.draft") || "Draft"}</option>
           <option value="active">{t("teacher.active") || "Active"}</option>
-          <option value="archived">{t("teacher.archived") || "Archived"}</option>
+          <option value="archived">
+            {t("teacher.archived") || "Archived"}
+          </option>
         </select>
       </div>
 
@@ -222,11 +226,11 @@ export default function TeacherCoursesPage() {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-white line-clamp-1">
+                <h3 className="line-clamp-1 font-semibold text-white">
                   {course.title}
                 </h3>
                 {course.description && (
-                  <p className="mt-1 text-sm text-gray-400 line-clamp-2">
+                  <p className="mt-1 line-clamp-2 text-sm text-gray-400">
                     {course.description}
                   </p>
                 )}
@@ -265,7 +269,8 @@ export default function TeacherCoursesPage() {
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-400">
-            {t("common.showing") || "Showing"} {(pagination.page - 1) * pagination.limit + 1}-
+            {t("common.showing") || "Showing"}{" "}
+            {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
             {t("common.of") || "of"} {pagination.total}
           </p>
