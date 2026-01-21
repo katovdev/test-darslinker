@@ -12,7 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Layers, Loader2, Trash2 } from "lucide-react";
 import { courseContentService } from "@/services/course-content";
-import type { Module, CreateModuleInput, UpdateModuleInput } from "@/lib/api/course-content";
+import type {
+  Module,
+  CreateModuleInput,
+  UpdateModuleInput,
+} from "@/lib/api/course-content";
 
 interface ModuleEditorProps {
   courseId: string;
@@ -64,7 +68,10 @@ export function ModuleEditor({
           title: formData.title,
           description: formData.description || null,
         };
-        result = await courseContentService.updateModule(module.id, updateInput);
+        result = await courseContentService.updateModule(
+          module.id,
+          updateInput
+        );
       } else {
         result = await courseContentService.createModule(courseId, formData);
       }
@@ -81,7 +88,11 @@ export function ModuleEditor({
 
   const handleDelete = async () => {
     if (!module || !onDelete) return;
-    if (!confirm("Bu modulni o'chirishni xohlaysizmi? Modul ichidagi barcha darslar ham o'chiriladi.")) {
+    if (
+      !confirm(
+        "Bu modulni o'chirishni xohlaysizmi? Modul ichidagi barcha darslar ham o'chiriladi."
+      )
+    ) {
       return;
     }
 
@@ -141,7 +152,10 @@ export function ModuleEditor({
             <textarea
               value={formData.description || ""}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, description: e.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
               }
               placeholder="Modul haqida qisqacha..."
               rows={3}

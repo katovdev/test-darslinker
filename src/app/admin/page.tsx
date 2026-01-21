@@ -13,7 +13,11 @@ import {
 import { useTranslations } from "@/hooks/use-locale";
 import { useAsyncData } from "@/hooks/use-async-data";
 import { adminService } from "@/services/admin";
-import { PageHeader, RefreshButton, SectionHeader } from "@/components/ui/page-header";
+import {
+  PageHeader,
+  RefreshButton,
+  SectionHeader,
+} from "@/components/ui/page-header";
 import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
 import { SkeletonGrid } from "@/components/ui/skeleton-card";
 import { ErrorAlert } from "@/components/ui/alert-box";
@@ -22,10 +26,12 @@ import { formatCurrency } from "@/lib/formatting";
 export default function AdminDashboardPage() {
   const t = useTranslations();
 
-  const { data: stats, isLoading, error, refresh } = useAsyncData(
-    () => adminService.getStats(),
-    { fetchOnMount: true }
-  );
+  const {
+    data: stats,
+    isLoading,
+    error,
+    refresh,
+  } = useAsyncData(() => adminService.getStats(), { fetchOnMount: true });
 
   return (
     <div className="space-y-6">
@@ -41,7 +47,9 @@ export default function AdminDashboardPage() {
       </PageHeader>
 
       {error && !isLoading && (
-        <ErrorAlert>{t("admin.statsLoadError") || "Failed to load statistics"}</ErrorAlert>
+        <ErrorAlert>
+          {t("admin.statsLoadError") || "Failed to load statistics"}
+        </ErrorAlert>
       )}
 
       {isLoading && <SkeletonGrid count={8} columns={4} />}
@@ -79,7 +87,9 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <SectionHeader title={t("admin.courseStats") || "Course Statistics"} />
+            <SectionHeader
+              title={t("admin.courseStats") || "Course Statistics"}
+            />
             <StatCardGrid columns={4}>
               <StatCard
                 icon={BookOpen}
@@ -97,7 +107,9 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <SectionHeader title={t("admin.paymentStats") || "Payment Statistics"} />
+            <SectionHeader
+              title={t("admin.paymentStats") || "Payment Statistics"}
+            />
             <StatCardGrid columns={4}>
               <StatCard
                 icon={CreditCard}
@@ -115,7 +127,9 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <SectionHeader title={t("admin.financialStats") || "Financial Statistics"} />
+            <SectionHeader
+              title={t("admin.financialStats") || "Financial Statistics"}
+            />
             <StatCardGrid columns={4}>
               <StatCard
                 icon={DollarSign}

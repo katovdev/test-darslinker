@@ -13,7 +13,11 @@ import { useTranslations } from "@/hooks/use-locale";
 import { useAsyncData } from "@/hooks/use-async-data";
 import { toast } from "sonner";
 import { teacherService } from "@/services/teacher";
-import { PageHeader, RefreshButton, SectionHeader } from "@/components/ui/page-header";
+import {
+  PageHeader,
+  RefreshButton,
+  SectionHeader,
+} from "@/components/ui/page-header";
 import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
 import { SkeletonGrid } from "@/components/ui/skeleton-card";
 import { ErrorAlert } from "@/components/ui/alert-box";
@@ -22,21 +26,26 @@ import { formatCurrency } from "@/lib/formatting";
 export default function TeacherDashboardPage() {
   const t = useTranslations();
 
-  const { data: stats, isLoading, error, refresh } = useAsyncData(
-    () => teacherService.getStats(),
-    {
-      fetchOnMount: true,
-      onError: () => {
-        toast.error(t("teacher.statsLoadError") || "Failed to load statistics");
-      },
-    }
-  );
+  const {
+    data: stats,
+    isLoading,
+    error,
+    refresh,
+  } = useAsyncData(() => teacherService.getStats(), {
+    fetchOnMount: true,
+    onError: () => {
+      toast.error(t("teacher.statsLoadError") || "Failed to load statistics");
+    },
+  });
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={t("teacher.dashboardTitle") || "Teacher Dashboard"}
-        subtitle={t("teacher.dashboardSubtitle") || "Overview of your courses and earnings"}
+        subtitle={
+          t("teacher.dashboardSubtitle") ||
+          "Overview of your courses and earnings"
+        }
       >
         <RefreshButton
           onClick={refresh}
@@ -46,7 +55,9 @@ export default function TeacherDashboardPage() {
       </PageHeader>
 
       {error && !isLoading && (
-        <ErrorAlert>{t("teacher.statsLoadError") || "Failed to load statistics"}</ErrorAlert>
+        <ErrorAlert>
+          {t("teacher.statsLoadError") || "Failed to load statistics"}
+        </ErrorAlert>
       )}
 
       {isLoading && <SkeletonGrid count={8} columns={4} />}
@@ -54,7 +65,9 @@ export default function TeacherDashboardPage() {
       {!isLoading && stats && (
         <>
           <div className="space-y-4">
-            <SectionHeader title={t("teacher.courseStats") || "Course Statistics"} />
+            <SectionHeader
+              title={t("teacher.courseStats") || "Course Statistics"}
+            />
             <StatCardGrid columns={3}>
               <StatCard
                 icon={BookOpen}
@@ -78,7 +91,9 @@ export default function TeacherDashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <SectionHeader title={t("teacher.studentStats") || "Student Statistics"} />
+            <SectionHeader
+              title={t("teacher.studentStats") || "Student Statistics"}
+            />
             <StatCardGrid columns={3}>
               <StatCard
                 icon={Users}
@@ -90,7 +105,9 @@ export default function TeacherDashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <SectionHeader title={t("teacher.paymentStats") || "Payment Statistics"} />
+            <SectionHeader
+              title={t("teacher.paymentStats") || "Payment Statistics"}
+            />
             <StatCardGrid columns={3}>
               <StatCard
                 icon={CreditCard}

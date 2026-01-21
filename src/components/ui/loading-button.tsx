@@ -5,8 +5,9 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export interface LoadingButtonProps
-  extends React.ComponentProps<typeof Button> {
+export interface LoadingButtonProps extends React.ComponentProps<
+  typeof Button
+> {
   /** Whether the button is in loading state */
   isLoading?: boolean;
   /** Text to show during loading (optional, defaults to children) */

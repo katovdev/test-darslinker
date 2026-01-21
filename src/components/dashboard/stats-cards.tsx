@@ -42,7 +42,9 @@ export function StatsCards({ stats, isLoading }: StatsCardsProps) {
       <StatCard
         icon={DollarSign}
         label={t("stats.totalRevenue") || "Total Revenue"}
-        value={stats?.totalRevenue ? formatCurrency(stats.totalRevenue) : "0 UZS"}
+        value={
+          stats?.totalRevenue ? formatCurrency(stats.totalRevenue) : "0 UZS"
+        }
         color="yellow"
       />
       <StatCard

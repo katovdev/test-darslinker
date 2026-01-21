@@ -68,7 +68,9 @@ export default function LearnPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(
+    new Set()
+  );
 
   // Fetch course content
   useEffect(() => {
@@ -214,7 +216,9 @@ export default function LearnPage() {
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-green-500 border-t-transparent" />
-          <p className="mt-4 text-gray-400">{t("common.loading") || "Loading..."}</p>
+          <p className="mt-4 text-gray-400">
+            {t("common.loading") || "Loading..."}
+          </p>
         </div>
       </div>
     );
@@ -254,7 +258,11 @@ export default function LearnPage() {
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         className="fixed top-4 left-4 z-50 rounded-lg bg-gray-800 p-2 text-white lg:hidden"
       >
-        {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {isSidebarOpen ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <Menu className="h-6 w-6" />
+        )}
       </button>
 
       {/* Sidebar */}
@@ -274,7 +282,9 @@ export default function LearnPage() {
               <ChevronLeft className="h-4 w-4" />
               {t("course.backToCourse") || "Back to Course"}
             </Link>
-            <h2 className="line-clamp-2 font-semibold text-white">{course.title}</h2>
+            <h2 className="line-clamp-2 font-semibold text-white">
+              {course.title}
+            </h2>
             <p className="mt-1 text-sm text-gray-400">
               {course.teacher.firstName} {course.teacher.lastName}
             </p>
@@ -283,12 +293,15 @@ export default function LearnPage() {
           {/* Progress */}
           <div className="border-b border-gray-800 p-4">
             <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="text-gray-400">{t("course.progress") || "Progress"}</span>
+              <span className="text-gray-400">
+                {t("course.progress") || "Progress"}
+              </span>
               <span className="font-medium text-white">{progress}%</span>
             </div>
             <Progress value={progress} className="h-2" />
             <p className="mt-2 text-xs text-gray-500">
-              {completedLessons.size} / {lessons.length} {t("course.lessonsCompleted") || "lessons completed"}
+              {completedLessons.size} / {lessons.length}{" "}
+              {t("course.lessonsCompleted") || "lessons completed"}
             </p>
           </div>
 
@@ -297,10 +310,12 @@ export default function LearnPage() {
             {course.modules.map((module, moduleIndex) => (
               <div key={module.id} className="mb-4">
                 <div className="mb-2 px-2">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
                     {t("course.module") || "Module"} {moduleIndex + 1}
                   </h3>
-                  <p className="text-sm font-medium text-white">{module.title}</p>
+                  <p className="text-sm font-medium text-white">
+                    {module.title}
+                  </p>
                 </div>
 
                 <div className="space-y-1">
@@ -326,8 +341,8 @@ export default function LearnPage() {
                             isCompleted
                               ? "bg-green-500/20 text-green-400"
                               : isActive
-                              ? "bg-green-500/20 text-green-400"
-                              : "bg-gray-800 text-gray-500"
+                                ? "bg-green-500/20 text-green-400"
+                                : "bg-gray-800 text-gray-500"
                           )}
                         >
                           {isCompleted ? (
@@ -395,7 +410,9 @@ export default function LearnPage() {
               <div className="mx-auto max-w-4xl">
                 <div className="mb-6 flex items-start justify-between gap-4">
                   <div>
-                    <h1 className="text-2xl font-bold text-white">{currentLesson.title}</h1>
+                    <h1 className="text-2xl font-bold text-white">
+                      {currentLesson.title}
+                    </h1>
                     <div className="mt-2 flex items-center gap-4 text-sm text-gray-400">
                       {currentLesson.duration && (
                         <span className="flex items-center gap-1">
@@ -418,7 +435,11 @@ export default function LearnPage() {
                 {/* Text content */}
                 {currentLesson.content && (
                   <div className="prose prose-invert max-w-none">
-                    <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: currentLesson.content,
+                      }}
+                    />
                   </div>
                 )}
 
@@ -454,7 +475,8 @@ export default function LearnPage() {
             <div className="text-center">
               <BookOpen className="mx-auto h-16 w-16 text-gray-600" />
               <p className="mt-4 text-gray-400">
-                {t("course.selectLesson") || "Select a lesson to start learning"}
+                {t("course.selectLesson") ||
+                  "Select a lesson to start learning"}
               </p>
             </div>
           </div>

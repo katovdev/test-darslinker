@@ -117,8 +117,19 @@ export function getStatusBadgeBorderClass(color: StatusColor): string {
 // Common status mappings used across the app
 
 export type UserStatus = "active" | "pending" | "blocked" | "inactive";
-export type CourseStatus = "draft" | "pending" | "approved" | "active" | "rejected" | "archived";
-export type PaymentStatus = "pending" | "completed" | "failed" | "refunded" | "cancelled";
+export type CourseStatus =
+  | "draft"
+  | "pending"
+  | "approved"
+  | "active"
+  | "rejected"
+  | "archived";
+export type PaymentStatus =
+  | "pending"
+  | "completed"
+  | "failed"
+  | "refunded"
+  | "cancelled";
 export type AdviceStatus = "pending" | "contacted" | "resolved";
 
 /**
@@ -182,17 +193,39 @@ export function getGenericStatusColor(status: string): StatusColor {
   const lowercased = status.toLowerCase();
 
   // Success states
-  if (["active", "approved", "completed", "resolved", "success", "published", "verified"].includes(lowercased)) {
+  if (
+    [
+      "active",
+      "approved",
+      "completed",
+      "resolved",
+      "success",
+      "published",
+      "verified",
+    ].includes(lowercased)
+  ) {
     return "green";
   }
 
   // Warning/pending states
-  if (["pending", "processing", "waiting", "draft", "review"].includes(lowercased)) {
+  if (
+    ["pending", "processing", "waiting", "draft", "review"].includes(lowercased)
+  ) {
     return "yellow";
   }
 
   // Error states
-  if (["blocked", "failed", "rejected", "error", "cancelled", "expired", "suspended"].includes(lowercased)) {
+  if (
+    [
+      "blocked",
+      "failed",
+      "rejected",
+      "error",
+      "cancelled",
+      "expired",
+      "suspended",
+    ].includes(lowercased)
+  ) {
     return "red";
   }
 

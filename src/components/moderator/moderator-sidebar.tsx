@@ -10,7 +10,11 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
-import { RoleSidebar, SidebarInfoBanner, type NavItem } from "@/components/ui/role-sidebar";
+import {
+  RoleSidebar,
+  SidebarInfoBanner,
+  type NavItem,
+} from "@/components/ui/role-sidebar";
 
 export function ModeratorSidebar() {
   const t = useTranslations();

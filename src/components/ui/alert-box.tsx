@@ -68,17 +68,13 @@ export function AlertBox({
 
   return (
     <div
-      className={cn(
-        "rounded-xl border p-4",
-        config.containerClass,
-        className
-      )}
+      className={cn("rounded-xl border p-4", config.containerClass, className)}
     >
       <div className="flex items-start gap-3">
         <div className={cn("shrink-0", config.iconClass)}>
           {icon || <IconComponent className="h-5 w-5" />}
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           {title && (
             <p className={cn("font-medium", config.titleClass)}>{title}</p>
           )}

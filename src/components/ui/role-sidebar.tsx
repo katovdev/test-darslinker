@@ -20,7 +20,13 @@ export interface NavItem {
   badge?: string | number;
 }
 
-export type SidebarTheme = "blue" | "green" | "emerald" | "purple" | "orange" | "teal";
+export type SidebarTheme =
+  | "blue"
+  | "green"
+  | "emerald"
+  | "purple"
+  | "orange"
+  | "teal";
 
 export interface RoleSidebarProps {
   /** Navigation items */
@@ -43,11 +49,14 @@ export interface RoleSidebarProps {
   onLogout?: () => void;
 }
 
-const themeClasses: Record<SidebarTheme, {
-  gradient: string;
-  active: string;
-  activeText: string;
-}> = {
+const themeClasses: Record<
+  SidebarTheme,
+  {
+    gradient: string;
+    active: string;
+    activeText: string;
+  }
+> = {
   blue: {
     gradient: "from-blue-500 to-purple-600",
     active: "bg-blue-500/10 text-blue-400",
@@ -203,10 +212,12 @@ export function RoleSidebar({
                   />
                   <span className="flex-1">{item.label}</span>
                   {item.badge !== undefined && (
-                    <span className={cn(
-                      "rounded-full px-2 py-0.5 text-xs font-medium",
-                      themeConfig.active
-                    )}>
+                    <span
+                      className={cn(
+                        "rounded-full px-2 py-0.5 text-xs font-medium",
+                        themeConfig.active
+                      )}
+                    >
                       {item.badge}
                     </span>
                   )}

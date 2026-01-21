@@ -64,7 +64,7 @@ export default function MeLayout({ children }: { children: React.ReactNode }) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors",
+                    "flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
                     isActive
                       ? "bg-gray-700 text-white"
                       : "text-gray-400 hover:bg-gray-700/50 hover:text-white"

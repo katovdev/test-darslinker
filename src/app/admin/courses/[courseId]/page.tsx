@@ -119,14 +119,16 @@ export default function AdminCourseBuilderPage() {
 
       if (result) {
         setCourse((prev) =>
-          prev ? {
-            ...prev,
-            title: editedCourse.title || prev.title,
-            description: editedCourse.description || prev.description,
-            type: editedCourse.type || prev.type,
-            price: editedCourse.price ?? prev.price,
-            status: editedCourse.status || prev.status,
-          } : null
+          prev
+            ? {
+                ...prev,
+                title: editedCourse.title || prev.title,
+                description: editedCourse.description || prev.description,
+                type: editedCourse.type || prev.type,
+                price: editedCourse.price ?? prev.price,
+                status: editedCourse.status || prev.status,
+              }
+            : null
         );
         setHasChanges(false);
         toast.success("Course saved successfully");
@@ -140,7 +142,9 @@ export default function AdminCourseBuilderPage() {
 
   const handleDeleteCourse = async () => {
     if (
-      !confirm("Are you sure you want to delete this course? This action cannot be undone.")
+      !confirm(
+        "Are you sure you want to delete this course? This action cannot be undone."
+      )
     ) {
       return;
     }
@@ -184,9 +188,7 @@ export default function AdminCourseBuilderPage() {
         ? {
             ...prev,
             modules: prev.modules.map((m) =>
-              m.id === updatedModule.id
-                ? { ...m, ...updatedModule }
-                : m
+              m.id === updatedModule.id ? { ...m, ...updatedModule } : m
             ),
           }
         : null
@@ -213,9 +215,7 @@ export default function AdminCourseBuilderPage() {
         ? {
             ...prev,
             modules: prev.modules.map((m) =>
-              m.id === moduleId
-                ? { ...m, lessonsCount: m.lessonsCount + 1 }
-                : m
+              m.id === moduleId ? { ...m, lessonsCount: m.lessonsCount + 1 } : m
             ),
           }
         : null
@@ -359,7 +359,9 @@ export default function AdminCourseBuilderPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Type</label>
+                <label className="text-sm font-medium text-gray-300">
+                  Type
+                </label>
                 <div className="flex gap-4">
                   <label className="flex cursor-pointer items-center gap-2">
                     <input
@@ -403,7 +405,9 @@ export default function AdminCourseBuilderPage() {
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Status</label>
+                <label className="text-sm font-medium text-gray-300">
+                  Status
+                </label>
                 <select
                   value={editedCourse.status || "draft"}
                   onChange={(e) =>
@@ -423,7 +427,9 @@ export default function AdminCourseBuilderPage() {
 
           {/* Course Stats */}
           <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-4">
-            <h3 className="mb-3 text-sm font-medium text-gray-400">Statistics</h3>
+            <h3 className="mb-3 text-sm font-medium text-gray-400">
+              Statistics
+            </h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-lg bg-gray-800 p-3">
                 <div className="flex items-center gap-2 text-gray-400">
@@ -466,9 +472,7 @@ export default function AdminCourseBuilderPage() {
           {course.modules.length === 0 && !isCreatingModule ? (
             <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-12 text-center">
               <Layers className="mx-auto h-12 w-12 text-gray-600" />
-              <p className="mt-4 text-gray-400">
-                No modules yet
-              </p>
+              <p className="mt-4 text-gray-400">No modules yet</p>
               <button
                 onClick={() => setIsCreatingModule(true)}
                 className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
@@ -484,7 +488,7 @@ export default function AdminCourseBuilderPage() {
                 .map((mod) => (
                   <div
                     key={mod.id}
-                    className="rounded-xl border border-gray-800 bg-gray-800/30 overflow-hidden"
+                    className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30"
                   >
                     <div
                       className="flex cursor-pointer items-center gap-3 p-4 hover:bg-gray-800/50"
@@ -658,7 +662,9 @@ function ModuleLessons({
                 <GripVertical className="h-4 w-4 text-gray-600" />
                 <PlayCircle className="h-4 w-4 text-blue-500" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-white">{lesson.title}</p>
+                  <p className="text-sm font-medium text-white">
+                    {lesson.title}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />

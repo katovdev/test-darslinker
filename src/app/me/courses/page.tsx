@@ -68,7 +68,9 @@ export default function MyCoursesPage() {
     <div className="space-y-6">
       <PageHeader
         title={t("dashboard.myCourses") || "My Courses"}
-        subtitle={t("dashboard.continueJourney") || "Continue your learning journey"}
+        subtitle={
+          t("dashboard.continueJourney") || "Continue your learning journey"
+        }
       >
         <RefreshButton
           onClick={loadCourses}
@@ -95,7 +97,10 @@ export default function MyCoursesPage() {
         <EmptyState
           variant="no-data"
           title={t("course.noEnrolledCourses") || "No courses yet"}
-          description={t("course.enrollFirst") || "Browse courses and start learning today!"}
+          description={
+            t("course.enrollFirst") ||
+            "Browse courses and start learning today!"
+          }
           action={
             <Button asChild>
               <Link href="/courses">
@@ -173,10 +178,7 @@ export default function MyCoursesPage() {
                       </span>
                     )}
                   </div>
-                  <Progress
-                    value={progress}
-                    className="h-1.5"
-                  />
+                  <Progress value={progress} className="h-1.5" />
                 </div>
 
                 {/* Actions */}

@@ -27,7 +27,9 @@ export interface UseAsyncDataReturn<T> {
   /** Reset to initial state */
   reset: () => void;
   /** Update data manually without fetching */
-  setData: (data: T | undefined | ((prev: T | undefined) => T | undefined)) => void;
+  setData: (
+    data: T | undefined | ((prev: T | undefined) => T | undefined)
+  ) => void;
 }
 
 /**
@@ -147,14 +149,20 @@ export function useAsyncData<T>(
 /**
  * A variant of useAsyncData that supports pagination
  */
-export interface UsePaginatedDataOptions<T> extends Omit<UseAsyncDataOptions<T[]>, 'initialData'> {
+export interface UsePaginatedDataOptions<T> extends Omit<
+  UseAsyncDataOptions<T[]>,
+  "initialData"
+> {
   /** Initial page number (default: 1) */
   initialPage?: number;
   /** Items per page (default: 10) */
   pageSize?: number;
 }
 
-export interface UsePaginatedDataReturn<T> extends Omit<UseAsyncDataReturn<T[]>, 'data'> {
+export interface UsePaginatedDataReturn<T> extends Omit<
+  UseAsyncDataReturn<T[]>,
+  "data"
+> {
   /** The fetched items */
   items: T[];
   /** Current page number */
@@ -231,9 +239,12 @@ export function usePaginatedData<T>(
     deps: [page, pageSize, ...deps],
   });
 
-  const setPage = useCallback((newPage: number) => {
-    setPageState(Math.max(1, Math.min(newPage, totalPages || 1)));
-  }, [totalPages]);
+  const setPage = useCallback(
+    (newPage: number) => {
+      setPageState(Math.max(1, Math.min(newPage, totalPages || 1)));
+    },
+    [totalPages]
+  );
 
   const nextPage = useCallback(() => {
     setPageState((p) => Math.min(p + 1, totalPages));

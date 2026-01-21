@@ -22,7 +22,11 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { courseContentService } from "@/services/course-content";
-import type { Lesson, CreateLessonInput, UpdateLessonInput } from "@/lib/api/course-content";
+import type {
+  Lesson,
+  CreateLessonInput,
+  UpdateLessonInput,
+} from "@/lib/api/course-content";
 
 interface LessonEditorProps {
   moduleId: string;
@@ -87,7 +91,10 @@ export function LessonEditor({
           videoUrl: formData.videoUrl || null,
           durationMins: formData.durationMins || 0,
         };
-        result = await courseContentService.updateLesson(lesson.id, updateInput);
+        result = await courseContentService.updateLesson(
+          lesson.id,
+          updateInput
+        );
       } else {
         result = await courseContentService.createLesson(moduleId, formData);
       }
@@ -131,7 +138,9 @@ export function LessonEditor({
 
     const allowedTypes = ["video/mp4", "video/webm", "video/quicktime"];
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Faqat MP4, WebM yoki MOV formatdagi videolar qabul qilinadi");
+      toast.error(
+        "Faqat MP4, WebM yoki MOV formatdagi videolar qabul qilinadi"
+      );
       return;
     }
 
@@ -213,7 +222,9 @@ export function LessonEditor({
             {isEditing ? "Darsni tahrirlash" : "Yangi dars"}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            {isEditing ? "Dars ma'lumotlarini tahrirlang" : "Yangi dars yarating"}
+            {isEditing
+              ? "Dars ma'lumotlarini tahrirlang"
+              : "Yangi dars yarating"}
           </DialogDescription>
         </DialogHeader>
 
@@ -275,7 +286,10 @@ export function LessonEditor({
                   type="url"
                   value={formData.videoUrl || ""}
                   onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, videoUrl: e.target.value }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      videoUrl: e.target.value,
+                    }))
                   }
                   placeholder="https://youtube.com/watch?v=... yoki https://vimeo.com/..."
                   className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white placeholder-gray-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
@@ -294,7 +308,9 @@ export function LessonEditor({
                 <p className="mt-2 text-sm text-gray-400">
                   Video yuklash uchun bosing
                 </p>
-                <p className="text-xs text-gray-500">MP4, WebM, MOV (max 500MB)</p>
+                <p className="text-xs text-gray-500">
+                  MP4, WebM, MOV (max 500MB)
+                </p>
               </div>
             )}
 

@@ -87,36 +87,81 @@ export function StatusBadge({
 
 // Typed variants for specific status types
 
-export interface UserStatusBadgeProps extends Omit<StatusBadgeProps, "status" | "color"> {
+export interface UserStatusBadgeProps extends Omit<
+  StatusBadgeProps,
+  "status" | "color"
+> {
   status: UserStatus;
 }
 
 export function UserStatusBadge({ status, ...props }: UserStatusBadgeProps) {
-  return <StatusBadge status={status} color={getUserStatusColor(status)} {...props} />;
+  return (
+    <StatusBadge
+      status={status}
+      color={getUserStatusColor(status)}
+      {...props}
+    />
+  );
 }
 
-export interface CourseStatusBadgeProps extends Omit<StatusBadgeProps, "status" | "color"> {
+export interface CourseStatusBadgeProps extends Omit<
+  StatusBadgeProps,
+  "status" | "color"
+> {
   status: CourseStatus;
 }
 
-export function CourseStatusBadge({ status, ...props }: CourseStatusBadgeProps) {
-  return <StatusBadge status={status} color={getCourseStatusColor(status)} {...props} />;
+export function CourseStatusBadge({
+  status,
+  ...props
+}: CourseStatusBadgeProps) {
+  return (
+    <StatusBadge
+      status={status}
+      color={getCourseStatusColor(status)}
+      {...props}
+    />
+  );
 }
 
-export interface PaymentStatusBadgeProps extends Omit<StatusBadgeProps, "status" | "color"> {
+export interface PaymentStatusBadgeProps extends Omit<
+  StatusBadgeProps,
+  "status" | "color"
+> {
   status: PaymentStatus;
 }
 
-export function PaymentStatusBadge({ status, ...props }: PaymentStatusBadgeProps) {
-  return <StatusBadge status={status} color={getPaymentStatusColor(status)} {...props} />;
+export function PaymentStatusBadge({
+  status,
+  ...props
+}: PaymentStatusBadgeProps) {
+  return (
+    <StatusBadge
+      status={status}
+      color={getPaymentStatusColor(status)}
+      {...props}
+    />
+  );
 }
 
-export interface AdviceStatusBadgeProps extends Omit<StatusBadgeProps, "status" | "color"> {
+export interface AdviceStatusBadgeProps extends Omit<
+  StatusBadgeProps,
+  "status" | "color"
+> {
   status: AdviceStatus;
 }
 
-export function AdviceStatusBadge({ status, ...props }: AdviceStatusBadgeProps) {
-  return <StatusBadge status={status} color={getAdviceStatusColor(status)} {...props} />;
+export function AdviceStatusBadge({
+  status,
+  ...props
+}: AdviceStatusBadgeProps) {
+  return (
+    <StatusBadge
+      status={status}
+      color={getAdviceStatusColor(status)}
+      {...props}
+    />
+  );
 }
 
 export default StatusBadge;

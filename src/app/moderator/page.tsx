@@ -12,7 +12,11 @@ import {
 import { useTranslations } from "@/hooks/use-locale";
 import { useAsyncData } from "@/hooks/use-async-data";
 import { moderatorService } from "@/services/moderator";
-import { PageHeader, RefreshButton, SectionHeader } from "@/components/ui/page-header";
+import {
+  PageHeader,
+  RefreshButton,
+  SectionHeader,
+} from "@/components/ui/page-header";
 import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
 import { SkeletonGrid } from "@/components/ui/skeleton-card";
 import { ErrorAlert, WarningAlert } from "@/components/ui/alert-box";
@@ -20,16 +24,20 @@ import { ErrorAlert, WarningAlert } from "@/components/ui/alert-box";
 export default function ModeratorDashboardPage() {
   const t = useTranslations();
 
-  const { data: stats, isLoading, error, refresh } = useAsyncData(
-    () => moderatorService.getStats(),
-    { fetchOnMount: true }
-  );
+  const {
+    data: stats,
+    isLoading,
+    error,
+    refresh,
+  } = useAsyncData(() => moderatorService.getStats(), { fetchOnMount: true });
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={t("moderator.dashboardTitle") || "Moderator Dashboard"}
-        subtitle={t("moderator.dashboardSubtitle") || "Manage users and courses"}
+        subtitle={
+          t("moderator.dashboardSubtitle") || "Manage users and courses"
+        }
       >
         <RefreshButton
           onClick={refresh}
@@ -47,7 +55,9 @@ export default function ModeratorDashboardPage() {
       </WarningAlert>
 
       {error && !isLoading && (
-        <ErrorAlert>{t("moderator.statsLoadError") || "Failed to load statistics"}</ErrorAlert>
+        <ErrorAlert>
+          {t("moderator.statsLoadError") || "Failed to load statistics"}
+        </ErrorAlert>
       )}
 
       {isLoading && <SkeletonGrid count={8} columns={4} />}
@@ -55,7 +65,9 @@ export default function ModeratorDashboardPage() {
       {!isLoading && stats && (
         <>
           <div className="space-y-4">
-            <SectionHeader title={t("moderator.userStats") || "User Statistics"} />
+            <SectionHeader
+              title={t("moderator.userStats") || "User Statistics"}
+            />
             <StatCardGrid columns={5}>
               <StatCard
                 icon={Users}
@@ -91,7 +103,9 @@ export default function ModeratorDashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <SectionHeader title={t("moderator.courseStats") || "Course Statistics"} />
+            <SectionHeader
+              title={t("moderator.courseStats") || "Course Statistics"}
+            />
             <StatCardGrid columns={3}>
               <StatCard
                 icon={BookOpen}

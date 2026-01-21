@@ -147,7 +147,10 @@ export function CreateCourseModal({
             <textarea
               value={formData.description}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, description: e.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
               }
               placeholder="Kurs haqida qisqacha ma'lumot..."
               rows={4}

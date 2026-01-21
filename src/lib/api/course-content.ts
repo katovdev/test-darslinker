@@ -126,7 +126,10 @@ export const courseContentApi = {
     ),
 
   // ====== Modules ======
-  listModules: (courseId: string, params?: { page?: number; limit?: number }) => {
+  listModules: (
+    courseId: string,
+    params?: { page?: number; limit?: number }
+  ) => {
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set("page", params.page.toString());
     if (params?.limit) searchParams.set("limit", params.limit.toString());
@@ -134,7 +137,9 @@ export const courseContentApi = {
     return api.get<{
       success: boolean;
       data: { modules: Module[]; pagination: Pagination };
-    }>(`${courseContentEndpoints.modules(courseId)}${query ? `?${query}` : ""}`);
+    }>(
+      `${courseContentEndpoints.modules(courseId)}${query ? `?${query}` : ""}`
+    );
   },
 
   createModule: (courseId: string, input: CreateModuleInput) =>
@@ -166,7 +171,10 @@ export const courseContentApi = {
     ),
 
   // ====== Lessons ======
-  listLessons: (moduleId: string, params?: { page?: number; limit?: number }) => {
+  listLessons: (
+    moduleId: string,
+    params?: { page?: number; limit?: number }
+  ) => {
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set("page", params.page.toString());
     if (params?.limit) searchParams.set("limit", params.limit.toString());
@@ -174,7 +182,9 @@ export const courseContentApi = {
     return api.get<{
       success: boolean;
       data: { lessons: Lesson[]; pagination: Pagination };
-    }>(`${courseContentEndpoints.lessons(moduleId)}${query ? `?${query}` : ""}`);
+    }>(
+      `${courseContentEndpoints.lessons(moduleId)}${query ? `?${query}` : ""}`
+    );
   },
 
   createLesson: (moduleId: string, input: CreateLessonInput) =>
