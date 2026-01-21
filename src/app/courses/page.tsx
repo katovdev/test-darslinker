@@ -295,7 +295,7 @@ const CourseCard = memo(function CourseCard({
   isEnrolled,
 }: CourseCardProps) {
   const t = useTranslations();
-  const courseLink = `/teachers/${course.teacher.id}`;
+  const courseLink = `/teachers/${course.teacher.username}`;
 
   return (
     <Link href={courseLink} className="group relative block">

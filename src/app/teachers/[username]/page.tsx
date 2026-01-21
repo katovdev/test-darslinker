@@ -26,7 +26,7 @@ import { CourseRatingBadge } from "@/components/course/rating-badge";
 
 export default function TeacherLandingPage() {
   const params = useParams();
-  const teacherId = params.id as string;
+  const username = params.username as string;
   const t = useTranslations();
 
   const [teacher, setTeacher] = useState<TeacherPublicProfile | null>(null);
@@ -40,7 +40,7 @@ export default function TeacherLandingPage() {
     setError(null);
 
     try {
-      const response = await teacherPublicAPI.getProfile(teacherId);
+      const response = await teacherPublicAPI.getProfile(username);
       if (response.success && response.data) {
         setTeacher(response.data.teacher);
         setCourses(response.data.courses);
@@ -57,10 +57,10 @@ export default function TeacherLandingPage() {
   };
 
   useEffect(() => {
-    if (teacherId) {
+    if (username) {
       loadTeacherProfile();
     }
-  }, [teacherId]);
+  }, [username]);
 
   const formatDuration = (minutes: number) => {
     if (minutes < 60) return `${minutes} min`;
