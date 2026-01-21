@@ -45,6 +45,14 @@ export const moderatorEndpoints = {
   courseById: (id: string) => `moderator/courses/${id}`,
 } as const;
 
+export const teacherEndpoints = {
+  stats: "teacher/stats",
+  students: "teacher/students",
+  payments: "teacher/payments",
+  earnings: "teacher/earnings",
+  courses: "teacher/courses",
+} as const;
+
 export const cacheConfig = {
   defaultTTL: 1 * 60 * 1000,
   maxSize: 100,
