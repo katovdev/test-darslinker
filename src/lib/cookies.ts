@@ -65,6 +65,10 @@ export function setAccessToken(accessToken: string): void {
   setCookie(TOKEN_KEY, accessToken, 1);
 }
 
+export function setRefreshToken(refreshToken: string): void {
+  setCookie(REFRESH_TOKEN_KEY, refreshToken, 7);
+}
+
 export function clearTokens(): void {
   deleteCookie(TOKEN_KEY);
   deleteCookie(REFRESH_TOKEN_KEY);

@@ -4,6 +4,7 @@ import {
   getAccessToken,
   getRefreshToken,
   setAccessToken,
+  setRefreshToken,
   clearTokens,
 } from "@/lib/cookies";
 
@@ -62,10 +63,13 @@ async function tryRefreshToken(): Promise<boolean> {
     if (response.ok) {
       const data = (await response.json()) as {
         success: boolean;
-        data?: { accessToken: string };
+        data?: { accessToken: string; refreshToken?: string };
       };
       if (data.success && data.data?.accessToken) {
         setAccessToken(data.data.accessToken);
+        if (data.data.refreshToken) {
+          setRefreshToken(data.data.refreshToken);
+        }
         return true;
       }
     }
