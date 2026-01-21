@@ -17,7 +17,7 @@ import { useTranslations } from "@/hooks/use-locale";
 import { moderatorService } from "@/services/moderator";
 import type { ModeratorCourse, Pagination } from "@/lib/api/moderator";
 
-type StatusFilter = "all" | "draft" | "active" | "archived";
+type StatusFilter = "all" | "draft" | "active" | "approved" | "archived";
 type TypeFilter = "all" | "free" | "paid";
 
 export default function ModeratorCoursesPage() {
@@ -77,7 +77,7 @@ export default function ModeratorCoursesPage() {
 
   const handleStatusChange = async (
     courseId: string,
-    newStatus: "draft" | "active" | "archived"
+    newStatus: "draft" | "active" | "approved" | "archived"
   ) => {
     setIsUpdating(courseId);
     setActionMenuId(null);
@@ -114,7 +114,8 @@ export default function ModeratorCoursesPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      active: "bg-green-500/10 text-green-400",
+      active: "bg-blue-500/10 text-blue-400",
+      approved: "bg-green-500/10 text-green-400",
       draft: "bg-yellow-500/10 text-yellow-400",
       archived: "bg-gray-500/10 text-gray-400",
     };
@@ -201,10 +202,11 @@ export default function ModeratorCoursesPage() {
             <option value="all">
               {t("admin.allStatuses") || "All Statuses"}
             </option>
-            <option value="active">{t("admin.active") || "Active"}</option>
             <option value="draft">
               {t("teacher.status.draft") || "Draft"}
             </option>
+            <option value="active">{t("admin.active") || "Active"}</option>
+            <option value="approved">{t("admin.approved") || "Approved"}</option>
             <option value="archived">
               {t("teacher.status.archived") || "Archived"}
             </option>
@@ -385,7 +387,6 @@ export default function ModeratorCoursesPage() {
         )}
       </div>
 
-      {/* Action Menu - Fixed Position */}
       {actionMenuId && actionMenuPosition && (
         <>
           <div
@@ -419,17 +420,27 @@ export default function ModeratorCoursesPage() {
 
                   <div className="my-1 border-t border-gray-700" />
 
-                  {course.status !== "active" && (
+                  {course.status === "draft" && (
                     <button
                       onClick={() => handleStatusChange(course.id, "active")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
                     >
                       <CheckCircle className="h-4 w-4" />
-                      Publish
+                      Set Active
                     </button>
                   )}
 
-                  {course.status === "active" && (
+                  {course.status !== "approved" && (
+                    <button
+                      onClick={() => handleStatusChange(course.id, "approved")}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                      Approve (Public)
+                    </button>
+                  )}
+
+                  {(course.status === "active" || course.status === "approved") && (
                     <button
                       onClick={() => handleStatusChange(course.id, "draft")}
                       className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"

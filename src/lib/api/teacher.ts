@@ -91,7 +91,7 @@ export interface TeacherCourse {
   thumbnail: string;
   type: "free" | "paid";
   price: number;
-  status: "draft" | "active" | "archived";
+  status: "draft" | "active" | "approved" | "archived";
   createdAt: string;
   modulesCount: number;
   enrollmentsCount: number;
@@ -127,7 +127,7 @@ export interface ListPaymentsParams {
 export interface ListCoursesParams {
   page?: number;
   limit?: number;
-  status?: "draft" | "active" | "archived";
+  status?: "draft" | "active" | "approved" | "archived";
   search?: string;
 }
 

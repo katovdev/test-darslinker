@@ -35,7 +35,7 @@ export default function TeacherCoursesPage() {
       const data = await teacherService.listCourses({
         page,
         limit: 20,
-        status: (statusFilter as "draft" | "active" | "archived") || undefined,
+        status: (statusFilter as "draft" | "active" | "approved" | "archived") || undefined,
         search: search || undefined,
       });
 

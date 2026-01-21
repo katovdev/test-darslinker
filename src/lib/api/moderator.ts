@@ -49,7 +49,7 @@ export interface ModeratorCourse {
   thumbnail: string;
   type: "free" | "paid";
   price: number;
-  status: "draft" | "active" | "archived";
+  status: "draft" | "active" | "approved" | "archived";
   createdAt: string;
   teacher: {
     id: string;
@@ -101,7 +101,7 @@ export interface ListUsersParams {
 export interface ListCoursesParams {
   page?: number;
   limit?: number;
-  status?: "draft" | "active" | "archived";
+  status?: "draft" | "active" | "approved" | "archived";
   type?: "free" | "paid";
   teacherId?: string;
   search?: string;
@@ -112,7 +112,7 @@ export interface UpdateUserStatusInput {
 }
 
 export interface UpdateCourseStatusInput {
-  status: "draft" | "active" | "archived";
+  status: "draft" | "active" | "approved" | "archived";
 }
 
 export const moderatorApi = {

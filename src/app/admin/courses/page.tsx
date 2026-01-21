@@ -18,7 +18,7 @@ import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
 import type { AdminCourse, Pagination } from "@/lib/api/admin";
 
-type StatusFilter = "all" | "draft" | "active" | "archived";
+type StatusFilter = "all" | "draft" | "active" | "approved" | "archived";
 type TypeFilter = "all" | "free" | "paid";
 
 export default function AdminCoursesPage() {
@@ -74,7 +74,7 @@ export default function AdminCoursesPage() {
 
   const handleStatusChange = async (
     courseId: string,
-    newStatus: "draft" | "active" | "archived"
+    newStatus: "draft" | "active" | "approved" | "archived"
   ) => {
     setIsUpdating(courseId);
     setActionMenuId(null);
@@ -111,7 +111,8 @@ export default function AdminCoursesPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      active: "bg-green-500/10 text-green-400",
+      active: "bg-blue-500/10 text-blue-400",
+      approved: "bg-green-500/10 text-green-400",
       draft: "bg-yellow-500/10 text-yellow-400",
       archived: "bg-gray-500/10 text-gray-400",
     };
@@ -191,10 +192,11 @@ export default function AdminCoursesPage() {
             <option value="all">
               {t("admin.allStatuses") || "All Statuses"}
             </option>
-            <option value="active">{t("admin.active") || "Active"}</option>
             <option value="draft">
               {t("teacher.status.draft") || "Draft"}
             </option>
+            <option value="active">{t("admin.active") || "Active"}</option>
+            <option value="approved">{t("admin.approved") || "Approved"}</option>
             <option value="archived">
               {t("teacher.status.archived") || "Archived"}
             </option>
@@ -373,19 +375,31 @@ export default function AdminCoursesPage() {
                                 View Course
                               </a>
 
-                              {course.status !== "active" && (
+                              {course.status === "draft" && (
                                 <button
                                   onClick={() =>
                                     handleStatusChange(course.id, "active")
                                   }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
                                 >
                                   <CheckCircle className="h-4 w-4" />
-                                  Publish
+                                  Set Active
                                 </button>
                               )}
 
-                              {course.status === "active" && (
+                              {course.status !== "approved" && (
+                                <button
+                                  onClick={() =>
+                                    handleStatusChange(course.id, "approved")
+                                  }
+                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                  Approve (Public)
+                                </button>
+                              )}
+
+                              {(course.status === "active" || course.status === "approved") && (
                                 <button
                                   onClick={() =>
                                     handleStatusChange(course.id, "draft")
