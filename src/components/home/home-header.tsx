@@ -11,6 +11,8 @@ import {
   BookOpen,
   LogOut,
   Shield,
+  GraduationCap,
+  LayoutDashboard,
 } from "lucide-react";
 import { useTranslations, useLocale, useSetLocale } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
@@ -55,10 +57,17 @@ export function HomeHeader() {
     return first + last || "?";
   };
 
-  const getAdminLink = () => {
-    if (user?.role === "admin") return "/admin";
-    if (user?.role === "moderator") return "/moderator";
-    return null;
+  const getRoleDashboard = () => {
+    switch (user?.role) {
+      case "admin":
+        return { href: "/admin", label: t("sidebar.adminPanel") || "Admin Panel", icon: Shield, color: "text-blue-400 hover:bg-blue-500/10" };
+      case "moderator":
+        return { href: "/moderator", label: t("sidebar.moderatorPanel") || "Moderator Panel", icon: Shield, color: "text-green-400 hover:bg-green-500/10" };
+      case "teacher":
+        return { href: "/teacher", label: t("sidebar.teacherPanel") || "Teacher Panel", icon: GraduationCap, color: "text-emerald-400 hover:bg-emerald-500/10" };
+      default:
+        return null;
+    }
   };
 
   return (
@@ -160,29 +169,46 @@ export function HomeHeader() {
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
                           >
                             <User className="h-4 w-4" />
-                            {t("sidebar.profile") || "Profil"}
+                            {t("sidebar.profile") || "Profile"}
                           </Link>
+
+                          {/* Student-specific: My enrolled courses */}
+                          {user.role === "student" && (
+                            <Link
+                              href="/me/courses"
+                              onClick={() => setProfileOpen(false)}
+                              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                            >
+                              <LayoutDashboard className="h-4 w-4" />
+                              {t("sidebar.myCourses") || "My Courses"}
+                            </Link>
+                          )}
+
                           <Link
                             href="/courses"
                             onClick={() => setProfileOpen(false)}
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
                           >
                             <BookOpen className="h-4 w-4" />
-                            {t("sidebar.courses") || "Kurslar"}
+                            {t("sidebar.browseCourses") || "Browse Courses"}
                           </Link>
 
-                          {getAdminLink() && (
-                            <Link
-                              href={getAdminLink()!}
-                              onClick={() => setProfileOpen(false)}
-                              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-blue-400 transition-colors hover:bg-blue-500/10"
-                            >
-                              <Shield className="h-4 w-4" />
-                              {user.role === "admin"
-                                ? "Admin Panel"
-                                : "Moderator Panel"}
-                            </Link>
-                          )}
+                          {/* Role-specific dashboard link */}
+                          {(() => {
+                            const dashboard = getRoleDashboard();
+                            if (!dashboard) return null;
+                            const Icon = dashboard.icon;
+                            return (
+                              <Link
+                                href={dashboard.href}
+                                onClick={() => setProfileOpen(false)}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${dashboard.color}`}
+                              >
+                                <Icon className="h-4 w-4" />
+                                {dashboard.label}
+                              </Link>
+                            );
+                          })()}
                         </div>
 
                         <div className="border-t border-gray-800 py-1">
@@ -260,28 +286,46 @@ export function HomeHeader() {
                     className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
                   >
                     <User className="h-4 w-4" />
-                    {t("sidebar.profile") || "Profil"}
+                    {t("sidebar.profile") || "Profile"}
                   </Link>
+
+                  {/* Student-specific: My enrolled courses */}
+                  {user.role === "student" && (
+                    <Link
+                      href="/me/courses"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      {t("sidebar.myCourses") || "My Courses"}
+                    </Link>
+                  )}
+
                   <Link
                     href="/courses"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
                   >
                     <BookOpen className="h-4 w-4" />
-                    {t("sidebar.courses") || "Kurslar"}
+                    {t("sidebar.browseCourses") || "Browse Courses"}
                   </Link>
-                  {getAdminLink() && (
-                    <Link
-                      href={getAdminLink()!}
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-blue-400 transition-colors hover:bg-blue-500/10"
-                    >
-                      <Shield className="h-4 w-4" />
-                      {user.role === "admin"
-                        ? "Admin Panel"
-                        : "Moderator Panel"}
-                    </Link>
-                  )}
+
+                  {/* Role-specific dashboard link */}
+                  {(() => {
+                    const dashboard = getRoleDashboard();
+                    if (!dashboard) return null;
+                    const Icon = dashboard.icon;
+                    return (
+                      <Link
+                        href={dashboard.href}
+                        onClick={() => setIsOpen(false)}
+                        className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${dashboard.color}`}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {dashboard.label}
+                      </Link>
+                    );
+                  })()}
                   <button
                     onClick={() => {
                       setIsOpen(false);
