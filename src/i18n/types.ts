@@ -18,6 +18,12 @@ export interface Translations {
     refresh: string;
     logout: string;
     error: string;
+    search: string;
+    showing: string;
+    of: string;
+    previous: string;
+    next: string;
+    saveChanges: string;
   };
   header: {
     newMeeting: string;
@@ -586,6 +592,47 @@ export interface Translations {
     secondaryButton: string;
     saveBranding: string;
     brandingUpdated: string;
+    // Dashboard stats
+    statsLoadError: string;
+    dashboardTitle: string;
+    activeCourses: string;
+    draftCourses: string;
+    studentStats: string;
+    paymentStats: string;
+    totalPayments: string;
+    approvedPayments: string;
+    earningsStats: string;
+    totalEarnings: string;
+    currentBalance: string;
+    // Earnings page
+    earningsLoadError: string;
+    earningsTitle: string;
+    earningsSubtitle: string;
+    earningsByCourse: string;
+    noEarningsYet: string;
+    // Courses page
+    coursesLoadError: string;
+    draft: string;
+    active: string;
+    archived: string;
+    free: string;
+    paid: string;
+    coursesTitle: string;
+    coursesSubtitle: string;
+    searchCourses: string;
+    allStatuses: string;
+    editCourse: string;
+    // Students page
+    studentsLoadError: string;
+    studentsTitle: string;
+    studentsSubtitle: string;
+    completed: string;
+    enrolledOn: string;
+    // Payments page
+    paymentsLoadError: string;
+    paymentsTitle: string;
+    paymentsSubtitle: string;
+    viewReceipt: string;
   };
   onboarding: {
     // Title
