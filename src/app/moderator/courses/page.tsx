@@ -7,12 +7,16 @@ import {
   RefreshCw,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
   Eye,
   Archive,
   CheckCircle,
   Users,
 } from "lucide-react";
+import {
+  ActionMenu,
+  ActionMenuItem,
+  ActionMenuDivider,
+} from "@/components/ui/action-menu";
 import { useTranslations } from "@/hooks/use-locale";
 import { moderatorService } from "@/services/moderator";
 import type { ModeratorCourse, Pagination } from "@/lib/api/moderator";
@@ -32,11 +36,6 @@ export default function ModeratorCoursesPage() {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [page, setPage] = useState(1);
 
-  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
-  const [actionMenuPosition, setActionMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
 
   const loadCourses = async () => {
@@ -80,8 +79,6 @@ export default function ModeratorCoursesPage() {
     newStatus: "draft" | "active" | "approved" | "archived"
   ) => {
     setIsUpdating(courseId);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
 
     const result = await moderatorService.updateCourseStatus(courseId, {
       status: newStatus,
@@ -93,23 +90,6 @@ export default function ModeratorCoursesPage() {
     }
 
     setIsUpdating(null);
-  };
-
-  const handleOpenActionMenu = (
-    courseId: string,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    if (actionMenuId === courseId) {
-      setActionMenuId(null);
-      setActionMenuPosition(null);
-    } else {
-      const rect = event.currentTarget.getBoundingClientRect();
-      setActionMenuPosition({
-        top: rect.bottom + 4,
-        left: rect.right - 192,
-      });
-      setActionMenuId(courseId);
-    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -342,17 +322,65 @@ export default function ModeratorCoursesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={(e) => handleOpenActionMenu(course.id, e)}
-                        disabled={isUpdating === course.id}
-                        className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
-                      >
-                        {isUpdating === course.id ? (
-                          <RefreshCw className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <MoreVertical className="h-4 w-4" />
+                      <ActionMenu isLoading={isUpdating === course.id}>
+                        <ActionMenuItem
+                          href={`/courses/${course.slug}`}
+                          icon={<Eye className="h-4 w-4" />}
+                          external
+                        >
+                          View Course
+                        </ActionMenuItem>
+
+                        <ActionMenuDivider />
+
+                        {course.status === "draft" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "active")
+                            }
+                            icon={<CheckCircle className="h-4 w-4" />}
+                            variant="info"
+                          >
+                            Set Active
+                          </ActionMenuItem>
                         )}
-                      </button>
+
+                        {course.status !== "approved" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "approved")
+                            }
+                            icon={<CheckCircle className="h-4 w-4" />}
+                            variant="success"
+                          >
+                            Approve (Public)
+                          </ActionMenuItem>
+                        )}
+
+                        {(course.status === "active" ||
+                          course.status === "approved") && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "draft")
+                            }
+                            icon={<Archive className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Unpublish
+                          </ActionMenuItem>
+                        )}
+
+                        {course.status !== "archived" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "archived")
+                            }
+                            icon={<Archive className="h-4 w-4" />}
+                          >
+                            Archive
+                          </ActionMenuItem>
+                        )}
+                      </ActionMenu>
                     </td>
                   </tr>
                 ))
@@ -388,86 +416,6 @@ export default function ModeratorCoursesPage() {
           </div>
         )}
       </div>
-
-      {actionMenuId && actionMenuPosition && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => {
-              setActionMenuId(null);
-              setActionMenuPosition(null);
-            }}
-          />
-          <div
-            className="fixed z-50 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl"
-            style={{
-              top: actionMenuPosition.top,
-              left: Math.max(8, actionMenuPosition.left),
-            }}
-          >
-            {(() => {
-              const course = courses.find((c) => c.id === actionMenuId);
-              if (!course) return null;
-              return (
-                <>
-                  <a
-                    href={`/courses/${course.slug}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                  >
-                    <Eye className="h-4 w-4" />
-                    View Course
-                  </a>
-
-                  <div className="my-1 border-t border-gray-700" />
-
-                  {course.status === "draft" && (
-                    <button
-                      onClick={() => handleStatusChange(course.id, "active")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                    >
-                      <CheckCircle className="h-4 w-4" />
-                      Set Active
-                    </button>
-                  )}
-
-                  {course.status !== "approved" && (
-                    <button
-                      onClick={() => handleStatusChange(course.id, "approved")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                    >
-                      <CheckCircle className="h-4 w-4" />
-                      Approve (Public)
-                    </button>
-                  )}
-
-                  {(course.status === "active" ||
-                    course.status === "approved") && (
-                    <button
-                      onClick={() => handleStatusChange(course.id, "draft")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                    >
-                      <Archive className="h-4 w-4" />
-                      Unpublish
-                    </button>
-                  )}
-
-                  {course.status !== "archived" && (
-                    <button
-                      onClick={() => handleStatusChange(course.id, "archived")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-400 hover:bg-gray-700"
-                    >
-                      <Archive className="h-4 w-4" />
-                      Archive
-                    </button>
-                  )}
-                </>
-              );
-            })()}
-          </div>
-        </>
-      )}
     </div>
   );
 }

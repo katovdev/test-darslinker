@@ -7,7 +7,6 @@ import {
   RefreshCw,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
   Eye,
   Archive,
   CheckCircle,
@@ -19,6 +18,11 @@ import {
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
+import {
+  ActionMenu,
+  ActionMenuItem,
+  ActionMenuDivider,
+} from "@/components/ui/action-menu";
 import type { AdminCourse, AdminUser, Pagination } from "@/lib/api/admin";
 
 type StatusFilter = "all" | "draft" | "active" | "approved" | "archived";
@@ -36,7 +40,6 @@ export default function AdminCoursesPage() {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [page, setPage] = useState(1);
 
-  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
 
   // Create course modal
@@ -125,7 +128,6 @@ export default function AdminCoursesPage() {
     newStatus: "draft" | "active" | "approved" | "archived"
   ) => {
     setIsUpdating(courseId);
-    setActionMenuId(null);
 
     const result = await adminService.updateCourseStatus(courseId, {
       status: newStatus,
@@ -143,7 +145,6 @@ export default function AdminCoursesPage() {
     if (!confirm("Are you sure you want to delete this course?")) return;
 
     setIsUpdating(courseId);
-    setActionMenuId(null);
 
     const result = await adminService.deleteCourse(courseId);
     if (result) {
@@ -200,7 +201,6 @@ export default function AdminCoursesPage() {
       price: course.price,
       status: course.status,
     });
-    setActionMenuId(null);
   };
 
   const handleUpdateCourse = async () => {
@@ -490,112 +490,82 @@ export default function AdminCoursesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="relative">
-                        <button
-                          onClick={() =>
-                            setActionMenuId(
-                              actionMenuId === course.id ? null : course.id
-                            )
-                          }
-                          disabled={isUpdating === course.id}
-                          className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
+                      <ActionMenu isLoading={isUpdating === course.id}>
+                        <ActionMenuItem
+                          href={`/courses/${course.slug}`}
+                          icon={<Eye className="h-4 w-4" />}
+                          external
                         >
-                          {isUpdating === course.id ? (
-                            <RefreshCw className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <MoreVertical className="h-4 w-4" />
-                          )}
-                        </button>
+                          View Course
+                        </ActionMenuItem>
 
-                        {actionMenuId === course.id && (
-                          <>
-                            <div
-                              className="fixed inset-0 z-10"
-                              onClick={() => setActionMenuId(null)}
-                            />
-                            <div className="absolute right-0 z-20 mt-1 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl">
-                              <a
-                                href={`/courses/${course.slug}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                              >
-                                <Eye className="h-4 w-4" />
-                                View Course
-                              </a>
+                        <ActionMenuItem
+                          onClick={() => handleOpenEdit(course)}
+                          icon={<Edit className="h-4 w-4" />}
+                        >
+                          Edit Course
+                        </ActionMenuItem>
 
-                              <button
-                                onClick={() => handleOpenEdit(course)}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-white hover:bg-gray-700"
-                              >
-                                <Edit className="h-4 w-4" />
-                                Edit Course
-                              </button>
+                        <ActionMenuDivider />
 
-                              <div className="my-1 border-t border-gray-700" />
-
-                              {course.status === "draft" && (
-                                <button
-                                  onClick={() =>
-                                    handleStatusChange(course.id, "active")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                                >
-                                  <CheckCircle className="h-4 w-4" />
-                                  Set Active
-                                </button>
-                              )}
-
-                              {course.status !== "approved" && (
-                                <button
-                                  onClick={() =>
-                                    handleStatusChange(course.id, "approved")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                                >
-                                  <CheckCircle className="h-4 w-4" />
-                                  Approve (Public)
-                                </button>
-                              )}
-
-                              {(course.status === "active" ||
-                                course.status === "approved") && (
-                                <button
-                                  onClick={() =>
-                                    handleStatusChange(course.id, "draft")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                                >
-                                  <Archive className="h-4 w-4" />
-                                  Unpublish
-                                </button>
-                              )}
-
-                              {course.status !== "archived" && (
-                                <button
-                                  onClick={() =>
-                                    handleStatusChange(course.id, "archived")
-                                  }
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-400 hover:bg-gray-700"
-                                >
-                                  <Archive className="h-4 w-4" />
-                                  Archive
-                                </button>
-                              )}
-
-                              <div className="my-1 border-t border-gray-700" />
-
-                              <button
-                                onClick={() => handleDelete(course.id)}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                Delete Course
-                              </button>
-                            </div>
-                          </>
+                        {course.status === "draft" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "active")
+                            }
+                            icon={<CheckCircle className="h-4 w-4" />}
+                            variant="info"
+                          >
+                            Set Active
+                          </ActionMenuItem>
                         )}
-                      </div>
+
+                        {course.status !== "approved" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "approved")
+                            }
+                            icon={<CheckCircle className="h-4 w-4" />}
+                            variant="success"
+                          >
+                            Approve (Public)
+                          </ActionMenuItem>
+                        )}
+
+                        {(course.status === "active" ||
+                          course.status === "approved") && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "draft")
+                            }
+                            icon={<Archive className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Unpublish
+                          </ActionMenuItem>
+                        )}
+
+                        {course.status !== "archived" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(course.id, "archived")
+                            }
+                            icon={<Archive className="h-4 w-4" />}
+                          >
+                            Archive
+                          </ActionMenuItem>
+                        )}
+
+                        <ActionMenuDivider />
+
+                        <ActionMenuItem
+                          onClick={() => handleDelete(course.id)}
+                          icon={<Trash2 className="h-4 w-4" />}
+                          variant="danger"
+                        >
+                          Delete Course
+                        </ActionMenuItem>
+                      </ActionMenu>
                     </td>
                   </tr>
                 ))

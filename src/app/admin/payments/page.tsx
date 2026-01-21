@@ -6,12 +6,12 @@ import {
   RefreshCw,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
   CheckCircle,
   XCircle,
   Eye,
   Clock,
 } from "lucide-react";
+import { ActionMenu, ActionMenuItem } from "@/components/ui/action-menu";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
 import type { AdminPayment, Pagination } from "@/lib/api/admin";
@@ -28,7 +28,6 @@ export default function AdminPaymentsPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [page, setPage] = useState(1);
 
-  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
 
   const [rejectModal, setRejectModal] = useState<{
@@ -68,7 +67,6 @@ export default function AdminPaymentsPage() {
 
   const handleApprove = async (paymentId: string) => {
     setIsUpdating(paymentId);
-    setActionMenuId(null);
 
     const result = await adminService.updatePayment(paymentId, {
       status: "approved",
@@ -294,54 +292,27 @@ export default function AdminPaymentsPage() {
                     </td>
                     <td className="px-4 py-3">
                       {payment.status === "pending" && (
-                        <div className="relative">
-                          <button
-                            onClick={() =>
-                              setActionMenuId(
-                                actionMenuId === payment.id ? null : payment.id
-                              )
-                            }
-                            disabled={isUpdating === payment.id}
-                            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
+                        <ActionMenu isLoading={isUpdating === payment.id}>
+                          <ActionMenuItem
+                            onClick={() => handleApprove(payment.id)}
+                            icon={<CheckCircle className="h-4 w-4" />}
+                            variant="success"
                           >
-                            {isUpdating === payment.id ? (
-                              <RefreshCw className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <MoreVertical className="h-4 w-4" />
-                            )}
-                          </button>
-
-                          {actionMenuId === payment.id && (
-                            <>
-                              <div
-                                className="fixed inset-0 z-10"
-                                onClick={() => setActionMenuId(null)}
-                              />
-                              <div className="absolute right-0 z-20 mt-1 w-40 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl">
-                                <button
-                                  onClick={() => handleApprove(payment.id)}
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                                >
-                                  <CheckCircle className="h-4 w-4" />
-                                  {t("admin.approve") || "Approve"}
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setRejectModal({
-                                      paymentId: payment.id,
-                                      reason: "",
-                                    });
-                                    setActionMenuId(null);
-                                  }}
-                                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
-                                >
-                                  <XCircle className="h-4 w-4" />
-                                  {t("admin.reject") || "Reject"}
-                                </button>
-                              </div>
-                            </>
-                          )}
-                        </div>
+                            {t("admin.approve") || "Approve"}
+                          </ActionMenuItem>
+                          <ActionMenuItem
+                            onClick={() => {
+                              setRejectModal({
+                                paymentId: payment.id,
+                                reason: "",
+                              });
+                            }}
+                            icon={<XCircle className="h-4 w-4" />}
+                            variant="danger"
+                          >
+                            {t("admin.reject") || "Reject"}
+                          </ActionMenuItem>
+                        </ActionMenu>
                       )}
                     </td>
                   </tr>

@@ -7,7 +7,6 @@ import {
   RefreshCw,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
   Eye,
   Edit,
   Archive,
@@ -19,6 +18,11 @@ import {
   Save,
   Loader2,
 } from "lucide-react";
+import {
+  ActionMenu,
+  ActionMenuItem,
+  ActionMenuDivider,
+} from "@/components/ui/action-menu";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminBlogApi, type Blog, type BlogCategory } from "@/lib/api/blog";
 import { toast } from "sonner";
@@ -61,11 +65,6 @@ export default function ModeratorBlogsPage() {
     totalPages: number;
   } | null>(null);
 
-  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
-  const [actionMenuPosition, setActionMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
@@ -131,27 +130,8 @@ export default function ModeratorBlogsPage() {
     loadBlogs();
   };
 
-  const handleOpenActionMenu = (
-    blogId: string,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    if (actionMenuId === blogId) {
-      setActionMenuId(null);
-      setActionMenuPosition(null);
-    } else {
-      const rect = event.currentTarget.getBoundingClientRect();
-      setActionMenuPosition({
-        top: rect.bottom + 4,
-        left: rect.right - 192,
-      });
-      setActionMenuId(blogId);
-    }
-  };
-
   const handleViewBlog = (blog: Blog) => {
     setSelectedBlog(blog);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
   };
 
   const handleOpenCreateModal = () => {
@@ -171,8 +151,6 @@ export default function ModeratorBlogsPage() {
       thumbnail: blog.thumbnail || "",
     });
     setIsModalOpen(true);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
   };
 
   const handleCloseModal = () => {
@@ -298,8 +276,6 @@ export default function ModeratorBlogsPage() {
     status: "draft" | "published" | "archived"
   ) => {
     setIsUpdating(blogId);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
 
     try {
       const response = await adminBlogApi.updateBlog(blogId, { status });
@@ -329,8 +305,6 @@ export default function ModeratorBlogsPage() {
     }
 
     setIsUpdating(blogId);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
 
     try {
       const response = await adminBlogApi.deleteBlog(blogId);
@@ -569,17 +543,88 @@ export default function ModeratorBlogsPage() {
                       {formatDate(blog.createdAt)}
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={(e) => handleOpenActionMenu(blog.id, e)}
-                        disabled={isUpdating === blog.id}
-                        className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
-                      >
-                        {isUpdating === blog.id ? (
-                          <RefreshCw className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <MoreVertical className="h-4 w-4" />
+                      <ActionMenu isLoading={isUpdating === blog.id}>
+                        <ActionMenuItem
+                          onClick={() => handleViewBlog(blog)}
+                          icon={<Eye className="h-4 w-4" />}
+                        >
+                          View Details
+                        </ActionMenuItem>
+
+                        {blog.status === "published" && (
+                          <ActionMenuItem
+                            href={`/blog/${blog.slug}`}
+                            icon={<Eye className="h-4 w-4" />}
+                            external
+                          >
+                            View on Site
+                          </ActionMenuItem>
                         )}
-                      </button>
+
+                        <ActionMenuItem
+                          onClick={() => handleOpenEditModal(blog)}
+                          icon={<Edit className="h-4 w-4" />}
+                          variant="info"
+                        >
+                          Edit Blog
+                        </ActionMenuItem>
+
+                        <ActionMenuDivider />
+
+                        {blog.status === "draft" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleUpdateStatus(blog.id, "published")
+                            }
+                            icon={<Send className="h-4 w-4" />}
+                            variant="success"
+                          >
+                            Publish
+                          </ActionMenuItem>
+                        )}
+
+                        {blog.status === "published" && (
+                          <ActionMenuItem
+                            onClick={() => handleUpdateStatus(blog.id, "draft")}
+                            icon={<Edit className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Unpublish (Draft)
+                          </ActionMenuItem>
+                        )}
+
+                        {blog.status !== "archived" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleUpdateStatus(blog.id, "archived")
+                            }
+                            icon={<Archive className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Archive
+                          </ActionMenuItem>
+                        )}
+
+                        {blog.status === "archived" && (
+                          <ActionMenuItem
+                            onClick={() => handleUpdateStatus(blog.id, "draft")}
+                            icon={<RefreshCw className="h-4 w-4" />}
+                            variant="success"
+                          >
+                            Restore to Draft
+                          </ActionMenuItem>
+                        )}
+
+                        <ActionMenuDivider />
+
+                        <ActionMenuItem
+                          onClick={() => handleDelete(blog.id)}
+                          icon={<Trash2 className="h-4 w-4" />}
+                          variant="danger"
+                        >
+                          Delete Blog
+                        </ActionMenuItem>
+                      </ActionMenu>
                     </td>
                   </tr>
                 ))
@@ -615,114 +660,6 @@ export default function ModeratorBlogsPage() {
           </div>
         )}
       </div>
-
-      {/* Action Menu - Fixed Position */}
-      {actionMenuId && actionMenuPosition && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => {
-              setActionMenuId(null);
-              setActionMenuPosition(null);
-            }}
-          />
-          <div
-            className="fixed z-50 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl"
-            style={{
-              top: actionMenuPosition.top,
-              left: Math.max(8, actionMenuPosition.left),
-            }}
-          >
-            {(() => {
-              const blog = blogs.find((b) => b.id === actionMenuId);
-              if (!blog) return null;
-              return (
-                <>
-                  <button
-                    onClick={() => handleViewBlog(blog)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-white hover:bg-gray-700"
-                  >
-                    <Eye className="h-4 w-4" />
-                    View Details
-                  </button>
-
-                  {blog.status === "published" && (
-                    <a
-                      href={`/blog/${blog.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                    >
-                      <Eye className="h-4 w-4" />
-                      View on Site
-                    </a>
-                  )}
-
-                  <button
-                    onClick={() => handleOpenEditModal(blog)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                  >
-                    <Edit className="h-4 w-4" />
-                    Edit Blog
-                  </button>
-
-                  <div className="my-1 border-t border-gray-700" />
-
-                  {blog.status === "draft" && (
-                    <button
-                      onClick={() => handleUpdateStatus(blog.id, "published")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                    >
-                      <Send className="h-4 w-4" />
-                      Publish
-                    </button>
-                  )}
-
-                  {blog.status === "published" && (
-                    <button
-                      onClick={() => handleUpdateStatus(blog.id, "draft")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                    >
-                      <Edit className="h-4 w-4" />
-                      Unpublish (Draft)
-                    </button>
-                  )}
-
-                  {blog.status !== "archived" && (
-                    <button
-                      onClick={() => handleUpdateStatus(blog.id, "archived")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                    >
-                      <Archive className="h-4 w-4" />
-                      Archive
-                    </button>
-                  )}
-
-                  {blog.status === "archived" && (
-                    <button
-                      onClick={() => handleUpdateStatus(blog.id, "draft")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                    >
-                      <RefreshCw className="h-4 w-4" />
-                      Restore to Draft
-                    </button>
-                  )}
-
-                  <div className="my-1 border-t border-gray-700" />
-
-                  <button
-                    onClick={() => handleDelete(blog.id)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Delete Blog
-                  </button>
-                </>
-              );
-            })()}
-          </div>
-        </>
-      )}
 
       {selectedBlog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

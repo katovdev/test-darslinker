@@ -7,7 +7,6 @@ import {
   RefreshCw,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
   UserCheck,
   UserX,
   Shield,
@@ -15,9 +14,15 @@ import {
   Eye,
   X,
   Plus,
+  GraduationCap,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
+import {
+  ActionMenu,
+  ActionMenuItem,
+  ActionMenuDivider,
+} from "@/components/ui/action-menu";
 import type { AdminUser, Pagination } from "@/lib/api/admin";
 
 type RoleFilter = "all" | "teacher" | "student" | "moderator" | "admin";
@@ -35,11 +40,6 @@ export default function AdminUsersPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [page, setPage] = useState(1);
 
-  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
-  const [actionMenuPosition, setActionMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const [editingUser, setEditingUser] = useState<{
@@ -103,7 +103,6 @@ export default function AdminUsersPage() {
     newStatus: "active" | "blocked"
   ) => {
     setIsUpdating(userId);
-    setActionMenuId(null);
 
     const result = await adminService.updateUser(userId, { status: newStatus });
     if (result) {
@@ -120,7 +119,6 @@ export default function AdminUsersPage() {
     newRole: "teacher" | "student" | "moderator" | "admin"
   ) => {
     setIsUpdating(userId);
-    setActionMenuId(null);
 
     const result = await adminService.updateUser(userId, { role: newRole });
     if (result) {
@@ -136,7 +134,6 @@ export default function AdminUsersPage() {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
     setIsUpdating(userId);
-    setActionMenuId(null);
 
     const result = await adminService.deleteUser(userId);
     if (result) {
@@ -144,23 +141,6 @@ export default function AdminUsersPage() {
     }
 
     setIsUpdating(null);
-  };
-
-  const handleOpenActionMenu = (
-    userId: string,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    if (actionMenuId === userId) {
-      setActionMenuId(null);
-      setActionMenuPosition(null);
-    } else {
-      const rect = event.currentTarget.getBoundingClientRect();
-      setActionMenuPosition({
-        top: rect.bottom + 4,
-        left: rect.right - 192, // 192px = w-48 = 12rem
-      });
-      setActionMenuId(userId);
-    }
   };
 
   const handleViewUser = (user: AdminUser) => {
@@ -171,7 +151,6 @@ export default function AdminUsersPage() {
       role: user.role,
       status: user.status,
     });
-    setActionMenuId(null);
   };
 
   const handleSaveUser = async () => {
@@ -465,17 +444,70 @@ export default function AdminUsersPage() {
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={(e) => handleOpenActionMenu(user.id, e)}
-                        disabled={isUpdating === user.id}
-                        className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
-                      >
-                        {isUpdating === user.id ? (
-                          <RefreshCw className="h-4 w-4 animate-spin" />
+                      <ActionMenu isLoading={isUpdating === user.id}>
+                        <ActionMenuItem
+                          onClick={() => handleViewUser(user)}
+                          icon={<Eye className="h-4 w-4" />}
+                        >
+                          View Profile
+                        </ActionMenuItem>
+
+                        <ActionMenuDivider />
+
+                        {user.status === "active" ? (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(user.id, "blocked")
+                            }
+                            icon={<UserX className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Block User
+                          </ActionMenuItem>
                         ) : (
-                          <MoreVertical className="h-4 w-4" />
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(user.id, "active")
+                            }
+                            icon={<UserCheck className="h-4 w-4" />}
+                            variant="success"
+                          >
+                            Activate User
+                          </ActionMenuItem>
                         )}
-                      </button>
+
+                        {user.role !== "moderator" && (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleRoleChange(user.id, "moderator")
+                            }
+                            icon={<Shield className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Make Moderator
+                          </ActionMenuItem>
+                        )}
+
+                        {user.role !== "teacher" && (
+                          <ActionMenuItem
+                            onClick={() => handleRoleChange(user.id, "teacher")}
+                            icon={<GraduationCap className="h-4 w-4" />}
+                            variant="info"
+                          >
+                            Make Teacher
+                          </ActionMenuItem>
+                        )}
+
+                        <ActionMenuDivider />
+
+                        <ActionMenuItem
+                          onClick={() => handleDelete(user.id)}
+                          icon={<Trash2 className="h-4 w-4" />}
+                          variant="danger"
+                        >
+                          Delete User
+                        </ActionMenuItem>
+                      </ActionMenu>
                     </td>
                   </tr>
                 ))
@@ -511,91 +543,6 @@ export default function AdminUsersPage() {
           </div>
         )}
       </div>
-
-      {actionMenuId && actionMenuPosition && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => {
-              setActionMenuId(null);
-              setActionMenuPosition(null);
-            }}
-          />
-          <div
-            className="fixed z-50 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl"
-            style={{
-              top: actionMenuPosition.top,
-              left: Math.max(8, actionMenuPosition.left),
-            }}
-          >
-            {(() => {
-              const user = users.find((u) => u.id === actionMenuId);
-              if (!user) return null;
-              return (
-                <>
-                  <button
-                    onClick={() => handleViewUser(user)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-white hover:bg-gray-700"
-                  >
-                    <Eye className="h-4 w-4" />
-                    View Profile
-                  </button>
-
-                  <div className="my-1 border-t border-gray-700" />
-
-                  {user.status === "active" ? (
-                    <button
-                      onClick={() => handleStatusChange(user.id, "blocked")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                    >
-                      <UserX className="h-4 w-4" />
-                      Block User
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleStatusChange(user.id, "active")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                    >
-                      <UserCheck className="h-4 w-4" />
-                      Activate User
-                    </button>
-                  )}
-
-                  {user.role !== "moderator" && (
-                    <button
-                      onClick={() => handleRoleChange(user.id, "moderator")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-orange-400 hover:bg-gray-700"
-                    >
-                      <Shield className="h-4 w-4" />
-                      Make Moderator
-                    </button>
-                  )}
-
-                  {user.role !== "teacher" && (
-                    <button
-                      onClick={() => handleRoleChange(user.id, "teacher")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                    >
-                      <UserCheck className="h-4 w-4" />
-                      Make Teacher
-                    </button>
-                  )}
-
-                  <div className="my-1 border-t border-gray-700" />
-
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-700"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Delete User
-                  </button>
-                </>
-              );
-            })()}
-          </div>
-        </>
-      )}
 
       {selectedUser && editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

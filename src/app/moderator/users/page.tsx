@@ -7,12 +7,16 @@ import {
   RefreshCw,
   ChevronLeft,
   ChevronRight,
-  MoreVertical,
   UserCheck,
   UserX,
   Eye,
   X,
 } from "lucide-react";
+import {
+  ActionMenu,
+  ActionMenuItem,
+  ActionMenuDivider,
+} from "@/components/ui/action-menu";
 import { useTranslations } from "@/hooks/use-locale";
 import { moderatorService } from "@/services/moderator";
 import type { ModeratorUser, Pagination } from "@/lib/api/moderator";
@@ -32,11 +36,6 @@ export default function ModeratorUsersPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [page, setPage] = useState(1);
 
-  const [actionMenuId, setActionMenuId] = useState<string | null>(null);
-  const [actionMenuPosition, setActionMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<ModeratorUser | null>(null);
 
@@ -81,8 +80,6 @@ export default function ModeratorUsersPage() {
     newStatus: "active" | "blocked"
   ) => {
     setIsUpdating(userId);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
 
     const result = await moderatorService.updateUserStatus(userId, {
       status: newStatus,
@@ -96,27 +93,8 @@ export default function ModeratorUsersPage() {
     setIsUpdating(null);
   };
 
-  const handleOpenActionMenu = (
-    userId: string,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    if (actionMenuId === userId) {
-      setActionMenuId(null);
-      setActionMenuPosition(null);
-    } else {
-      const rect = event.currentTarget.getBoundingClientRect();
-      setActionMenuPosition({
-        top: rect.bottom + 4,
-        left: rect.right - 192,
-      });
-      setActionMenuId(userId);
-    }
-  };
-
   const handleViewUser = (user: ModeratorUser) => {
     setSelectedUser(user);
-    setActionMenuId(null);
-    setActionMenuPosition(null);
   };
 
   const getRoleBadge = (role: string) => {
@@ -326,17 +304,38 @@ export default function ModeratorUsersPage() {
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={(e) => handleOpenActionMenu(user.id, e)}
-                        disabled={isUpdating === user.id}
-                        className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white disabled:opacity-50"
-                      >
-                        {isUpdating === user.id ? (
-                          <RefreshCw className="h-4 w-4 animate-spin" />
+                      <ActionMenu isLoading={isUpdating === user.id}>
+                        <ActionMenuItem
+                          onClick={() => handleViewUser(user)}
+                          icon={<Eye className="h-4 w-4" />}
+                        >
+                          View Details
+                        </ActionMenuItem>
+
+                        <ActionMenuDivider />
+
+                        {user.status === "active" ? (
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(user.id, "blocked")
+                            }
+                            icon={<UserX className="h-4 w-4" />}
+                            variant="warning"
+                          >
+                            Block User
+                          </ActionMenuItem>
                         ) : (
-                          <MoreVertical className="h-4 w-4" />
+                          <ActionMenuItem
+                            onClick={() =>
+                              handleStatusChange(user.id, "active")
+                            }
+                            icon={<UserCheck className="h-4 w-4" />}
+                            variant="success"
+                          >
+                            Activate User
+                          </ActionMenuItem>
                         )}
-                      </button>
+                      </ActionMenu>
                     </td>
                   </tr>
                 ))
@@ -372,62 +371,6 @@ export default function ModeratorUsersPage() {
           </div>
         )}
       </div>
-
-      {/* Action Menu - Fixed Position */}
-      {actionMenuId && actionMenuPosition && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => {
-              setActionMenuId(null);
-              setActionMenuPosition(null);
-            }}
-          />
-          <div
-            className="fixed z-50 w-48 rounded-lg border border-gray-700 bg-gray-800 py-1 shadow-xl"
-            style={{
-              top: actionMenuPosition.top,
-              left: Math.max(8, actionMenuPosition.left),
-            }}
-          >
-            {(() => {
-              const user = users.find((u) => u.id === actionMenuId);
-              if (!user) return null;
-              return (
-                <>
-                  <button
-                    onClick={() => handleViewUser(user)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-white hover:bg-gray-700"
-                  >
-                    <Eye className="h-4 w-4" />
-                    View Details
-                  </button>
-
-                  <div className="my-1 border-t border-gray-700" />
-
-                  {user.status === "active" ? (
-                    <button
-                      onClick={() => handleStatusChange(user.id, "blocked")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-yellow-400 hover:bg-gray-700"
-                    >
-                      <UserX className="h-4 w-4" />
-                      Block User
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleStatusChange(user.id, "active")}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-green-400 hover:bg-gray-700"
-                    >
-                      <UserCheck className="h-4 w-4" />
-                      Activate User
-                    </button>
-                  )}
-                </>
-              );
-            })()}
-          </div>
-        </>
-      )}
 
       {/* User Detail Modal */}
       {selectedUser && (

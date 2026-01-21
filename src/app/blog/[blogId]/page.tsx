@@ -59,7 +59,6 @@ export default function BlogDetailPage() {
     }
 
     loadBlog();
-     
   }, [blogSlug]);
 
   const handleLike = async () => {
