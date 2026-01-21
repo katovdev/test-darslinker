@@ -1,109 +1,61 @@
 "use client";
 
-import { useEffect, useState, useCallback, memo } from "react";
 import {
   Users,
   BookOpen,
   CreditCard,
   DollarSign,
   TrendingUp,
-  RefreshCw,
   Clock,
   CheckCircle,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
+import { useAsyncData } from "@/hooks/use-async-data";
 import { toast } from "sonner";
 import { teacherService } from "@/services/teacher";
-import type { TeacherStats } from "@/lib/api/teacher";
+import { PageHeader, RefreshButton, SectionHeader } from "@/components/ui/page-header";
+import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
+import { SkeletonGrid } from "@/components/ui/skeleton-card";
+import { ErrorAlert } from "@/components/ui/alert-box";
+import { formatCurrency } from "@/lib/formatting";
 
 export default function TeacherDashboardPage() {
   const t = useTranslations();
-  const [stats, setStats] = useState<TeacherStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const loadStats = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await teacherService.getStats();
-      if (data) {
-        setStats(data);
-      } else {
-        const errorMsg =
-          t("teacher.statsLoadError") || "Failed to load statistics";
-        setError(errorMsg);
-        toast.error(errorMsg);
-      }
-    } catch {
-      const errorMsg =
-        t("teacher.statsLoadError") || "Failed to load statistics";
-      setError(errorMsg);
-      toast.error(errorMsg);
-    } finally {
-      setIsLoading(false);
+  const { data: stats, isLoading, error, refresh } = useAsyncData(
+    () => teacherService.getStats(),
+    {
+      fetchOnMount: true,
+      onError: () => {
+        toast.error(t("teacher.statsLoadError") || "Failed to load statistics");
+      },
     }
-  }, [t]);
-
-  useEffect(() => {
-    loadStats();
-  }, [loadStats]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("uz-UZ").format(amount) + " UZS";
-  };
+  );
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">
-            {t("teacher.dashboardTitle") || "Teacher Dashboard"}
-          </h1>
-          <p className="mt-1 text-gray-400">
-            {t("teacher.dashboardSubtitle") ||
-              "Overview of your courses and earnings"}
-          </p>
-        </div>
-        <button
-          onClick={loadStats}
-          disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
-        >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          {t("common.refresh") || "Refresh"}
-        </button>
-      </div>
+      <PageHeader
+        title={t("teacher.dashboardTitle") || "Teacher Dashboard"}
+        subtitle={t("teacher.dashboardSubtitle") || "Overview of your courses and earnings"}
+      >
+        <RefreshButton
+          onClick={refresh}
+          isLoading={isLoading}
+          label={t("common.refresh") || "Refresh"}
+        />
+      </PageHeader>
 
       {error && !isLoading && (
-        <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4">
-          <p className="text-red-400">{error}</p>
-        </div>
+        <ErrorAlert>{t("teacher.statsLoadError") || "Failed to load statistics"}</ErrorAlert>
       )}
 
-      {isLoading && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="animate-pulse rounded-xl border border-gray-800 bg-gray-800/30 p-6"
-            >
-              <div className="mb-4 h-10 w-10 rounded-lg bg-gray-700/50" />
-              <div className="mb-2 h-4 w-20 rounded bg-gray-700/50" />
-              <div className="h-8 w-16 rounded bg-gray-700/50" />
-            </div>
-          ))}
-        </div>
-      )}
+      {isLoading && <SkeletonGrid count={8} columns={4} />}
 
       {!isLoading && stats && (
         <>
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              {t("teacher.courseStats") || "Course Statistics"}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SectionHeader title={t("teacher.courseStats") || "Course Statistics"} />
+            <StatCardGrid columns={3}>
               <StatCard
                 icon={BookOpen}
                 label={t("teacher.totalCourses") || "Total Courses"}
@@ -122,28 +74,24 @@ export default function TeacherDashboardPage() {
                 value={stats.courses.draft}
                 color="yellow"
               />
-            </div>
+            </StatCardGrid>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              {t("teacher.studentStats") || "Student Statistics"}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SectionHeader title={t("teacher.studentStats") || "Student Statistics"} />
+            <StatCardGrid columns={3}>
               <StatCard
                 icon={Users}
                 label={t("teacher.totalStudents") || "Total Students"}
                 value={stats.students.total}
                 color="purple"
               />
-            </div>
+            </StatCardGrid>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              {t("teacher.paymentStats") || "Payment Statistics"}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SectionHeader title={t("teacher.paymentStats") || "Payment Statistics"} />
+            <StatCardGrid columns={3}>
               <StatCard
                 icon={CreditCard}
                 label={t("teacher.totalPayments") || "Total Payments"}
@@ -162,73 +110,28 @@ export default function TeacherDashboardPage() {
                 value={stats.payments.approved}
                 color="green"
               />
-            </div>
+            </StatCardGrid>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              {t("teacher.earningsStats") || "Earnings"}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <SectionHeader title={t("teacher.earningsStats") || "Earnings"} />
+            <StatCardGrid columns={2}>
               <StatCard
                 icon={DollarSign}
                 label={t("teacher.totalEarnings") || "Total Earnings"}
                 value={formatCurrency(stats.earnings.total)}
                 color="green"
-                isLarge
               />
               <StatCard
                 icon={DollarSign}
                 label={t("teacher.currentBalance") || "Current Balance"}
                 value={formatCurrency(stats.earnings.currentBalance)}
                 color="purple"
-                isLarge
               />
-            </div>
+            </StatCardGrid>
           </div>
         </>
       )}
     </div>
   );
 }
-
-interface StatCardProps {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string | number;
-  color: "blue" | "green" | "purple" | "orange" | "yellow";
-  isLarge?: boolean;
-}
-
-// Memoized StatCard to prevent unnecessary re-renders
-const StatCard = memo(function StatCard({
-  icon: Icon,
-  label,
-  value,
-  color,
-  isLarge,
-}: StatCardProps) {
-  const colorClasses = {
-    blue: "bg-blue-500/10 text-blue-400",
-    green: "bg-green-500/10 text-green-400",
-    purple: "bg-purple-500/10 text-purple-400",
-    orange: "bg-orange-500/10 text-orange-400",
-    yellow: "bg-yellow-500/10 text-yellow-400",
-  };
-
-  return (
-    <div
-      className={`rounded-xl border border-gray-800 bg-gray-800/30 p-6 transition-colors hover:border-gray-700 ${
-        isLarge ? "sm:col-span-1" : ""
-      }`}
-    >
-      <div
-        className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${colorClasses[color]}`}
-      >
-        <Icon className="h-5 w-5" />
-      </div>
-      <p className="text-sm text-gray-400">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
-    </div>
-  );
-});

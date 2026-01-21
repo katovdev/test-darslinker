@@ -1,112 +1,62 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   Users,
   BookOpen,
   TrendingUp,
-  RefreshCw,
   UserCheck,
   UserX,
   Clock,
   FileText,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
+import { useAsyncData } from "@/hooks/use-async-data";
 import { moderatorService } from "@/services/moderator";
-import type { ModeratorStats } from "@/lib/api/moderator";
+import { PageHeader, RefreshButton, SectionHeader } from "@/components/ui/page-header";
+import { StatCard, StatCardGrid } from "@/components/ui/stat-card";
+import { SkeletonGrid } from "@/components/ui/skeleton-card";
+import { ErrorAlert, WarningAlert } from "@/components/ui/alert-box";
 
 export default function ModeratorDashboardPage() {
   const t = useTranslations();
-  const [stats, setStats] = useState<ModeratorStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const loadStats = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await moderatorService.getStats();
-      if (data) {
-        setStats(data);
-      } else {
-        setError(t("moderator.statsLoadError") || "Failed to load statistics");
-      }
-    } catch {
-      setError(t("moderator.statsLoadError") || "Failed to load statistics");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadStats();
-  }, []);
+  const { data: stats, isLoading, error, refresh } = useAsyncData(
+    () => moderatorService.getStats(),
+    { fetchOnMount: true }
+  );
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">
-            {t("moderator.dashboardTitle") || "Moderator Dashboard"}
-          </h1>
-          <p className="mt-1 text-gray-400">
-            {t("moderator.dashboardSubtitle") || "Manage users and courses"}
-          </p>
-        </div>
-        <button
-          onClick={loadStats}
-          disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
-        >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          {t("common.refresh") || "Refresh"}
-        </button>
-      </div>
+      <PageHeader
+        title={t("moderator.dashboardTitle") || "Moderator Dashboard"}
+        subtitle={t("moderator.dashboardSubtitle") || "Manage users and courses"}
+      >
+        <RefreshButton
+          onClick={refresh}
+          isLoading={isLoading}
+          label={t("common.refresh") || "Refresh"}
+        />
+      </PageHeader>
 
-      <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
-        <div className="flex items-center gap-3">
-          <FileText className="h-5 w-5 text-yellow-400" />
-          <div>
-            <p className="font-medium text-yellow-400">
-              {t("moderator.limitedAccessTitle") || "Limited Access"}
-            </p>
-            <p className="text-sm text-yellow-400/80">
-              {t("moderator.limitedAccessDesc") ||
-                "Financial data (payments, earnings, balances) is not accessible with moderator role."}
-            </p>
-          </div>
-        </div>
-      </div>
+      <WarningAlert
+        title={t("moderator.limitedAccessTitle") || "Limited Access"}
+        icon={<FileText className="h-5 w-5" />}
+      >
+        {t("moderator.limitedAccessDesc") ||
+          "Financial data (payments, earnings, balances) is not accessible with moderator role."}
+      </WarningAlert>
 
       {error && !isLoading && (
-        <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4">
-          <p className="text-red-400">{error}</p>
-        </div>
+        <ErrorAlert>{t("moderator.statsLoadError") || "Failed to load statistics"}</ErrorAlert>
       )}
 
-      {isLoading && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="animate-pulse rounded-xl border border-gray-800 bg-gray-800/30 p-6"
-            >
-              <div className="mb-4 h-10 w-10 rounded-lg bg-gray-700/50" />
-              <div className="mb-2 h-4 w-20 rounded bg-gray-700/50" />
-              <div className="h-8 w-16 rounded bg-gray-700/50" />
-            </div>
-          ))}
-        </div>
-      )}
+      {isLoading && <SkeletonGrid count={8} columns={4} />}
 
       {!isLoading && stats && (
         <>
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              {t("moderator.userStats") || "User Statistics"}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <SectionHeader title={t("moderator.userStats") || "User Statistics"} />
+            <StatCardGrid columns={5}>
               <StatCard
                 icon={Users}
                 label={t("moderator.totalUsers") || "Total Users"}
@@ -137,14 +87,12 @@ export default function ModeratorDashboardPage() {
                 value={stats.users.blocked}
                 color="red"
               />
-            </div>
+            </StatCardGrid>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              {t("moderator.courseStats") || "Course Statistics"}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SectionHeader title={t("moderator.courseStats") || "Course Statistics"} />
+            <StatCardGrid columns={3}>
               <StatCard
                 icon={BookOpen}
                 label={t("moderator.totalCourses") || "Total Courses"}
@@ -163,40 +111,10 @@ export default function ModeratorDashboardPage() {
                 value={stats.courses.draft}
                 color="gray"
               />
-            </div>
+            </StatCardGrid>
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-interface StatCardProps {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string | number;
-  color: "blue" | "green" | "purple" | "yellow" | "red" | "gray";
-}
-
-function StatCard({ icon: Icon, label, value, color }: StatCardProps) {
-  const colorClasses = {
-    blue: "bg-blue-500/10 text-blue-400",
-    green: "bg-green-500/10 text-green-400",
-    purple: "bg-purple-500/10 text-purple-400",
-    yellow: "bg-yellow-500/10 text-yellow-400",
-    red: "bg-red-500/10 text-red-400",
-    gray: "bg-gray-500/10 text-gray-400",
-  };
-
-  return (
-    <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6 transition-colors hover:border-gray-700">
-      <div
-        className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${colorClasses[color]}`}
-      >
-        <Icon className="h-5 w-5" />
-      </div>
-      <p className="text-sm text-gray-400">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
     </div>
   );
 }
