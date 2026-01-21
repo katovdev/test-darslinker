@@ -20,6 +20,13 @@ import type {
 // API base URL - should be configured via environment
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api";
 
+// API response wrapper type
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  error?: { code: string; message: string };
+}
+
 // Generic fetch wrapper with error handling
 async function fetchApi<T>(
   endpoint: string,
@@ -30,6 +37,7 @@ async function fetchApi<T>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+    credentials: "include",
     ...options,
   });
 
@@ -37,7 +45,13 @@ async function fetchApi<T>(
     throw new Error(`API error: ${response.status}`);
   }
 
-  return response.json();
+  const json: ApiResponse<T> = await response.json();
+
+  if (!json.success) {
+    throw new Error(json.error?.message || "API request failed");
+  }
+
+  return json.data;
 }
 
 // ============================================
@@ -46,10 +60,16 @@ async function fetchApi<T>(
 
 export function useCourseProgress(courseId: string, userId?: string) {
   const [progress, setProgress] = React.useState<CourseProgress | null>(null);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
   const fetchProgress = React.useCallback(async () => {
+    if (!courseId) {
+      setProgress(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const params = userId ? `?userId=${userId}` : "";
@@ -76,10 +96,16 @@ export function useCourseProgressDetail(courseId: string, userId?: string) {
   const [progress, setProgress] = React.useState<CourseProgressDetail | null>(
     null
   );
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
   const fetchProgress = React.useCallback(async () => {
+    if (!courseId) {
+      setProgress(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const params = userId ? `?userId=${userId}` : "";
@@ -104,10 +130,16 @@ export function useCourseProgressDetail(courseId: string, userId?: string) {
 
 export function useModuleProgress(moduleId: string, userId?: string) {
   const [progress, setProgress] = React.useState<ModuleProgress | null>(null);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
   React.useEffect(() => {
+    if (!moduleId) {
+      setProgress(null);
+      setLoading(false);
+      return;
+    }
+
     const fetch = async () => {
       try {
         setLoading(true);
@@ -131,10 +163,16 @@ export function useModuleProgress(moduleId: string, userId?: string) {
 
 export function useLessonProgress(lessonId: string, userId?: string) {
   const [progress, setProgress] = React.useState<LessonProgress | null>(null);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
   React.useEffect(() => {
+    if (!lessonId) {
+      setProgress(null);
+      setLoading(false);
+      return;
+    }
+
     const fetch = async () => {
       try {
         setLoading(true);
@@ -313,10 +351,16 @@ export function useCourseAnalytics(courseId: string) {
   const [analytics, setAnalytics] = React.useState<CourseAnalytics | null>(
     null
   );
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
   const fetchAnalytics = React.useCallback(async () => {
+    if (!courseId) {
+      setAnalytics(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const data = await fetchApi<CourseAnalytics>(
@@ -379,10 +423,16 @@ export function useStudentList(filters: ProgressFilters = {}) {
 
 export function useStudentProgress(userId: string) {
   const [overview, setOverview] = React.useState<StudentOverview | null>(null);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
   React.useEffect(() => {
+    if (!userId) {
+      setOverview(null);
+      setLoading(false);
+      return;
+    }
+
     const fetch = async () => {
       try {
         setLoading(true);

@@ -60,11 +60,26 @@ export function HomeHeader() {
   const getRoleDashboard = () => {
     switch (user?.role) {
       case "admin":
-        return { href: "/admin", label: t("sidebar.adminPanel") || "Admin Panel", icon: Shield, color: "text-blue-400 hover:bg-blue-500/10" };
+        return {
+          href: "/admin",
+          label: t("sidebar.adminPanel") || "Admin Panel",
+          icon: Shield,
+          color: "text-blue-400 hover:bg-blue-500/10",
+        };
       case "moderator":
-        return { href: "/moderator", label: t("sidebar.moderatorPanel") || "Moderator Panel", icon: Shield, color: "text-green-400 hover:bg-green-500/10" };
+        return {
+          href: "/moderator",
+          label: t("sidebar.moderatorPanel") || "Moderator Panel",
+          icon: Shield,
+          color: "text-green-400 hover:bg-green-500/10",
+        };
       case "teacher":
-        return { href: "/teacher", label: t("sidebar.teacherPanel") || "Teacher Panel", icon: GraduationCap, color: "text-emerald-400 hover:bg-emerald-500/10" };
+        return {
+          href: "/teacher",
+          label: t("sidebar.teacherPanel") || "Teacher Panel",
+          icon: GraduationCap,
+          color: "text-emerald-400 hover:bg-emerald-500/10",
+        };
       default:
         return null;
     }
