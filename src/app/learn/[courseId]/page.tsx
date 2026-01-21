@@ -5,11 +5,9 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpen,
-  Play,
   ChevronLeft,
   ChevronRight,
   CheckCircle,
-  Lock,
   FileText,
   HelpCircle,
   Video,
@@ -124,8 +122,8 @@ export default function LearnPage() {
   }, [courseId, authLoading, lessonId, router, t]);
 
   const findLessonById = (modules: Module[], id: string): Lesson | null => {
-    for (const module of modules) {
-      const lesson = module.lessons.find((l) => l.id === id);
+    for (const mod of modules) {
+      const lesson = mod.lessons.find((l) => l.id === id);
       if (lesson) return lesson;
     }
     return null;
