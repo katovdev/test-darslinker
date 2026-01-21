@@ -6,6 +6,7 @@ import {
   BookOpen,
   CreditCard,
   DollarSign,
+  BarChart3,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { RoleSidebar, type NavItem } from "@/components/ui/role-sidebar";
@@ -28,6 +29,11 @@ export function TeacherSidebar() {
       href: "/teacher/students",
       label: t("teacher.students") || "Students",
       icon: Users,
+    },
+    {
+      href: "/teacher/analytics",
+      label: t("teacher.analytics") || "Analytics",
+      icon: BarChart3,
     },
     {
       href: "/teacher/payments",
