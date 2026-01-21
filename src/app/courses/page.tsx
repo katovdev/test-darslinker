@@ -45,14 +45,16 @@ export default function CoursesPage() {
       if (response.success && response.data) {
         setCourses(response.data.all);
         setEnrolledCourses(response.data.enrolled);
+      } else {
+        setError("Failed to load courses");
       }
     } catch (err) {
-      setError(t("course.loadError"));
+      setError("Failed to load courses");
       console.error("Failed to load courses:", err);
     } finally {
       setIsLoading(false);
     }
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     loadCourses();

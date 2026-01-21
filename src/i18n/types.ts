@@ -24,6 +24,7 @@ export interface Translations {
     previous: string;
     next: string;
     saveChanges: string;
+    confirm: string;
   };
   header: {
     newMeeting: string;
@@ -322,10 +323,12 @@ export interface Translations {
     totalLessons: string;
     duration: string;
     teacher: string;
+    module: string;
     modules: string;
     lessons: string;
     startCourse: string;
     continueLearning: string;
+    complete: string;
     completed: string;
     inProgress: string;
     locked: string;
@@ -338,6 +341,10 @@ export interface Translations {
     noResults: string;
     tryDifferentSearch: string;
     clearFilters: string;
+    description: string;
+    price: string;
+    next: string;
+    previous: string;
     // Global courses page
     exploreCourses: string;
     allCoursesTitle: string;
@@ -633,6 +640,10 @@ export interface Translations {
     paymentsTitle: string;
     paymentsSubtitle: string;
     viewReceipt: string;
+    // Additional
+    about: string;
+    rating: string;
+    reviews: string;
   };
   onboarding: {
     // Title
@@ -849,6 +860,23 @@ export interface Translations {
     limitedUserAccess: string;
     coursesSubtitle: string;
     limitedCourseAccess: string;
+    // Additional keys
+    actions: string;
+    advice: string;
+    blogs: string;
+    comment: string;
+    contacted: string;
+    date: string;
+    enrollments: string;
+    joined: string;
+    name: string;
+    of: string;
+    pending: string;
+    phone: string;
+    resolved: string;
+    settings: string;
+    specialization: string;
+    status: string;
   };
   review: {
     // Titles

@@ -60,9 +60,12 @@ export function useSetLocale() {
 export function useTranslations() {
   const locale = useLocale();
 
-  return function t(key: string, params?: Record<string, string | number>) {
-    return getTranslation(locale, key, params);
-  };
+  return useCallback(
+    (key: string, params?: Record<string, string | number>) => {
+      return getTranslation(locale, key, params);
+    },
+    [locale]
+  );
 }
 
 export function useI18n() {

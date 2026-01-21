@@ -23,6 +23,7 @@ export const ru: Translations = {
     previous: "Назад",
     next: "Вперёд",
     saveChanges: "Сохранить изменения",
+    confirm: "Подтвердить",
   },
 
   // Header
@@ -348,10 +349,12 @@ export const ru: Translations = {
     totalLessons: "Всего уроков",
     duration: "Длительность",
     teacher: "Учитель",
+    module: "Модуль",
     modules: "Модули",
     lessons: "уроков",
     startCourse: "Начать курс",
     continueLearning: "Продолжить",
+    complete: "Завершить",
     completed: "Завершён",
     inProgress: "В процессе",
     locked: "Заблокирован",
@@ -364,6 +367,10 @@ export const ru: Translations = {
     noResults: "Курсы не найдены",
     tryDifferentSearch: "Попробуйте другие ключевые слова",
     clearFilters: "Сбросить фильтры",
+    description: "Описание",
+    price: "Цена",
+    next: "Далее",
+    previous: "Назад",
     // Global courses page
     exploreCourses: "Изучить курсы",
     allCoursesTitle: "Откройте удивительные курсы",
@@ -673,6 +680,10 @@ export const ru: Translations = {
     paymentsTitle: "Платежи",
     paymentsSubtitle: "Платежи за ваши курсы",
     viewReceipt: "Чек",
+    // Additional
+    about: "О себе",
+    rating: "Рейтинг",
+    reviews: "Отзывы",
   },
 
   // Onboarding
@@ -906,6 +917,23 @@ export const ru: Translations = {
     limitedAccessTitle: "Ограниченный доступ",
     limitedAccessDesc:
       "Финансовые данные (платежи, доходы, балансы) недоступны с ролью модератора.",
+    // Additional keys
+    actions: "Действия",
+    advice: "Советы",
+    blogs: "Блоги",
+    comment: "Комментарий",
+    contacted: "Связался",
+    date: "Дата",
+    enrollments: "Записи",
+    joined: "Присоединился",
+    name: "Имя",
+    of: "из",
+    pending: "Ожидающие",
+    phone: "Телефон",
+    resolved: "Решено",
+    settings: "Настройки",
+    specialization: "Специализация",
+    status: "Статус",
   },
 
   // Reviews

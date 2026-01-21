@@ -23,6 +23,7 @@ export const en: Translations = {
     previous: "Previous",
     next: "Next",
     saveChanges: "Save Changes",
+    confirm: "Confirm",
   },
 
   // Header
@@ -345,10 +346,12 @@ export const en: Translations = {
     totalLessons: "Total Lessons",
     duration: "Duration",
     teacher: "Teacher",
+    module: "Module",
     modules: "Modules",
     lessons: "lessons",
     startCourse: "Start Course",
     continueLearning: "Continue",
+    complete: "Complete",
     completed: "Completed",
     inProgress: "In Progress",
     locked: "Locked",
@@ -361,6 +364,10 @@ export const en: Translations = {
     noResults: "No courses found",
     tryDifferentSearch: "Try different keywords",
     clearFilters: "Clear filters",
+    description: "Description",
+    price: "Price",
+    next: "Next",
+    previous: "Previous",
     // Global courses page
     exploreCourses: "Explore Courses",
     allCoursesTitle: "Discover Amazing Courses",
@@ -669,6 +676,10 @@ export const en: Translations = {
     paymentsTitle: "Payments",
     paymentsSubtitle: "Payments for your courses",
     viewReceipt: "Receipt",
+    // Additional
+    about: "About",
+    rating: "Rating",
+    reviews: "Reviews",
   },
 
   // Onboarding
@@ -900,6 +911,23 @@ export const en: Translations = {
     limitedAccessTitle: "Limited Access",
     limitedAccessDesc:
       "Financial data (payments, earnings, balances) is not accessible with moderator role.",
+    // Additional keys
+    actions: "Actions",
+    advice: "Advice",
+    blogs: "Blogs",
+    comment: "Comment",
+    contacted: "Contacted",
+    date: "Date",
+    enrollments: "Enrollments",
+    joined: "Joined",
+    name: "Name",
+    of: "of",
+    pending: "Pending",
+    phone: "Phone",
+    resolved: "Resolved",
+    settings: "Settings",
+    specialization: "Specialization",
+    status: "Status",
   },
 
   // Reviews

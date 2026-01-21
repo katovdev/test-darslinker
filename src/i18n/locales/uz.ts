@@ -23,6 +23,7 @@ export const uz: Translations = {
     previous: "Oldingi",
     next: "Keyingi",
     saveChanges: "O'zgarishlarni saqlash",
+    confirm: "Tasdiqlash",
   },
 
   // Header
@@ -348,10 +349,12 @@ export const uz: Translations = {
     totalLessons: "Jami darslar",
     duration: "Davomiyligi",
     teacher: "O'qituvchi",
+    module: "Modul",
     modules: "Modullar",
     lessons: "darslar",
     startCourse: "Kursni boshlash",
     continueLearning: "Davom ettirish",
+    complete: "Tugatish",
     completed: "Tugallangan",
     inProgress: "Davom etmoqda",
     locked: "Qulflangan",
@@ -364,6 +367,10 @@ export const uz: Translations = {
     noResults: "Kurslar topilmadi",
     tryDifferentSearch: "Boshqa kalit so'zlarni sinab ko'ring",
     clearFilters: "Filtrlarni tozalash",
+    description: "Tavsif",
+    price: "Narx",
+    next: "Keyingi",
+    previous: "Oldingi",
     // Global courses page
     exploreCourses: "Kurslarni kashf qiling",
     allCoursesTitle: "Ajoyib kurslarni toping",
@@ -672,6 +679,10 @@ export const uz: Translations = {
     paymentsTitle: "To'lovlar",
     paymentsSubtitle: "Kurslaringiz uchun to'lovlar",
     viewReceipt: "Chek",
+    // Additional
+    about: "Haqida",
+    rating: "Reyting",
+    reviews: "Sharhlar",
   },
 
   // Onboarding
@@ -905,6 +916,23 @@ export const uz: Translations = {
     limitedAccessTitle: "Cheklangan kirish",
     limitedAccessDesc:
       "Moliyaviy ma'lumotlar (to'lovlar, daromadlar, balanslar) moderator roli bilan mavjud emas.",
+    // Additional keys
+    actions: "Harakatlar",
+    advice: "Maslahatlar",
+    blogs: "Bloglar",
+    comment: "Izoh",
+    contacted: "Bog'langan",
+    date: "Sana",
+    enrollments: "Yozilishlar",
+    joined: "Qo'shilgan",
+    name: "Ism",
+    of: "dan",
+    pending: "Kutilayotgan",
+    phone: "Telefon",
+    resolved: "Hal qilingan",
+    settings: "Sozlamalar",
+    specialization: "Mutaxassislik",
+    status: "Holat",
   },
 
   // Reviews
