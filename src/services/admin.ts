@@ -14,6 +14,10 @@ import {
   type UpdateUserInput,
   type UpdateCourseStatusInput,
   type UpdatePaymentInput,
+  type CreateUserInput,
+  type FullUpdateUserInput,
+  type CreateCourseInput,
+  type FullUpdateCourseInput,
   type Pagination,
 } from "@/lib/api/admin";
 import { cacheConfig } from "@/lib/api/config";
@@ -123,6 +127,22 @@ class AdminService {
     }
   }
 
+  async createUser(input: CreateUserInput): Promise<AdminUser | null> {
+    try {
+      const response = await adminApi.createUser(input);
+
+      if (response?.success && response.data) {
+        this.clearCachePattern("users");
+        this.clearCachePattern("stats");
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to create admin user:", error);
+      return null;
+    }
+  }
+
   async updateUser(
     id: string,
     input: UpdateUserInput
@@ -138,6 +158,25 @@ class AdminService {
       return null;
     } catch (error) {
       logger.error("Failed to update admin user:", error);
+      return null;
+    }
+  }
+
+  async fullUpdateUser(
+    id: string,
+    input: FullUpdateUserInput
+  ): Promise<AdminUser | null> {
+    try {
+      const response = await adminApi.fullUpdateUser(id, input);
+
+      if (response?.success && response.data) {
+        this.clearCachePattern("users");
+        this.clearCachePattern(`user_${JSON.stringify({ id })}`);
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to full update admin user:", error);
       return null;
     }
   }
@@ -196,6 +235,22 @@ class AdminService {
     }
   }
 
+  async createCourse(input: CreateCourseInput): Promise<AdminCourse | null> {
+    try {
+      const response = await adminApi.createCourse(input);
+
+      if (response?.success && response.data) {
+        this.clearCachePattern("courses");
+        this.clearCachePattern("stats");
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to create admin course:", error);
+      return null;
+    }
+  }
+
   async updateCourseStatus(
     id: string,
     input: UpdateCourseStatusInput
@@ -211,6 +266,25 @@ class AdminService {
       return null;
     } catch (error) {
       logger.error("Failed to update admin course status:", error);
+      return null;
+    }
+  }
+
+  async fullUpdateCourse(
+    id: string,
+    input: FullUpdateCourseInput
+  ): Promise<AdminCourse | null> {
+    try {
+      const response = await adminApi.fullUpdateCourse(id, input);
+
+      if (response?.success && response.data) {
+        this.clearCachePattern("courses");
+        this.clearCachePattern(`course_${JSON.stringify({ id })}`);
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      logger.error("Failed to full update admin course:", error);
       return null;
     }
   }

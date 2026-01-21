@@ -13,10 +13,13 @@ import {
   CheckCircle,
   Trash2,
   Users,
+  Plus,
+  X,
+  Edit,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
-import type { AdminCourse, Pagination } from "@/lib/api/admin";
+import type { AdminCourse, AdminUser, Pagination } from "@/lib/api/admin";
 
 type StatusFilter = "all" | "draft" | "active" | "approved" | "archived";
 type TypeFilter = "all" | "free" | "paid";
@@ -35,6 +38,40 @@ export default function AdminCoursesPage() {
 
   const [actionMenuId, setActionMenuId] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
+
+  // Create course modal
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [teachers, setTeachers] = useState<AdminUser[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newCourse, setNewCourse] = useState({
+    teacherId: "",
+    title: "",
+    slug: "",
+    description: "",
+    thumbnail: "",
+    type: "free" as "free" | "paid",
+    price: 0,
+    status: "draft" as "draft" | "active" | "approved" | "archived",
+  });
+
+  // Edit course modal
+  const [editingCourse, setEditingCourse] = useState<AdminCourse | null>(null);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    slug: "",
+    description: "",
+    thumbnail: "",
+    type: "free" as "free" | "paid",
+    price: 0,
+    status: "draft" as "draft" | "active" | "approved" | "archived",
+  });
+
+  const loadTeachers = async () => {
+    const data = await adminService.listUsers({ role: "teacher", limit: 100 });
+    if (data) {
+      setTeachers(data.users);
+    }
+  };
 
   const loadCourses = async () => {
     setIsLoading(true);
@@ -64,6 +101,7 @@ export default function AdminCoursesPage() {
 
   useEffect(() => {
     loadCourses();
+    loadTeachers();
   }, [page, statusFilter, typeFilter]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -100,6 +138,94 @@ export default function AdminCoursesPage() {
     const result = await adminService.deleteCourse(courseId);
     if (result) {
       setCourses((prev) => prev.filter((c) => c.id !== courseId));
+    }
+
+    setIsUpdating(null);
+  };
+
+  const handleCreateCourse = async () => {
+    if (!newCourse.teacherId || !newCourse.title || !newCourse.description) {
+      return;
+    }
+
+    setIsCreating(true);
+
+    const result = await adminService.createCourse({
+      teacherId: newCourse.teacherId,
+      title: newCourse.title,
+      slug: newCourse.slug || undefined,
+      description: newCourse.description,
+      thumbnail: newCourse.thumbnail || undefined,
+      type: newCourse.type,
+      price: newCourse.type === "paid" ? newCourse.price : 0,
+      status: newCourse.status,
+    });
+
+    if (result) {
+      setCourses((prev) => [result, ...prev]);
+      setShowCreateModal(false);
+      setNewCourse({
+        teacherId: "",
+        title: "",
+        slug: "",
+        description: "",
+        thumbnail: "",
+        type: "free",
+        price: 0,
+        status: "draft",
+      });
+    }
+
+    setIsCreating(false);
+  };
+
+  const handleOpenEdit = (course: AdminCourse) => {
+    setEditingCourse(course);
+    setEditForm({
+      title: course.title,
+      slug: course.slug,
+      description: course.description,
+      thumbnail: course.thumbnail || "",
+      type: course.type,
+      price: course.price,
+      status: course.status,
+    });
+    setActionMenuId(null);
+  };
+
+  const handleUpdateCourse = async () => {
+    if (!editingCourse) return;
+
+    setIsUpdating(editingCourse.id);
+
+    const result = await adminService.fullUpdateCourse(editingCourse.id, {
+      title: editForm.title,
+      slug: editForm.slug,
+      description: editForm.description,
+      thumbnail: editForm.thumbnail || null,
+      type: editForm.type,
+      price: editForm.type === "paid" ? editForm.price : 0,
+      status: editForm.status,
+    });
+
+    if (result) {
+      setCourses((prev) =>
+        prev.map((c) =>
+          c.id === editingCourse.id
+            ? {
+                ...c,
+                title: editForm.title,
+                slug: editForm.slug,
+                description: editForm.description,
+                thumbnail: editForm.thumbnail || "",
+                type: editForm.type,
+                price: editForm.type === "paid" ? editForm.price : 0,
+                status: editForm.status,
+              }
+            : c
+        )
+      );
+      setEditingCourse(null);
     }
 
     setIsUpdating(null);
@@ -150,14 +276,25 @@ export default function AdminCoursesPage() {
             {t("teacher.manageYourCourses") || "Manage all courses"}
           </p>
         </div>
-        <button
-          onClick={loadCourses}
-          disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
-        >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          {t("common.refresh") || "Refresh"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+          >
+            <Plus className="h-4 w-4" />
+            {t("admin.addCourse") || "Add Course"}
+          </button>
+          <button
+            onClick={loadCourses}
+            disabled={isLoading}
+            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+            />
+            {t("common.refresh") || "Refresh"}
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -377,6 +514,16 @@ export default function AdminCoursesPage() {
                                 View Course
                               </a>
 
+                              <button
+                                onClick={() => handleOpenEdit(course)}
+                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-white hover:bg-gray-700"
+                              >
+                                <Edit className="h-4 w-4" />
+                                Edit Course
+                              </button>
+
+                              <div className="my-1 border-t border-gray-700" />
+
                               {course.status === "draft" && (
                                 <button
                                   onClick={() =>
@@ -474,6 +621,347 @@ export default function AdminCoursesPage() {
           </div>
         )}
       </div>
+
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">
+                {t("admin.addCourse") || "Add New Course"}
+              </h3>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  {t("admin.teacher") || "Teacher"} *
+                </label>
+                <select
+                  value={newCourse.teacherId}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, teacherId: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                >
+                  <option value="">Select teacher</option>
+                  {teachers.map((teacher) => (
+                    <option key={teacher.id} value={teacher.id}>
+                      {teacher.firstName} {teacher.lastName}{" "}
+                      {teacher.username ? `(@${teacher.username})` : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  {t("course.title") || "Title"} *
+                </label>
+                <input
+                  type="text"
+                  value={newCourse.title}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, title: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  Slug (optional)
+                </label>
+                <input
+                  type="text"
+                  value={newCourse.slug}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, slug: e.target.value })
+                  }
+                  placeholder="auto-generated-if-empty"
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  {t("course.description") || "Description"} *
+                </label>
+                <textarea
+                  value={newCourse.description}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, description: e.target.value })
+                  }
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  Thumbnail URL
+                </label>
+                <input
+                  type="text"
+                  value={newCourse.thumbnail}
+                  onChange={(e) =>
+                    setNewCourse({ ...newCourse, thumbnail: e.target.value })
+                  }
+                  placeholder="https://..."
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    Type
+                  </label>
+                  <select
+                    value={newCourse.type}
+                    onChange={(e) =>
+                      setNewCourse({
+                        ...newCourse,
+                        type: e.target.value as "free" | "paid",
+                      })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="free">{t("course.free") || "Free"}</option>
+                    <option value="paid">Paid</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    Status
+                  </label>
+                  <select
+                    value={newCourse.status}
+                    onChange={(e) =>
+                      setNewCourse({
+                        ...newCourse,
+                        status: e.target.value as typeof newCourse.status,
+                      })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="active">Active</option>
+                    <option value="approved">Approved</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+              </div>
+
+              {newCourse.type === "paid" && (
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("course.price") || "Price"} (UZS)
+                  </label>
+                  <input
+                    type="number"
+                    value={newCourse.price}
+                    onChange={(e) =>
+                      setNewCourse({
+                        ...newCourse,
+                        price: Number(e.target.value),
+                      })
+                    }
+                    min={0}
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+              >
+                {t("common.cancel") || "Cancel"}
+              </button>
+              <button
+                onClick={handleCreateCourse}
+                disabled={
+                  isCreating ||
+                  !newCourse.teacherId ||
+                  !newCourse.title ||
+                  !newCourse.description
+                }
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isCreating ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  t("admin.addCourse") || "Add Course"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editingCourse && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">
+                {t("teacher.editCourse") || "Edit Course"}
+              </h3>
+              <button
+                onClick={() => setEditingCourse(null)}
+                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  {t("course.title") || "Title"}
+                </label>
+                <input
+                  type="text"
+                  value={editForm.title}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, title: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">Slug</label>
+                <input
+                  type="text"
+                  value={editForm.slug}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, slug: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  {t("course.description") || "Description"}
+                </label>
+                <textarea
+                  value={editForm.description}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, description: e.target.value })
+                  }
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  Thumbnail URL
+                </label>
+                <input
+                  type="text"
+                  value={editForm.thumbnail}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, thumbnail: e.target.value })
+                  }
+                  placeholder="https://..."
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    Type
+                  </label>
+                  <select
+                    value={editForm.type}
+                    onChange={(e) =>
+                      setEditForm({
+                        ...editForm,
+                        type: e.target.value as "free" | "paid",
+                      })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="free">{t("course.free") || "Free"}</option>
+                    <option value="paid">Paid</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    Status
+                  </label>
+                  <select
+                    value={editForm.status}
+                    onChange={(e) =>
+                      setEditForm({
+                        ...editForm,
+                        status: e.target.value as typeof editForm.status,
+                      })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="active">Active</option>
+                    <option value="approved">Approved</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+              </div>
+
+              {editForm.type === "paid" && (
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("course.price") || "Price"} (UZS)
+                  </label>
+                  <input
+                    type="number"
+                    value={editForm.price}
+                    onChange={(e) =>
+                      setEditForm({
+                        ...editForm,
+                        price: Number(e.target.value),
+                      })
+                    }
+                    min={0}
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setEditingCourse(null)}
+                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+              >
+                {t("common.cancel") || "Cancel"}
+              </button>
+              <button
+                onClick={handleUpdateCourse}
+                disabled={isUpdating === editingCourse.id}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isUpdating === editingCourse.id ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  t("common.save") || "Save Changes"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

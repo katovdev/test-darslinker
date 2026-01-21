@@ -14,6 +14,7 @@ import {
   Trash2,
   Eye,
   X,
+  Plus,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { adminService } from "@/services/admin";
@@ -47,6 +48,19 @@ export default function AdminUsersPage() {
     role: string;
     status: string;
   } | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newUser, setNewUser] = useState({
+    id: "",
+    phone: "",
+    firstName: "",
+    lastName: "",
+    role: "student" as "teacher" | "student" | "moderator" | "admin",
+    status: "active" as "pending" | "active" | "blocked",
+    username: "",
+    businessName: "",
+    specialization: "",
+  });
+  const [isCreating, setIsCreating] = useState(false);
 
   const loadUsers = async () => {
     setIsLoading(true);
@@ -197,6 +211,49 @@ export default function AdminUsersPage() {
     setIsUpdating(null);
   };
 
+  const handleCreateUser = async () => {
+    if (
+      !newUser.id ||
+      !newUser.phone ||
+      !newUser.firstName ||
+      !newUser.lastName
+    ) {
+      return;
+    }
+
+    setIsCreating(true);
+
+    const result = await adminService.createUser({
+      id: newUser.id,
+      phone: newUser.phone,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      role: newUser.role,
+      status: newUser.status,
+      username: newUser.username || undefined,
+      businessName: newUser.businessName || undefined,
+      specialization: newUser.specialization || undefined,
+    });
+
+    if (result) {
+      setUsers((prev) => [result, ...prev]);
+      setShowCreateModal(false);
+      setNewUser({
+        id: "",
+        phone: "",
+        firstName: "",
+        lastName: "",
+        role: "student",
+        status: "active",
+        username: "",
+        businessName: "",
+        specialization: "",
+      });
+    }
+
+    setIsCreating(false);
+  };
+
   const getRoleBadge = (role: string) => {
     const styles: Record<string, string> = {
       admin: "bg-red-500/10 text-red-400",
@@ -239,14 +296,25 @@ export default function AdminUsersPage() {
             {t("admin.usersSubtitle") || "Manage all users"}
           </p>
         </div>
-        <button
-          onClick={loadUsers}
-          disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
-        >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          {t("common.refresh") || "Refresh"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+          >
+            <Plus className="h-4 w-4" />
+            {t("admin.addUser") || "Add User"}
+          </button>
+          <button
+            onClick={loadUsers}
+            disabled={isLoading}
+            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+            />
+            {t("common.refresh") || "Refresh"}
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -444,7 +512,6 @@ export default function AdminUsersPage() {
         )}
       </div>
 
-      {/* Action Menu - Fixed Position */}
       {actionMenuId && actionMenuPosition && (
         <>
           <div
@@ -530,7 +597,6 @@ export default function AdminUsersPage() {
         </>
       )}
 
-      {/* User Detail/Edit Modal */}
       {selectedUser && editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-lg rounded-xl border border-gray-700 bg-gray-800 p-6">
@@ -550,7 +616,6 @@ export default function AdminUsersPage() {
             </div>
 
             <div className="mt-6 space-y-4">
-              {/* Avatar & Basic Info */}
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-xl font-medium text-white">
                   {selectedUser.firstName?.charAt(0)}
@@ -671,6 +736,213 @@ export default function AdminUsersPage() {
                   <RefreshCw className="h-4 w-4 animate-spin" />
                 ) : (
                   t("common.save") || "Save Changes"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-xl border border-gray-700 bg-gray-800 p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">
+                {t("admin.addUser") || "Add New User"}
+              </h3>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    Telegram ID *
+                  </label>
+                  <input
+                    type="text"
+                    value={newUser.id}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, id: e.target.value })
+                    }
+                    placeholder="123456789"
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("auth.phone") || "Phone"} *
+                  </label>
+                  <input
+                    type="text"
+                    value={newUser.phone}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, phone: e.target.value })
+                    }
+                    placeholder="+998901234567"
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("auth.firstName") || "First Name"} *
+                  </label>
+                  <input
+                    type="text"
+                    value={newUser.firstName}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, firstName: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("auth.lastName") || "Last Name"} *
+                  </label>
+                  <input
+                    type="text"
+                    value={newUser.lastName}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, lastName: e.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("admin.role") || "Role"}
+                  </label>
+                  <select
+                    value={newUser.role}
+                    onChange={(e) =>
+                      setNewUser({
+                        ...newUser,
+                        role: e.target.value as typeof newUser.role,
+                      })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="student">
+                      {t("admin.student") || "Student"}
+                    </option>
+                    <option value="teacher">
+                      {t("admin.teacher") || "Teacher"}
+                    </option>
+                    <option value="moderator">Moderator</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm text-gray-400">
+                    {t("admin.status") || "Status"}
+                  </label>
+                  <select
+                    value={newUser.status}
+                    onChange={(e) =>
+                      setNewUser({
+                        ...newUser,
+                        status: e.target.value as typeof newUser.status,
+                      })
+                    }
+                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="active">
+                      {t("admin.active") || "Active"}
+                    </option>
+                    <option value="pending">
+                      {t("admin.pending") || "Pending"}
+                    </option>
+                    <option value="blocked">
+                      {t("admin.suspended") || "Blocked"}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm text-gray-400">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  value={newUser.username}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, username: e.target.value })
+                  }
+                  placeholder="johndoe"
+                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+
+              {newUser.role === "teacher" && (
+                <>
+                  <div>
+                    <label className="mb-1 block text-sm text-gray-400">
+                      Business Name
+                    </label>
+                    <input
+                      type="text"
+                      value={newUser.businessName}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, businessName: e.target.value })
+                      }
+                      className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-sm text-gray-400">
+                      Specialization
+                    </label>
+                    <input
+                      type="text"
+                      value={newUser.specialization}
+                      onChange={(e) =>
+                        setNewUser({
+                          ...newUser,
+                          specialization: e.target.value,
+                        })
+                      }
+                      className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+              >
+                {t("common.cancel") || "Cancel"}
+              </button>
+              <button
+                onClick={handleCreateUser}
+                disabled={
+                  isCreating ||
+                  !newUser.id ||
+                  !newUser.phone ||
+                  !newUser.firstName ||
+                  !newUser.lastName
+                }
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isCreating ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  t("admin.addUser") || "Add User"
                 )}
               </button>
             </div>

@@ -190,6 +190,51 @@ export interface UpdatePaymentInput {
   rejectionReason?: string;
 }
 
+export interface CreateUserInput {
+  id: string; // Telegram ID as string
+  phone: string;
+  firstName: string;
+  lastName: string;
+  role: "teacher" | "student" | "moderator" | "admin";
+  status?: "pending" | "active" | "blocked";
+  username?: string;
+  businessName?: string;
+  specialization?: string;
+}
+
+export interface FullUpdateUserInput {
+  phone?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: "teacher" | "student" | "moderator" | "admin";
+  status?: "pending" | "active" | "blocked";
+  username?: string | null;
+  businessName?: string | null;
+  specialization?: string | null;
+  balance?: number;
+}
+
+export interface CreateCourseInput {
+  teacherId: string;
+  title: string;
+  slug?: string;
+  description: string;
+  thumbnail?: string;
+  type?: "free" | "paid";
+  price?: number;
+  status?: "draft" | "active" | "approved" | "archived";
+}
+
+export interface FullUpdateCourseInput {
+  title?: string;
+  slug?: string;
+  description?: string;
+  thumbnail?: string | null;
+  type?: "free" | "paid";
+  price?: number;
+  status?: "draft" | "active" | "approved" | "archived";
+}
+
 export const adminApi = {
   getStats: () => api.get<SingleResponse<AdminStats>>(adminEndpoints.stats),
 
@@ -210,8 +255,14 @@ export const adminApi = {
   getUser: (id: string) =>
     api.get<SingleResponse<AdminUserDetail>>(adminEndpoints.userById(id)),
 
+  createUser: (input: CreateUserInput) =>
+    api.post<SingleResponse<AdminUser>>(adminEndpoints.users, input),
+
   updateUser: (id: string, input: UpdateUserInput) =>
     api.patch<SingleResponse<AdminUser>>(adminEndpoints.userById(id), input),
+
+  fullUpdateUser: (id: string, input: FullUpdateUserInput) =>
+    api.put<SingleResponse<AdminUser>>(adminEndpoints.userById(id), input),
 
   deleteUser: (id: string) =>
     api.delete<SingleResponse<{ deleted: boolean }>>(
@@ -233,6 +284,9 @@ export const adminApi = {
     }>(`${adminEndpoints.courses}${query ? `?${query}` : ""}`);
   },
 
+  createCourse: (input: CreateCourseInput) =>
+    api.post<SingleResponse<AdminCourse>>(adminEndpoints.courses, input),
+
   getCourse: (id: string) =>
     api.get<SingleResponse<AdminCourseDetail>>(adminEndpoints.courseById(id)),
 
@@ -241,6 +295,9 @@ export const adminApi = {
       adminEndpoints.courseById(id),
       input
     ),
+
+  fullUpdateCourse: (id: string, input: FullUpdateCourseInput) =>
+    api.put<SingleResponse<AdminCourse>>(adminEndpoints.courseById(id), input),
 
   deleteCourse: (id: string) =>
     api.delete<SingleResponse<{ deleted: boolean }>>(
