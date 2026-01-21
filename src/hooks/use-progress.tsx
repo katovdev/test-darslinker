@@ -434,10 +434,7 @@ export function useEngagementMetrics(
   return { metrics, loading, error };
 }
 
-export function useProgressTimeSeries(
-  courseId?: string,
-  days: number = 30
-) {
+export function useProgressTimeSeries(courseId?: string, days: number = 30) {
   const [timeSeries, setTimeSeries] = React.useState<ProgressTimeSeries[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<Error | null>(null);

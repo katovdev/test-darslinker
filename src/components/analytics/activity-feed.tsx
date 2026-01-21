@@ -186,7 +186,7 @@ export function ActivityTimeline({ events, className }: ActivityTimelineProps) {
           </div>
           <div className="relative space-y-0 pl-6">
             {/* Vertical line */}
-            <div className="bg-border absolute bottom-0 left-2 top-0 w-px" />
+            <div className="bg-border absolute top-0 bottom-0 left-2 w-px" />
 
             {dateEvents.map((event) => {
               const config = EVENT_CONFIG[event.type];
@@ -195,7 +195,7 @@ export function ActivityTimeline({ events, className }: ActivityTimelineProps) {
                   {/* Dot */}
                   <div
                     className={cn(
-                      "absolute -left-4 top-1 h-2 w-2 rounded-full",
+                      "absolute top-1 -left-4 h-2 w-2 rounded-full",
                       config.color.replace("text-", "bg-")
                     )}
                   />

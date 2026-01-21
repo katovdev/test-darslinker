@@ -23,7 +23,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useStudentProgress, useCourseProgressDetail } from "@/hooks/use-progress";
+import {
+  useStudentProgress,
+  useCourseProgressDetail,
+} from "@/hooks/use-progress";
 import {
   formatDuration,
   calculatePercentage,
@@ -36,7 +39,11 @@ interface StudentDetailProps {
   className?: string;
 }
 
-export function StudentDetail({ userId, onBack, className }: StudentDetailProps) {
+export function StudentDetail({
+  userId,
+  onBack,
+  className,
+}: StudentDetailProps) {
   const { overview, loading, error } = useStudentProgress(userId);
   const [selectedCourse, setSelectedCourse] = React.useState<string | null>(
     null
@@ -148,7 +155,7 @@ export function StudentDetail({ userId, onBack, className }: StudentDetailProps)
                 return (
                   <Card
                     key={course.courseId}
-                    className="cursor-pointer transition-colors hover:bg-muted/50"
+                    className="hover:bg-muted/50 cursor-pointer transition-colors"
                     onClick={() => setSelectedCourse(course.courseId)}
                   >
                     <CardHeader className="pb-2">
@@ -177,7 +184,7 @@ export function StudentDetail({ userId, onBack, className }: StudentDetailProps)
                             {progress}%
                           </span>
                         </div>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="text-muted-foreground flex items-center justify-between text-xs">
                           <span>
                             {course.lessons.completed}/{course.lessons.total}{" "}
                             lessons
@@ -261,7 +268,9 @@ function CourseDetailView({ courseId, userId, onBack }: CourseDetailViewProps) {
         <CardContent className="pt-6">
           <div className="grid gap-4 sm:grid-cols-4">
             <div>
-              <div className="text-muted-foreground text-xs">Overall Progress</div>
+              <div className="text-muted-foreground text-xs">
+                Overall Progress
+              </div>
               <div className="mt-1 flex items-center gap-2">
                 <Progress
                   value={calculatePercentage(progress.lessons)}
@@ -336,7 +345,9 @@ function CourseDetailView({ courseId, userId, onBack }: CourseDetailViewProps) {
                           <Circle className="text-muted-foreground h-5 w-5" />
                         )}
                         <div>
-                          <div className="font-medium">{lesson.lessonTitle}</div>
+                          <div className="font-medium">
+                            {lesson.lessonTitle}
+                          </div>
                           {lesson.videoProgress && (
                             <div className="text-muted-foreground text-xs">
                               Video: {lesson.videoProgress.percentage}% watched

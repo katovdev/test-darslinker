@@ -249,9 +249,7 @@ export function ProgressBarList({
         <div className="space-y-4">
           {items.map((item, index) => {
             const percentage =
-              item.total > 0
-                ? Math.round((item.value / item.total) * 100)
-                : 0;
+              item.total > 0 ? Math.round((item.value / item.total) * 100) : 0;
 
             return (
               <div key={index} className="space-y-1">

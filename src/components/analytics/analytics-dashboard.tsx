@@ -12,7 +12,11 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatsCard, StatsGrid } from "./stats-card";
-import { ProgressChart, ProgressDonut, ProgressBarList } from "./progress-chart";
+import {
+  ProgressChart,
+  ProgressDonut,
+  ProgressBarList,
+} from "./progress-chart";
 import { StudentTable } from "./student-table";
 import { ActivityFeed } from "./activity-feed";
 import {
@@ -57,11 +61,21 @@ export function AnalyticsDashboard({
   });
 
   // Fetch data
-  const { summary, loading: summaryLoading, refetch: refetchSummary } = useAnalyticsSummary();
-  const { analytics, loading: analyticsLoading, refetch: refetchAnalytics } = useCourseAnalytics(
-    selectedCourse !== "all" ? selectedCourse : ""
-  );
-  const { students, loading: studentsLoading, refetch: refetchStudents } = useStudentList({
+  const {
+    summary,
+    loading: summaryLoading,
+    refetch: refetchSummary,
+  } = useAnalyticsSummary();
+  const {
+    analytics,
+    loading: analyticsLoading,
+    refetch: refetchAnalytics,
+  } = useCourseAnalytics(selectedCourse !== "all" ? selectedCourse : "");
+  const {
+    students,
+    loading: studentsLoading,
+    refetch: refetchStudents,
+  } = useStudentList({
     ...studentFilters,
     courseId: selectedCourse !== "all" ? selectedCourse : undefined,
   });
@@ -271,7 +285,7 @@ function CourseCard({ courseId, title, onSelect }: CourseCardProps) {
 
   return (
     <Card
-      className="cursor-pointer transition-colors hover:bg-muted/50"
+      className="hover:bg-muted/50 cursor-pointer transition-colors"
       onClick={onSelect}
     >
       <CardHeader className="pb-2">
@@ -299,7 +313,9 @@ function CourseCard({ courseId, title, onSelect }: CourseCardProps) {
           </div>
           <div>
             <div className="text-muted-foreground text-xs">Active</div>
-            <div className="font-medium">{analytics?.activeStudents ?? "-"}</div>
+            <div className="font-medium">
+              {analytics?.activeStudents ?? "-"}
+            </div>
           </div>
         </div>
       </CardContent>

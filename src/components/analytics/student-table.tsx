@@ -42,11 +42,16 @@ interface SortHeaderProps {
   children: React.ReactNode;
 }
 
-function SortHeader({ field, currentSortBy, onSort, children }: SortHeaderProps) {
+function SortHeader({
+  field,
+  currentSortBy,
+  onSort,
+  children,
+}: SortHeaderProps) {
   return (
     <button
       onClick={() => onSort(field)}
-      className="flex items-center gap-1 hover:text-foreground"
+      className="hover:text-foreground flex items-center gap-1"
     >
       {children}
       <ArrowUpDown
@@ -124,7 +129,7 @@ export function StudentTable({
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             {/* Search */}
             <div className="relative">
-              <Search className="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
+              <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
               <Input
                 placeholder="Search students..."
                 value={searchQuery}
@@ -156,16 +161,34 @@ export function StudentTable({
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[250px]">
-                  <SortHeader field="name" currentSortBy={filters.sortBy} onSort={handleSort}>Student</SortHeader>
+                  <SortHeader
+                    field="name"
+                    currentSortBy={filters.sortBy}
+                    onSort={handleSort}
+                  >
+                    Student
+                  </SortHeader>
                 </TableHead>
                 <TableHead>
-                  <SortHeader field="progress" currentSortBy={filters.sortBy} onSort={handleSort}>Progress</SortHeader>
+                  <SortHeader
+                    field="progress"
+                    currentSortBy={filters.sortBy}
+                    onSort={handleSort}
+                  >
+                    Progress
+                  </SortHeader>
                 </TableHead>
                 <TableHead className="text-center">Courses</TableHead>
                 <TableHead className="text-center">Avg. Score</TableHead>
                 <TableHead className="text-right">Time Spent</TableHead>
                 <TableHead>
-                  <SortHeader field="lastActive" currentSortBy={filters.sortBy} onSort={handleSort}>Last Active</SortHeader>
+                  <SortHeader
+                    field="lastActive"
+                    currentSortBy={filters.sortBy}
+                    onSort={handleSort}
+                  >
+                    Last Active
+                  </SortHeader>
                 </TableHead>
                 <TableHead className="w-[60px]" />
               </TableRow>
@@ -191,9 +214,7 @@ export function StudentTable({
                     student.coursesProgress.length > 0
                       ? Math.round(
                           student.coursesProgress.reduce((sum, cp) => {
-                            return (
-                              sum + calculatePercentage(cp.lessons)
-                            );
+                            return sum + calculatePercentage(cp.lessons);
                           }, 0) / student.coursesProgress.length
                         )
                       : 0;
@@ -202,7 +223,7 @@ export function StudentTable({
                     <TableRow
                       key={student.userId}
                       className={cn(
-                        onStudentClick && "cursor-pointer hover:bg-muted/50"
+                        onStudentClick && "hover:bg-muted/50 cursor-pointer"
                       )}
                       onClick={() => onStudentClick?.(student.userId)}
                     >

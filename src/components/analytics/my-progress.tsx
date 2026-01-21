@@ -166,9 +166,7 @@ export function MyProgress({ onContinueLearning, className }: MyProgressProps) {
                   key={course.courseId}
                   course={course}
                   onViewDetails={() => setSelectedCourse(course.courseId)}
-                  onContinue={() =>
-                    onContinueLearning?.(course.courseId)
-                  }
+                  onContinue={() => onContinueLearning?.(course.courseId)}
                 />
               ))}
           </div>
@@ -284,7 +282,7 @@ function CourseListItem({ course, onSelect }: CourseListItemProps) {
 
   return (
     <div
-      className="flex cursor-pointer items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50"
+      className="hover:bg-muted/50 flex cursor-pointer items-center gap-4 rounded-lg border p-4 transition-colors"
       onClick={onSelect}
     >
       <div className="shrink-0">
