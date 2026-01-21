@@ -49,8 +49,17 @@ export const teacherEndpoints = {
   stats: "teacher/stats",
   students: "teacher/students",
   payments: "teacher/payments",
+  approvePayment: (id: string) => `teacher/payments/${id}/approve`,
+  rejectPayment: (id: string) => `teacher/payments/${id}/reject`,
   earnings: "teacher/earnings",
   courses: "teacher/courses",
+} as const;
+
+export const studentEndpoints = {
+  payments: "student/payments",
+  paymentById: (id: string) => `student/payments/${id}`,
+  coursePaymentInfo: (courseId: string) =>
+    `student/courses/${courseId}/payment-info`,
 } as const;
 
 export const settingsEndpoints = {

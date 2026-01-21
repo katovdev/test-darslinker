@@ -175,6 +175,17 @@ export const teacherApi = {
       data: { courses: TeacherCourse[]; pagination: Pagination };
     }>(`${teacherEndpoints.courses}${query ? `?${query}` : ""}`);
   },
+
+  approvePayment: (paymentId: string) =>
+    api.put<SingleResponse<TeacherPayment>>(
+      teacherEndpoints.approvePayment(paymentId)
+    ),
+
+  rejectPayment: (paymentId: string, reason: string) =>
+    api.put<SingleResponse<TeacherPayment>>(
+      teacherEndpoints.rejectPayment(paymentId),
+      { reason }
+    ),
 };
 
 export default teacherApi;

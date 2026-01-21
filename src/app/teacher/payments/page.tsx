@@ -11,9 +11,13 @@ import {
   XCircle,
   Eye,
   X,
+  Check,
+  Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
 import { useTranslations } from "@/hooks/use-locale";
 import { teacherService } from "@/services/teacher";
+import { teacherApi } from "@/lib/api/teacher";
 import type {
   TeacherPayment,
   TeacherCourse,
@@ -32,6 +36,14 @@ export default function TeacherPaymentsPage() {
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<string>("");
+
+  // Approval/Rejection state
+  const [approvingId, setApprovingId] = useState<string | null>(null);
+  const [rejectModal, setRejectModal] = useState<{
+    paymentId: string;
+    reason: string;
+  } | null>(null);
+  const [isRejecting, setIsRejecting] = useState(false);
 
   const loadCourses = async () => {
     try {
@@ -117,6 +129,73 @@ export default function TeacherPaymentsPage() {
         );
       default:
         return null;
+    }
+  };
+
+  const handleApprove = async (paymentId: string) => {
+    setApprovingId(paymentId);
+    try {
+      const result = await teacherApi.approvePayment(paymentId);
+      if (result?.success) {
+        toast.success("To'lov tasdiqlandi!");
+        // Update the payment in the list
+        setPayments((prev) =>
+          prev.map((p) =>
+            p.id === paymentId
+              ? {
+                  ...p,
+                  status: "approved" as const,
+                  approvedAt: new Date().toISOString(),
+                }
+              : p
+          )
+        );
+        teacherService.clearCachePattern("payments");
+      } else {
+        toast.error("To'lovni tasdiqlashda xatolik yuz berdi");
+      }
+    } catch {
+      toast.error("To'lovni tasdiqlashda xatolik yuz berdi");
+    } finally {
+      setApprovingId(null);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!rejectModal || !rejectModal.reason.trim()) {
+      toast.error("Rad etish sababini kiriting");
+      return;
+    }
+
+    setIsRejecting(true);
+    try {
+      const result = await teacherApi.rejectPayment(
+        rejectModal.paymentId,
+        rejectModal.reason.trim()
+      );
+      if (result?.success) {
+        toast.success("To'lov rad etildi");
+        // Update the payment in the list
+        setPayments((prev) =>
+          prev.map((p) =>
+            p.id === rejectModal.paymentId
+              ? {
+                  ...p,
+                  status: "rejected" as const,
+                  rejectionReason: rejectModal.reason.trim(),
+                }
+              : p
+          )
+        );
+        teacherService.clearCachePattern("payments");
+        setRejectModal(null);
+      } else {
+        toast.error("To'lovni rad etishda xatolik yuz berdi");
+      }
+    } catch {
+      toast.error("To'lovni rad etishda xatolik yuz berdi");
+    } finally {
+      setIsRejecting(false);
     }
   };
 
@@ -239,7 +318,7 @@ export default function TeacherPaymentsPage() {
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <p className="text-lg font-semibold text-white">
                     {formatCurrency(payment.amount)}
                   </p>
@@ -251,6 +330,32 @@ export default function TeacherPaymentsPage() {
                       <Eye className="h-4 w-4" />
                       {t("teacher.viewReceipt") || "Receipt"}
                     </button>
+                  )}
+                  {payment.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() => handleApprove(payment.id)}
+                        disabled={approvingId === payment.id}
+                        className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
+                      >
+                        {approvingId === payment.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Check className="h-4 w-4" />
+                        )}
+                        Tasdiqlash
+                      </button>
+                      <button
+                        onClick={() =>
+                          setRejectModal({ paymentId: payment.id, reason: "" })
+                        }
+                        disabled={approvingId === payment.id}
+                        className="flex items-center gap-1 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+                      >
+                        <XCircle className="h-4 w-4" />
+                        Rad etish
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
@@ -306,6 +411,52 @@ export default function TeacherPaymentsPage() {
               className="max-h-[90vh] rounded-lg object-contain"
               onClick={(e) => e.stopPropagation()}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Rejection Modal */}
+      {rejectModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-xl border border-gray-700 bg-gray-800 p-6">
+            <h3 className="text-lg font-semibold text-white">
+              To&apos;lovni rad etish
+            </h3>
+            <p className="mt-2 text-sm text-gray-400">
+              Rad etish sababini kiriting. Bu xabar talabaga yuboriladi.
+            </p>
+
+            <textarea
+              value={rejectModal.reason}
+              onChange={(e) =>
+                setRejectModal({ ...rejectModal, reason: e.target.value })
+              }
+              placeholder="Rad etish sababi..."
+              className="mt-4 w-full rounded-lg border border-gray-700 bg-gray-900 p-3 text-white placeholder-gray-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none"
+              rows={3}
+            />
+
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={() => setRejectModal(null)}
+                disabled={isRejecting}
+                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-600 disabled:opacity-50"
+              >
+                Bekor qilish
+              </button>
+              <button
+                onClick={handleReject}
+                disabled={isRejecting || !rejectModal.reason.trim()}
+                className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+              >
+                {isRejecting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <XCircle className="h-4 w-4" />
+                )}
+                Rad etish
+              </button>
+            </div>
           </div>
         </div>
       )}
