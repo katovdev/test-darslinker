@@ -50,6 +50,10 @@ export const ru: Translations = {
     payments: "Платежи",
     settings: "Настройки",
     language: "Язык",
+    browseCourses: "Обзор курсов",
+    adminPanel: "Панель администратора",
+    moderatorPanel: "Панель модератора",
+    teacherPanel: "Панель учителя",
   },
 
   // Dashboard
@@ -142,6 +146,7 @@ export const ru: Translations = {
     registrationFailed: "Ошибка регистрации",
     otpVerificationFailed: "Неверный код! Попробуйте снова.",
     loginFailed: "Ошибка входа",
+    signUpViaTelegram: "Регистрация через Telegram",
   },
 
   // Profile
@@ -684,6 +689,11 @@ export const ru: Translations = {
     about: "О себе",
     rating: "Рейтинг",
     reviews: "Отзывы",
+    // Teacher profile page
+    notFound: "Учитель не найден",
+    loadError: "Не удалось загрузить профиль учителя",
+    allCourses: "Все курсы",
+    noCoursesDesc: "Этот учитель пока не опубликовал курсы",
   },
 
   // Onboarding

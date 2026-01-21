@@ -50,6 +50,10 @@ export const uz: Translations = {
     payments: "To'lovlar",
     settings: "Sozlamalar",
     language: "Til",
+    browseCourses: "Kurslarni ko'rish",
+    adminPanel: "Admin paneli",
+    moderatorPanel: "Moderator paneli",
+    teacherPanel: "O'qituvchi paneli",
   },
 
   // Dashboard
@@ -141,6 +145,7 @@ export const uz: Translations = {
     registrationFailed: "Ro'yxatdan o'tishda xatolik yuz berdi",
     otpVerificationFailed: "Kod noto'g'ri! Qaytadan urinib ko'ring.",
     loginFailed: "Kirishda xatolik yuz berdi",
+    signUpViaTelegram: "Telegram orqali ro'yxatdan o'tish",
   },
 
   // Profile
@@ -683,6 +688,11 @@ export const uz: Translations = {
     about: "Haqida",
     rating: "Reyting",
     reviews: "Sharhlar",
+    // Teacher profile page
+    notFound: "O'qituvchi topilmadi",
+    loadError: "O'qituvchi profilini yuklashda xatolik",
+    allCourses: "Barcha kurslar",
+    noCoursesDesc: "Bu o'qituvchi hali kurs joylashtirmagan",
   },
 
   // Onboarding

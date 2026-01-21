@@ -50,6 +50,10 @@ export const en: Translations = {
     payments: "Payments",
     settings: "Settings",
     language: "Language",
+    browseCourses: "Browse Courses",
+    adminPanel: "Admin Panel",
+    moderatorPanel: "Moderator Panel",
+    teacherPanel: "Teacher Panel",
   },
 
   // Dashboard
@@ -142,6 +146,7 @@ export const en: Translations = {
     registrationFailed: "Registration failed",
     otpVerificationFailed: "Invalid code! Please try again.",
     loginFailed: "Login failed",
+    signUpViaTelegram: "Sign up via Telegram",
   },
 
   // Profile
@@ -680,6 +685,11 @@ export const en: Translations = {
     about: "About",
     rating: "Rating",
     reviews: "Reviews",
+    // Teacher profile page
+    notFound: "Teacher not found",
+    loadError: "Failed to load teacher profile",
+    allCourses: "All Courses",
+    noCoursesDesc: "This teacher hasn't published any courses yet",
   },
 
   // Onboarding

@@ -47,6 +47,10 @@ export interface Translations {
     payments: string;
     settings: string;
     language: string;
+    browseCourses: string;
+    adminPanel: string;
+    moderatorPanel: string;
+    teacherPanel: string;
   };
   dashboard: {
     title: string;
@@ -132,6 +136,7 @@ export interface Translations {
     registrationFailed: string;
     otpVerificationFailed: string;
     loginFailed: string;
+    signUpViaTelegram: string;
   };
   profile: {
     editProfile: string;
@@ -644,6 +649,11 @@ export interface Translations {
     about: string;
     rating: string;
     reviews: string;
+    // Teacher profile page
+    notFound: string;
+    loadError: string;
+    allCourses: string;
+    noCoursesDesc: string;
   };
   onboarding: {
     // Title
