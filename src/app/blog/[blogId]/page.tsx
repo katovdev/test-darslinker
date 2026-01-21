@@ -48,18 +48,19 @@ export default function BlogDetailPage() {
         if (response.success && response.data) {
           setBlog(response.data);
         } else {
-          setError(t("blog.notFound"));
+          setError("not_found");
         }
       } catch (err) {
         console.error("Failed to load blog:", err);
-        setError(t("blog.loadError"));
+        setError("load_error");
       } finally {
         setIsLoading(false);
       }
     }
 
     loadBlog();
-  }, [blogSlug, t]);
+     
+  }, [blogSlug]);
 
   const handleLike = async () => {
     if (!blog) return;
@@ -149,6 +150,11 @@ export default function BlogDetailPage() {
   }
 
   if (error) {
+    const errorMessage =
+      error === "not_found"
+        ? t("blog.notFound") || "Blog not found"
+        : t("blog.loadError") || "Failed to load blog";
+
     return (
       <div className="min-h-screen bg-gray-900">
         <HomeHeader />
@@ -161,7 +167,7 @@ export default function BlogDetailPage() {
               <h3 className="text-lg font-semibold text-white">
                 {t("blog.errorTitle")}
               </h3>
-              <p className="text-sm text-gray-400">{error}</p>
+              <p className="text-sm text-gray-400">{errorMessage}</p>
             </div>
             <div className="flex gap-3">
               <button

@@ -67,10 +67,20 @@ export default function AdminCoursesPage() {
   });
 
   const loadTeachers = async () => {
-    const data = await adminService.listUsers({ role: "teacher", limit: 100 });
-    if (data) {
-      setTeachers(data.users);
+    // Load both teachers and admins who can own courses
+    const [teachersData, adminsData] = await Promise.all([
+      adminService.listUsers({ role: "teacher", limit: 100 }),
+      adminService.listUsers({ role: "admin", limit: 100 }),
+    ]);
+
+    const allUsers: AdminUser[] = [];
+    if (teachersData) {
+      allUsers.push(...teachersData.users);
     }
+    if (adminsData) {
+      allUsers.push(...adminsData.users);
+    }
+    setTeachers(allUsers);
   };
 
   const loadCourses = async () => {
@@ -640,7 +650,7 @@ export default function AdminCoursesPage() {
             <div className="mt-6 space-y-4">
               <div>
                 <label className="mb-1 block text-sm text-gray-400">
-                  {t("admin.teacher") || "Teacher"} *
+                  {t("admin.courseOwner") || "Course Owner"} *
                 </label>
                 <select
                   value={newCourse.teacherId}
@@ -649,11 +659,11 @@ export default function AdminCoursesPage() {
                   }
                   className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
                 >
-                  <option value="">Select teacher</option>
-                  {teachers.map((teacher) => (
-                    <option key={teacher.id} value={teacher.id}>
-                      {teacher.firstName} {teacher.lastName}{" "}
-                      {teacher.username ? `(@${teacher.username})` : ""}
+                  <option value="">Select owner</option>
+                  {teachers.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.firstName} {user.lastName}{" "}
+                      {user.username ? `(@${user.username})` : ""} [{user.role}]
                     </option>
                   ))}
                 </select>
