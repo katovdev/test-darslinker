@@ -901,4 +901,42 @@ export const en: Translations = {
     limitedAccessDesc:
       "Financial data (payments, earnings, balances) is not accessible with moderator role.",
   },
+
+  // Reviews
+  review: {
+    // Titles
+    reviewsAndRatings: "Reviews & Ratings",
+    writeReview: "Write a review",
+    editReview: "Edit your review",
+    yourReview: "Your Review",
+    teacherResponse: "Teacher Response",
+    // Rating
+    rating: "Rating",
+    yourRating: "Your rating",
+    selectRating: "Click to select a rating",
+    noRatingsYet: "No ratings yet",
+    // Reviews list
+    reviews: "reviews",
+    review: "review",
+    noReviews: "No reviews yet",
+    beFirstToReview: "Be the first to leave a review",
+    sortBy: "Sort by",
+    newest: "Newest",
+    highestRated: "Highest Rated",
+    // Form
+    yourComment: "Your comment",
+    commentPlaceholder: "Share your experience with this course...",
+    minChars: "minimum 10 characters",
+    submitReview: "Submit Review",
+    updateReview: "Update Review",
+    submitted: "Review submitted",
+    updated: "Review updated",
+    // Actions
+    respond: "Respond",
+    enrollToReview: "Enroll in this course to leave a review",
+    loginToReview: "Log in to leave a review",
+    // Errors
+    alreadyReviewed: "You have already reviewed this course",
+    notEnrolled: "You must be enrolled to leave a review",
+  },
 };

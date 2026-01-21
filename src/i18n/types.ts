@@ -850,4 +850,40 @@ export interface Translations {
     coursesSubtitle: string;
     limitedCourseAccess: string;
   };
+  review: {
+    // Titles
+    reviewsAndRatings: string;
+    writeReview: string;
+    editReview: string;
+    yourReview: string;
+    teacherResponse: string;
+    // Rating
+    rating: string;
+    yourRating: string;
+    selectRating: string;
+    noRatingsYet: string;
+    // Reviews list
+    reviews: string;
+    review: string;
+    noReviews: string;
+    beFirstToReview: string;
+    sortBy: string;
+    newest: string;
+    highestRated: string;
+    // Form
+    yourComment: string;
+    commentPlaceholder: string;
+    minChars: string;
+    submitReview: string;
+    updateReview: string;
+    submitted: string;
+    updated: string;
+    // Actions
+    respond: string;
+    enrollToReview: string;
+    loginToReview: string;
+    // Errors
+    alreadyReviewed: string;
+    notEnrolled: string;
+  };
 }

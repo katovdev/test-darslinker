@@ -2,7 +2,6 @@ import { api } from "./client";
 import { coursesEndpoint } from "./config";
 import { logger } from "../logger";
 
-// Types for global courses (per TODO.md)
 export interface GlobalCourseTeacher {
   id: string;
   firstName: string;
@@ -24,6 +23,8 @@ export interface GlobalCourse {
   modulesCount: number;
   lessonsCount: number;
   totalDuration: number;
+  averageRating: number;
+  totalReviews: number;
 }
 
 export interface GlobalCoursesResponse {
@@ -34,14 +35,7 @@ export interface GlobalCoursesResponse {
   };
 }
 
-/**
- * Course API Service
- * Per TODO.md: GET /api/courses returns { all: [], enrolled: [] }
- */
 class CourseAPI {
-  /**
-   * Get all courses and enrolled courses for the current user
-   */
   async getCourses(): Promise<GlobalCoursesResponse> {
     try {
       return await api.get<GlobalCoursesResponse>(coursesEndpoint);

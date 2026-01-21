@@ -907,4 +907,42 @@ export const ru: Translations = {
     limitedAccessDesc:
       "Финансовые данные (платежи, доходы, балансы) недоступны с ролью модератора.",
   },
+
+  // Reviews
+  review: {
+    // Titles
+    reviewsAndRatings: "Отзывы и рейтинги",
+    writeReview: "Написать отзыв",
+    editReview: "Редактировать отзыв",
+    yourReview: "Ваш отзыв",
+    teacherResponse: "Ответ преподавателя",
+    // Rating
+    rating: "Рейтинг",
+    yourRating: "Ваша оценка",
+    selectRating: "Нажмите, чтобы выбрать оценку",
+    noRatingsYet: "Пока нет оценок",
+    // Reviews list
+    reviews: "отзывов",
+    review: "отзыв",
+    noReviews: "Пока нет отзывов",
+    beFirstToReview: "Будьте первым, кто оставит отзыв",
+    sortBy: "Сортировать по",
+    newest: "Новые",
+    highestRated: "Высший рейтинг",
+    // Form
+    yourComment: "Ваш комментарий",
+    commentPlaceholder: "Поделитесь своим опытом прохождения курса...",
+    minChars: "минимум 10 символов",
+    submitReview: "Отправить отзыв",
+    updateReview: "Обновить отзыв",
+    submitted: "Отзыв отправлен",
+    updated: "Отзыв обновлён",
+    // Actions
+    respond: "Ответить",
+    enrollToReview: "Запишитесь на курс, чтобы оставить отзыв",
+    loginToReview: "Войдите, чтобы оставить отзыв",
+    // Errors
+    alreadyReviewed: "Вы уже оставили отзыв на этот курс",
+    notEnrolled: "Вы должны быть записаны на курс, чтобы оставить отзыв",
+  },
 };

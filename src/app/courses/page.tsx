@@ -11,10 +11,12 @@ import {
   Play,
   User,
   CheckCircle,
+  Star,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { courseAPI, type GlobalCourse } from "@/lib/api";
 import { HomeHeader, HomeFooter } from "@/components/home";
+import { CourseRatingBadge } from "@/components/course/rating-badge";
 
 type FilterTab = "all" | "enrolled";
 
@@ -65,16 +67,13 @@ export default function CoursesPage() {
     <div className="min-h-screen bg-gray-900">
       <HomeHeader />
 
-      {/* Hero Section */}
       <section className="relative overflow-hidden px-4 pt-24 pb-12 sm:px-6 lg:px-8">
-        {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/20 to-transparent blur-3xl" />
           <div className="absolute top-1/4 right-0 h-[300px] w-[300px] rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-6xl">
-          {/* Header */}
           <div className="text-center">
             <span className="inline-block rounded-full bg-blue-500/10 px-4 py-1.5 text-sm font-medium text-blue-400">
               {t("course.exploreCourses") || "Explore Courses"}
@@ -88,7 +87,6 @@ export default function CoursesPage() {
             </p>
           </div>
 
-          {/* Stats */}
           <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-4 text-center transition-all hover:border-gray-700">
               <div className="flex items-center justify-center gap-2">
@@ -140,12 +138,10 @@ export default function CoursesPage() {
         </div>
       </section>
 
-      {/* Courses Section */}
       <section className="relative px-4 pb-20 sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-gray-900 to-gray-800" />
 
         <div className="mx-auto max-w-6xl">
-          {/* Search and Filters */}
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative max-w-md flex-1">
               <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
@@ -181,7 +177,6 @@ export default function CoursesPage() {
             </div>
           </div>
 
-          {/* Loading State */}
           {isLoading && (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -198,7 +193,6 @@ export default function CoursesPage() {
             </div>
           )}
 
-          {/* Error State */}
           {error && !isLoading && (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-800 bg-gray-800/30 py-16 text-center">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
@@ -218,7 +212,6 @@ export default function CoursesPage() {
             </div>
           )}
 
-          {/* Empty State */}
           {!isLoading && !error && filteredCourses.length === 0 && (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-800 bg-gray-800/30 py-16 text-center">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10">
@@ -247,7 +240,6 @@ export default function CoursesPage() {
             </div>
           )}
 
-          {/* Courses Grid */}
           {!isLoading && !error && filteredCourses.length > 0 && (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredCourses.map((course) => (
@@ -277,16 +269,13 @@ interface CourseCardProps {
 function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
   const t = useTranslations();
 
-  // Course link (detail page not yet implemented)
-  const courseLink = "#";
+  const courseLink = `/courses/${course.slug}`;
 
   return (
     <Link href={courseLink} className="group relative block">
       <div className="relative rounded-2xl border border-gray-800 bg-gray-800/30 transition-all duration-300 hover:border-gray-700 hover:bg-gray-800/50">
-        {/* Gradient hover effect */}
         <div className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-10" />
 
-        {/* Thumbnail */}
         <div className="relative aspect-video overflow-hidden rounded-t-2xl bg-gray-700/50">
           {course.thumbnail ? (
             <img
@@ -300,15 +289,23 @@ function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
             </div>
           )}
 
-          {/* Enrolled Badge */}
-          {isEnrolled && (
-            <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-lg bg-green-500 px-2.5 py-1 text-xs font-medium text-white shadow-lg">
-              <CheckCircle className="h-3 w-3" />
-              {t("course.enrolled") || "Enrolled"}
-            </div>
-          )}
+          <div className="absolute top-3 right-3 flex items-center gap-2">
+            {course.averageRating > 0 && (
+              <CourseRatingBadge
+                rating={course.averageRating}
+                reviewCount={course.totalReviews}
+                size="sm"
+              />
+            )}
 
-          {/* Play overlay */}
+            {isEnrolled && (
+              <div className="flex items-center gap-1.5 rounded-lg bg-green-500 px-2.5 py-1 text-xs font-medium text-white shadow-lg">
+                <CheckCircle className="h-3 w-3" />
+                {t("course.enrolled") || "Enrolled"}
+              </div>
+            )}
+          </div>
+
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/40">
             <div className="flex h-14 w-14 scale-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform duration-300 group-hover:scale-100">
               <Play className="h-6 w-6 text-white" fill="white" />
@@ -316,13 +313,11 @@ function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
           </div>
         </div>
 
-        {/* Content */}
         <div className="p-5">
           <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-white transition-colors group-hover:text-blue-400">
             {course.title}
           </h3>
 
-          {/* Teacher */}
           <div className="mb-3 flex items-center gap-2">
             {course.teacher.logoUrl ? (
               <img
@@ -340,7 +335,6 @@ function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
             </span>
           </div>
 
-          {/* Stats */}
           <div className="mb-4 flex items-center gap-4 text-sm text-gray-400">
             <div className="flex items-center gap-1">
               <BookOpen className="h-4 w-4" />
@@ -354,7 +348,6 @@ function CourseCard({ course, isEnrolled, formatDuration }: CourseCardProps) {
             </div>
           </div>
 
-          {/* Price and Action */}
           <div className="flex items-center justify-between">
             <div>
               {course.price > 0 ? (

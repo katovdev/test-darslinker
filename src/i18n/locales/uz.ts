@@ -906,4 +906,42 @@ export const uz: Translations = {
     limitedAccessDesc:
       "Moliyaviy ma'lumotlar (to'lovlar, daromadlar, balanslar) moderator roli bilan mavjud emas.",
   },
+
+  // Reviews
+  review: {
+    // Titles
+    reviewsAndRatings: "Sharhlar va reytinglar",
+    writeReview: "Sharh yozish",
+    editReview: "Sharhni tahrirlash",
+    yourReview: "Sizning sharhingiz",
+    teacherResponse: "O'qituvchi javobi",
+    // Rating
+    rating: "Reyting",
+    yourRating: "Sizning bahoyingiz",
+    selectRating: "Baho tanlash uchun bosing",
+    noRatingsYet: "Hali baholar yo'q",
+    // Reviews list
+    reviews: "sharhlar",
+    review: "sharh",
+    noReviews: "Hali sharhlar yo'q",
+    beFirstToReview: "Birinchi bo'lib sharh qoldiring",
+    sortBy: "Saralash",
+    newest: "Eng yangi",
+    highestRated: "Eng yuqori baholi",
+    // Form
+    yourComment: "Sizning izohingiz",
+    commentPlaceholder: "Kurs haqidagi tajribangizni baham ko'ring...",
+    minChars: "kamida 10 belgi",
+    submitReview: "Sharh yuborish",
+    updateReview: "Sharhni yangilash",
+    submitted: "Sharh yuborildi",
+    updated: "Sharh yangilandi",
+    // Actions
+    respond: "Javob berish",
+    enrollToReview: "Sharh qoldirish uchun kursga yoziling",
+    loginToReview: "Sharh qoldirish uchun tizimga kiring",
+    // Errors
+    alreadyReviewed: "Siz allaqachon bu kursga sharh qoldirgansiz",
+    notEnrolled: "Sharh qoldirish uchun kursga yozilgan bo'lishingiz kerak",
+  },
 };
