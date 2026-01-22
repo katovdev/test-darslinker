@@ -85,7 +85,7 @@ export default function LoginPage() {
       if (response.success && response.data?.user) {
         setUser(response.data.user);
         toast.success(t("auth.welcomeBack"));
-        router.push("/courses");
+        router.push("/dashboard");
       } else if (!response.success) {
         const errorCode = response.error?.code;
         const errorMessage =

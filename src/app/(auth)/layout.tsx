@@ -27,7 +27,7 @@ export default function AuthLayout({
 
   useEffect(() => {
     if (hasHydrated && isAuthenticated && user) {
-      router.push("/courses");
+      router.push("/dashboard");
     }
   }, [isAuthenticated, hasHydrated, user, router]);
 
