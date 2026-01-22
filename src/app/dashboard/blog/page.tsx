@@ -125,6 +125,7 @@ function DashboardBlogContent() {
 
   useEffect(() => {
     loadBlogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, categoryFilter, statusFilter]);
 
   useEffect(() => {

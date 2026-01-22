@@ -17,9 +17,7 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  Eye,
   Edit,
-  Trash2,
   X,
   Check,
   AlertTriangle,
@@ -29,7 +27,6 @@ import { useTranslations } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
 import { settingsService } from "@/services/settings";
 import type {
-  SiteSettings,
   TeacherWithSettings,
   TeacherSettingsDetail,
   UpdateSiteSettingsInput,
@@ -113,7 +110,6 @@ export default function DashboardSettingsPage() {
 
 function SiteSettingsTab() {
   const t = useTranslations();
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -127,7 +123,6 @@ function SiteSettingsTab() {
     try {
       const data = await settingsService.getSiteSettings();
       if (data) {
-        setSettings(data);
         setFormData({
           siteTitle: data.siteTitle,
           siteDescription: data.siteDescription,
@@ -160,6 +155,7 @@ function SiteSettingsTab() {
 
   useEffect(() => {
     loadSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSave = async () => {
@@ -169,7 +165,6 @@ function SiteSettingsTab() {
     try {
       const result = await settingsService.updateSiteSettings(formData);
       if (result) {
-        setSettings(result);
         setSuccessMessage(
           t("admin.settingsSaved") || "Settings saved successfully"
         );
@@ -410,6 +405,7 @@ function SiteSettingsTab() {
 
         <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
           <div className="mb-4 flex items-center gap-2">
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <Image className="h-5 w-5 text-pink-400" />
             <h3 className="text-lg font-semibold text-white">
               {t("admin.branding") || "Branding"}
@@ -689,6 +685,7 @@ function TeacherPagesTab() {
 
   useEffect(() => {
     loadTeachers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, search]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -827,6 +824,7 @@ function TeacherPagesTab() {
               <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20">
                   {teacher.logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={teacher.logoUrl}
                       alt={

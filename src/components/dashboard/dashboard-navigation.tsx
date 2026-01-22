@@ -12,7 +12,6 @@ import {
   BarChart3,
   ClipboardList,
   Star,
-  Briefcase,
   UserCog,
   Layout,
   Palette,
@@ -21,8 +20,6 @@ import {
   Bell,
   Trophy,
   Target,
-  Calendar,
-  Mail,
 } from "lucide-react";
 import type { NavItem } from "./collapsible-sidebar";
 import type { User } from "@/context/auth-context";

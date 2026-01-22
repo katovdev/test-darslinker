@@ -68,6 +68,7 @@ export default function DashboardPaymentsPage() {
 
   useEffect(() => {
     loadPayments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, statusFilter]);
 
   const handleApprove = async (paymentId: string) => {
@@ -305,6 +306,7 @@ export default function DashboardPaymentsPage() {
                           onClick={() => setImageModal(payment.checkImageUrl)}
                           className="group relative"
                         >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={payment.checkImageUrl}
                             alt="Receipt"
@@ -427,6 +429,7 @@ export default function DashboardPaymentsPage() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={() => setImageModal(null)}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageModal}
             alt="Receipt"

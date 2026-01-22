@@ -93,6 +93,7 @@ function DashboardUsersContent() {
 
   useEffect(() => {
     loadUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, roleFilter, statusFilter]);
 
   const handleSearch = (e: React.FormEvent) => {

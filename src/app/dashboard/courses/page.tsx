@@ -116,6 +116,7 @@ export default function AdminCoursesPage() {
   useEffect(() => {
     loadCourses();
     loadTeachers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, statusFilter, typeFilter]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -445,6 +446,7 @@ export default function AdminCoursesPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         {course.thumbnail ? (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={course.thumbnail}
                             alt={course.title}
