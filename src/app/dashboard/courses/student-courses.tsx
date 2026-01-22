@@ -203,9 +203,8 @@ function CourseCard({
   t: (key: string) => string;
   formatCurrency: (amount: number) => string;
 }) {
-  const href = isEnrolled
-    ? `/${course.teacher.username}/${course.slug}/learn`
-    : `/${course.teacher.username}/${course.slug}`;
+  // Always link to public course detail page
+  const href = `/${course.teacher.username}/${course.slug}`;
 
   return (
     <Link

@@ -51,6 +51,12 @@ export default function TeacherCourseDetailPage() {
   const handleEnroll = useCallback(async () => {
     if (!course) return;
 
+    // Check authentication first
+    if (!isAuthenticated) {
+      window.location.href = "/login";
+      return;
+    }
+
     setIsEnrolling(true);
     try {
       if (course.price === 0 || course.type === "free") {
@@ -75,7 +81,7 @@ export default function TeacherCourseDetailPage() {
     } finally {
       setIsEnrolling(false);
     }
-  }, [course]);
+  }, [course, isAuthenticated, teacherUsername]);
 
   // Parallel data fetching - load course and prepare review fetch
   useEffect(() => {
@@ -516,28 +522,30 @@ export default function TeacherCourseDetailPage() {
                     </Button>
                   </Link>
                 ) : (
-                  <Button
-                    className="w-full"
-                    size="lg"
-                    onClick={handleEnroll}
-                    disabled={isEnrolling || !isAuthenticated}
-                  >
-                    {isEnrolling ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        {t("common.loading") || "Loading..."}
-                      </>
-                    ) : course.price > 0 ? (
-                      t("course.enroll") || "Enroll Now"
-                    ) : (
-                      t("course.startLearning") || "Start Learning"
+                  <>
+                    <Button
+                      className="w-full"
+                      size="lg"
+                      onClick={handleEnroll}
+                      disabled={isEnrolling}
+                    >
+                      {isEnrolling ? (
+                        <>
+                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          {t("common.loading") || "Loading..."}
+                        </>
+                      ) : course.price > 0 ? (
+                        t("course.enroll") || "Enroll Now"
+                      ) : (
+                        t("course.startLearning") || "Start Learning"
+                      )}
+                    </Button>
+                    {!isAuthenticated && (
+                      <p className="mt-2 text-center text-xs text-gray-400">
+                        {t("auth.loginToEnroll") || "Login to enroll"}
+                      </p>
                     )}
-                  </Button>
-                )}
-                {!isAuthenticated && (
-                  <p className="mt-2 text-center text-xs text-gray-400">
-                    {t("auth.loginToEnroll") || "Login to enroll"}
-                  </p>
+                  </>
                 )}
 
                 <div className="mt-6 space-y-3 border-t border-gray-700 pt-4">

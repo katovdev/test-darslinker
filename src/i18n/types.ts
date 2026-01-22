@@ -126,6 +126,9 @@ export interface Translations {
     startLearningMessage: string;
     browseCourses: string;
     exploreCoursesMessage: string;
+    availableCourses: string;
+    noMoreCourses: string;
+    checkBackLater: string;
     modules: string;
     lessons: string;
     minutes: string;

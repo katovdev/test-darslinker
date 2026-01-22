@@ -244,97 +244,92 @@ export default function StudentLessonPage() {
       </div>
 
       {/* Main content */}
-      <main>
-        <div className="flex min-h-[calc(100vh-4rem)] flex-col">
-          {/* Video/Content area */}
-          <div className="relative bg-black">
-            {currentLesson.videoUrl ? (
-              <div className="aspect-video w-full">
-                <VideoPlayer
-                  src={currentLesson.videoUrl}
-                  poster={course.course.thumbnail || undefined}
-                  onEnded={markAsComplete}
-                />
-              </div>
-            ) : (
-              <div className="flex aspect-video items-center justify-center bg-gray-800">
-                <div className="text-center">
-                  <FileText className="mx-auto h-16 w-16 text-gray-600" />
-                  <p className="mt-4 text-gray-400">
-                    {t("course.textContent") || "Text content"}
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Lesson info */}
-          <div className="flex-1 bg-gray-900 p-6 lg:p-8">
-            <div className="mx-auto max-w-5xl">
-              <div className="mb-6">
-                <p className="text-sm text-gray-500">
-                  {currentLesson.moduleTitle}
+      <main className="bg-gray-900">
+        {/* 1. Video Section - Full Width at Top */}
+        <div className="relative bg-black">
+          {currentLesson.videoUrl ? (
+            <div className="aspect-video w-full">
+              <VideoPlayer
+                src={currentLesson.videoUrl}
+                poster={course.course.thumbnail || undefined}
+                onEnded={markAsComplete}
+              />
+            </div>
+          ) : (
+            <div className="flex aspect-video items-center justify-center bg-gray-800">
+              <div className="text-center">
+                <FileText className="mx-auto h-16 w-16 text-gray-600" />
+                <p className="mt-4 text-gray-400">
+                  {t("course.textContent") || "Text content"}
                 </p>
-                <h1 className="mt-2 text-3xl font-bold text-white">
-                  {currentLesson.title}
-                </h1>
-                <div className="mt-3 flex items-center gap-4 text-sm text-gray-400">
-                  {currentLesson.durationMins > 0 && (
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {formatDuration(currentLesson.durationMins)}
-                    </span>
-                  )}
-                  {completedLessons.has(currentLesson.id) && (
-                    <span className="flex items-center gap-1 text-green-400">
-                      <CheckCircle className="h-4 w-4" />
-                      {t("lesson.completed") || "Completed"}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Text content */}
-              {currentLesson.content && (
-                <div className="prose prose-invert prose-lg max-w-none">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: currentLesson.content,
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* Navigation */}
-              <div className="mt-12 flex items-center justify-between border-t border-gray-800 pt-8">
-                <Button
-                  variant="outline"
-                  onClick={goToPrevious}
-                  disabled={currentIndex === 0}
-                  className="border-gray-700"
-                  size="lg"
-                >
-                  <ChevronLeft className="mr-2 h-5 w-5" />
-                  {t("course.previous") || "Previous"}
-                </Button>
-
-                <Link
-                  href={`/${username}/${courseSlug}/learn`}
-                  className="text-sm text-gray-400 transition-colors hover:text-white"
-                >
-                  {t("course.viewAllLessons") || "View All Lessons"}
-                </Link>
-
-                <Button
-                  onClick={goToNext}
-                  disabled={currentIndex === lessons.length - 1}
-                  size="lg"
-                >
-                  {t("course.next") || "Next"}
-                  <ChevronRight className="ml-2 h-5 w-5" />
-                </Button>
               </div>
             </div>
+          )}
+        </div>
+
+        {/* 2. Content Section - Below Video */}
+        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+          {/* Lesson Title & Metadata */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-500">{currentLesson.moduleTitle}</p>
+            <h1 className="mt-2 text-3xl font-bold text-white lg:text-4xl">
+              {currentLesson.title}
+            </h1>
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-400">
+              {currentLesson.durationMins > 0 && (
+                <span className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  {formatDuration(currentLesson.durationMins)}
+                </span>
+              )}
+              {completedLessons.has(currentLesson.id) && (
+                <span className="flex items-center gap-1 text-green-400">
+                  <CheckCircle className="h-4 w-4" />
+                  {t("lesson.completed") || "Completed"}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Lesson Text Content */}
+          {currentLesson.content && (
+            <div className="prose prose-invert prose-lg mb-12 max-w-none">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: currentLesson.content,
+                }}
+              />
+            </div>
+          )}
+
+          {/* 3. Navigation Section - At Bottom */}
+          <div className="mt-12 flex items-center justify-between border-t border-gray-800 pt-8">
+            <Button
+              variant="outline"
+              onClick={goToPrevious}
+              disabled={currentIndex === 0}
+              className="border-gray-700"
+              size="lg"
+            >
+              <ChevronLeft className="mr-2 h-5 w-5" />
+              {t("course.previous") || "Previous"}
+            </Button>
+
+            <Link
+              href={`/${username}/${courseSlug}/learn`}
+              className="text-sm text-gray-400 transition-colors hover:text-white"
+            >
+              {t("course.viewAllLessons") || "View All Lessons"}
+            </Link>
+
+            <Button
+              onClick={goToNext}
+              disabled={currentIndex === lessons.length - 1}
+              size="lg"
+            >
+              {t("course.next") || "Next"}
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
           </div>
         </div>
       </main>
