@@ -162,6 +162,54 @@ export interface TeacherCourseDetail extends TeacherCourse {
   }>;
 }
 
+export interface UpdateProfileDto {
+  bio?: string;
+  city?: string;
+  country?: string;
+  specialization?: string;
+  businessName?: string;
+  customUrl?: string;
+}
+
+export interface QuizAnalyticsResult {
+  id: string;
+  studentId: string;
+  studentName: string;
+  courseId: string;
+  courseName: string;
+  quizTitle: string;
+  attemptNumber: number;
+  score: number;
+  passed: boolean;
+  timeTaken: number;
+  submittedAt: string;
+}
+
+export interface QuizAnalytics {
+  totalAttempts: number;
+  studentCount: number;
+  avgScore: number;
+  passRate: number;
+  results: QuizAnalyticsResult[];
+}
+
+export interface StudentAnalytics {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  enrolledCourses: Array<{
+    courseId: string;
+    courseTitle: string;
+    enrolledAt: string;
+    progress: number;
+    status: string;
+  }>;
+  avgProgress: number;
+  isActive: boolean;
+  joinedAt: string;
+}
+
 export const teacherApi = {
   getStats: () => api.get<SingleResponse<TeacherStats>>(teacherEndpoints.stats),
 
@@ -237,6 +285,57 @@ export const teacherApi = {
     api.delete<{ success: boolean; message: string }>(
       teacherEndpoints.courseById(courseId)
     ),
+
+  // Profile Management
+  updateProfile: (data: UpdateProfileDto) =>
+    api.put<SingleResponse<{ id: string }>>("/teacher/profile", data),
+
+  uploadAvatar: async (file: File) => {
+    const formData = new FormData();
+    formData.append("avatar", file);
+    return api.post<SingleResponse<{ avatarUrl: string }>>(
+      "/teacher/profile/avatar",
+      formData
+    );
+  },
+
+  deleteAvatar: () =>
+    api.delete<{ success: boolean; message: string }>(
+      "/teacher/profile/avatar"
+    ),
+
+  // Analytics
+  getQuizAnalytics: () =>
+    api.get<SingleResponse<QuizAnalytics>>("/teacher/analytics/quizzes"),
+
+  getStudentAnalytics: () =>
+    api.get<SingleResponse<StudentAnalytics[]>>("/teacher/analytics/students"),
+
+  // Reviews
+  getAllReviews: () =>
+    api.get<
+      SingleResponse<{
+        avgRating: number;
+        total: number;
+        pendingResponses: number;
+        data: Array<{
+          id: string;
+          rating: number;
+          comment: string;
+          teacherResponse?: string;
+          student: {
+            id: string;
+            name: string;
+            avatar?: string;
+          };
+          course: {
+            id: string;
+            title: string;
+          };
+          createdAt: string;
+        }>;
+      }>
+    >("/teacher/reviews"),
 };
 
 export default teacherApi;

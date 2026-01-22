@@ -92,3 +92,30 @@ export {
   type ReorderLessonItem,
   type CourseContentOverview,
 } from "./course-content";
+
+export { assignmentsApi, type ListSubmissionsParams } from "./assignments";
+
+export {
+  notificationsApi,
+  type ListNotificationsParams,
+} from "./notifications";
+
+export {
+  messagesApi,
+  type ListChatsParams,
+  type ListMessagesParams,
+} from "./messages";
+
+export { achievementsApi } from "./achievements";
+
+// Re-export teacher API additions
+export {
+  teacherApi,
+  type TeacherStats as TeacherDashboardStats,
+  type TeacherStudent,
+  type TeacherPayment,
+  type TeacherEarnings,
+  type UpdateProfileDto,
+  type QuizAnalytics,
+  type StudentAnalytics,
+} from "./teacher";

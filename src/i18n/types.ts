@@ -398,23 +398,6 @@ export interface Translations {
     noAttempts: string;
     previousAttempts: string;
   };
-  notifications: {
-    title: string;
-    markAllRead: string;
-    noNotifications: string;
-    assignmentGraded: string;
-    paymentApproved: string;
-    paymentSubmitted: string;
-    courseEnrolled: string;
-    lessonCompleted: string;
-    quizPassed: string;
-    certificateReady: string;
-    general: string;
-    justNow: string;
-    minutesAgo: string;
-    hoursAgo: string;
-    daysAgo: string;
-  };
   landing: {
     // Navigation
     home: string;
@@ -923,5 +906,151 @@ export interface Translations {
     // Errors
     alreadyReviewed: string;
     notEnrolled: string;
+  };
+  assignment: {
+    title: string;
+    instructions: string;
+    submit: string;
+    submitted: string;
+    grade: string;
+    feedback: string;
+    dueDate: string;
+    maxScore: string;
+    yourScore: string;
+    uploadFile: string;
+    dragDrop: string;
+    viewSubmissions: string;
+    gradeAssignment: string;
+    noSubmissions: string;
+    attachments: string;
+    submitAssignment: string;
+    resubmitRequested: string;
+    notSubmitted: string;
+    graded: string;
+    pending: string;
+    downloadSubmission: string;
+    enterGrade: string;
+    enterFeedback: string;
+    submitGrade: string;
+    gradingSuccess: string;
+    submissionSuccess: string;
+    overdue: string;
+    daysLeft: string;
+    updateSubmission: string;
+  };
+  fileLesson: {
+    title: string;
+    download: string;
+    viewFile: string;
+    fileSize: string;
+    fileType: string;
+    uploadFile: string;
+    dragDrop: string;
+    allowedTypes: string;
+    maxSize: string;
+    description: string;
+    preview: string;
+    noPreview: string;
+  };
+  notifications: {
+    title: string;
+    markAllRead: string;
+    noNotifications: string;
+    markAsRead: string;
+    deleteNotification: string;
+    deleteAllRead: string;
+    unreadCount: string;
+    preferences: string;
+    emailNotifications: string;
+    pushNotifications: string;
+    // Types
+    assignmentGraded: string;
+    assignmentSubmitted: string;
+    newAssignment: string;
+    newLesson: string;
+    courseUpdate: string;
+    courseEnrolled: string;
+    courseCompleted: string;
+    certificateIssued: string;
+    paymentApproved: string;
+    paymentSubmitted: string;
+    paymentRejected: string;
+    quizPassed: string;
+    quizFailed: string;
+    certificateReady: string;
+    lessonCompleted: string;
+    achievementUnlocked: string;
+    messageReceived: string;
+    reviewPosted: string;
+    systemAnnouncement: string;
+    // Time
+    general: string;
+    justNow: string;
+    minutesAgo: string;
+    hoursAgo: string;
+    daysAgo: string;
+    // Groups
+    today: string;
+    yesterday: string;
+    thisWeek: string;
+    earlier: string;
+  };
+  achievement: {
+    title: string;
+    achievements: string;
+    unlocked: string;
+    locked: string;
+    progress: string;
+    points: string;
+    totalPoints: string;
+    rarity: string;
+    // Rarities
+    common: string;
+    rare: string;
+    epic: string;
+    legendary: string;
+    // Types
+    firstCourse: string;
+    firstCourseDesc: string;
+    tenCourses: string;
+    tenCoursesDesc: string;
+    hundredStudents: string;
+    hundredStudentsDesc: string;
+    thousandStudents: string;
+    thousandStudentsDesc: string;
+    tenKRevenue: string;
+    tenKRevenueDesc: string;
+    highRating: string;
+    highRatingDesc: string;
+    topInstructor: string;
+    topInstructorDesc: string;
+    fiftyReviews: string;
+    fiftyReviewsDesc: string;
+    perfectScore: string;
+    perfectScoreDesc: string;
+    earlyAdopter: string;
+    earlyAdopterDesc: string;
+  };
+  messages: {
+    title: string;
+    messages: string;
+    chats: string;
+    noChats: string;
+    noMessages: string;
+    searchChats: string;
+    newMessage: string;
+    sendMessage: string;
+    typeMessage: string;
+    attach: string;
+    selectChat: string;
+    deleteChat: string;
+    deleteMessage: string;
+    messageSent: string;
+    today: string;
+    yesterday: string;
+    online: string;
+    offline: string;
+    typing: string;
+    unreadMessages: string;
   };
 }

@@ -37,6 +37,22 @@ export interface LessonProgress {
     scrollPercentage: number;
     completedAt?: string;
   };
+  assignmentProgress?: {
+    submitted: boolean;
+    submittedAt?: string;
+    graded: boolean;
+    gradedAt?: string;
+    score?: number;
+    maxScore?: number;
+    feedback?: string;
+    status: "not_submitted" | "submitted" | "graded" | "resubmit_requested";
+  };
+  fileProgress?: {
+    viewed: boolean;
+    viewedAt?: string;
+    downloaded: boolean;
+    downloadedAt?: string;
+  };
   // Time spent on this lesson
   timeSpentSeconds: number;
   lastAccessedAt: string;
@@ -135,7 +151,7 @@ export interface LessonAnalytics {
   lessonId: string;
   lessonTitle: string;
   lessonOrder: number;
-  lessonType: "video" | "text" | "quiz" | "mixed";
+  lessonType: "video" | "text" | "quiz" | "mixed" | "assignment" | "file";
   // Completion
   completionRate: number;
   averageTimeSpent: number;
@@ -154,6 +170,16 @@ export interface LessonAnalytics {
       questionText: string;
       correctRate: number;
     }[];
+  };
+  assignmentMetrics?: {
+    submissionRate: number;
+    averageGrade: number;
+    gradedRate: number;
+    averageTimeToSubmit: number; // seconds
+  };
+  fileMetrics?: {
+    viewRate: number;
+    downloadRate: number;
   };
 }
 

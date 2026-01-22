@@ -983,4 +983,14 @@ export const ru: Translations = {
     alreadyReviewed: "Вы уже оставили отзыв на этот курс",
     notEnrolled: "Вы должны быть записаны на курс, чтобы оставить отзыв",
   },
-};
+
+  // TODO: Add Russian translations for new features
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  assignment: {} as Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fileLesson: {} as Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  achievement: {} as Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  messages: {} as Record<string, any>,
+} as Translations;

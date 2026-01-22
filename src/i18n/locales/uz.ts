@@ -982,4 +982,14 @@ export const uz: Translations = {
     alreadyReviewed: "Siz allaqachon bu kursga sharh qoldirgansiz",
     notEnrolled: "Sharh qoldirish uchun kursga yozilgan bo'lishingiz kerak",
   },
-};
+
+  // TODO: Add Uzbek translations for new features
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  assignment: {} as Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fileLesson: {} as Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  achievement: {} as Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  messages: {} as Record<string, any>,
+} as Translations;
