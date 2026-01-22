@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { StudentBlogView } from "./student-blog-view";
 import {
   FileText,
   Search,
@@ -1045,29 +1046,13 @@ function DashboardBlogContent() {
 }
 
 export default function DashboardBlogPage() {
-  const router = useRouter();
   const { user } = useAuth();
 
-  // Authorization check
-  if (user && user.role !== "admin" && user.role !== "moderator") {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="text-center">
-          <ShieldAlert className="mx-auto h-16 w-16 text-red-400" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Access Denied</h2>
-          <p className="mt-2 text-gray-400">
-            You don&apos;t have permission to access this page.
-          </p>
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            Go to Dashboard
-          </button>
-        </div>
-      </div>
-    );
+  // Students and teachers see public blog view
+  if (user && (user.role === "student" || user.role === "teacher")) {
+    return <StudentBlogView />;
   }
 
+  // Admins and moderators see blog management
   return <DashboardBlogContent />;
 }

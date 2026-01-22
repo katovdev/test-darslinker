@@ -20,7 +20,6 @@ export default function LoginPage() {
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
@@ -49,7 +48,6 @@ export default function LoginPage() {
       const response = await authService.requestOtp(phone);
 
       if (response.success) {
-        setOtpSent(true);
         setStep("otp");
         toast.success(t("auth.otpSent"));
       } else {
@@ -84,7 +82,9 @@ export default function LoginPage() {
 
       if (response.success && response.data?.user) {
         setUser(response.data.user);
-        toast.success(t("auth.welcomeBack"));
+        toast.success(
+          t("auth.welcomeBack", { name: response.data.user.firstName })
+        );
         router.push("/dashboard");
       } else if (!response.success) {
         const errorCode = response.error?.code;
@@ -130,7 +130,6 @@ export default function LoginPage() {
     setStep("phone");
     setOtp("");
     setOtpError(null);
-    setOtpSent(false);
   };
 
   const openTelegramBot = () => {

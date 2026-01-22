@@ -97,30 +97,24 @@ export default function DashboardPage() {
     switch (user.role) {
       case "admin":
         return {
-          title: t("dashboard.welcomeAdmin") || "Welcome, Admin",
-          subtitle:
-            t("dashboard.adminSubtitle") || "Manage your platform from here",
+          title: t("dashboard.welcomeAdmin", { name: user.firstName }),
+          subtitle: t("dashboard.adminSubtitle"),
         };
       case "moderator":
         return {
-          title: t("dashboard.welcomeModerator") || "Welcome, Moderator",
-          subtitle:
-            t("dashboard.moderatorSubtitle") || "Review and moderate content",
+          title: t("dashboard.welcomeModerator", { name: user.firstName }),
+          subtitle: t("dashboard.moderatorSubtitle"),
         };
       case "teacher":
         return {
-          title:
-            t("dashboard.welcomeTeacher") || `Welcome back, ${user.firstName}!`,
-          subtitle:
-            t("dashboard.teacherSubtitle") || "Let's make learning awesome",
+          title: t("dashboard.welcomeTeacher", { name: user.firstName }),
+          subtitle: t("dashboard.teacherSubtitle"),
         };
       case "student":
       default:
         return {
-          title:
-            t("dashboard.welcomeStudent") || `Welcome back, ${user.firstName}!`,
-          subtitle:
-            t("dashboard.studentSubtitle") || "Continue your learning journey",
+          title: t("dashboard.welcomeStudent", { name: user.firstName }),
+          subtitle: t("dashboard.studentSubtitle"),
         };
     }
   };

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/auth-context";
+import { StudentCoursesView } from "./student-courses";
 import {
   BookOpen,
   Search,
@@ -29,7 +31,7 @@ import type { AdminCourse, AdminUser, Pagination } from "@/lib/api/admin";
 type StatusFilter = "all" | "draft" | "active" | "approved" | "archived";
 type TypeFilter = "all" | "free" | "paid";
 
-export default function AdminCoursesPage() {
+function AdminCoursesView() {
   const t = useTranslations();
   const [courses, setCourses] = useState<AdminCourse[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -954,4 +956,17 @@ export default function AdminCoursesPage() {
       )}
     </div>
   );
+}
+
+// Main page component - shows different views based on role
+export default function DashboardCoursesPage() {
+  const { user } = useAuth();
+
+  // Students see their enrolled courses
+  if (user?.role === "student") {
+    return <StudentCoursesView />;
+  }
+
+  // Admins and moderators see course management
+  return <AdminCoursesView />;
 }

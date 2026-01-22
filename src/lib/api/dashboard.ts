@@ -174,34 +174,58 @@ async function getTeacherStats(): Promise<DashboardStats> {
 }
 
 async function getStudentStats(): Promise<DashboardStats> {
-  const response = await courseAPI.getCourses();
-  const enrolledCourses = response.data.enrolled;
+  try {
+    const response = await courseAPI.getCourses();
+    const enrolledCourses = response.data?.enrolled || [];
 
-  // Calculate completed courses (would need progress data from API)
-  const completedCourses = 0; // This should come from progress API
-  const inProgressCourses = enrolledCourses.length - completedCourses;
-
-  return {
-    primary: [
-      {
-        label: "Enrolled Courses",
-        value: enrolledCourses.length,
-      },
-      {
-        label: "Completed",
-        value: completedCourses,
-      },
-      {
-        label: "In Progress",
-        value: inProgressCourses,
-      },
-      {
-        label: "Streak",
-        value: "7 days", // This should come from progress/activity API
-        trend: "up",
-      },
-    ],
-  };
+    // TODO: Backend should provide progress stats
+    // For now, show real enrolled courses count
+    return {
+      primary: [
+        {
+          label: "Enrolled Courses",
+          value: enrolledCourses.length,
+        },
+        {
+          label: "Completed",
+          value: 0, // TODO: Add progress API endpoint
+        },
+        {
+          label: "In Progress",
+          value: enrolledCourses.length, // Assume all enrolled are in progress
+        },
+        {
+          label: "Streak",
+          value: "0 days", // TODO: Add activity tracking API
+          trend: "neutral",
+        },
+      ],
+    };
+  } catch (error) {
+    console.error("Failed to fetch student stats:", error);
+    // Return empty stats on error
+    return {
+      primary: [
+        {
+          label: "Enrolled Courses",
+          value: 0,
+        },
+        {
+          label: "Completed",
+          value: 0,
+        },
+        {
+          label: "In Progress",
+          value: 0,
+        },
+        {
+          label: "Streak",
+          value: "0 days",
+          trend: "neutral",
+        },
+      ],
+    };
+  }
 }
 
 /**

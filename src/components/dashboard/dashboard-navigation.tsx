@@ -69,7 +69,7 @@ export function getDashboardNavigation(
         icon: Bell,
       },
       {
-        href: "/dashboard/profile",
+        href: "/dashboard/me",
         label: t("dashboard.profile") || "Profile",
         icon: UserCog,
       },
