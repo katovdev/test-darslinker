@@ -452,6 +452,15 @@ export interface Translations {
     noEnrolled: string;
     noEnrolledDesc: string;
     viewCourse: string;
+    // Student learning pages
+    yourProgress: string;
+    courseContent: string;
+    textContent: string;
+    quizContent: string;
+    selectLesson: string;
+    // Dashboard courses page
+    noMoreCourses: string;
+    checkBackLater: string;
   };
   lesson: {
     title: string;

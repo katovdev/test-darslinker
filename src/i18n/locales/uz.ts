@@ -493,6 +493,15 @@ export const uz: Translations = {
     noEnrolled: "Hali kursga yozilmagansiz",
     noEnrolledDesc: "Biror kursga yozilish orqali o'rganishni boshlang",
     viewCourse: "Ko'rish",
+    // Student learning pages
+    yourProgress: "Sizning progressingiz",
+    courseContent: "Kurs tarkibi",
+    textContent: "Matnli kontent",
+    quizContent: "Test kontenti",
+    selectLesson: "Darsni tanlang va o'rganishni boshlang",
+    // Dashboard courses page
+    noMoreCourses: "Boshqa kurslar mavjud emas",
+    checkBackLater: "Keyinroq yangi kurslar uchun tekshiring",
   },
 
   // Lesson

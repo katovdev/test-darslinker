@@ -61,7 +61,7 @@ class CourseAPI {
   async enrollInFreeCourse(courseId: string): Promise<EnrollmentResponse> {
     try {
       return await api.post<EnrollmentResponse>(
-        `/student/courses/${courseId}/enroll`
+        `student/courses/${courseId}/enroll`
       );
     } catch (error) {
       logger.error("Error enrolling in course:", error);

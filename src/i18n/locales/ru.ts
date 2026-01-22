@@ -491,6 +491,15 @@ export const ru: Translations = {
     noEnrolled: "Пока нет записей на курсы",
     noEnrolledDesc: "Начните обучение, записавшись на курс",
     viewCourse: "Смотреть",
+    // Student learning pages
+    yourProgress: "Ваш прогресс",
+    courseContent: "Содержание курса",
+    textContent: "Текстовый контент",
+    quizContent: "Содержание теста",
+    selectLesson: "Выберите урок, чтобы начать обучение",
+    // Dashboard courses page
+    noMoreCourses: "Больше нет доступных курсов",
+    checkBackLater: "Проверьте позже для новых курсов",
   },
 
   // Lesson

@@ -487,6 +487,15 @@ export const en: Translations = {
     noEnrolled: "No enrolled courses yet",
     noEnrolledDesc: "Start learning by enrolling in a course",
     viewCourse: "View",
+    // Student learning pages
+    yourProgress: "Your Progress",
+    courseContent: "Course Content",
+    textContent: "Text content",
+    quizContent: "Quiz content",
+    selectLesson: "Select a lesson to start learning",
+    // Dashboard courses page
+    noMoreCourses: "No more courses available",
+    checkBackLater: "Check back later for new courses",
   },
 
   // Lesson
