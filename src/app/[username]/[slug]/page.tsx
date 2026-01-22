@@ -58,8 +58,8 @@ export default function TeacherCourseDetailPage() {
         const response = await courseAPI.enrollInFreeCourse(course.id);
         if (response.success) {
           setIsEnrolled(true);
-          // Redirect to course learning page
-          window.location.href = `/learn/${course.id}`;
+          // Redirect to student course learning page
+          window.location.href = `/dashboard/${teacherUsername}/${course.slug}`;
         }
       } else {
         // Paid course - redirect to payment page
@@ -506,7 +506,10 @@ export default function TeacherCourseDetailPage() {
                 </div>
 
                 {isEnrolled ? (
-                  <Link href={`/learn/${course.id}`} className="block">
+                  <Link
+                    href={`/dashboard/${teacherUsername}/${course.slug}`}
+                    className="block"
+                  >
                     <Button className="w-full" size="lg">
                       <Play className="mr-2 h-5 w-5" />
                       {t("course.continueLearning") || "Continue Learning"}
