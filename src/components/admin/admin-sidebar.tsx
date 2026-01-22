@@ -8,6 +8,8 @@ import {
   DollarSign,
   FileText,
   Settings,
+  Layout,
+  Palette,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { RoleSidebar, type NavItem } from "@/components/ui/role-sidebar";
@@ -45,6 +47,16 @@ export function AdminSidebar() {
       href: "/admin/blogs",
       label: t("admin.blogs") || "Blogs",
       icon: FileText,
+    },
+    {
+      href: "/admin/landing-page",
+      label: t("admin.landingPage") || "Landing Page",
+      icon: Layout,
+    },
+    {
+      href: "/admin/theme",
+      label: t("admin.theme") || "Theme",
+      icon: Palette,
     },
     {
       href: "/admin/settings",
