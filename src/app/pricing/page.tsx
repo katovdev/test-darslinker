@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Check, X, Sparkles } from "lucide-react";
+import { Check, X, Sparkles, Loader2 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
+import { useAuth } from "@/context/auth-context";
 import { HomeHeader, HomeFooter } from "@/components/home";
 
 interface PlanFeature {
@@ -107,7 +110,50 @@ const plans: Plan[] = [
 ];
 
 export default function PricingPage() {
+  const router = useRouter();
+  const { isAuthenticated, hasHydrated, isLoading, user } = useAuth();
   const t = useTranslations();
+
+  useEffect(() => {
+    // Wait for auth to hydrate
+    if (!hasHydrated) return;
+
+    // If authenticated but NOT a teacher, redirect to dashboard
+    // Teachers are platform customers and need to see pricing
+    // Students, admins, moderators don't need platform pricing
+    if (isAuthenticated && user && user.role !== "teacher") {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, hasHydrated, user, router]);
+
+  // Show loading while checking authentication
+  if (!hasHydrated || isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+        <div className="text-center">
+          <div className="relative">
+            <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 opacity-20 blur-xl" />
+            <Loader2 className="relative mx-auto h-10 w-10 animate-spin text-purple-500" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading while redirecting non-teachers
+  if (isAuthenticated && user && user.role !== "teacher") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+        <div className="text-center">
+          <div className="relative">
+            <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 opacity-20 blur-xl" />
+            <Loader2 className="relative mx-auto h-10 w-10 animate-spin text-purple-500" />
+          </div>
+          <p className="mt-4 text-sm text-gray-400">Redirecting...</p>
+        </div>
+      </div>
+    );
+  }
 
   const renderFeatureValue = (feature: PlanFeature) => {
     if (feature.included === "unlimited") {

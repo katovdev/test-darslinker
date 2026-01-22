@@ -54,19 +54,66 @@ export interface Translations {
   };
   dashboard: {
     title: string;
+    dashboard: string;
     welcomeBack: string;
     continueJourney: string;
+    // Welcome messages
+    welcomeAdmin: string;
+    adminSubtitle: string;
+    welcomeModerator: string;
+    moderatorSubtitle: string;
+    welcomeTeacher: string;
+    teacherSubtitle: string;
+    welcomeStudent: string;
+    studentSubtitle: string;
+    // Panel names
+    adminPanel: string;
+    moderatorPanel: string;
+    teacherPanel: string;
+    studentPanel: string;
+    // Navigation items
+    home: string;
+    myCourses: string;
+    courses: string;
+    students: string;
+    assignments: string;
+    analytics: string;
+    quizAnalytics: string;
+    studentAnalytics: string;
+    reviews: string;
+    payments: string;
+    earnings: string;
+    blog: string;
+    achievements: string;
+    notifications: string;
+    profile: string;
+    users: string;
+    teachers: string;
+    advice: string;
+    settings: string;
+    landingPage: string;
+    theme: string;
+    // Quick actions
+    quickActions: string;
+    continueLearning: string;
+    exploreBlogs: string;
+    viewProgress: string;
+    createCourse: string;
+    viewStudents: string;
+    checkEarnings: string;
+    manageUsers: string;
+    reviewCourses: string;
+    viewReports: string;
+    // Stats & general
     activeCourses: string;
     totalPoints: string;
     certificates: string;
-    myCourses: string;
     allCourses: string;
     loadingCourses: string;
     noEnrolledCourses: string;
     browseAllCourses: string;
     progress: string;
     free: string;
-    continueLearning: string;
     startLearning: string;
     logout: string;
     loggingOut: string;

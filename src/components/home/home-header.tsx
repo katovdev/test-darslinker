@@ -58,31 +58,15 @@ export function HomeHeader() {
   };
 
   const getRoleDashboard = () => {
-    switch (user?.role) {
-      case "admin":
-        return {
-          href: "/admin",
-          label: t("sidebar.adminPanel") || "Admin Panel",
-          icon: Shield,
-          color: "text-blue-400 hover:bg-blue-500/10",
-        };
-      case "moderator":
-        return {
-          href: "/moderator",
-          label: t("sidebar.moderatorPanel") || "Moderator Panel",
-          icon: Shield,
-          color: "text-green-400 hover:bg-green-500/10",
-        };
-      case "teacher":
-        return {
-          href: "/teacher",
-          label: t("sidebar.teacherPanel") || "Teacher Panel",
-          icon: GraduationCap,
-          color: "text-emerald-400 hover:bg-emerald-500/10",
-        };
-      default:
-        return null;
-    }
+    if (!user) return null;
+
+    // Everyone goes to /dashboard now
+    return {
+      href: "/dashboard",
+      label: t("sidebar.dashboard") || "Dashboard",
+      icon: LayoutDashboard,
+      color: "text-blue-400 hover:bg-blue-500/10",
+    };
   };
 
   return (
@@ -95,17 +79,20 @@ export function HomeHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              className="text-sm font-medium text-gray-400 transition-colors hover:text-white"
-            >
-              {t(`home.${item.key}`)}
-            </Link>
-          ))}
-        </nav>
+        {/* Only show public nav items when NOT authenticated */}
+        {!isAuthenticated && (
+          <nav className="hidden items-center gap-8 md:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="text-sm font-medium text-gray-400 transition-colors hover:text-white"
+              >
+                {t(`home.${item.key}`)}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -270,16 +257,18 @@ export function HomeHeader() {
       {isOpen && (
         <div className="border-t border-gray-800 bg-gray-900 md:hidden">
           <nav className="flex flex-col p-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
-              >
-                {t(`home.${item.key}`)}
-              </Link>
-            ))}
+            {/* Only show public nav items when NOT authenticated */}
+            {!isAuthenticated &&
+              navItems.map((item) => (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                >
+                  {t(`home.${item.key}`)}
+                </Link>
+              ))}
 
             <div className="mt-4 flex flex-col gap-2 border-t border-gray-800 pt-4">
               {!isLoading && isAuthenticated && user ? (
