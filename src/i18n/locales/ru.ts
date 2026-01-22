@@ -123,10 +123,62 @@ export const ru: Translations = {
     noEnrolledCourses: "Вы ещё не записаны на курсы",
     browseAllCourses: "Посмотрите все курсы для начала",
     progress: "Прогресс",
+    progressSubtitle: "Отслеживайте свой прогресс по курсам",
     free: "Бесплатно",
     startLearning: "Начать обучение",
     logout: "Выход",
     loggingOut: "Выход...",
+
+    // Student dashboard
+    myCoursesSubtitle: "Просмотрите все ваши курсы и продолжите обучение",
+    searchCourses: "Поиск курсов...",
+    noCoursesFound: "Курсы не найдены",
+    tryDifferentSearch: "Попробуйте другой запрос",
+    startLearningMessage: "Запишитесь на курс, чтобы начать обучение",
+    browseCourses: "Просмотреть курсы",
+    exploreCoursesMessage: "Изучайте курсы и начинайте учиться",
+    modules: "Модули",
+    lessons: "Уроки",
+    minutes: "мин",
+    by: "от",
+    complete: "Завершить",
+
+    // Progress page
+    all: "Все",
+    inProgress: "В процессе",
+    completed: "Завершено",
+    noProgress: "Пока нет прогресса",
+    progressTrackingNote:
+      "Прогресс будет отслеживаться по мере завершения курсов и уроков.",
+    detailedProgressComingSoon:
+      "Детальное отслеживание прогресса появится в ближайшее время.",
+    coursesCompleted: "Завершено курсов",
+    lessonsCompleted: "Завершено уроков",
+    quizzesPassed: "Пройдено тестов",
+    currentStreak: "Текущая серия",
+    yourStats: "Ваша статистика",
+
+    // Achievements page
+    achievementsSubtitle: "Получайте достижения в процессе обучения",
+    upcomingAchievements: "Предстоящие достижения",
+    comingSoon: "Скоро",
+    achievementsComingSoonDesc:
+      "Система достижений разрабатывается и будет доступна в ближайшее время.",
+    note: "Примечание",
+    achievementsNote:
+      "Система достижений ещё не реализована на бэкенде. Вы будете получать достижения по мере завершения уроков, прохождения тестов и выполнения других задач.",
+
+    // Achievement types
+    firstCourse: "Первый курс",
+    firstCourseDesc: "Завершите свой первый курс",
+    weekStreak: "Недельная серия",
+    weekStreakDesc: "Учитесь 7 дней подряд",
+    lessonMaster: "Мастер уроков",
+    lessonMasterDesc: "Завершите 50 уроков",
+    quizChampion: "Чемпион тестов",
+    quizChampionDesc: "Пройдите 20 тестов",
+    fastLearner: "Быстрый ученик",
+    fastLearnerDesc: "Завершите 5 курсов за один месяц",
   },
 
   // Auth

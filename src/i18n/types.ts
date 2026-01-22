@@ -113,10 +113,54 @@ export interface Translations {
     noEnrolledCourses: string;
     browseAllCourses: string;
     progress: string;
+    progressSubtitle: string;
     free: string;
     startLearning: string;
     logout: string;
     loggingOut: string;
+    // Student dashboard
+    myCoursesSubtitle: string;
+    searchCourses: string;
+    noCoursesFound: string;
+    tryDifferentSearch: string;
+    startLearningMessage: string;
+    browseCourses: string;
+    exploreCoursesMessage: string;
+    modules: string;
+    lessons: string;
+    minutes: string;
+    by: string;
+    complete: string;
+    // Progress page
+    all: string;
+    inProgress: string;
+    completed: string;
+    noProgress: string;
+    progressTrackingNote: string;
+    detailedProgressComingSoon: string;
+    coursesCompleted: string;
+    lessonsCompleted: string;
+    quizzesPassed: string;
+    currentStreak: string;
+    yourStats: string;
+    // Achievements page
+    achievementsSubtitle: string;
+    upcomingAchievements: string;
+    comingSoon: string;
+    achievementsComingSoonDesc: string;
+    note: string;
+    achievementsNote: string;
+    // Achievement types
+    firstCourse: string;
+    firstCourseDesc: string;
+    weekStreak: string;
+    weekStreakDesc: string;
+    lessonMaster: string;
+    lessonMasterDesc: string;
+    quizChampion: string;
+    quizChampionDesc: string;
+    fastLearner: string;
+    fastLearnerDesc: string;
   };
   auth: {
     login: string;

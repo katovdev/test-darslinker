@@ -67,8 +67,11 @@ export const teacherEndpoints = {
 } as const;
 
 export const courseContentEndpoints = {
-  // Course content overview
-  courseContent: (courseId: string) => `teacher/courses/${courseId}/content`,
+  // Course content overview (public endpoint for unauthenticated users)
+  courseContent: (courseId: string) => `courses/${courseId}/content`,
+  // Teacher-specific endpoints (authenticated)
+  teacherCourseContent: (courseId: string) =>
+    `teacher/courses/${courseId}/content`,
   // Modules
   modules: (courseId: string) => `teacher/courses/${courseId}/modules`,
   reorderModules: (courseId: string) =>

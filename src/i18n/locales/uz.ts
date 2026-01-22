@@ -123,10 +123,63 @@ export const uz: Translations = {
     noEnrolledCourses: "Hali kurslarga yozilmagansiz",
     browseAllCourses: "Boshlash uchun barcha kurslarni ko'ring",
     progress: "Taraqqiyot",
+    progressSubtitle: "Kurslaringiz bo'yicha taraqqiyotni kuzating",
     free: "Bepul",
     startLearning: "O'qishni boshlash",
     logout: "Chiqish",
     loggingOut: "Chiqilmoqda...",
+
+    // Student dashboard
+    myCoursesSubtitle:
+      "Barcha yozilgan kurslarni ko'ring va o'qishni davom ettiring",
+    searchCourses: "Kurslarni qidirish...",
+    noCoursesFound: "Kurslar topilmadi",
+    tryDifferentSearch: "Boshqa qidiruv so'rovini sinab ko'ring",
+    startLearningMessage: "O'qishni boshlash uchun kursga yoziling",
+    browseCourses: "Kurslarni ko'rish",
+    exploreCoursesMessage: "Kurslarni ko'ring va o'qishni boshlang",
+    modules: "Modullar",
+    lessons: "Darslar",
+    minutes: "daqiqa",
+    by: "tomonidan",
+    complete: "Tugatilgan",
+
+    // Progress page
+    all: "Barchasi",
+    inProgress: "Davom etmoqda",
+    completed: "Tugatilgan",
+    noProgress: "Hali taraqqiyot yo'q",
+    progressTrackingNote:
+      "Kurslarni tugatish va darslarni o'tish bilan taraqqiyot yangilanadi.",
+    detailedProgressComingSoon:
+      "Batafsil taraqqiyot kuzatish tez orada qo'shiladi.",
+    coursesCompleted: "Tugatilgan kurslar",
+    lessonsCompleted: "Tugatilgan darslar",
+    quizzesPassed: "Topshirilgan testlar",
+    currentStreak: "Joriy seriya",
+    yourStats: "Sizning statistikangiz",
+
+    // Achievements page
+    achievementsSubtitle: "O'qish jarayonida yutuqlarga erishing",
+    upcomingAchievements: "Kelayotgan yutuqlar",
+    comingSoon: "Tez kunda",
+    achievementsComingSoonDesc:
+      "Yutuqlar tizimi ishlab chiqilmoqda va tez orada qo'shiladi.",
+    note: "Eslatma",
+    achievementsNote:
+      "Yutuqlar tizimi hali backend tomonida amalga oshirilmagan. Siz darslarni tugatganingizda, testlardan o'tganingizda va boshqa vazifalarni bajarganingizda, yutuqlarga erishasiz.",
+
+    // Achievement types
+    firstCourse: "Birinchi kurs",
+    firstCourseDesc: "Birinchi kursni tugatish",
+    weekStreak: "Haftalik seriya",
+    weekStreakDesc: "7 kun ketma-ket o'qish",
+    lessonMaster: "Dars ustasi",
+    lessonMasterDesc: "50 ta dars tugatish",
+    quizChampion: "Test chempioni",
+    quizChampionDesc: "20 ta testdan o'tish",
+    fastLearner: "Tez o'quvchi",
+    fastLearnerDesc: "Bir oyda 5 ta kurs tugatish",
   },
 
   // Auth

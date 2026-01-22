@@ -35,12 +35,36 @@ export interface GlobalCoursesResponse {
   };
 }
 
+export interface EnrollmentResponse {
+  success: boolean;
+  enrollment: {
+    id: string;
+    enrolledAt: string;
+    course: {
+      id: string;
+      title: string;
+      slug: string;
+    };
+  };
+}
+
 class CourseAPI {
   async getCourses(): Promise<GlobalCoursesResponse> {
     try {
       return await api.get<GlobalCoursesResponse>(coursesEndpoint);
     } catch (error) {
       logger.error("Error fetching courses:", error);
+      throw error;
+    }
+  }
+
+  async enrollInFreeCourse(courseId: string): Promise<EnrollmentResponse> {
+    try {
+      return await api.post<EnrollmentResponse>(
+        `/student/courses/${courseId}/enroll`
+      );
+    } catch (error) {
+      logger.error("Error enrolling in course:", error);
       throw error;
     }
   }

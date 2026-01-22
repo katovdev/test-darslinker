@@ -123,10 +123,61 @@ export const en: Translations = {
     noEnrolledCourses: "No enrolled courses yet",
     browseAllCourses: "Browse all courses to get started",
     progress: "Progress",
+    progressSubtitle: "Track your progress across your courses",
     free: "Free",
     startLearning: "Start Learning",
     logout: "Logout",
     loggingOut: "Logging out...",
+
+    // Student dashboard
+    myCoursesSubtitle: "View all your enrolled courses and continue learning",
+    searchCourses: "Search courses...",
+    noCoursesFound: "No courses found",
+    tryDifferentSearch: "Try a different search query",
+    startLearningMessage: "Enroll in a course to start learning",
+    browseCourses: "Browse Courses",
+    exploreCoursesMessage: "Explore courses and start learning",
+    modules: "Modules",
+    lessons: "Lessons",
+    minutes: "min",
+    by: "by",
+    complete: "Complete",
+
+    // Progress page
+    all: "All",
+    inProgress: "In Progress",
+    completed: "Completed",
+    noProgress: "No progress yet",
+    progressTrackingNote:
+      "Progress will be tracked as you complete courses and lessons.",
+    detailedProgressComingSoon: "Detailed progress tracking is coming soon.",
+    coursesCompleted: "Courses Completed",
+    lessonsCompleted: "Lessons Completed",
+    quizzesPassed: "Quizzes Passed",
+    currentStreak: "Current Streak",
+    yourStats: "Your Stats",
+
+    // Achievements page
+    achievementsSubtitle: "Unlock achievements as you learn",
+    upcomingAchievements: "Upcoming Achievements",
+    comingSoon: "Coming Soon",
+    achievementsComingSoonDesc:
+      "The achievements system is being developed and will be available soon.",
+    note: "Note",
+    achievementsNote:
+      "The achievements system is not yet implemented on the backend. You will unlock achievements as you complete lessons, pass quizzes, and accomplish other tasks.",
+
+    // Achievement types
+    firstCourse: "First Course",
+    firstCourseDesc: "Complete your first course",
+    weekStreak: "Week Streak",
+    weekStreakDesc: "Learn for 7 consecutive days",
+    lessonMaster: "Lesson Master",
+    lessonMasterDesc: "Complete 50 lessons",
+    quizChampion: "Quiz Champion",
+    quizChampionDesc: "Pass 20 quizzes",
+    fastLearner: "Fast Learner",
+    fastLearnerDesc: "Complete 5 courses in one month",
   },
 
   // Auth

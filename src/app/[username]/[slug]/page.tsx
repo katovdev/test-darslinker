@@ -12,10 +12,13 @@ import {
   CheckCircle,
   Lock,
   Loader2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
 import { courseAPI, type GlobalCourse } from "@/lib/api/courses";
+import { courseContentApi, type ModuleDetail } from "@/lib/api/course-content";
 import { reviewService, type TransformedReview } from "@/services/reviews";
 import { HomeHeader, HomeFooter } from "@/components/home";
 import { StarRating } from "@/components/ui/star-rating";
@@ -25,13 +28,15 @@ import { ReviewsList } from "@/components/course/reviews-list";
 import { ReviewForm } from "@/components/course/review-form";
 import { Button } from "@/components/ui/button";
 
-export default function CourseDetailPage() {
+export default function TeacherCourseDetailPage() {
   const params = useParams();
+  const teacherUsername = params.username as string;
   const slug = params.slug as string;
   const t = useTranslations();
   const { user, isAuthenticated } = useAuth();
 
   const [course, setCourse] = useState<GlobalCourse | null>(null);
+  const [modules, setModules] = useState<ModuleDetail[]>([]);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +44,9 @@ export default function CourseDetailPage() {
   const [isEditingReview, setIsEditingReview] = useState(false);
   const [reviewKey, setReviewKey] = useState(0);
   const [isEnrolling, setIsEnrolling] = useState(false);
+  const [expandedModules, setExpandedModules] = useState<Set<string>>(
+    new Set()
+  );
 
   const handleEnroll = useCallback(async () => {
     if (!course) return;
@@ -71,7 +79,7 @@ export default function CourseDetailPage() {
 
   // Parallel data fetching - load course and prepare review fetch
   useEffect(() => {
-    if (!slug) return;
+    if (!slug || !teacherUsername) return;
 
     const loadData = async () => {
       setIsLoading(true);
@@ -84,8 +92,15 @@ export default function CourseDetailPage() {
           return;
         }
 
+        // Find course by slug
         const foundCourse = response.data.all.find((c) => c.slug === slug);
         if (!foundCourse) {
+          setError(t("course.courseNotFound") || "Course not found");
+          return;
+        }
+
+        // Verify course belongs to the teacher
+        if (foundCourse.teacher.username !== teacherUsername) {
           setError(t("course.courseNotFound") || "Course not found");
           return;
         }
@@ -94,19 +109,38 @@ export default function CourseDetailPage() {
           (c) => c.id === foundCourse.id
         );
 
+        // Fetch course modules/lessons
+        let courseModules: ModuleDetail[] = [];
+        try {
+          const contentResponse = await courseContentApi.getCourseContent(
+            foundCourse.id
+          );
+          if (contentResponse.success && contentResponse.data) {
+            courseModules = contentResponse.data.modules || [];
+          }
+        } catch (err) {
+          console.error("Failed to load course content:", err);
+          // Continue without modules
+        }
+
         // Fetch review in parallel if authenticated
         let review: TransformedReview | null = null;
         if (isAuthenticated) {
-          const reviewResponse = await reviewService.getMyReview(
-            foundCourse.id
-          );
-          if (reviewResponse.success) {
-            review = reviewResponse.data;
+          try {
+            const reviewResponse = await reviewService.getMyReview(
+              foundCourse.id
+            );
+            if (reviewResponse.success) {
+              review = reviewResponse.data;
+            }
+          } catch (err) {
+            // No review yet
           }
         }
 
         // Batch state updates
         setCourse(foundCourse);
+        setModules(courseModules);
         setIsEnrolled(enrolled);
         setMyReview(review);
       } catch (err) {
@@ -118,7 +152,8 @@ export default function CourseDetailPage() {
     };
 
     loadData();
-  }, [slug, isAuthenticated, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, teacherUsername, isAuthenticated]);
 
   const formatDuration = (minutes: number) => {
     if (minutes < 60) return `${minutes} min`;
@@ -141,6 +176,18 @@ export default function CourseDetailPage() {
         setReviewKey((k) => k + 1);
       }
     }
+  };
+
+  const toggleModule = (moduleId: string) => {
+    setExpandedModules((prev) => {
+      const next = new Set(prev);
+      if (next.has(moduleId)) {
+        next.delete(moduleId);
+      } else {
+        next.add(moduleId);
+      }
+      return next;
+    });
   };
 
   if (isLoading) {
@@ -179,15 +226,15 @@ export default function CourseDetailPage() {
           <h1 className="mb-2 text-2xl font-bold text-white">
             {t("course.courseNotFound") || "Course Not Found"}
           </h1>
-          <p className="mb-6 text-gray-400">
+          <p className="mb-6 text-center text-gray-400">
             {error ||
               t("course.notFoundDesc") ||
               "The course you're looking for doesn't exist."}
           </p>
-          <Link href="/courses">
+          <Link href={`/${teacherUsername}`}>
             <Button>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              {t("course.browseCourses") || "Browse Courses"}
+              {t("common.back") || "Back to Teacher"}
             </Button>
           </Link>
         </div>
@@ -202,11 +249,12 @@ export default function CourseDetailPage() {
 
       <main className="mx-auto max-w-6xl px-4 pt-24 pb-20 sm:px-6 lg:px-8">
         <Link
-          href="/courses"
+          href={`/${teacherUsername}`}
           className="mb-6 inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
-          {t("course.browseCourses") || "Back to Courses"}
+          {t("common.back") || "Back to"} {course.teacher.firstName}{" "}
+          {course.teacher.lastName}
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-3">
@@ -264,9 +312,12 @@ export default function CourseDetailPage() {
                   </div>
                 )}
                 <div>
-                  <p className="font-medium text-white">
+                  <Link
+                    href={`/${teacherUsername}`}
+                    className="font-medium text-white hover:text-blue-400"
+                  >
                     {course.teacher.firstName} {course.teacher.lastName}
-                  </p>
+                  </Link>
                   <p className="text-sm text-gray-400">
                     {t("course.teacher") || "Teacher"}
                   </p>
@@ -289,10 +340,72 @@ export default function CourseDetailPage() {
 
               {course.description && (
                 <div className="prose prose-invert max-w-none">
+                  <h2 className="text-xl font-semibold text-white">
+                    {t("course.description") || "Description"}
+                  </h2>
                   <p className="text-gray-300">{course.description}</p>
                 </div>
               )}
             </div>
+
+            {/* Course Content / Modules */}
+            {modules.length > 0 && (
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-white">
+                  {t("course.modules") || "Course Content"}
+                </h2>
+
+                {modules.map((module, idx) => (
+                  <div
+                    key={module.id}
+                    className="rounded-xl border border-gray-800 bg-gray-800/30"
+                  >
+                    <button
+                      onClick={() => toggleModule(module.id)}
+                      className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-gray-800/50"
+                    >
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-white">
+                          {idx + 1}. {module.title}
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-400">
+                          {module.lessons.length}{" "}
+                          {t("course.lessons") || "lessons"}
+                        </p>
+                      </div>
+                      {expandedModules.has(module.id) ? (
+                        <ChevronUp className="h-5 w-5 text-gray-400" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 text-gray-400" />
+                      )}
+                    </button>
+
+                    {expandedModules.has(module.id) && (
+                      <div className="border-t border-gray-800">
+                        {module.lessons.map((lesson, lessonIdx) => (
+                          <div
+                            key={lesson.id}
+                            className="flex items-center gap-3 border-b border-gray-800 p-4 last:border-b-0"
+                          >
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 text-sm text-gray-400">
+                              {lessonIdx + 1}
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm text-white">
+                                {lesson.title}
+                              </p>
+                            </div>
+                            {!isEnrolled && (
+                              <Lock className="h-4 w-4 text-gray-500" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-white">
@@ -448,45 +561,13 @@ export default function CourseDetailPage() {
                   {course.averageRating > 0 && (
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-400">
-                        {t("review.rating") || "Rating"}
+                        {t("course.rating") || "Rating"}
                       </span>
-                      <div className="flex items-center gap-1">
-                        <StarRating rating={course.averageRating} size="sm" />
-                        <span className="text-white">
-                          {course.averageRating.toFixed(1)}
-                        </span>
-                      </div>
+                      <span className="text-white">
+                        {course.averageRating.toFixed(1)} ⭐
+                      </span>
                     </div>
                   )}
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-gray-800 bg-gray-800/30 p-6">
-                <h3 className="mb-4 font-semibold text-white">
-                  {t("course.aboutTeacher") || "About the Teacher"}
-                </h3>
-                <div className="flex items-center gap-3">
-                  {course.teacher.logoUrl ? (
-                    <img
-                      src={course.teacher.logoUrl}
-                      alt={`${course.teacher.firstName} ${course.teacher.lastName}`}
-                      className="h-14 w-14 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-700">
-                      <User className="h-7 w-7 text-gray-400" />
-                    </div>
-                  )}
-                  <div>
-                    <p className="font-medium text-white">
-                      {course.teacher.firstName} {course.teacher.lastName}
-                    </p>
-                    {course.teacher.username && (
-                      <p className="text-sm text-gray-400">
-                        @{course.teacher.username}
-                      </p>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
