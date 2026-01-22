@@ -493,6 +493,7 @@ export const en: Translations = {
     textContent: "Text content",
     quizContent: "Quiz content",
     selectLesson: "Select a lesson to start learning",
+    viewAllLessons: "View All Lessons",
     // Dashboard courses page
     noMoreCourses: "No more courses available",
     checkBackLater: "Check back later for new courses",

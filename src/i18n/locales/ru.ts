@@ -497,6 +497,7 @@ export const ru: Translations = {
     textContent: "Текстовый контент",
     quizContent: "Содержание теста",
     selectLesson: "Выберите урок, чтобы начать обучение",
+    viewAllLessons: "Посмотреть все уроки",
     // Dashboard courses page
     noMoreCourses: "Больше нет доступных курсов",
     checkBackLater: "Проверьте позже для новых курсов",

@@ -157,11 +157,11 @@ export default function StudentCoursePage() {
         {/* Header */}
         <div className="mb-8">
           <Link
-            href="/dashboard/courses"
+            href={`/${username}/${slug}`}
             className="mb-4 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white"
           >
             <ChevronLeft className="h-4 w-4" />
-            {t("course.backToCourses") || "Back to Courses"}
+            {t("course.backToCourse") || "Back to Course"}
           </Link>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -275,7 +275,7 @@ export default function StudentCoursePage() {
                       return (
                         <Link
                           key={lesson.id}
-                          href={`/dashboard/${username}/${slug}/${lesson.slug}`}
+                          href={`/${username}/${slug}/learn/${lesson.slug}`}
                           className="flex items-center gap-4 border-b border-gray-800 p-4 transition-colors last:border-b-0 hover:bg-gray-800/50"
                         >
                           {/* Lesson Number/Status */}

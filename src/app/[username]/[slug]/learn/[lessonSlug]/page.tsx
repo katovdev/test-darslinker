@@ -9,18 +9,13 @@ import {
   ChevronRight,
   CheckCircle,
   FileText,
-  Video,
-  Menu,
-  X,
   Clock,
   Loader2,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { VideoPlayer } from "@/components/ui/video-player";
-import { cn } from "@/lib/utils";
 import { courseContentApi } from "@/lib/api/course-content";
 import type { CourseContentOverview } from "@/lib/api/course-content";
 
@@ -51,7 +46,6 @@ export default function StudentLessonPage() {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(
     new Set()
   );
@@ -128,7 +122,7 @@ export default function StudentLessonPage() {
   }, [getAllLessons, currentLesson]);
 
   const goToLesson = (lesson: LessonWithModule) => {
-    router.push(`/dashboard/${username}/${courseSlug}/${lesson.slug}`);
+    router.push(`/${username}/${courseSlug}/learn/${lesson.slug}`);
   };
 
   const goToPrevious = () => {
@@ -207,7 +201,7 @@ export default function StudentLessonPage() {
         </h1>
         <p className="mb-6 text-gray-400">{error}</p>
         <Button asChild>
-          <Link href={`/dashboard/${username}/${courseSlug}`}>
+          <Link href={`/${username}/${courseSlug}/learn`}>
             {t("course.backToCourse") || "Back to Course"}
           </Link>
         </Button>
@@ -220,135 +214,38 @@ export default function StudentLessonPage() {
   const progress = calculateProgress();
 
   return (
-    <div className="flex min-h-screen bg-gray-900">
-      {/* Mobile sidebar toggle */}
-      <button
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="fixed top-4 left-4 z-50 rounded-lg bg-gray-800 p-2 text-white lg:hidden"
-      >
-        {isSidebarOpen ? (
-          <X className="h-6 w-6" />
-        ) : (
-          <Menu className="h-6 w-6" />
-        )}
-      </button>
-
-      {/* Sidebar */}
-      <aside
-        className={cn(
-          "fixed inset-y-0 left-0 z-40 w-80 transform border-r border-gray-800 bg-gray-900 transition-transform duration-300 lg:relative lg:translate-x-0",
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        <div className="flex h-full flex-col">
-          {/* Course header */}
-          <div className="border-b border-gray-800 p-4">
+    <div className="min-h-screen bg-gray-900">
+      {/* Header with back button */}
+      <div className="border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/80">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
             <Link
-              href={`/dashboard/${username}/${courseSlug}`}
-              className="mb-2 flex items-center gap-2 text-sm text-gray-400 hover:text-white"
+              href={`/${username}/${courseSlug}/learn`}
+              className="flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
             >
               <ChevronLeft className="h-4 w-4" />
               {t("course.backToCourse") || "Back to Course"}
             </Link>
-            <h2 className="line-clamp-2 font-semibold text-white">
-              {course.course.title}
-            </h2>
-          </div>
 
-          {/* Progress */}
-          <div className="border-b border-gray-800 p-4">
-            <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="text-gray-400">
-                {t("course.progress") || "Progress"}
+            <div className="flex items-center gap-4 text-sm text-gray-400">
+              <span>
+                {currentIndex + 1} / {lessons.length}{" "}
+                {t("course.lessons") || "lessons"}
               </span>
-              <span className="font-medium text-white">{progress}%</span>
+              {!completedLessons.has(currentLesson.id) && (
+                <Button onClick={markAsComplete} size="sm">
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  {t("course.markComplete") || "Mark Complete"}
+                </Button>
+              )}
             </div>
-            <Progress value={progress} className="h-2" />
-            <p className="mt-2 text-xs text-gray-500">
-              {completedLessons.size} / {lessons.length}{" "}
-              {t("course.lessonsCompleted") || "lessons completed"}
-            </p>
-          </div>
-
-          {/* Modules & Lessons */}
-          <div className="flex-1 overflow-y-auto p-2">
-            {course.modules.map((courseModule, moduleIndex) => (
-              <div key={courseModule.id} className="mb-4">
-                <div className="mb-2 px-2">
-                  <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
-                    {t("course.module") || "Module"} {moduleIndex + 1}
-                  </h3>
-                  <p className="text-sm font-medium text-white">
-                    {courseModule.title}
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  {courseModule.lessons.map((lesson) => {
-                    const isActive = currentLesson?.id === lesson.id;
-                    const isCompleted = completedLessons.has(lesson.id);
-                    const lessonWithModule: LessonWithModule = {
-                      ...lesson,
-                      moduleId: courseModule.id,
-                      moduleTitle: courseModule.title,
-                    };
-
-                    return (
-                      <button
-                        key={lesson.id}
-                        onClick={() => goToLesson(lessonWithModule)}
-                        className={cn(
-                          "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
-                          isActive
-                            ? "bg-blue-500/10 text-blue-400"
-                            : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            "flex h-6 w-6 shrink-0 items-center justify-center rounded-full",
-                            isCompleted
-                              ? "bg-green-500/20 text-green-400"
-                              : isActive
-                                ? "bg-blue-500/20 text-blue-400"
-                                : "bg-gray-800 text-gray-500"
-                          )}
-                        >
-                          {isCompleted ? (
-                            <CheckCircle className="h-4 w-4" />
-                          ) : (
-                            <Video className="h-3.5 w-3.5" />
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate">{lesson.title}</p>
-                          {lesson.durationMins > 0 && (
-                            <p className="text-xs text-gray-500">
-                              {formatDuration(lesson.durationMins)}
-                            </p>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
-      </aside>
-
-      {/* Mobile overlay */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+      </div>
 
       {/* Main content */}
-      <main className="flex-1 lg:pl-0">
-        <div className="flex min-h-screen flex-col">
+      <main>
+        <div className="flex min-h-[calc(100vh-4rem)] flex-col">
           {/* Video/Content area */}
           <div className="relative bg-black">
             {currentLesson.videoUrl ? (
@@ -372,37 +269,34 @@ export default function StudentLessonPage() {
           </div>
 
           {/* Lesson info */}
-          <div className="flex-1 p-6 lg:p-8">
-            <div className="mx-auto max-w-4xl">
-              <div className="mb-6 flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">
-                    {currentLesson.moduleTitle}
-                  </p>
-                  <h1 className="mt-1 text-2xl font-bold text-white">
-                    {currentLesson.title}
-                  </h1>
-                  <div className="mt-2 flex items-center gap-4 text-sm text-gray-400">
-                    {currentLesson.durationMins > 0 && (
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        {formatDuration(currentLesson.durationMins)}
-                      </span>
-                    )}
-                  </div>
+          <div className="flex-1 bg-gray-900 p-6 lg:p-8">
+            <div className="mx-auto max-w-5xl">
+              <div className="mb-6">
+                <p className="text-sm text-gray-500">
+                  {currentLesson.moduleTitle}
+                </p>
+                <h1 className="mt-2 text-3xl font-bold text-white">
+                  {currentLesson.title}
+                </h1>
+                <div className="mt-3 flex items-center gap-4 text-sm text-gray-400">
+                  {currentLesson.durationMins > 0 && (
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-4 w-4" />
+                      {formatDuration(currentLesson.durationMins)}
+                    </span>
+                  )}
+                  {completedLessons.has(currentLesson.id) && (
+                    <span className="flex items-center gap-1 text-green-400">
+                      <CheckCircle className="h-4 w-4" />
+                      {t("lesson.completed") || "Completed"}
+                    </span>
+                  )}
                 </div>
-
-                {!completedLessons.has(currentLesson.id) && (
-                  <Button onClick={markAsComplete} className="shrink-0">
-                    <CheckCircle className="mr-2 h-4 w-4" />
-                    {t("course.markComplete") || "Mark Complete"}
-                  </Button>
-                )}
               </div>
 
               {/* Text content */}
               {currentLesson.content && (
-                <div className="prose prose-invert max-w-none">
+                <div className="prose prose-invert prose-lg max-w-none">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: currentLesson.content,
@@ -412,27 +306,32 @@ export default function StudentLessonPage() {
               )}
 
               {/* Navigation */}
-              <div className="mt-8 flex items-center justify-between border-t border-gray-800 pt-6">
+              <div className="mt-12 flex items-center justify-between border-t border-gray-800 pt-8">
                 <Button
                   variant="outline"
                   onClick={goToPrevious}
                   disabled={currentIndex === 0}
                   className="border-gray-700"
+                  size="lg"
                 >
-                  <ChevronLeft className="mr-2 h-4 w-4" />
+                  <ChevronLeft className="mr-2 h-5 w-5" />
                   {t("course.previous") || "Previous"}
                 </Button>
 
-                <span className="text-sm text-gray-500">
-                  {currentIndex + 1} / {lessons.length}
-                </span>
+                <Link
+                  href={`/${username}/${courseSlug}/learn`}
+                  className="text-sm text-gray-400 transition-colors hover:text-white"
+                >
+                  {t("course.viewAllLessons") || "View All Lessons"}
+                </Link>
 
                 <Button
                   onClick={goToNext}
                   disabled={currentIndex === lessons.length - 1}
+                  size="lg"
                 >
                   {t("course.next") || "Next"}
-                  <ChevronRight className="ml-2 h-4 w-4" />
+                  <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
             </div>

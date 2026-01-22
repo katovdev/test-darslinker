@@ -59,7 +59,7 @@ export default function TeacherCourseDetailPage() {
         if (response.success) {
           setIsEnrolled(true);
           // Redirect to student course learning page
-          window.location.href = `/dashboard/${teacherUsername}/${course.slug}`;
+          window.location.href = `/${teacherUsername}/${course.slug}/learn`;
         }
       } else {
         // Paid course - redirect to payment page
@@ -507,7 +507,7 @@ export default function TeacherCourseDetailPage() {
 
                 {isEnrolled ? (
                   <Link
-                    href={`/dashboard/${teacherUsername}/${course.slug}`}
+                    href={`/${teacherUsername}/${course.slug}/learn`}
                     className="block"
                   >
                     <Button className="w-full" size="lg">

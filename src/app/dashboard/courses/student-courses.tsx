@@ -204,7 +204,7 @@ function CourseCard({
   formatCurrency: (amount: number) => string;
 }) {
   const href = isEnrolled
-    ? `/dashboard/${course.teacher.username}/${course.slug}`
+    ? `/${course.teacher.username}/${course.slug}/learn`
     : `/${course.teacher.username}/${course.slug}`;
 
   return (

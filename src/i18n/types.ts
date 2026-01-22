@@ -458,6 +458,7 @@ export interface Translations {
     textContent: string;
     quizContent: string;
     selectLesson: string;
+    viewAllLessons: string;
     // Dashboard courses page
     noMoreCourses: string;
     checkBackLater: string;

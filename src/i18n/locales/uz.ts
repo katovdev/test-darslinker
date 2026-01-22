@@ -499,6 +499,7 @@ export const uz: Translations = {
     textContent: "Matnli kontent",
     quizContent: "Test kontenti",
     selectLesson: "Darsni tanlang va o'rganishni boshlang",
+    viewAllLessons: "Barcha darslarni ko'rish",
     // Dashboard courses page
     noMoreCourses: "Boshqa kurslar mavjud emas",
     checkBackLater: "Keyinroq yangi kurslar uchun tekshiring",
