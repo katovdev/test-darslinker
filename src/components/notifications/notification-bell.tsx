@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,23 +23,19 @@ export function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    // Initial fetch
-    fetchNotifications();
-
-    // Poll every 30 seconds
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       const { data: count } = await notificationsApi.getUnreadCount();
       setUnreadCount(count.count);
     } catch (error) {
       console.error("Failed to fetch notification count:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // Fetch on mount only
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const loadNotifications = async () => {
     if (notifications.length > 0) return; // Already loaded
@@ -177,7 +173,7 @@ export function NotificationBell() {
 
         <div className="border-t border-gray-700 p-2">
           <Link
-            href="/me/notifications"
+            href="/dashboard/notifications"
             className="block w-full rounded-lg px-4 py-2 text-center text-sm text-emerald-400 transition-colors hover:bg-gray-700"
             onClick={() => setIsOpen(false)}
           >

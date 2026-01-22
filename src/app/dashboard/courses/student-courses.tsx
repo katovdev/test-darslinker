@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { BookOpen, Loader2, Search, TrendingUp, Layers } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { courseAPI, type GlobalCourse } from "@/lib/api/courses";
@@ -13,7 +13,7 @@ export function StudentCoursesView() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
-  const loadCourses = async () => {
+  const loadCourses = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -30,11 +30,11 @@ export function StudentCoursesView() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadCourses();
-  }, []);
+  }, [loadCourses]);
 
   const filteredCourses = enrolledCourses.filter((course) =>
     course.title.toLowerCase().includes(search.toLowerCase())
