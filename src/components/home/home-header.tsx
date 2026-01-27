@@ -65,16 +65,16 @@ export function HomeHeader() {
       href: "/dashboard",
       label: t("sidebar.dashboard") || "Dashboard",
       icon: LayoutDashboard,
-      color: "text-blue-400 hover:bg-blue-500/10",
+      color: "text-[#7ea2d4] hover:bg-[#7ea2d4]/10",
     };
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#3a3a3b] bg-[#232324]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center">
           <span className="text-xl font-bold text-white">dars</span>
-          <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-xl font-bold text-transparent">
+          <span className="bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] bg-clip-text text-xl font-bold text-transparent">
             linker
           </span>
         </Link>
@@ -86,7 +86,7 @@ export function HomeHeader() {
               <Link
                 key={item.key}
                 href={item.href}
-                className="text-sm font-medium text-gray-400 transition-colors hover:text-white"
+                className="text-sm font-medium text-[#a0a5a8] transition-colors hover:text-white"
               >
                 {t(`home.${item.key}`)}
               </Link>
@@ -98,7 +98,7 @@ export function HomeHeader() {
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
             >
               <span className="text-base">{currentLanguage?.flag}</span>
               <ChevronDown className="h-4 w-4" />
@@ -110,7 +110,7 @@ export function HomeHeader() {
                   className="fixed inset-0 z-10"
                   onClick={() => setLangOpen(false)}
                 />
-                <div className="absolute top-full right-0 z-20 mt-2 w-40 rounded-xl border border-gray-800 bg-gray-900 p-1 shadow-xl">
+                <div className="absolute top-full right-0 z-20 mt-2 w-40 rounded-xl border border-[#3a3a3b] bg-[#232324] p-1 shadow-xl">
                   {languages.map((lang) => (
                     <button
                       key={lang.value}
@@ -120,8 +120,8 @@ export function HomeHeader() {
                       }}
                       className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
                         locale === lang.value
-                          ? "bg-blue-500/10 text-blue-400"
-                          : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                          ? "bg-[#7ea2d4]/10 text-[#7ea2d4]"
+                          : "text-[#a0a5a8] hover:bg-[#2e2e2f] hover:text-white"
                       }`}
                     >
                       <span>{lang.flag}</span>
@@ -139,9 +139,9 @@ export function HomeHeader() {
                 <div className="relative hidden sm:block">
                   <button
                     onClick={() => setProfileOpen(!profileOpen)}
-                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                   >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-white">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] text-sm font-medium text-white">
                       {getInitials()}
                     </div>
                     <span className="hidden text-white lg:inline">
@@ -156,19 +156,19 @@ export function HomeHeader() {
                         className="fixed inset-0 z-10"
                         onClick={() => setProfileOpen(false)}
                       />
-                      <div className="absolute top-full right-0 z-20 mt-2 w-56 rounded-xl border border-gray-800 bg-gray-900 p-1 shadow-xl">
-                        <div className="border-b border-gray-800 px-3 py-3">
+                      <div className="absolute top-full right-0 z-20 mt-2 w-56 rounded-xl border border-[#3a3a3b] bg-[#232324] p-1 shadow-xl">
+                        <div className="border-b border-[#3a3a3b] px-3 py-3">
                           <p className="font-medium text-white">
                             {user.firstName} {user.lastName}
                           </p>
-                          <p className="text-sm text-gray-400">{user.phone}</p>
+                          <p className="text-sm text-[#a0a5a8]">{user.phone}</p>
                         </div>
 
                         <div className="py-1">
                           <Link
                             href="/me"
                             onClick={() => setProfileOpen(false)}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                           >
                             <User className="h-4 w-4" />
                             {t("sidebar.profile") || "Profile"}
@@ -179,7 +179,7 @@ export function HomeHeader() {
                             <Link
                               href="/me/courses"
                               onClick={() => setProfileOpen(false)}
-                              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                             >
                               <LayoutDashboard className="h-4 w-4" />
                               {t("sidebar.myCourses") || "My Courses"}
@@ -189,7 +189,7 @@ export function HomeHeader() {
                           <Link
                             href="/courses"
                             onClick={() => setProfileOpen(false)}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                           >
                             <BookOpen className="h-4 w-4" />
                             {t("sidebar.browseCourses") || "Browse Courses"}
@@ -213,7 +213,7 @@ export function HomeHeader() {
                           })()}
                         </div>
 
-                        <div className="border-t border-gray-800 py-1">
+                        <div className="border-t border-[#3a3a3b] py-1">
                           <button
                             onClick={handleLogout}
                             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10"
@@ -230,13 +230,13 @@ export function HomeHeader() {
                 <>
                   <Link
                     href="/login"
-                    className="hidden rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 sm:inline-flex"
+                    className="hidden rounded-lg border border-[#3a3a3b] bg-[#2e2e2f] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[#4a4a4b] hover:bg-[#3a3a3b] sm:inline-flex"
                   >
                     {t("auth.login")}
                   </Link>
                   <Link
                     href="/login"
-                    className="hidden rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 sm:inline-flex"
+                    className="hidden rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 sm:inline-flex"
                   >
                     {t("home.getStarted")}
                   </Link>
@@ -247,7 +247,7 @@ export function HomeHeader() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white md:hidden"
+            className="rounded-lg p-2 text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white md:hidden"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -255,7 +255,7 @@ export function HomeHeader() {
       </div>
 
       {isOpen && (
-        <div className="border-t border-gray-800 bg-gray-900 md:hidden">
+        <div className="border-t border-[#3a3a3b] bg-[#232324] md:hidden">
           <nav className="flex flex-col p-4">
             {/* Only show public nav items when NOT authenticated */}
             {!isAuthenticated &&
@@ -264,30 +264,30 @@ export function HomeHeader() {
                   key={item.key}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                  className="rounded-lg px-4 py-3 text-sm font-medium text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                 >
                   {t(`home.${item.key}`)}
                 </Link>
               ))}
 
-            <div className="mt-4 flex flex-col gap-2 border-t border-gray-800 pt-4">
+            <div className="mt-4 flex flex-col gap-2 border-t border-[#3a3a3b] pt-4">
               {!isLoading && isAuthenticated && user ? (
                 <>
                   <div className="mb-2 flex items-center gap-3 px-4 py-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 font-medium text-white">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] font-medium text-white">
                       {getInitials()}
                     </div>
                     <div>
                       <p className="font-medium text-white">
                         {user.firstName} {user.lastName}
                       </p>
-                      <p className="text-sm text-gray-400">{user.phone}</p>
+                      <p className="text-sm text-[#a0a5a8]">{user.phone}</p>
                     </div>
                   </div>
                   <Link
                     href="/me"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                   >
                     <User className="h-4 w-4" />
                     {t("sidebar.profile") || "Profile"}
@@ -298,7 +298,7 @@ export function HomeHeader() {
                     <Link
                       href="/me/courses"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                      className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       {t("sidebar.myCourses") || "My Courses"}
@@ -308,7 +308,7 @@ export function HomeHeader() {
                   <Link
                     href="/courses"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[#a0a5a8] transition-colors hover:bg-[#2e2e2f] hover:text-white"
                   >
                     <BookOpen className="h-4 w-4" />
                     {t("sidebar.browseCourses") || "Browse Courses"}
@@ -346,14 +346,14 @@ export function HomeHeader() {
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-center text-sm font-medium text-white transition-colors hover:border-gray-600"
+                    className="rounded-lg border border-[#3a3a3b] bg-[#2e2e2f] px-4 py-3 text-center text-sm font-medium text-white transition-colors hover:border-[#4a4a4b]"
                   >
                     {t("auth.login")}
                   </Link>
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3 text-center text-sm font-medium text-white shadow-lg shadow-blue-500/25"
+                    className="rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-3 text-center text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25"
                   >
                     {t("home.getStarted")}
                   </Link>
