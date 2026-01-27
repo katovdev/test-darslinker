@@ -1,6 +1,6 @@
 export const config = {
   app: {
-    name: "Dars Linker",
+    name: "Darslinker",
     description: "O'zbekiston EdTech Platformasi",
     version: "1.0.0",
   },

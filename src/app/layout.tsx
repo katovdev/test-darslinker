@@ -5,11 +5,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://darslinker.uz"),
   title: {
-    default: "Dars Linker - O'zbekiston EdTech Platformasi",
-    template: "%s | Dars Linker",
+    default: "Darslinker - O'zbekiston EdTech Platformasi",
+    template: "%s | Darslinker",
   },
   description:
-    "Dars Linker - O'zbekistonning yetakchi ta'lim platformasi. Online kurslar, darsliklar va o'qituvchilar bilan o'z bilimingizni oshiring.",
+    "Darslinker - O'zbekistonning yetakchi ta'lim platformasi. Online kurslar, darsliklar va o'qituvchilar bilan o'z bilimingizni oshiring.",
   keywords: [
     "online kurslar",
     "o'zbek tilida ta'lim",
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     "kurslar",
     "o'qituvchilar",
   ],
-  authors: [{ name: "Dars Linker" }],
-  creator: "Dars Linker",
-  publisher: "Dars Linker",
+  authors: [{ name: "Darslinker" }],
+  creator: "Darslinker",
+  publisher: "Darslinker",
   robots: {
     index: true,
     follow: true,
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     locale: "uz_UZ",
     alternateLocale: ["ru_RU", "en_US"],
     url: "https://darslinker.uz",
-    siteName: "Dars Linker",
-    title: "Dars Linker - O'zbekiston EdTech Platformasi",
+    siteName: "Darslinker",
+    title: "Darslinker - O'zbekiston EdTech Platformasi",
     description:
       "Online kurslar, darsliklar va o'qituvchilar bilan o'z bilimingizni oshiring.",
     images: [
@@ -48,13 +48,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Dars Linker",
+        alt: "Darslinker",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dars Linker - O'zbekiston EdTech Platformasi",
+    title: "Darslinker - O'zbekiston EdTech Platformasi",
     description:
       "Online kurslar, darsliklar va o'qituvchilar bilan o'z bilimingizni oshiring.",
     images: ["/og-image.png"],
