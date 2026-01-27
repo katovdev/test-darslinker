@@ -42,7 +42,7 @@ export function HomeFooter() {
         <div className="grid gap-8 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-1">
+            <Link href="/" className="inline-flex items-center">
               <span className="text-xl font-bold text-white">dars</span>
               <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-xl font-bold text-transparent">
                 linker

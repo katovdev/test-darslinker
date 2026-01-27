@@ -72,7 +72,7 @@ export function HomeHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-900/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-1">
+        <Link href="/" className="flex items-center">
           <span className="text-xl font-bold text-white">dars</span>
           <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-xl font-bold text-transparent">
             linker
