@@ -1,9 +1,10 @@
 export const apiConfig = {
-  baseUrl: "https://api.darslinker.uz/api",
+  baseUrl:
+    process.env.NEXT_PUBLIC_API_URL || "https://api.darslinker.uz/api",
   timeout: 15000,
   retryAttempts: 2,
   retryDelay: 2000,
-} as const;
+};
 
 export const authEndpoints = {
   requestOtp: "auth",
