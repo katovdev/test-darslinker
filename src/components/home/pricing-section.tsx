@@ -138,15 +138,9 @@ export function PricingSection() {
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <div className="text-center">
-          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-500">
-            {t("pricing.title")}
-          </span>
-          <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-            {t("pricing.title")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
             {t("pricing.subtitle")}
-          </p>
+          </h2>
         </div>
 
         {/* Pricing Cards */}
