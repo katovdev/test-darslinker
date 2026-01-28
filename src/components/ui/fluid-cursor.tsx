@@ -1089,7 +1089,7 @@ export function FluidCursor() {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
+      // Don't prevent default - allow scrolling on mobile
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1197,7 +1197,7 @@ export function FluidCursor() {
     }
 
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("resize", resizeCanvas);
 
     update();
