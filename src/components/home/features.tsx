@@ -61,18 +61,18 @@ export function Features() {
   return (
     <section className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-gray-900 via-gray-900/95 to-gray-800" />
+      <div className="absolute inset-0 -z-10 bg-background" />
 
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <div className="text-center">
-          <span className="inline-block rounded-full bg-blue-500/10 px-4 py-1.5 text-sm font-medium text-blue-400">
+          <span className="inline-block rounded-full bg-blue-500/10 px-4 py-1.5 text-sm font-medium text-blue-500">
             {t("home.featuresLabel") || "Features"}
           </span>
-          <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
             {t("home.featuresTitle")}
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             {t("home.featuresSubtitle")}
           </p>
         </div>
@@ -82,7 +82,7 @@ export function Features() {
           {features.map((feature, index) => (
             <div
               key={feature.key}
-              className="group relative rounded-2xl border border-gray-800 bg-gray-800/30 p-6 transition-all duration-300 hover:border-gray-700 hover:bg-gray-800/50"
+              className="group relative rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
             >
               {/* Gradient hover effect */}
               <div
@@ -97,15 +97,15 @@ export function Features() {
               </div>
 
               {/* Content */}
-              <h3 className="mb-2 text-lg font-semibold text-white">
+              <h3 className="mb-2 text-lg font-semibold text-foreground">
                 {t(`home.${feature.key}`)}
               </h3>
-              <p className="leading-relaxed text-gray-400">
+              <p className="leading-relaxed text-muted-foreground">
                 {t(`home.${feature.key}Desc`)}
               </p>
 
               {/* Number indicator */}
-              <div className="absolute top-6 right-6 text-4xl font-bold text-gray-800/50">
+              <div className="absolute top-6 right-6 text-4xl font-bold text-muted/30">
                 {String(index + 1).padStart(2, "0")}
               </div>
             </div>

@@ -18,18 +18,18 @@ export function Hero() {
       <div className="mx-auto max-w-6xl">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="text-center lg:text-left">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#3a3a3b] bg-[#2e2e2f]/50 px-4 py-1.5">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-1.5">
               <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-              <span className="text-sm text-[#c0c5c8]">
+              <span className="text-sm text-foreground">
                 {t("home.heroBadge") || "Platform for modern education"}
               </span>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               {t("home.heroTitle")}
             </h1>
 
-            <p className="mt-6 text-lg leading-relaxed text-[#a0a5a8] lg:text-xl">
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground lg:text-xl">
               {t("home.heroSubtitle")}
             </p>
 
@@ -44,7 +44,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#3a3a3b] bg-[#2e2e2f]/50 px-8 py-4 font-semibold text-white transition-all hover:border-gray-600 hover:bg-[#2e2e2f]"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary px-8 py-4 font-semibold text-foreground transition-all hover:border-primary hover:bg-secondary/80"
               >
                 <Play className="h-5 w-5" />
                 {t("home.viewPricing")}
@@ -52,31 +52,31 @@ export function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-6 border-t border-[#3a3a3b] pt-8">
+            <div className="mt-12 grid grid-cols-3 gap-6 border-t border-border pt-8">
               <div>
                 <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <Users className="h-5 w-5 text-[#7ea2d4]" />
-                  <span className="text-2xl font-bold text-white">500+</span>
+                  <Users className="h-5 w-5 text-primary" />
+                  <span className="text-2xl font-bold text-foreground">500+</span>
                 </div>
-                <p className="mt-1 text-sm text-[#8a8f92]">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {t("home.statStudents") || "Students"}
                 </p>
               </div>
               <div>
                 <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <BookOpen className="h-5 w-5 text-green-400" />
-                  <span className="text-2xl font-bold text-white">50+</span>
+                  <BookOpen className="h-5 w-5 text-green-500" />
+                  <span className="text-2xl font-bold text-foreground">50+</span>
                 </div>
-                <p className="mt-1 text-sm text-[#8a8f92]">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {t("home.statCourses") || "Courses"}
                 </p>
               </div>
               <div>
                 <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <Award className="h-5 w-5 text-yellow-400" />
-                  <span className="text-2xl font-bold text-white">100+</span>
+                  <Award className="h-5 w-5 text-yellow-500" />
+                  <span className="text-2xl font-bold text-foreground">100+</span>
                 </div>
-                <p className="mt-1 text-sm text-[#8a8f92]">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {t("home.statCertificates") || "Certificates"}
                 </p>
               </div>
@@ -87,13 +87,13 @@ export function Hero() {
           <div className="relative hidden lg:block">
             <div className="relative">
               {/* Main card */}
-              <div className="rounded-2xl border border-[#3a3a3b]/50 bg-gradient-to-b from-[#2e2e2f] to-[#232324] p-6 shadow-2xl">
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl">
                 {/* Course preview mockup */}
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500" />
                   <div>
-                    <div className="h-3 w-32 rounded bg-[#3a3a3b]" />
-                    <div className="mt-2 h-2 w-24 rounded bg-[#2e2e2f]" />
+                    <div className="h-3 w-32 rounded bg-muted" />
+                    <div className="mt-2 h-2 w-24 rounded bg-secondary" />
                   </div>
                 </div>
 
@@ -102,10 +102,10 @@ export function Hero() {
                   {[85, 60, 40].map((progress, i) => (
                     <div key={i} className="space-y-1">
                       <div className="flex justify-between text-xs">
-                        <span className="text-[#a0a5a8]">Lesson {i + 1}</span>
-                        <span className="text-[#8a8f92]">{progress}%</span>
+                        <span className="text-muted-foreground">Lesson {i + 1}</span>
+                        <span className="text-muted-foreground">{progress}%</span>
                       </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-[#2e2e2f]">
+                      <div className="h-2 overflow-hidden rounded-full bg-secondary">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#92b4dc]"
                           style={{ width: `${progress}%` }}
@@ -116,28 +116,28 @@ export function Hero() {
                 </div>
 
                 {/* Bottom stats */}
-                <div className="mt-6 grid grid-cols-3 gap-4 border-t border-[#3a3a3b] pt-4">
+                <div className="mt-6 grid grid-cols-3 gap-4 border-t border-border pt-4">
                   <div className="text-center">
-                    <p className="text-lg font-semibold text-white">12</p>
-                    <p className="text-xs text-[#8a8f92]">Videos</p>
+                    <p className="text-lg font-semibold text-foreground">12</p>
+                    <p className="text-xs text-muted-foreground">Videos</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-lg font-semibold text-white">4.8</p>
-                    <p className="text-xs text-[#8a8f92]">Rating</p>
+                    <p className="text-lg font-semibold text-foreground">4.8</p>
+                    <p className="text-xs text-muted-foreground">Rating</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-lg font-semibold text-white">2h</p>
-                    <p className="text-xs text-[#8a8f92]">Duration</p>
+                    <p className="text-lg font-semibold text-foreground">2h</p>
+                    <p className="text-xs text-muted-foreground">Duration</p>
                   </div>
                 </div>
               </div>
 
               {/* Floating elements */}
-              <div className="absolute top-1/4 -left-4 rounded-xl border border-[#3a3a3b] bg-[#2e2e2f] p-3 shadow-lg">
+              <div className="absolute top-1/4 -left-4 rounded-xl border border-border bg-card p-3 shadow-lg">
                 <div className="flex items-center gap-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500/20">
                     <svg
-                      className="h-4 w-4 text-green-400"
+                      className="h-4 w-4 text-green-500"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -150,16 +150,16 @@ export function Hero() {
                       />
                     </svg>
                   </div>
-                  <span className="text-sm text-[#c0c5c8]">Completed!</span>
+                  <span className="text-sm text-foreground">Completed!</span>
                 </div>
               </div>
 
-              <div className="absolute -right-4 bottom-1/4 rounded-xl border border-[#3a3a3b] bg-[#2e2e2f] p-3 shadow-lg">
+              <div className="absolute -right-4 bottom-1/4 rounded-xl border border-border bg-card p-3 shadow-lg">
                 <div className="flex items-center gap-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20">
-                    <Award className="h-4 w-4 text-yellow-400" />
+                    <Award className="h-4 w-4 text-yellow-500" />
                   </div>
-                  <span className="text-sm text-[#c0c5c8]">New Badge!</span>
+                  <span className="text-sm text-foreground">New Badge!</span>
                 </div>
               </div>
             </div>

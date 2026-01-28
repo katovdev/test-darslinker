@@ -51,31 +51,31 @@ export function ContactForm() {
   return (
     <section className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       {/* Background with gradient */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-gray-800 to-gray-900" />
+      <div className="absolute inset-0 -z-10 bg-secondary/30" />
 
       <div className="mx-auto max-w-3xl">
         {/* Section Header */}
         <div className="text-center">
-          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-400">
+          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-500">
             {t("home.contactLabel") || "Contact"}
           </span>
-          <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
             {t("home.contactTitle")}
           </h2>
-          <p className="mt-4 text-lg text-gray-400">
+          <p className="mt-4 text-lg text-muted-foreground">
             {t("home.contactSubtitle")}
           </p>
         </div>
 
         {/* Contact Form */}
         <form onSubmit={handleSubmit} className="mt-12">
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm sm:p-8">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-lg sm:p-8">
             <div className="grid gap-6 sm:grid-cols-2">
               {/* Name */}
               <div>
                 <label
                   htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-gray-300"
+                  className="mb-2 block text-sm font-medium text-foreground"
                 >
                   {t("home.contactName")}
                 </label>
@@ -87,7 +87,7 @@ export function ContactForm() {
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder={t("home.contactName")}
-                  className="w-full rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -95,14 +95,14 @@ export function ContactForm() {
               <div>
                 <label
                   htmlFor="phone"
-                  className="mb-2 block text-sm font-medium text-gray-300"
+                  className="mb-2 block text-sm font-medium text-foreground"
                 >
                   {t("home.contactPhone")}
                 </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-4">
                     <span className="text-lg">🇺🇿</span>
-                    <span className="text-sm text-gray-500">+998</span>
+                    <span className="text-sm text-muted-foreground">+998</span>
                   </div>
                   <input
                     id="phone"
@@ -110,7 +110,7 @@ export function ContactForm() {
                     value={formData.phone}
                     onChange={handlePhoneChange}
                     placeholder="XX XXX XX XX"
-                    className="w-full rounded-xl border border-gray-700 bg-gray-800/50 py-3 pr-4 pl-24 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-input bg-background py-3 pr-4 pl-24 text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -120,7 +120,7 @@ export function ContactForm() {
             <div className="mt-6">
               <label
                 htmlFor="message"
-                className="mb-2 block text-sm font-medium text-gray-300"
+                className="mb-2 block text-sm font-medium text-foreground"
               >
                 {t("home.contactMessage")}
               </label>
@@ -132,7 +132,7 @@ export function ContactForm() {
                 }
                 rows={5}
                 placeholder={t("home.contactMessage")}
-                className="w-full resize-none rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -140,7 +140,7 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               {isLoading ? (
                 <>
