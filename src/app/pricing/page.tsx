@@ -254,22 +254,8 @@ export default function PricingPage() {
                   )}
                 </div>
 
-                {/* CTA Button */}
-                <Link
-                  href="/register"
-                  className={`mb-6 inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
-                    plan.recommended
-                      ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
-                      : "border border-border bg-secondary text-foreground hover:border-primary hover:bg-secondary/80"
-                  }`}
-                >
-                  {plan.price === "custom"
-                    ? t("pricing.contactUs")
-                    : t("pricing.choosePlan")}
-                </Link>
-
                 {/* Features */}
-                <ul className="flex-1 space-y-3">
+                <ul className="mb-6 flex-1 space-y-3">
                   {plan.features.map((feature) => (
                     <li
                       key={feature.key}
@@ -282,6 +268,20 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
+
+                {/* CTA Button */}
+                <Link
+                  href="/register"
+                  className={`inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
+                    plan.recommended
+                      ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
+                      : "border border-border bg-secondary text-foreground hover:border-primary hover:bg-secondary/80"
+                  }`}
+                >
+                  {plan.price === "custom"
+                    ? t("pricing.contactUs")
+                    : t("pricing.choosePlan")}
+                </Link>
               </div>
             ))}
           </div>
