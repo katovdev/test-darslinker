@@ -6,6 +6,7 @@ import { useTranslations } from "@/hooks/use-locale";
 
 interface PlanFeature {
   key: string;
+  label: string;
   included: boolean | string;
 }
 
@@ -22,14 +23,14 @@ const plans: Plan[] = [
     nameKey: "planMinimal",
     price: "470,000",
     displayFeatures: [
-      { key: "courses", included: "2" },
-      { key: "admins", included: "3" },
-      { key: "students", included: "unlimited" },
-      { key: "videoLessons", included: true },
-      { key: "quizSystem", included: true },
-      { key: "progressTracking", included: true },
-      { key: "telegramBot", included: true },
-      { key: "basicSupport", included: true },
+      { key: "courses", label: "Kurslar", included: "2" },
+      { key: "admins", label: "Adminlar", included: "3" },
+      { key: "students", label: "O'quvchilar", included: "unlimited" },
+      { key: "videoLessons", label: "Video darslar", included: true },
+      { key: "quizSystem", label: "Quiz tizimi", included: true },
+      { key: "progressTracking", label: "Progress kuzatuvi", included: true },
+      { key: "telegramBot", label: "Telegram bot", included: true },
+      { key: "basicSupport", label: "Texnik yordam", included: true },
     ],
   },
   {
@@ -38,12 +39,12 @@ const plans: Plan[] = [
     recommended: true,
     includesAllFrom: "planMinimal",
     displayFeatures: [
-      { key: "courses", included: "4" },
-      { key: "admins", included: "6" },
-      { key: "students", included: "unlimited" },
-      { key: "certificates", included: true },
-      { key: "download", included: true },
-      { key: "analytics", included: true },
+      { key: "courses", label: "Kurslar", included: "4" },
+      { key: "admins", label: "Adminlar", included: "6" },
+      { key: "students", label: "O'quvchilar", included: "unlimited" },
+      { key: "certificates", label: "Sertifikatlar", included: true },
+      { key: "download", label: "Yuklab olish", included: true },
+      { key: "analytics", label: "Tahlil va hisobotlar", included: true },
     ],
   },
   {
@@ -51,12 +52,12 @@ const plans: Plan[] = [
     price: "1,270,000",
     includesAllFrom: "planStandard",
     displayFeatures: [
-      { key: "courses", included: "8" },
-      { key: "admins", included: "12" },
-      { key: "students", included: "unlimited" },
-      { key: "customBranding", included: true },
-      { key: "prioritySupport", included: true },
-      { key: "apiAccess", included: true },
+      { key: "courses", label: "Kurslar", included: "8" },
+      { key: "admins", label: "Adminlar", included: "12" },
+      { key: "students", label: "O'quvchilar", included: "unlimited" },
+      { key: "customBranding", label: "O'z brendingiz", included: true },
+      { key: "prioritySupport", label: "Tezkor texnik yordam", included: true },
+      { key: "apiAccess", label: "API kirish", included: true },
     ],
   },
   {
@@ -64,11 +65,11 @@ const plans: Plan[] = [
     price: "custom",
     includesAllFrom: "planPro",
     displayFeatures: [
-      { key: "courses", included: "unlimited" },
-      { key: "admins", included: "unlimited" },
-      { key: "students", included: "unlimited" },
-      { key: "dedicatedSupport", included: true },
-      { key: "customIntegration", included: true },
+      { key: "courses", label: "Kurslar", included: "unlimited" },
+      { key: "admins", label: "Adminlar", included: "unlimited" },
+      { key: "students", label: "O'quvchilar", included: "unlimited" },
+      { key: "dedicatedSupport", label: "Maxsus texnik yordam", included: true },
+      { key: "customIntegration", label: "Maxsus integratsiya", included: true },
     ],
   },
 ];
@@ -162,26 +163,39 @@ export function PricingSection() {
                 )}
               </div>
 
-              {/* Features - Scrollable */}
-              <ul className="mb-6 space-y-3">
-                {/* Show "includes all from" message if applicable */}
-                {plan.includesAllFrom && (
-                  <li className="flex items-start gap-2 rounded-lg bg-primary/5 p-2 text-xs text-primary">
-                    <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-                    <span>
-                      {t(`pricing.${plan.includesAllFrom}`)} {t("pricing.allFeatures") || "ning barcha imkoniyatlari"}
-                    </span>
-                  </li>
-                )}
-
-                {/* Show only new features for this plan */}
-                {plan.displayFeatures.map((feature) => (
+              {/* Features */}
+              <ul className="mb-6 flex-1 space-y-3">
+                {/* Show first 3 features (courses, admins, students) */}
+                {plan.displayFeatures.slice(0, 3).map((feature) => (
                   <li
                     key={feature.key}
                     className="flex items-center justify-between text-sm"
                   >
                     <span className="text-muted-foreground">
-                      {t(`pricing.${feature.key}`)}
+                      {feature.label}
+                    </span>
+                    {renderFeatureValue(feature)}
+                  </li>
+                ))}
+
+                {/* Show "includes all from" message after students row */}
+                {plan.includesAllFrom && (
+                  <li className="flex items-start gap-2 rounded-lg bg-primary/5 p-2 text-xs text-primary">
+                    <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+                    <span>
+                      {t(`pricing.${plan.includesAllFrom}`)} ning barcha imkoniyatlari
+                    </span>
+                  </li>
+                )}
+
+                {/* Show remaining features */}
+                {plan.displayFeatures.slice(3).map((feature) => (
+                  <li
+                    key={feature.key}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <span className="text-muted-foreground">
+                      {feature.label}
                     </span>
                     {renderFeatureValue(feature)}
                   </li>
@@ -191,13 +205,13 @@ export function PricingSection() {
               {/* CTA Button - Goes to full pricing page */}
               <Link
                 href="/pricing"
-                className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
+                className={`mt-auto inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
                   plan.recommended
                     ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
                     : "border border-border bg-secondary text-foreground hover:border-primary hover:bg-secondary/80"
                 }`}
               >
-                {t("pricing.viewDetails") || "Batafsil"}
+                Batafsil
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
