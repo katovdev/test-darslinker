@@ -1133,11 +1133,11 @@ export function FluidCursor() {
     }
 
     function generateColor() {
-      // Use our blue color #7ea2d4 (126, 162, 212) - very low opacity
+      // Use our blue color #7ea2d4 (126, 162, 212) - low opacity
       return {
-        r: (126 / 255) * 0.04,
-        g: (162 / 255) * 0.04,
-        b: (212 / 255) * 0.04,
+        r: (126 / 255) * 0.06,
+        g: (162 / 255) * 0.06,
+        b: (212 / 255) * 0.06,
       };
     }
 
