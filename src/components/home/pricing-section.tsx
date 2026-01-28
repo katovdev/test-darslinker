@@ -165,35 +165,8 @@ export function PricingSection() {
 
               {/* Features */}
               <ul className="mb-6 flex-1 space-y-3">
-                {/* Show first 3 features (courses, admins, students) */}
-                {plan.displayFeatures.slice(0, 3).map((feature) => (
-                  <li
-                    key={feature.key}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <span className="text-muted-foreground">
-                      {feature.label}
-                    </span>
-                    {renderFeatureValue(feature)}
-                  </li>
-                ))}
-
-                {/* Show "includes all from" message after students row */}
-                {plan.includesAllFrom && (
-                  <li className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      {plan.includesAllFrom === "planMinimal" && "Minimaldagi imkoniyatlar"}
-                      {plan.includesAllFrom === "planStandard" && "Standartdagi imkoniyatlar"}
-                      {plan.includesAllFrom === "planPro" && "Prodagi imkoniyatlar"}
-                    </span>
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/20">
-                      <Check className="h-3 w-3 text-green-500" />
-                    </div>
-                  </li>
-                )}
-
-                {/* Show remaining features */}
-                {plan.displayFeatures.slice(3).map((feature) => (
+                {/* Show all features */}
+                {plan.displayFeatures.map((feature) => (
                   <li
                     key={feature.key}
                     className="flex items-center justify-between text-sm"
@@ -228,7 +201,7 @@ export function PricingSection() {
             href="/pricing"
             className="inline-flex items-center gap-2 text-primary transition-colors hover:text-primary/80"
           >
-            {t("pricing.viewAllPlans") || "Barcha tariflarni ko'rish"}
+            Barcha tariflar
             <ArrowRight className="h-4 w-4 transition-transform hover:translate-x-1" />
           </Link>
         </div>

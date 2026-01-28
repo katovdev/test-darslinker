@@ -20,11 +20,11 @@ import { logout as authLogout } from "@/services/auth";
 import type { Locale } from "@/i18n";
 
 const navItems = [
-  { href: "/", key: "navHome" },
-  { href: "/#features", key: "navFeatures" },
-  { href: "/#pricing", key: "navPricing" },
-  { href: "/#blog", key: "navBlog" },
-  { href: "/#contact", key: "navContact" },
+  { href: "/", label: "Asosiy" },
+  { href: "/#features", label: "Imkoniyatlar" },
+  { href: "/#pricing", label: "Narxlar" },
+  { href: "/#blog", label: "Ma'qola" },
+  { href: "/#contact", label: "Aloqa" },
 ];
 
 const languages: { value: Locale; label: string; flag: string }[] = [
@@ -86,11 +86,11 @@ export function HomeHeader() {
           <nav className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
               <Link
-                key={item.key}
+                key={item.label}
                 href={item.href}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                {t(`home.${item.key}`)}
+                {item.label}
               </Link>
             ))}
           </nav>
@@ -263,12 +263,12 @@ export function HomeHeader() {
             {!isAuthenticated &&
               navItems.map((item) => (
                 <Link
-                  key={item.key}
+                  key={item.label}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className="rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 >
-                  {t(`home.${item.key}`)}
+                  {item.label}
                 </Link>
               ))}
 
