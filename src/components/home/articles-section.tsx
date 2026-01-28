@@ -9,10 +9,13 @@ export function ArticlesSection() {
   const t = useTranslations();
 
   return (
-    <section className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section
+      id="blog"
+      className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
+      style={{ scrollMarginTop: "100px" }}
+    >
       <div className="mx-auto max-w-7xl">
         <div
-          id="blog"
           className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
           style={{ backgroundColor: "#232324" }}
         >
