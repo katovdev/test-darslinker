@@ -112,19 +112,20 @@ export function PricingSection() {
       className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
       style={{ scrollMarginTop: "100px" }}
     >
-      {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-secondary/30" />
+      <div className="mx-auto max-w-[1400px]">
+        <div
+          className="rounded-[40px] border-2 border-border px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+        >
+          <div className="mx-auto">
+            {/* Section header */}
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
+                {t("pricing.subtitle")}
+              </h2>
+            </div>
 
-      <div className="mx-auto max-w-6xl">
-        {/* Section header */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-            {t("pricing.subtitle")}
-          </h2>
-        </div>
-
-        {/* Pricing Cards */}
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {/* Pricing Cards */}
+            <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan) => (
             <div
               key={plan.nameKey}
@@ -197,17 +198,19 @@ export function PricingSection() {
               </Link>
             </div>
           ))}
-        </div>
+            </div>
 
-        {/* View All Pricing Link */}
-        <div className="mt-12 text-center">
-          <Link
-            href="/pricing"
-            className="inline-flex items-center gap-2 text-primary transition-colors hover:text-primary/80"
-          >
-            Barcha tariflar
-            <ArrowRight className="h-4 w-4 transition-transform hover:translate-x-1" />
-          </Link>
+            {/* View All Pricing Link */}
+            <div className="mt-12 text-center">
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 text-primary transition-colors hover:text-primary/80"
+              >
+                Barcha tariflar
+                <ArrowRight className="h-4 w-4 transition-transform hover:translate-x-1" />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
