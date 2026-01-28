@@ -59,57 +59,55 @@ export function Features() {
   const t = useTranslations();
 
   return (
-    <section id="features" className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-      {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-background" />
-
-      <div className="mx-auto max-w-6xl">
-        {/* Section header */}
-        <div className="text-center">
-          <span className="inline-block rounded-full bg-blue-500/10 px-4 py-1.5 text-sm font-medium text-blue-500">
-            {t("home.featuresLabel") || "Features"}
-          </span>
-          <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-            {t("home.featuresTitle")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            {t("home.featuresSubtitle")}
-          </p>
-        </div>
-
-        {/* Features grid */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, index) => (
-            <div
-              key={feature.key}
-              className="group relative rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
-            >
-              {/* Gradient hover effect */}
-              <div
-                className={`absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-10`}
-              />
-
-              {/* Icon */}
-              <div
-                className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.bgColor}`}
-              >
-                <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
-              </div>
-
-              {/* Content */}
-              <h3 className="mb-2 text-lg font-semibold text-foreground">
-                {t(`home.${feature.key}`)}
-              </h3>
-              <p className="leading-relaxed text-muted-foreground">
-                {t(`home.${feature.key}Desc`)}
+    <section className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div className="mx-auto max-w-7xl">
+        <div
+          id="features"
+          className="rounded-3xl px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          style={{ backgroundColor: "#7ea2d4" }}
+        >
+          <div className="mx-auto max-w-6xl">
+            {/* Section header */}
+            <div className="text-center">
+              <span className="inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-medium text-white">
+                {t("home.featuresLabel") || "Features"}
+              </span>
+              <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+                {t("home.featuresTitle")}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+                {t("home.featuresSubtitle")}
               </p>
-
-              {/* Number indicator */}
-              <div className="absolute top-6 right-6 text-4xl font-bold text-muted/30">
-                {String(index + 1).padStart(2, "0")}
-              </div>
             </div>
-          ))}
+
+            {/* Features grid */}
+            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {features.map((feature, index) => (
+                <div
+                  key={feature.key}
+                  className="group relative rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/20 hover:shadow-lg"
+                >
+                  {/* Icon */}
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="mb-2 text-lg font-semibold text-white">
+                    {t(`home.${feature.key}`)}
+                  </h3>
+                  <p className="leading-relaxed text-white/80">
+                    {t(`home.${feature.key}Desc`)}
+                  </p>
+
+                  {/* Number indicator */}
+                  <div className="absolute top-6 right-6 text-4xl font-bold text-white/20">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
