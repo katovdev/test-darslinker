@@ -137,11 +137,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-800/50 p-6 backdrop-blur-sm">
-      <h1 className="mb-1 text-center text-xl font-semibold text-white">
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-lg">
+      <h1 className="mb-1 text-center text-xl font-semibold text-foreground">
         {t("auth.login")}
       </h1>
-      <p className="mb-6 text-center text-sm text-gray-400">
+      <p className="mb-6 text-center text-sm text-muted-foreground">
         {step === "phone" ? t("auth.enterPhone") : t("auth.enterOtp")}
       </p>
 
@@ -150,14 +150,14 @@ export default function LoginPage() {
           <div className="space-y-2">
             <label
               htmlFor="phone"
-              className="text-sm font-medium text-gray-300"
+              className="text-sm font-medium text-foreground"
             >
               {t("auth.phone")}
             </label>
             <div className="relative">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-3">
                 <span className="text-base">🇺🇿</span>
-                <span className="text-sm text-gray-400">+998</span>
+                <span className="text-sm text-muted-foreground">+998</span>
               </div>
               <input
                 id="phone"
@@ -165,7 +165,7 @@ export default function LoginPage() {
                 value={phone}
                 onChange={handlePhoneChange}
                 placeholder="XX XXX XX XX"
-                className="w-full rounded-xl border border-gray-700 bg-gray-900/50 py-3 pr-4 pl-[5.5rem] text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-xl border border-input bg-background py-3 pr-4 pl-[5.5rem] text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 autoComplete="tel"
                 autoFocus
               />
@@ -176,7 +176,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-50"
+            className="w-full rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] py-3 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:opacity-50"
           >
             {isLoading ? t("common.loading") : t("auth.sendOtp")}
           </button>
@@ -184,7 +184,7 @@ export default function LoginPage() {
       ) : (
         <div className="space-y-4">
           <div className="rounded-xl border border-green-500/20 bg-green-500/10 p-3 text-center">
-            <p className="text-sm text-green-400">
+            <p className="text-sm text-green-500">
               {t("auth.otpSentToTelegram")}
             </p>
           </div>
@@ -202,10 +202,10 @@ export default function LoginPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-700" />
+              <span className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-gray-800/50 px-3 text-gray-500">
+              <span className="bg-card px-3 text-muted-foreground">
                 {t("auth.alreadyHaveCode")}
               </span>
             </div>
@@ -218,7 +218,7 @@ export default function LoginPage() {
                 value={otp}
                 onChange={handleOtpChange}
                 placeholder={t("auth.otpPlaceholder")}
-                className="w-full rounded-xl border border-gray-700 bg-gray-900/50 py-3 text-center text-lg tracking-widest text-white placeholder-gray-500 transition-colors outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-xl border border-input bg-background py-3 text-center text-lg tracking-widest text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 maxLength={6}
                 autoComplete="one-time-code"
                 autoFocus
@@ -231,7 +231,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading || otp.length !== 6}
-              className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-50"
+              className="w-full rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] py-3 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:opacity-50"
             >
               {isLoading ? t("auth.verifying") : t("auth.verifyOtp")}
             </button>
@@ -241,7 +241,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={handleBackToPhone}
-              className="text-gray-400 transition-colors hover:text-white"
+              className="text-muted-foreground transition-colors hover:text-foreground"
             >
               {t("auth.changePhone")}
             </button>
@@ -249,7 +249,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleResendOtp}
               disabled={isLoading}
-              className="text-blue-400 transition-colors hover:text-blue-300 disabled:opacity-50"
+              className="text-primary transition-colors hover:text-primary/80 disabled:opacity-50"
             >
               {t("auth.resendOtp")}
             </button>
@@ -258,12 +258,12 @@ export default function LoginPage() {
       )}
 
       <div className="mt-6 text-center">
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted-foreground">
           {t("auth.noAccount")}{" "}
           <button
             type="button"
             onClick={openTelegramBot}
-            className="font-medium text-blue-400 transition-colors hover:text-blue-300"
+            className="font-medium text-primary transition-colors hover:text-primary/80"
           >
             {t("auth.signUpViaTelegram")}
           </button>

@@ -129,7 +129,7 @@ export default function PricingPage() {
   // Show loading while checking authentication
   if (!hasHydrated || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 opacity-20 blur-xl" />
@@ -143,13 +143,13 @@ export default function PricingPage() {
   // Show loading while redirecting non-teachers
   if (isAuthenticated && user && user.role !== "teacher") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 opacity-20 blur-xl" />
             <Loader2 className="relative mx-auto h-10 w-10 animate-spin text-purple-500" />
           </div>
-          <p className="mt-4 text-sm text-gray-400">Redirecting...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Redirecting...</p>
         </div>
       </div>
     );
@@ -158,14 +158,14 @@ export default function PricingPage() {
   const renderFeatureValue = (feature: PlanFeature) => {
     if (feature.included === "unlimited") {
       return (
-        <span className="text-sm font-medium text-green-400">
+        <span className="text-sm font-medium text-green-500">
           {t("pricing.unlimited")}
         </span>
       );
     }
     if (typeof feature.included === "string") {
       return (
-        <span className="text-sm font-semibold text-white">
+        <span className="text-sm font-semibold text-foreground">
           {feature.included}
         </span>
       );
@@ -173,19 +173,19 @@ export default function PricingPage() {
     if (feature.included) {
       return (
         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/20">
-          <Check className="h-3 w-3 text-green-400" />
+          <Check className="h-3 w-3 text-green-500" />
         </div>
       );
     }
     return (
-      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-800">
-        <X className="h-3 w-3 text-gray-600" />
+      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-muted">
+        <X className="h-3 w-3 text-muted-foreground" />
       </div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       <HomeHeader />
 
       {/* Hero Section */}
@@ -196,13 +196,13 @@ export default function PricingPage() {
         </div>
 
         <div className="mx-auto max-w-6xl text-center">
-          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-400">
+          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-500">
             {t("pricing.title")}
           </span>
-          <h1 className="mt-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-4 text-4xl font-bold text-foreground sm:text-5xl lg:text-6xl">
             {t("pricing.title")}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             {t("pricing.subtitle")}
           </p>
         </div>
@@ -217,14 +217,14 @@ export default function PricingPage() {
                 key={plan.nameKey}
                 className={`group relative flex flex-col rounded-2xl border p-6 transition-all duration-300 ${
                   plan.recommended
-                    ? "border-blue-500/50 bg-gradient-to-b from-blue-500/10 to-gray-800/50"
-                    : "border-gray-800 bg-gray-800/30 hover:border-gray-700 hover:bg-gray-800/50"
+                    ? "border-primary/50 bg-gradient-to-b from-primary/10 to-card shadow-lg"
+                    : "border-border bg-card hover:border-primary/30 hover:shadow-md"
                 }`}
               >
                 {/* Recommended Badge */}
                 {plan.recommended && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-blue-500/25">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-[#7ea2d4]/25">
                       <Sparkles className="h-3 w-3" />
                       {t("pricing.recommended")}
                     </div>
@@ -232,22 +232,22 @@ export default function PricingPage() {
                 )}
 
                 {/* Plan Name */}
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="text-xl font-semibold text-foreground">
                   {t(`pricing.${plan.nameKey}`)}
                 </h3>
 
                 {/* Price */}
                 <div className="mt-4 mb-6">
                   {plan.price === "custom" ? (
-                    <span className="text-2xl font-bold text-white">
+                    <span className="text-2xl font-bold text-foreground">
                       {t("pricing.contactUs")}
                     </span>
                   ) : (
                     <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-bold text-white">
+                      <span className="text-4xl font-bold text-foreground">
                         {plan.price}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-muted-foreground">
                         so&apos;m/{t("pricing.perMonth")}
                       </span>
                     </div>
@@ -259,8 +259,8 @@ export default function PricingPage() {
                   href="/register"
                   className={`mb-6 inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
                     plan.recommended
-                      ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30"
-                      : "border border-gray-700 bg-gray-800 text-white hover:border-gray-600 hover:bg-gray-700"
+                      ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
+                      : "border border-border bg-secondary text-foreground hover:border-primary hover:bg-secondary/80"
                   }`}
                 >
                   {plan.price === "custom"
@@ -275,7 +275,7 @@ export default function PricingPage() {
                       key={feature.key}
                       className="flex items-center justify-between text-sm"
                     >
-                      <span className="text-gray-400">
+                      <span className="text-muted-foreground">
                         {t(`pricing.${feature.key}`)}
                       </span>
                       {renderFeatureValue(feature)}
@@ -289,15 +289,15 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ or Additional Info Section */}
-      <section className="border-t border-gray-800 px-4 py-16 sm:px-6 lg:px-8">
+      <section className="border-t border-border px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-foreground">
             {t("home.contactTitle")}
           </h2>
-          <p className="mt-4 text-gray-400">{t("home.contactSubtitle")}</p>
+          <p className="mt-4 text-muted-foreground">{t("home.contactSubtitle")}</p>
           <Link
             href="/#contact"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
           >
             {t("home.contactSubmit")}
           </Link>

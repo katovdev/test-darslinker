@@ -17,23 +17,23 @@ function formatNumber(num: number): string {
 
 export function ArticleCard({ article }: ArticleCardProps) {
   const content = (
-    <article className="group h-full rounded-2xl border border-gray-700 bg-gray-800/30 p-5 transition-all duration-300 hover:border-gray-600 hover:bg-gray-800/50">
+    <article className="group h-full rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-primary/50 hover:shadow-lg">
       {article.category && (
-        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
+        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-500">
           <Tag className="h-3 w-3" />
           {article.category}
         </div>
       )}
 
-      <h3 className="text-lg font-semibold text-white transition-colors group-hover:text-blue-400">
+      <h3 className="text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
         {article.title}
       </h3>
 
-      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-400">
+      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
         {article.description}
       </p>
 
-      <div className="mt-4 flex items-center gap-4 text-xs text-gray-500">
+      <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <Heart
             className={`h-3.5 w-3.5 ${article.isLiked ? "fill-red-500 text-red-500" : ""}`}
