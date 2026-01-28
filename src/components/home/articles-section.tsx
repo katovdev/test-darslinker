@@ -14,13 +14,13 @@ export function ArticlesSection() {
         <div
           id="blog"
           className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
-          style={{ backgroundColor: "#232324" }}
+          style={{ backgroundColor: "#5b8ac4" }}
         >
           <div className="mx-auto max-w-6xl">
             {/* Section header */}
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
               <div>
-                <span className="inline-block rounded-full bg-green-500/20 px-4 py-1.5 text-sm font-medium text-green-400">
+                <span className="inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-medium text-white">
                   {t("home.articlesLabel") || "Blog"}
                 </span>
                 <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
@@ -29,7 +29,7 @@ export function ArticlesSection() {
               </div>
               <Link
                 href="/blog"
-                className="group inline-flex items-center gap-2 text-green-400 transition-colors hover:text-green-300"
+                className="group inline-flex items-center gap-2 text-white transition-colors hover:text-white/80"
               >
                 {t("home.viewAllArticles")}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

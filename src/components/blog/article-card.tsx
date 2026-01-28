@@ -29,7 +29,7 @@ export function ArticleCard({ article, darkMode = false }: ArticleCardProps) {
         <div
           className={`mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
             darkMode
-              ? "bg-green-500/20 text-green-400"
+              ? "bg-white/20 text-white"
               : "bg-blue-500/10 text-blue-500"
           }`}
         >
@@ -41,7 +41,7 @@ export function ArticleCard({ article, darkMode = false }: ArticleCardProps) {
       <h3
         className={`text-lg font-semibold transition-colors ${
           darkMode
-            ? "text-white group-hover:text-green-400"
+            ? "text-white group-hover:text-white/80"
             : "text-foreground group-hover:text-primary"
         }`}
       >
