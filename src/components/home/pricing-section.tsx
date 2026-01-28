@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { Check, ArrowRight, Sparkles, X } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
 interface PlanFeature {
@@ -24,6 +24,15 @@ const plans: Plan[] = [
       { key: "courses", included: "2" },
       { key: "admins", included: "3" },
       { key: "students", included: "unlimited" },
+      { key: "videoLessons", included: true },
+      { key: "quizSystem", included: true },
+      { key: "progressTracking", included: true },
+      { key: "telegramBot", included: true },
+      { key: "basicSupport", included: true },
+      { key: "certificates", included: false },
+      { key: "download", included: false },
+      { key: "analytics", included: false },
+      { key: "customBranding", included: false },
     ],
   },
   {
@@ -33,7 +42,16 @@ const plans: Plan[] = [
     features: [
       { key: "courses", included: "4" },
       { key: "admins", included: "6" },
+      { key: "students", included: "unlimited" },
+      { key: "videoLessons", included: true },
+      { key: "quizSystem", included: true },
+      { key: "progressTracking", included: true },
+      { key: "telegramBot", included: true },
+      { key: "basicSupport", included: true },
       { key: "certificates", included: true },
+      { key: "download", included: true },
+      { key: "analytics", included: true },
+      { key: "customBranding", included: false },
     ],
   },
   {
@@ -42,7 +60,18 @@ const plans: Plan[] = [
     features: [
       { key: "courses", included: "8" },
       { key: "admins", included: "12" },
+      { key: "students", included: "unlimited" },
+      { key: "videoLessons", included: true },
+      { key: "quizSystem", included: true },
+      { key: "progressTracking", included: true },
+      { key: "telegramBot", included: true },
+      { key: "basicSupport", included: true },
+      { key: "certificates", included: true },
+      { key: "download", included: true },
+      { key: "analytics", included: true },
       { key: "customBranding", included: true },
+      { key: "prioritySupport", included: true },
+      { key: "apiAccess", included: true },
     ],
   },
   {
@@ -51,7 +80,20 @@ const plans: Plan[] = [
     features: [
       { key: "courses", included: "unlimited" },
       { key: "admins", included: "unlimited" },
-      { key: "aiFeatures", included: true },
+      { key: "students", included: "unlimited" },
+      { key: "videoLessons", included: true },
+      { key: "quizSystem", included: true },
+      { key: "progressTracking", included: true },
+      { key: "telegramBot", included: true },
+      { key: "basicSupport", included: true },
+      { key: "certificates", included: true },
+      { key: "download", included: true },
+      { key: "analytics", included: true },
+      { key: "customBranding", included: true },
+      { key: "prioritySupport", included: true },
+      { key: "apiAccess", included: true },
+      { key: "dedicatedSupport", included: true },
+      { key: "customIntegration", included: true },
     ],
   },
 ];
@@ -74,9 +116,16 @@ export function PricingSection() {
         </span>
       );
     }
+    if (feature.included === true) {
+      return (
+        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/20">
+          <Check className="h-3 w-3 text-green-500" />
+        </div>
+      );
+    }
     return (
-      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/20">
-        <Check className="h-3 w-3 text-green-500" />
+      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-muted">
+        <X className="h-3 w-3 text-muted-foreground" />
       </div>
     );
   };

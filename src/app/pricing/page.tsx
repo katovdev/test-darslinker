@@ -288,6 +288,248 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Detailed Comparison Table */}
+      <section className="border-t border-border px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-foreground">
+              Batafsil Taqqoslash
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Barcha imkoniyatlarni taqqoslang va o'zingizga mos tarifni tanlang
+            </p>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-border bg-secondary/50">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">
+                    Imkoniyatlar
+                  </th>
+                  {plans.map((plan) => (
+                    <th
+                      key={plan.nameKey}
+                      className="px-6 py-4 text-center text-sm font-semibold text-foreground"
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <span>{t(`pricing.${plan.nameKey}`)}</span>
+                        {plan.recommended && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-2 py-0.5 text-xs font-medium text-white">
+                            <Sparkles className="h-2.5 w-2.5" />
+                            Tavsiya
+                          </span>
+                        )}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {/* Basic Features */}
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="bg-secondary/30 px-6 py-3 text-sm font-semibold text-foreground"
+                  >
+                    Asosiy Imkoniyatlar
+                  </td>
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Kurslar soni
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "courses")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    O'qituvchilar/Adminlar soni
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "admins")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    O'quvchilar soni
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "students")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+
+                {/* Platform Features */}
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="bg-secondary/30 px-6 py-3 text-sm font-semibold text-foreground"
+                  >
+                    Platforma Imkoniyatlari
+                  </td>
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Texnik yordam
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "support")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Tahlil va hisobotlar
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "analytics")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Onlayn uchrashuvlar
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "onlineMeetings")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Sertifikatlar
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "certificates")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Chat tizimi
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "chat")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    To'lov integratsiyasi
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "paymentIntegration")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+
+                {/* Advanced Features */}
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="bg-secondary/30 px-6 py-3 text-sm font-semibold text-foreground"
+                  >
+                    Qo'shimcha Imkoniyatlar
+                  </td>
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    Kontent himoyasi
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "contentSecurity")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    O'z brendingiz
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "customBranding")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    SEO optimallashtirish
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "seo")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    O'z domeningiz
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "customDomain")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="hover:bg-secondary/20 transition-colors">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
+                    AI yordamchisi
+                  </td>
+                  {plans.map((plan) => (
+                    <td key={plan.nameKey} className="px-6 py-4 text-center">
+                      {renderFeatureValue(
+                        plan.features.find((f) => f.key === "aiFeatures")!
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ or Additional Info Section */}
       <section className="border-t border-border px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
