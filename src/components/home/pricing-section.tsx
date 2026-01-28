@@ -13,14 +13,15 @@ interface Plan {
   nameKey: string;
   price: string;
   recommended?: boolean;
-  features: PlanFeature[];
+  includesAllFrom?: string;
+  displayFeatures: PlanFeature[];
 }
 
 const plans: Plan[] = [
   {
     nameKey: "planMinimal",
     price: "470,000",
-    features: [
+    displayFeatures: [
       { key: "courses", included: "2" },
       { key: "admins", included: "3" },
       { key: "students", included: "unlimited" },
@@ -29,46 +30,30 @@ const plans: Plan[] = [
       { key: "progressTracking", included: true },
       { key: "telegramBot", included: true },
       { key: "basicSupport", included: true },
-      { key: "certificates", included: false },
-      { key: "download", included: false },
-      { key: "analytics", included: false },
-      { key: "customBranding", included: false },
     ],
   },
   {
     nameKey: "planStandard",
     price: "870,000",
     recommended: true,
-    features: [
+    includesAllFrom: "planMinimal",
+    displayFeatures: [
       { key: "courses", included: "4" },
       { key: "admins", included: "6" },
       { key: "students", included: "unlimited" },
-      { key: "videoLessons", included: true },
-      { key: "quizSystem", included: true },
-      { key: "progressTracking", included: true },
-      { key: "telegramBot", included: true },
-      { key: "basicSupport", included: true },
       { key: "certificates", included: true },
       { key: "download", included: true },
       { key: "analytics", included: true },
-      { key: "customBranding", included: false },
     ],
   },
   {
     nameKey: "planPro",
     price: "1,270,000",
-    features: [
+    includesAllFrom: "planStandard",
+    displayFeatures: [
       { key: "courses", included: "8" },
       { key: "admins", included: "12" },
       { key: "students", included: "unlimited" },
-      { key: "videoLessons", included: true },
-      { key: "quizSystem", included: true },
-      { key: "progressTracking", included: true },
-      { key: "telegramBot", included: true },
-      { key: "basicSupport", included: true },
-      { key: "certificates", included: true },
-      { key: "download", included: true },
-      { key: "analytics", included: true },
       { key: "customBranding", included: true },
       { key: "prioritySupport", included: true },
       { key: "apiAccess", included: true },
@@ -77,21 +62,11 @@ const plans: Plan[] = [
   {
     nameKey: "planCorporate",
     price: "custom",
-    features: [
+    includesAllFrom: "planPro",
+    displayFeatures: [
       { key: "courses", included: "unlimited" },
       { key: "admins", included: "unlimited" },
       { key: "students", included: "unlimited" },
-      { key: "videoLessons", included: true },
-      { key: "quizSystem", included: true },
-      { key: "progressTracking", included: true },
-      { key: "telegramBot", included: true },
-      { key: "basicSupport", included: true },
-      { key: "certificates", included: true },
-      { key: "download", included: true },
-      { key: "analytics", included: true },
-      { key: "customBranding", included: true },
-      { key: "prioritySupport", included: true },
-      { key: "apiAccess", included: true },
       { key: "dedicatedSupport", included: true },
       { key: "customIntegration", included: true },
     ],
@@ -188,8 +163,19 @@ export function PricingSection() {
               </div>
 
               {/* Features - Scrollable */}
-              <ul className="mb-6 max-h-[400px] space-y-3 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                {plan.features.map((feature) => (
+              <ul className="mb-6 space-y-3">
+                {/* Show "includes all from" message if applicable */}
+                {plan.includesAllFrom && (
+                  <li className="flex items-start gap-2 rounded-lg bg-primary/5 p-2 text-xs text-primary">
+                    <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+                    <span>
+                      {t(`pricing.${plan.includesAllFrom}`)} {t("pricing.allFeatures") || "ning barcha imkoniyatlari"}
+                    </span>
+                  </li>
+                )}
+
+                {/* Show only new features for this plan */}
+                {plan.displayFeatures.map((feature) => (
                   <li
                     key={feature.key}
                     className="flex items-center justify-between text-sm"

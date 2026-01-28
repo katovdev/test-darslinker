@@ -18,7 +18,9 @@ interface Plan {
   price: string;
   recommended?: boolean;
   color: string;
-  features: PlanFeature[];
+  includesAllFrom?: string;
+  displayFeatures: PlanFeature[];
+  allFeatures: PlanFeature[]; // For comparison table
 }
 
 const plans: Plan[] = [
@@ -26,7 +28,15 @@ const plans: Plan[] = [
     nameKey: "planMinimal",
     price: "470,000",
     color: "gray",
-    features: [
+    displayFeatures: [
+      { key: "courses", included: "2" },
+      { key: "admins", included: "3" },
+      { key: "students", included: "unlimited" },
+      { key: "support", included: true },
+      { key: "analytics", included: true },
+      { key: "onlineMeetings", included: true },
+    ],
+    allFeatures: [
       { key: "courses", included: "2" },
       { key: "admins", included: "3" },
       { key: "students", included: "unlimited" },
@@ -48,7 +58,16 @@ const plans: Plan[] = [
     price: "870,000",
     recommended: true,
     color: "blue",
-    features: [
+    includesAllFrom: "planMinimal",
+    displayFeatures: [
+      { key: "courses", included: "4" },
+      { key: "admins", included: "6" },
+      { key: "students", included: "unlimited" },
+      { key: "certificates", included: true },
+      { key: "chat", included: true },
+      { key: "paymentIntegration", included: true },
+    ],
+    allFeatures: [
       { key: "courses", included: "4" },
       { key: "admins", included: "6" },
       { key: "students", included: "unlimited" },
@@ -69,7 +88,15 @@ const plans: Plan[] = [
     nameKey: "planPro",
     price: "1,270,000",
     color: "purple",
-    features: [
+    includesAllFrom: "planStandard",
+    displayFeatures: [
+      { key: "courses", included: "8" },
+      { key: "admins", included: "12" },
+      { key: "students", included: "unlimited" },
+      { key: "contentSecurity", included: true },
+      { key: "customBranding", included: true },
+    ],
+    allFeatures: [
       { key: "courses", included: "8" },
       { key: "admins", included: "12" },
       { key: "students", included: "unlimited" },
@@ -90,7 +117,16 @@ const plans: Plan[] = [
     nameKey: "planCorporate",
     price: "custom",
     color: "yellow",
-    features: [
+    includesAllFrom: "planPro",
+    displayFeatures: [
+      { key: "courses", included: "unlimited" },
+      { key: "admins", included: "unlimited" },
+      { key: "students", included: "unlimited" },
+      { key: "seo", included: true },
+      { key: "customDomain", included: true },
+      { key: "aiFeatures", included: true },
+    ],
+    allFeatures: [
       { key: "courses", included: "unlimited" },
       { key: "admins", included: "unlimited" },
       { key: "students", included: "unlimited" },
@@ -254,9 +290,20 @@ export default function PricingPage() {
                   )}
                 </div>
 
-                {/* Features List - Scrollable */}
-                <ul className="mb-6 max-h-[400px] space-y-3 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                  {plan.features.map((feature) => (
+                {/* Features List */}
+                <ul className="mb-6 space-y-3">
+                  {/* Show "includes all from" message if applicable */}
+                  {plan.includesAllFrom && (
+                    <li className="flex items-start gap-2 rounded-lg bg-primary/5 p-2 text-xs text-primary">
+                      <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+                      <span>
+                        {t(`pricing.${plan.includesAllFrom}`)} {t("pricing.allFeatures") || "ning barcha imkoniyatlari"}
+                      </span>
+                    </li>
+                  )}
+
+                  {/* Show only new features for this plan */}
+                  {plan.displayFeatures.map((feature) => (
                     <li
                       key={feature.key}
                       className="flex items-center justify-between text-sm"
@@ -343,7 +390,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "courses")!
+                        plan.allFeatures.find((f) => f.key === "courses")!
                       )}
                     </td>
                   ))}
@@ -355,7 +402,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "admins")!
+                        plan.allFeatures.find((f) => f.key === "admins")!
                       )}
                     </td>
                   ))}
@@ -367,7 +414,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "students")!
+                        plan.allFeatures.find((f) => f.key === "students")!
                       )}
                     </td>
                   ))}
@@ -389,7 +436,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "support")!
+                        plan.allFeatures.find((f) => f.key === "support")!
                       )}
                     </td>
                   ))}
@@ -401,7 +448,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "analytics")!
+                        plan.allFeatures.find((f) => f.key === "analytics")!
                       )}
                     </td>
                   ))}
@@ -413,7 +460,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "onlineMeetings")!
+                        plan.allFeatures.find((f) => f.key === "onlineMeetings")!
                       )}
                     </td>
                   ))}
@@ -425,7 +472,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "certificates")!
+                        plan.allFeatures.find((f) => f.key === "certificates")!
                       )}
                     </td>
                   ))}
@@ -437,7 +484,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "chat")!
+                        plan.allFeatures.find((f) => f.key === "chat")!
                       )}
                     </td>
                   ))}
@@ -449,7 +496,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "paymentIntegration")!
+                        plan.allFeatures.find((f) => f.key === "paymentIntegration")!
                       )}
                     </td>
                   ))}
@@ -471,7 +518,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "contentSecurity")!
+                        plan.allFeatures.find((f) => f.key === "contentSecurity")!
                       )}
                     </td>
                   ))}
@@ -483,7 +530,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "customBranding")!
+                        plan.allFeatures.find((f) => f.key === "customBranding")!
                       )}
                     </td>
                   ))}
@@ -495,7 +542,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "seo")!
+                        plan.allFeatures.find((f) => f.key === "seo")!
                       )}
                     </td>
                   ))}
@@ -507,7 +554,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "customDomain")!
+                        plan.allFeatures.find((f) => f.key === "customDomain")!
                       )}
                     </td>
                   ))}
@@ -519,7 +566,7 @@ export default function PricingPage() {
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-6 py-4 text-center">
                       {renderFeatureValue(
-                        plan.features.find((f) => f.key === "aiFeatures")!
+                        plan.allFeatures.find((f) => f.key === "aiFeatures")!
                       )}
                     </td>
                   ))}
