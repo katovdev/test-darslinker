@@ -193,8 +193,8 @@ export function PricingSection() {
                 )}
               </div>
 
-              {/* Features - ALL FEATURES SHOWN */}
-              <ul className="mb-6 flex-1 space-y-3 min-h-0">
+              {/* Features - Scrollable */}
+              <ul className="mb-6 max-h-[400px] space-y-3 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
                 {plan.features.map((feature) => (
                   <li
                     key={feature.key}
