@@ -1058,7 +1058,7 @@ export function FluidCursor() {
       gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read.attach(0));
       gl.uniform1f(
         splatProgram.uniforms.aspectRatio,
-        canvas.width / canvas.height
+        canvas!.width / canvas!.height
       );
       gl.uniform2f(splatProgram.uniforms.point, x, y);
       gl.uniform3f(splatProgram.uniforms.color, dx, dy, 0.0);
@@ -1076,7 +1076,7 @@ export function FluidCursor() {
     }
 
     function correctRadius(radius: number) {
-      let aspectRatio = canvas.width / canvas.height;
+      let aspectRatio = canvas!.width / canvas!.height;
       if (aspectRatio > 1) radius *= aspectRatio;
       return radius;
     }
@@ -1107,8 +1107,8 @@ export function FluidCursor() {
     ) {
       pointer.prevTexcoordX = pointer.texcoordX;
       pointer.prevTexcoordY = pointer.texcoordY;
-      pointer.texcoordX = posX / canvas.width;
-      pointer.texcoordY = 1.0 - posY / canvas.height;
+      pointer.texcoordX = posX / canvas!.width;
+      pointer.texcoordY = 1.0 - posY / canvas!.height;
       pointer.deltaX = correctDeltaX(
         pointer.texcoordX - pointer.prevTexcoordX
       );
@@ -1121,13 +1121,13 @@ export function FluidCursor() {
     }
 
     function correctDeltaX(delta: number) {
-      let aspectRatio = canvas.width / canvas.height;
+      let aspectRatio = canvas!.width / canvas!.height;
       if (aspectRatio < 1) delta *= aspectRatio;
       return delta;
     }
 
     function correctDeltaY(delta: number) {
-      let aspectRatio = canvas.width / canvas.height;
+      let aspectRatio = canvas!.width / canvas!.height;
       if (aspectRatio > 1) delta /= aspectRatio;
       return delta;
     }
