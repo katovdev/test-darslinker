@@ -59,12 +59,18 @@ export function FluidCursor() {
         preserveDrawingBuffer: false,
       };
 
-      let gl =
-        canvas.getContext("webgl2", params) ||
-        (canvas.getContext("webgl", params) as WebGLRenderingContext);
+      // Get WebGL context with proper typing
+      const glContext = canvas.getContext("webgl2", params) || canvas.getContext("webgl", params);
+
+      if (!glContext) {
+        throw new Error("WebGL not supported");
+      }
+
+      // Explicitly cast to WebGLRenderingContext (works for both WebGL and WebGL2)
+      const gl = glContext as WebGLRenderingContext;
       const isWebGL2 = gl instanceof WebGL2RenderingContext;
 
-      let halfFloat;
+      let halfFloat: any;
       let supportLinearFiltering;
       if (isWebGL2) {
         gl.getExtension("EXT_color_buffer_float");
