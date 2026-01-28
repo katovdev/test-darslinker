@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/providers";
-import { FluidCursor } from "@/components/ui/fluid-cursor";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -90,7 +89,6 @@ export default function RootLayout({
   return (
     <html lang="uz" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <FluidCursor />
         <Providers>{children}</Providers>
       </body>
     </html>

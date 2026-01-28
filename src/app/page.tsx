@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { FluidCursor } from "@/components/ui/fluid-cursor";
 import {
   HomeHeader,
   Hero,
@@ -62,6 +63,7 @@ export default function Home() {
   // Show public home page only for unauthenticated users
   return (
     <div className="min-h-screen bg-background">
+      <FluidCursor />
       <HomeHeader />
       <main>
         <Hero />
