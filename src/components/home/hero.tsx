@@ -1,23 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Play, Users, BookOpen, Award } from "lucide-react";
+import { ArrowRight, Play, Users, BookOpen, Award, Shield, TrendingUp, CreditCard } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
+import CardSwap, { Card } from "@/components/ui/card-swap";
 
 export function Hero() {
   const t = useTranslations();
 
   return (
-    <section className="relative overflow-hidden px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
-      {/* Background gradient */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/20 to-transparent blur-3xl" />
-        <div className="absolute top-1/4 right-0 h-[400px] w-[400px] rounded-full bg-gradient-to-b from-purple-500/10 to-transparent blur-3xl" />
-      </div>
-
+    <section className="relative z-10 px-4 pt-16 pb-24 sm:px-6 sm:pb-28 lg:px-8 lg:pt-24 lg:pb-32">
       <div className="mx-auto max-w-6xl">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="text-center lg:text-left">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
+          <div className="flex flex-col justify-center text-center lg:text-left">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-1.5">
               <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
               <span className="text-sm text-foreground">
@@ -83,86 +78,114 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right content - Visual element */}
-          <div className="relative hidden lg:block">
-            <div className="relative">
-              {/* Main card */}
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl">
-                {/* Course preview mockup */}
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500" />
-                  <div>
-                    <div className="h-3 w-32 rounded bg-muted" />
-                    <div className="mt-2 h-2 w-24 rounded bg-secondary" />
-                  </div>
-                </div>
-
-                {/* Progress bars */}
-                <div className="space-y-3">
-                  {[85, 60, 40].map((progress, i) => (
-                    <div key={i} className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Lesson {i + 1}</span>
-                        <span className="text-muted-foreground">{progress}%</span>
-                      </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-secondary">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#92b4dc]"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
+          {/* Right content - Card Swap Animation */}
+          <div className="relative hidden lg:block" style={{ height: '500px', position: 'relative' }}>
+            <CardSwap
+              width={450}
+              height={270}
+              cardDistance={25}
+              verticalDistance={75}
+              delay={2500}
+              pauseOnHover={false}
+              skewAmount={1.5}
+              easing="smooth"
+            >
+              {/* Card 1 - Courses */}
+              <Card>
+                <div className="flex h-full flex-col justify-between p-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] shadow-lg shadow-[#7ea2d4]/50">
+                      <BookOpen className="h-8 w-8 text-white" />
                     </div>
-                  ))}
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-xl font-bold text-foreground">
+                        Cheksiz Kurslar
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        Cheksiz video darslar joylash imkoniyati
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground/60">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#7ea2d4]" />
+                    <span>Video, quiz, topshiriqlar va sertifikatlar</span>
+                  </div>
+                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-[#7ea2d4]/30 to-transparent blur-3xl" />
                 </div>
+              </Card>
 
-                {/* Bottom stats */}
-                <div className="mt-6 grid grid-cols-3 gap-4 border-t border-border pt-4">
-                  <div className="text-center">
-                    <p className="text-lg font-semibold text-foreground">12</p>
-                    <p className="text-xs text-muted-foreground">Videos</p>
+              {/* Card 2 - Security */}
+              <Card>
+                <div className="flex h-full flex-col justify-between p-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/50">
+                      <Shield className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-xl font-bold text-foreground">
+                        To'liq Xavfsizlik
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        Barcha video darslaringiz himoyalanadi
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-lg font-semibold text-foreground">4.8</p>
-                    <p className="text-xs text-muted-foreground">Rating</p>
+                  <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground/60">
+                    <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                    <span>DRM himoya va suv belgisi</span>
                   </div>
-                  <div className="text-center">
-                    <p className="text-lg font-semibold text-foreground">2h</p>
-                    <p className="text-xs text-muted-foreground">Duration</p>
-                  </div>
+                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-green-500/30 to-transparent blur-3xl" />
                 </div>
-              </div>
+              </Card>
 
-              {/* Floating elements */}
-              <div className="absolute top-1/4 -left-4 rounded-xl border border-border bg-card p-3 shadow-lg">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500/20">
-                    <svg
-                      className="h-4 w-4 text-green-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+              {/* Card 3 - Progress */}
+              <Card>
+                <div className="flex h-full flex-col justify-between p-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 shadow-lg shadow-orange-500/50">
+                      <TrendingUp className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-xl font-bold text-foreground">
+                        Smart Progress
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        O'quvchilaringizni to'liq nazorat qiling
+                      </p>
+                    </div>
                   </div>
-                  <span className="text-sm text-foreground">Completed!</span>
+                  <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground/60">
+                    <div className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                    <span>Real-time tahlil va statistika</span>
+                  </div>
+                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-orange-500/30 to-transparent blur-3xl" />
                 </div>
-              </div>
+              </Card>
 
-              <div className="absolute -right-4 bottom-1/4 rounded-xl border border-border bg-card p-3 shadow-lg">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20">
-                    <Award className="h-4 w-4 text-yellow-500" />
+              {/* Card 4 - Payment System */}
+              <Card>
+                <div className="flex h-full flex-col justify-between p-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 shadow-lg shadow-purple-500/50">
+                      <CreditCard className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-xl font-bold text-foreground">
+                        To'lov tizimi
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        To'lovlarni Uzcard, Humo orqali avtomatlashtiring
+                      </p>
+                    </div>
                   </div>
-                  <span className="text-sm text-foreground">New Badge!</span>
+                  <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground/60">
+                    <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                    <span>Xavfsiz va tezkor to'lovlar</span>
+                  </div>
+                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-purple-500/30 to-transparent blur-3xl" />
                 </div>
-              </div>
-            </div>
+              </Card>
+            </CardSwap>
           </div>
         </div>
       </div>

@@ -1,0 +1,35 @@
+.card-swap-container {
+  position: absolute;
+  top: 75%;
+  right: 0;
+  transform: translateY(-50%);
+  transform-origin: center right;
+  perspective: 1200px;
+  overflow: visible;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card);
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 1024px) {
+  .card-swap-container {
+    transform: translateY(-50%) scale(0.85);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-swap-container {
+    display: none;
+  }
+}

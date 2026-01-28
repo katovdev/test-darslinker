@@ -51,7 +51,7 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
+      className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
       style={{ scrollMarginTop: "100px" }}
     >
       {/* Background with gradient */}

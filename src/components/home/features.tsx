@@ -2,7 +2,7 @@
 
 import {
   BookOpen,
-  Users,
+  CreditCard,
   Award,
   MessageSquare,
   Shield,
@@ -19,63 +19,63 @@ const features = [
     icon: BookOpen,
     color: "from-blue-500 to-blue-600",
     bgColor: "bg-blue-500/10",
-    iconColor: "text-blue-400",
+    iconColor: "#60a5fa",
   },
   {
-    key: "featureStudents",
-    icon: Users,
+    key: "featurePayments",
+    icon: CreditCard,
     color: "from-green-500 to-green-600",
     bgColor: "bg-green-500/10",
-    iconColor: "text-green-400",
+    iconColor: "#4ade80",
   },
   {
     key: "featureCertificates",
     icon: Award,
     color: "from-yellow-500 to-yellow-600",
     bgColor: "bg-yellow-500/10",
-    iconColor: "text-yellow-400",
+    iconColor: "#facc15",
   },
   {
     key: "featureQuiz",
     icon: ClipboardCheck,
     color: "from-purple-500 to-purple-600",
     bgColor: "bg-purple-500/10",
-    iconColor: "text-purple-400",
+    iconColor: "#c084fc",
   },
   {
     key: "featureChat",
     icon: MessageSquare,
     color: "from-pink-500 to-pink-600",
     bgColor: "bg-pink-500/10",
-    iconColor: "text-pink-400",
+    iconColor: "#f472b6",
   },
   {
     key: "featureSecurity",
     icon: Shield,
     color: "from-cyan-500 to-cyan-600",
     bgColor: "bg-cyan-500/10",
-    iconColor: "text-cyan-400",
+    iconColor: "#22d3ee",
   },
   {
     key: "featureVideo",
     icon: Play,
     color: "from-red-500 to-red-600",
     bgColor: "bg-red-500/10",
-    iconColor: "text-red-400",
+    iconColor: "#f87171",
   },
   {
     key: "featureProgress",
     icon: TrendingUp,
     color: "from-orange-500 to-orange-600",
     bgColor: "bg-orange-500/10",
-    iconColor: "text-orange-400",
+    iconColor: "#fb923c",
   },
   {
     key: "featureAssignments",
     icon: FileText,
     color: "from-indigo-500 to-indigo-600",
     bgColor: "bg-indigo-500/10",
-    iconColor: "text-indigo-400",
+    iconColor: "#818cf8",
   },
 ];
 
@@ -85,44 +85,56 @@ export function Features() {
   return (
     <section
       id="features"
-      className="relative bg-background px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
-      style={{ scrollMarginTop: "100px" }}
+      className="relative z-0 bg-background px-4 pt-12 pb-16 sm:px-6 lg:px-8 lg:pt-16 lg:pb-20"
+      style={{ scrollMarginTop: "64px" }}
     >
-      <div className="mx-auto max-w-7xl">
-        {/* Section header - outside dark box */}
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-            {t("home.featuresTitle")}
-          </h2>
-        </div>
-
+      <div className="mx-auto max-w-[1400px]">
         <div
-          className="overflow-hidden rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          className="overflow-hidden rounded-[40px] px-6 pt-8 pb-16 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
           style={{ backgroundColor: "#232324" }}
         >
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto">
+            {/* Section subtitle - inside dark box */}
+            <div className="mb-8 text-center sm:mb-12 lg:mb-16">
+              <p className="text-3xl font-bold sm:text-4xl lg:text-5xl" style={{ color: "#ffffff" }}>
+                Platformaning asosiy imkoniyatlari
+              </p>
+            </div>
+
             {/* Features grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature, index) => (
                 <div
                   key={feature.key}
-                  className="group relative rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/20 hover:shadow-lg"
+                  className="group relative rounded-2xl p-6 backdrop-blur-sm transition-all duration-300"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.1)"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+                  }}
                 >
                   {/* Icon */}
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
-                    <feature.icon className="h-6 w-6 text-white" />
+                  <div
+                    className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                  >
+                    <feature.icon className="h-6 w-6" style={{ color: "#ffffff" }} />
                   </div>
 
                   {/* Content */}
-                  <h3 className="mb-2 text-lg font-semibold text-white">
+                  <h3 className="mb-2 text-lg font-semibold" style={{ color: "#ffffff" }}>
                     {t(`home.${feature.key}`)}
                   </h3>
-                  <p className="leading-relaxed text-white/80">
+                  <p className="leading-relaxed" style={{ color: "rgba(255, 255, 255, 0.7)" }}>
                     {t(`home.${feature.key}Desc`)}
                   </p>
 
                   {/* Number indicator */}
-                  <div className="absolute top-6 right-6 text-4xl font-bold text-white/20">
+                  <div className="absolute top-6 right-6 text-4xl font-bold" style={{ color: "rgba(255, 255, 255, 0.1)" }}>
                     {String(index + 1).padStart(2, "0")}
                   </div>
                 </div>
