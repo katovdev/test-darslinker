@@ -13,10 +13,10 @@ export function Hero() {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div className="flex flex-col justify-center text-center lg:text-left">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-1.5">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[#7ea2d4] px-4 py-1.5">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-[#7ea2d4]" />
               <span className="text-sm text-foreground">
-                {t("home.heroBadge") || "Platform for modern education"}
+                Onlyan kurslarni tizimlashtirish platformasi
               </span>
             </div>
 

@@ -21,30 +21,30 @@ interface Plan {
 const plans: Plan[] = [
   {
     nameKey: "planMinimal",
-    price: "470,000",
+    price: "free",
     displayFeatures: [
-      { key: "courses", label: "Kurslar", included: "2" },
-      { key: "admins", label: "Adminlar", included: "3" },
-      { key: "students", label: "O'quvchilar", included: "unlimited" },
-      { key: "videoLessons", label: "Video darslar", included: true },
-      { key: "quizSystem", label: "Quiz tizimi", included: true },
-      { key: "progressTracking", label: "Progress kuzatuvi", included: true },
+      { key: "courses", label: "Kurslar", included: "1" },
+      { key: "admins", label: "Adminlar", included: "1" },
+      { key: "students", label: "O'quvchilar", included: "20/oy" },
+      { key: "contentSecurity", label: "Kontent xavfsizligi", included: true },
+      { key: "support", label: "Qo'llab-quvvatlash", included: true },
+      { key: "studentAnalytics", label: "O'quvchilar tahlili", included: true },
       { key: "telegramBot", label: "Telegram bot", included: true },
-      { key: "basicSupport", label: "Texnik yordam", included: true },
     ],
   },
   {
     nameKey: "planStandard",
-    price: "870,000",
+    price: "670,000",
     recommended: true,
     includesAllFrom: "planMinimal",
     displayFeatures: [
-      { key: "courses", label: "Kurslar", included: "4" },
-      { key: "admins", label: "Adminlar", included: "6" },
-      { key: "students", label: "O'quvchilar", included: "unlimited" },
+      { key: "courses", label: "Kurslar", included: "3" },
+      { key: "admins", label: "Adminlar", included: "3" },
+      { key: "students", label: "O'quvchilar", included: "cheksiz" },
+      { key: "includesAll", label: "Minimaldagi imkoniyatlar", included: true },
+      { key: "onlineMeetings", label: "Onlayn uchrashuvlar", included: true },
       { key: "certificates", label: "Sertifikatlar", included: true },
-      { key: "download", label: "Yuklab olish", included: true },
-      { key: "analytics", label: "Tahlil va hisobotlar", included: true },
+      { key: "paymentIntegration", label: "To'lov integratsiyasi", included: true },
     ],
   },
   {
@@ -52,24 +52,12 @@ const plans: Plan[] = [
     price: "1,270,000",
     includesAllFrom: "planStandard",
     displayFeatures: [
-      { key: "courses", label: "Kurslar", included: "8" },
-      { key: "admins", label: "Adminlar", included: "12" },
-      { key: "students", label: "O'quvchilar", included: "unlimited" },
-      { key: "customBranding", label: "O'z brendingiz", included: true },
-      { key: "prioritySupport", label: "Tezkor texnik yordam", included: true },
-      { key: "apiAccess", label: "API kirish", included: true },
-    ],
-  },
-  {
-    nameKey: "planCorporate",
-    price: "custom",
-    includesAllFrom: "planPro",
-    displayFeatures: [
-      { key: "courses", label: "Kurslar", included: "unlimited" },
-      { key: "admins", label: "Adminlar", included: "unlimited" },
-      { key: "students", label: "O'quvchilar", included: "unlimited" },
-      { key: "dedicatedSupport", label: "Maxsus texnik yordam", included: true },
-      { key: "customIntegration", label: "Maxsus integratsiya", included: true },
+      { key: "courses", label: "Kurslar", included: "6" },
+      { key: "admins", label: "Adminlar", included: "6" },
+      { key: "students", label: "O'quvchilar", included: "cheksiz" },
+      { key: "includesAll", label: "Standartdagi imkoniyatlar", included: true },
+      { key: "customBranding", label: "Shaxsiy brending", included: true },
+      { key: "seo", label: "SEO", included: true },
     ],
   },
 ];
@@ -87,7 +75,7 @@ export function PricingSection() {
     }
     if (typeof feature.included === "string") {
       return (
-        <span className="text-sm font-semibold text-foreground">
+        <span className="text-sm font-semibold text-white">
           {feature.included}
         </span>
       );
@@ -100,8 +88,8 @@ export function PricingSection() {
       );
     }
     return (
-      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-muted">
-        <X className="h-3 w-3 text-muted-foreground" />
+      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10">
+        <X className="h-3 w-3 text-white/50" />
       </div>
     );
   };
@@ -110,30 +98,36 @@ export function PricingSection() {
     <section
       id="pricing"
       className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
-      style={{ scrollMarginTop: "100px" }}
+      style={{ scrollMarginTop: "40px" }}
     >
       <div className="mx-auto max-w-[1400px]">
         <div
-          className="rounded-[40px] border-2 border-border px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          style={{ backgroundColor: "#232324" }}
         >
           <div className="mx-auto">
             {/* Section header */}
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
                 {t("pricing.subtitle")}
               </h2>
             </div>
 
             {/* Pricing Cards */}
-            <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {plans.map((plan) => (
             <div
               key={plan.nameKey}
               className={`group relative flex flex-col rounded-2xl border p-6 transition-all duration-300 ${
                 plan.recommended
-                  ? "border-primary/50 bg-gradient-to-b from-primary/10 to-card shadow-lg"
-                  : "border-border bg-card hover:border-primary/30 hover:shadow-md"
+                  ? "border-white/20 shadow-lg"
+                  : "border-white/10 hover:border-white/20"
               }`}
+              style={{
+                backgroundColor: plan.recommended
+                  ? "rgba(255, 255, 255, 0.05)"
+                  : "rgba(255, 255, 255, 0.025)"
+              }}
             >
               {/* Recommended Badge */}
               {plan.recommended && (
@@ -146,37 +140,19 @@ export function PricingSection() {
               )}
 
               {/* Plan Name */}
-              <h3 className="text-xl font-semibold text-foreground">
+              <h3 className="text-4xl font-bold text-white mb-6">
                 {t(`pricing.${plan.nameKey}`)}
               </h3>
 
-              {/* Price */}
-              <div className="mt-4 mb-6">
-                {plan.price === "custom" ? (
-                  <span className="text-2xl font-bold text-foreground">
-                    {t("pricing.contactUs")}
-                  </span>
-                ) : (
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-foreground">
-                      {plan.price}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      so&apos;m/{t("pricing.perMonth")}
-                    </span>
-                  </div>
-                )}
-              </div>
-
               {/* Features */}
               <ul className="mb-6 flex-1 space-y-3">
-                {/* Show all features */}
+                {/* Show features */}
                 {plan.displayFeatures.map((feature) => (
                   <li
                     key={feature.key}
                     className="flex items-center justify-between text-sm"
                   >
-                    <span className="text-muted-foreground">
+                    <span className="text-white/70">
                       {feature.label}
                     </span>
                     {renderFeatureValue(feature)}
@@ -184,30 +160,52 @@ export function PricingSection() {
                 ))}
               </ul>
 
+              {/* Price */}
+              <div className="mb-4 mt-auto">
+                {plan.price === "free" ? (
+                  <span className="text-4xl font-bold text-white">
+                    Bepul
+                  </span>
+                ) : plan.price === "custom" ? (
+                  <span className="text-4xl font-bold text-white">
+                    {t("pricing.contactUs")}
+                  </span>
+                ) : (
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-white">
+                      {plan.price}
+                    </span>
+                    <span className="text-sm text-white/60">
+                      so&apos;m/{t("pricing.perMonth")}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               {/* CTA Button - Goes to full pricing page */}
               <Link
                 href="/pricing"
-                className={`mt-auto inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
+                className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
                   plan.recommended
                     ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
-                    : "border border-border bg-secondary text-foreground hover:border-primary hover:bg-secondary/80"
+                    : "border border-white/20 bg-white/5 text-white hover:border-white/30 hover:bg-white/10"
                 }`}
               >
-                Batafsil
+                Boshlash
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ))}
             </div>
 
-            {/* View All Pricing Link */}
+            {/* View All Pricing Button */}
             <div className="mt-12 text-center">
               <Link
                 href="/pricing"
-                className="inline-flex items-center gap-2 text-primary transition-colors hover:text-primary/80"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:border-white/30 hover:bg-white/10"
               >
                 Barcha tariflar
-                <ArrowRight className="h-4 w-4 transition-transform hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>

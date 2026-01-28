@@ -54,25 +54,23 @@ export function ContactForm() {
       className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
       style={{ scrollMarginTop: "100px" }}
     >
-      {/* Background with gradient */}
-      <div className="absolute inset-0 -z-10 bg-secondary/30" />
+      <div className="mx-auto max-w-[1400px]">
+        <div className="rounded-[40px] border-2 border-[#7ea2d4] px-6 py-16 sm:px-8 lg:px-12 lg:py-20">
+          {/* Section Header */}
+          <div className="text-center">
+            <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-500">
+              {t("home.contactLabel") || "Contact"}
+            </span>
+            <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
+              {t("home.contactTitle")}
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              {t("home.contactSubtitle")}
+            </p>
+          </div>
 
-      <div className="mx-auto max-w-3xl">
-        {/* Section Header */}
-        <div className="text-center">
-          <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-500">
-            {t("home.contactLabel") || "Contact"}
-          </span>
-          <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-            {t("home.contactTitle")}
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            {t("home.contactSubtitle")}
-          </p>
-        </div>
-
-        {/* Contact Form */}
-        <form onSubmit={handleSubmit} className="mt-12">
+          {/* Contact Form */}
+          <form onSubmit={handleSubmit} className="mx-auto mt-12 max-w-3xl">
           <div className="rounded-2xl border border-border bg-card p-6 shadow-lg sm:p-8">
             <div className="grid gap-6 sm:grid-cols-2">
               {/* Name */}
@@ -160,6 +158,7 @@ export function ContactForm() {
             </button>
           </div>
         </form>
+        </div>
       </div>
     </section>
   );

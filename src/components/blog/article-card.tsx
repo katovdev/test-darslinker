@@ -21,17 +21,25 @@ export function ArticleCard({ article, darkMode = false }: ArticleCardProps) {
     <article
       className={`group h-full rounded-2xl border p-5 transition-all duration-300 ${
         darkMode
-          ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
+          ? "border-white/10 hover:border-white/20"
           : "border-border bg-card hover:border-primary/50 hover:shadow-lg"
       }`}
+      style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.025)" } : undefined}
+      onMouseEnter={darkMode ? (e) => {
+        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+      } : undefined}
+      onMouseLeave={darkMode ? (e) => {
+        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.025)";
+      } : undefined}
     >
       {article.category && (
         <div
           className={`mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
             darkMode
-              ? "bg-white/20 text-white"
+              ? "text-white"
               : "bg-blue-500/10 text-blue-500"
           }`}
+          style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.1)" } : undefined}
         >
           <Tag className="h-3 w-3" />
           {article.category}

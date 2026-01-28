@@ -90,13 +90,13 @@ export function Features() {
     >
       <div className="mx-auto max-w-[1400px]">
         <div
-          className="overflow-hidden rounded-[40px] px-6 pt-8 pb-16 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
-          style={{ backgroundColor: "#232324" }}
+          className="overflow-hidden rounded-[40px] border-2 px-6 pt-8 pb-16 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
+          style={{ borderColor: "#7ea2d4" }}
         >
           <div className="mx-auto">
             {/* Section subtitle - inside dark box */}
             <div className="mb-8 text-center sm:mb-12 lg:mb-16">
-              <p className="text-3xl font-bold sm:text-4xl lg:text-5xl" style={{ color: "#ffffff" }}>
+              <p className="text-3xl font-bold sm:text-4xl lg:text-5xl text-foreground">
                 Platformaning asosiy imkoniyatlari
               </p>
             </div>
@@ -106,35 +106,25 @@ export function Features() {
               {features.map((feature, index) => (
                 <div
                   key={feature.key}
-                  className="group relative rounded-2xl p-6 backdrop-blur-sm transition-all duration-300"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.1)"
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
-                  }}
+                  className="group relative rounded-2xl border border-border bg-card p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/30"
                 >
                   {/* Icon */}
                   <div
-                    className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                    className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10"
                   >
-                    <feature.icon className="h-6 w-6" style={{ color: "#ffffff" }} />
+                    <feature.icon className="h-6 w-6 text-primary" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="mb-2 text-lg font-semibold" style={{ color: "#ffffff" }}>
+                  <h3 className="mb-2 text-lg font-semibold text-foreground">
                     {t(`home.${feature.key}`)}
                   </h3>
-                  <p className="leading-relaxed" style={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                  <p className="leading-relaxed text-muted-foreground">
                     {t(`home.${feature.key}Desc`)}
                   </p>
 
                   {/* Number indicator */}
-                  <div className="absolute top-6 right-6 text-4xl font-bold" style={{ color: "rgba(255, 255, 255, 0.1)" }}>
+                  <div className="absolute top-6 right-6 text-4xl font-bold text-primary/15">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                 </div>

@@ -53,30 +53,37 @@ export function ArticlesGrid({
             key={i}
             className={`animate-pulse rounded-2xl border p-5 ${
               darkMode
-                ? "border-white/10 bg-white/5"
+                ? "border-white/10"
                 : "border-border bg-card"
             }`}
+            style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.025)" } : undefined}
           >
             <div
-              className={`mb-3 h-5 w-20 rounded-full ${darkMode ? "bg-white/10" : "bg-muted"}`}
+              className={`mb-3 h-5 w-20 rounded-full ${darkMode ? "" : "bg-muted"}`}
+              style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.05)" } : undefined}
             />
             <div
-              className={`h-6 w-4/5 rounded ${darkMode ? "bg-white/10" : "bg-muted"}`}
+              className={`h-6 w-4/5 rounded ${darkMode ? "" : "bg-muted"}`}
+              style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.05)" } : undefined}
             />
             <div className="mt-3 space-y-2">
               <div
-                className={`h-4 w-full rounded ${darkMode ? "bg-white/5" : "bg-muted/50"}`}
+                className={`h-4 w-full rounded ${darkMode ? "" : "bg-muted/50"}`}
+                style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.025)" } : undefined}
               />
               <div
-                className={`h-4 w-3/4 rounded ${darkMode ? "bg-white/5" : "bg-muted/50"}`}
+                className={`h-4 w-3/4 rounded ${darkMode ? "" : "bg-muted/50"}`}
+                style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.025)" } : undefined}
               />
             </div>
             <div className="mt-4 flex gap-4">
               <div
-                className={`h-4 w-16 rounded ${darkMode ? "bg-white/5" : "bg-muted/50"}`}
+                className={`h-4 w-16 rounded ${darkMode ? "" : "bg-muted/50"}`}
+                style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.025)" } : undefined}
               />
               <div
-                className={`h-4 w-20 rounded ${darkMode ? "bg-white/5" : "bg-muted/50"}`}
+                className={`h-4 w-20 rounded ${darkMode ? "" : "bg-muted/50"}`}
+                style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.025)" } : undefined}
               />
             </div>
           </div>
@@ -89,7 +96,7 @@ export function ArticlesGrid({
     return (
       <div className={cn("py-16 text-center", className)}>
         <div
-          className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${darkMode ? "bg-red-500/20" : "bg-red-500/10"}`}
+          className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${darkMode ? "bg-red-500/10" : "bg-red-500/10"}`}
         >
           <FileText className="h-8 w-8 text-red-500" />
         </div>
@@ -100,9 +107,16 @@ export function ArticlesGrid({
           onClick={loadArticles}
           className={`mt-4 inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
             darkMode
-              ? "border-white/20 bg-white/10 text-white hover:border-white/30 hover:bg-white/20"
+              ? "border-white/20 text-white hover:border-white/30"
               : "border-border bg-secondary text-foreground hover:border-primary hover:bg-secondary/80"
           }`}
+          style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.05)" } : undefined}
+          onMouseEnter={darkMode ? (e) => {
+            e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+          } : undefined}
+          onMouseLeave={darkMode ? (e) => {
+            e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+          } : undefined}
         >
           <RefreshCw className="h-4 w-4" />
           Qayta urinish
@@ -115,7 +129,8 @@ export function ArticlesGrid({
     return (
       <div className={cn("py-16 text-center", className)}>
         <div
-          className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${darkMode ? "bg-white/10" : "bg-muted"}`}
+          className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${darkMode ? "" : "bg-muted"}`}
+          style={darkMode ? { backgroundColor: "rgba(255, 255, 255, 0.05)" } : undefined}
         >
           <FileText
             className={`h-8 w-8 ${darkMode ? "text-white/50" : "text-muted-foreground"}`}
