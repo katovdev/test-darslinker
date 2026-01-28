@@ -89,20 +89,20 @@ export function Features() {
       style={{ scrollMarginTop: "100px" }}
     >
       <div className="mx-auto max-w-7xl">
+        {/* Section header - outside dark box */}
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
+            {t("home.featuresTitle")}
+          </h2>
+        </div>
+
         <div
           className="overflow-hidden rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
           style={{ backgroundColor: "#232324" }}
         >
           <div className="mx-auto max-w-6xl">
-            {/* Section header */}
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-                {t("home.featuresTitle")}
-              </h2>
-            </div>
-
             {/* Features grid */}
-            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature, index) => (
                 <div
                   key={feature.key}
