@@ -254,8 +254,8 @@ export default function PricingPage() {
                   )}
                 </div>
 
-                {/* Features */}
-                <ul className="mb-6 flex-1 space-y-3">
+                {/* Features List - UPDATED */}
+                <ul className="mb-6 flex-1 space-y-3 min-h-0">
                   {plan.features.map((feature) => (
                     <li
                       key={feature.key}

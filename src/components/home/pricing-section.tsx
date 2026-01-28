@@ -193,8 +193,8 @@ export function PricingSection() {
                 )}
               </div>
 
-              {/* Features (Limited for home page) */}
-              <ul className="mb-6 flex-1 space-y-3">
+              {/* Features - ALL FEATURES SHOWN */}
+              <ul className="mb-6 flex-1 space-y-3 min-h-0">
                 {plan.features.map((feature) => (
                   <li
                     key={feature.key}
