@@ -9,7 +9,7 @@ export function ArticlesSection() {
   const t = useTranslations();
 
   return (
-    <section className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section id="blog" className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       {/* Background */}
       <div className="absolute inset-0 -z-10 bg-secondary/30" />
 
