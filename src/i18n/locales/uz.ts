@@ -353,6 +353,12 @@ export const uz: Translations = {
     featureChatDesc: "O'quvchilar bilan real vaqtda muloqot",
     featureSecurity: "Xavfsizlik",
     featureSecurityDesc: "Kontentingiz himoyalangan",
+    featureVideo: "Video darslar",
+    featureVideoDesc: "Sifatli video darslar bilan o'qiting",
+    featureProgress: "Progress kuzatuvi",
+    featureProgressDesc: "O'quvchilar taraqqiyotini real vaqtda kuzating",
+    featureAssignments: "Vazifalar",
+    featureAssignmentsDesc: "Topshiriqlar yarating va baholang",
     articlesLabel: "Blog",
     articlesTitle: "Foydali maqolalar",
     articlesSubtitle:

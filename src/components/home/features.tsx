@@ -7,6 +7,9 @@ import {
   MessageSquare,
   Shield,
   ClipboardCheck,
+  Play,
+  TrendingUp,
+  FileText,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
@@ -52,6 +55,27 @@ const features = [
     color: "from-cyan-500 to-cyan-600",
     bgColor: "bg-cyan-500/10",
     iconColor: "text-cyan-400",
+  },
+  {
+    key: "featureVideo",
+    icon: Play,
+    color: "from-red-500 to-red-600",
+    bgColor: "bg-red-500/10",
+    iconColor: "text-red-400",
+  },
+  {
+    key: "featureProgress",
+    icon: TrendingUp,
+    color: "from-orange-500 to-orange-600",
+    bgColor: "bg-orange-500/10",
+    iconColor: "text-orange-400",
+  },
+  {
+    key: "featureAssignments",
+    icon: FileText,
+    color: "from-indigo-500 to-indigo-600",
+    bgColor: "bg-indigo-500/10",
+    iconColor: "text-indigo-400",
   },
 ];
 
