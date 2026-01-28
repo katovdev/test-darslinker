@@ -180,11 +180,10 @@ export function PricingSection() {
 
                 {/* Show "includes all from" message after students row */}
                 {plan.includesAllFrom && (
-                  <li className="flex items-start gap-2 rounded-lg bg-primary/5 p-2 text-xs text-primary">
-                    <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-                    <span>
-                      {t(`pricing.${plan.includesAllFrom}`)} ning barcha imkoniyatlari
-                    </span>
+                  <li className="rounded-lg bg-muted/30 p-2 text-xs text-muted-foreground">
+                    {plan.includesAllFrom === "planMinimal" && "Minimaldagi imkoniyatlar"}
+                    {plan.includesAllFrom === "planStandard" && "Standartdagi imkoniyatlar"}
+                    {plan.includesAllFrom === "planPro" && "Prodagi imkoniyatlar"}
                   </li>
                 )}
 

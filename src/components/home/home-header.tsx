@@ -21,8 +21,10 @@ import type { Locale } from "@/i18n";
 
 const navItems = [
   { href: "/", key: "navHome" },
+  { href: "/#features", key: "navFeatures" },
   { href: "/#pricing", key: "navPricing" },
   { href: "/#blog", key: "navBlog" },
+  { href: "/#contact", key: "navContact" },
 ];
 
 const languages: { value: Locale; label: string; flag: string }[] = [
