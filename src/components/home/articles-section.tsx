@@ -14,7 +14,7 @@ export function ArticlesSection() {
         <div
           id="blog"
           className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
-          style={{ backgroundColor: "#5b8ac4" }}
+          style={{ backgroundColor: "#232324" }}
         >
           <div className="mx-auto max-w-6xl">
             {/* Section header */}
