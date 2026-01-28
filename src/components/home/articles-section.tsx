@@ -13,7 +13,7 @@ export function ArticlesSection() {
       <div className="mx-auto max-w-7xl">
         <div
           id="blog"
-          className="rounded-3xl px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
           style={{ backgroundColor: "#232324" }}
         >
           <div className="mx-auto max-w-6xl">

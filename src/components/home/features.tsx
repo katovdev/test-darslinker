@@ -63,21 +63,15 @@ export function Features() {
       <div className="mx-auto max-w-7xl">
         <div
           id="features"
-          className="rounded-3xl px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
           style={{ backgroundColor: "#7ea2d4" }}
         >
           <div className="mx-auto max-w-6xl">
             {/* Section header */}
             <div className="text-center">
-              <span className="inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-medium text-white">
-                {t("home.featuresLabel") || "Features"}
-              </span>
-              <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
                 {t("home.featuresTitle")}
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-                {t("home.featuresSubtitle")}
-              </p>
             </div>
 
             {/* Features grid */}
