@@ -8,6 +8,7 @@ import {
   HomeHeader,
   Hero,
   Features,
+  PricingSection,
   ArticlesSection,
   ContactForm,
   HomeFooter,
@@ -65,6 +66,7 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
+        <PricingSection />
         <ArticlesSection />
         <ContactForm />
       </main>
