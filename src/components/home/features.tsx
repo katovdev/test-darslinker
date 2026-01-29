@@ -198,6 +198,7 @@ export function Features() {
     let userHasControl = false;
     let isVisible = false;
     let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
+    let scrollDirection = 1; // 1 = down, -1 = up
 
     // Auto-scroll speed (pixels per frame at 60fps)
     const scrollSpeed = 0.8;
@@ -213,14 +214,18 @@ export function Features() {
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       const maxScroll = scrollHeight - clientHeight;
 
-      if (scrollTop >= maxScroll - 1) {
-        // Reached bottom - loop back to top smoothly
-        scrollContainer.scrollTop = 0;
-        calculateItemStyles();
-      } else {
-        scrollContainer.scrollTop = scrollTop + scrollSpeed;
-        calculateItemStyles();
+      // Check boundaries and reverse direction
+      if (scrollTop >= maxScroll - 1 && scrollDirection === 1) {
+        // Reached bottom - reverse to scroll up
+        scrollDirection = -1;
+      } else if (scrollTop <= 1 && scrollDirection === -1) {
+        // Reached top - reverse to scroll down
+        scrollDirection = 1;
       }
+
+      // Apply scroll in current direction
+      scrollContainer.scrollTop = scrollTop + (scrollSpeed * scrollDirection);
+      calculateItemStyles();
 
       autoScrollId = requestAnimationFrame(autoScroll);
     };
