@@ -186,7 +186,7 @@ export function Features() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-scroll animation for mobile - scrolls automatically, user can take control
+  // Auto-scroll animation for mobile - scrolls automatically, resumes after 1s of inactivity
   useEffect(() => {
     if (!isMobile) return;
 
@@ -197,9 +197,12 @@ export function Features() {
     let autoScrollId: number | null = null;
     let userHasControl = false;
     let isVisible = false;
+    let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
 
     // Auto-scroll speed (pixels per frame at 60fps)
     const scrollSpeed = 0.8;
+    // Resume delay after user stops (1 second)
+    const RESUME_DELAY = 1000;
 
     const autoScroll = () => {
       if (userHasControl || !isVisible) {
@@ -235,6 +238,23 @@ export function Features() {
       }
     };
 
+    const clearResumeTimeout = () => {
+      if (resumeTimeout) {
+        clearTimeout(resumeTimeout);
+        resumeTimeout = null;
+      }
+    };
+
+    const scheduleResume = () => {
+      clearResumeTimeout();
+      resumeTimeout = setTimeout(() => {
+        userHasControl = false;
+        if (isVisible) {
+          startAutoScroll();
+        }
+      }, RESUME_DELAY);
+    };
+
     // Intersection Observer to detect when section is visible
     const observer = new IntersectionObserver(
       (entries) => {
@@ -267,18 +287,23 @@ export function Features() {
       ) {
         userHasControl = true;
         stopAutoScroll();
+        clearResumeTimeout();
       }
     };
 
     const handleTouchEnd = () => {
-      // User keeps control - no auto-resume
-      // They've chosen to scroll manually
+      // Schedule auto-scroll resume after 1 second
+      if (userHasControl) {
+        scheduleResume();
+      }
     };
 
     // Also stop on manual scroll via wheel (desktop fallback)
     const handleWheel = () => {
       userHasControl = true;
       stopAutoScroll();
+      clearResumeTimeout();
+      scheduleResume();
     };
 
     scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -300,6 +325,7 @@ export function Features() {
 
     return () => {
       stopAutoScroll();
+      clearResumeTimeout();
       observer.disconnect();
       scrollContainer.removeEventListener('touchstart', handleTouchStart);
       scrollContainer.removeEventListener('touchend', handleTouchEnd);
