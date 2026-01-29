@@ -120,8 +120,8 @@ export function PricingSection() {
               key={plan.nameKey}
               className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 ${
                 plan.recommended
-                  ? "shadow-lg"
-                  : "border-white/20 hover:border-white/30"
+                  ? "scale-[1.3] shadow-lg hover:scale-[1.35]"
+                  : "border-white/20 hover:scale-110 hover:border-white/30"
               } ${
                 index === 0 ? "lg:ml-auto" : index === 2 ? "lg:mr-auto" : "mx-auto"
               }`}
