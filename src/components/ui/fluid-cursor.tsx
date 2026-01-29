@@ -1134,10 +1134,10 @@ export function FluidCursor() {
 
     function generateColor() {
       // Use our blue color #7ea2d4 (126, 162, 212) - low opacity
-      // Desktop (>= 1024px): 0.03 opacity (50% less intensity)
+      // Desktop (>= 1024px): 0.021 opacity (reduced by 30% from 0.03)
       // Mobile (< 1024px): 0.06 opacity (original)
       const isDesktop = window.innerWidth >= 1024;
-      const opacity = isDesktop ? 0.03 : 0.06;
+      const opacity = isDesktop ? 0.021 : 0.06;
 
       return {
         r: (126 / 255) * opacity,
