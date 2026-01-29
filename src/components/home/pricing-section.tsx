@@ -107,10 +107,17 @@ export function PricingSection() {
         >
           <div className="mx-auto">
             {/* Section header */}
-            <div className="text-center">
+            <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
               <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-                {t("pricing.subtitle")}
+                Mos tarifni tanlang
               </h2>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:border-white/30 hover:bg-white/10"
+              >
+                Batafsil ma&apos;lumot
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             {/* Pricing Cards */}
@@ -118,10 +125,10 @@ export function PricingSection() {
           {plans.map((plan, index) => (
             <div
               key={plan.nameKey}
-              className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 hover:scale-110 ${
+              className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 ${
                 plan.recommended
                   ? "shadow-lg"
-                  : "border-white/20 hover:border-white/30"
+                  : ""
               } ${
                 index === 0 ? "lg:ml-auto" : index === 2 ? "lg:mr-auto" : "mx-auto"
               }`}
@@ -129,7 +136,18 @@ export function PricingSection() {
                 backgroundColor: plan.recommended
                   ? "rgba(255, 255, 255, 0.05)"
                   : "rgba(255, 255, 255, 0.025)",
-                borderColor: plan.recommended ? "#7ea2d4" : undefined
+                borderColor: plan.recommended ? "rgba(126, 162, 212, 0.5)" : "rgba(255, 255, 255, 0.5)",
+                transition: "border-color 0.3s ease"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = plan.recommended
+                  ? "rgba(126, 162, 212, 1)"
+                  : "rgba(255, 255, 255, 1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = plan.recommended
+                  ? "rgba(126, 162, 212, 0.5)"
+                  : "rgba(255, 255, 255, 0.5)";
               }}
             >
               {/* Recommended Badge */}
@@ -196,22 +214,11 @@ export function PricingSection() {
                     : "border border-white/20 bg-white/5 text-white hover:border-white/30 hover:bg-white/10"
                 }`}
               >
-                Boshlash
+                Tanlash
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ))}
-            </div>
-
-            {/* View All Pricing Button */}
-            <div className="mt-12 text-center">
-              <Link
-                href="/pricing"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:border-white/30 hover:bg-white/10"
-              >
-                Barcha tariflar
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
           </div>
         </div>
