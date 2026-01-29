@@ -1,28 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export function FluidCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    // Check if desktop on mount
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-
-    checkDesktop();
-    window.addEventListener("resize", checkDesktop);
-
-    return () => {
-      window.removeEventListener("resize", checkDesktop);
-    };
-  }, []);
+  const isDesktopRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Update isDesktop ref
+    const updateDesktopRef = () => {
+      isDesktopRef.current = window.innerWidth >= 1024;
+    };
+
+    updateDesktopRef();
+    window.addEventListener("resize", updateDesktopRef);
 
     const resizeCanvas = () => {
       const pixelRatio = window.devicePixelRatio || 1;
@@ -1151,7 +1145,7 @@ export function FluidCursor() {
       // Use our blue color #7ea2d4 (126, 162, 212) - low opacity
       // Desktop (>= 1024px): 0.021 opacity (reduced by 30% from 0.03)
       // Mobile (< 1024px): 0.06 opacity (original)
-      const opacity = isDesktop ? 0.021 : 0.06;
+      const opacity = isDesktopRef.current ? 0.021 : 0.06;
 
       return {
         r: (126 / 255) * opacity,
@@ -1225,8 +1219,9 @@ export function FluidCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("resize", updateDesktopRef);
     };
-  }, [isDesktop]);
+  }, []);
 
   return (
     <canvas
