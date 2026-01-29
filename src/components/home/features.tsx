@@ -205,6 +205,14 @@ export function Features() {
     // Resume delay after user stops (1 second)
     const RESUME_DELAY = 1000;
 
+    // Simple visibility check that works on all browsers
+    const checkVisibility = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      // Section is visible if it's at least partially in viewport
+      return rect.top < viewportHeight && rect.bottom > 0;
+    };
+
     const autoScroll = () => {
       if (userHasControl || !isVisible) {
         autoScrollId = null;
@@ -260,22 +268,17 @@ export function Features() {
       }, RESUME_DELAY);
     };
 
-    // Intersection Observer to detect when section is visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        isVisible = entry.isIntersecting && entry.intersectionRatio > 0.3;
+    // Update visibility and start/stop auto-scroll
+    const updateVisibility = () => {
+      const wasVisible = isVisible;
+      isVisible = checkVisibility();
 
-        if (isVisible && !userHasControl) {
-          startAutoScroll();
-        } else {
-          stopAutoScroll();
-        }
-      },
-      { threshold: [0.3, 0.5, 0.7] }
-    );
-
-    observer.observe(section);
+      if (isVisible && !userHasControl && !autoScrollId) {
+        startAutoScroll();
+      } else if (!isVisible && autoScrollId) {
+        stopAutoScroll();
+      }
+    };
 
     // Touch handlers - user takes control on touch
     const handleTouchStart = (e: TouchEvent) => {
@@ -311,30 +314,37 @@ export function Features() {
       scheduleResume();
     };
 
+    // Window scroll handler - check visibility on page scroll
+    const handleWindowScroll = () => {
+      updateVisibility();
+    };
+
     scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
     scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
     scrollContainer.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
 
-    // Start auto-scroll if initially visible
+    // Initial check with multiple retries for mobile browsers
     const initialCheck = () => {
-      const sectionRect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      isVisible = sectionRect.top < viewportHeight && sectionRect.bottom > 0;
+      isVisible = checkVisibility();
       if (isVisible && !userHasControl) {
         startAutoScroll();
       }
     };
 
-    // Small delay to ensure component is mounted
+    // Run initial check immediately, then again after delays for mobile
+    initialCheck();
+    setTimeout(initialCheck, 100);
     setTimeout(initialCheck, 500);
+    setTimeout(initialCheck, 1000);
 
     return () => {
       stopAutoScroll();
       clearResumeTimeout();
-      observer.disconnect();
       scrollContainer.removeEventListener('touchstart', handleTouchStart);
       scrollContainer.removeEventListener('touchend', handleTouchEnd);
       scrollContainer.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleWindowScroll);
     };
   }, [isMobile, calculateItemStyles]);
 
