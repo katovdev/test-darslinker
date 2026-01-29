@@ -115,7 +115,7 @@ export function PricingSection() {
               </h2>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:border-white/30 hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10"
               >
                 Batafsil ma&apos;lumot
                 <ArrowRight className="h-4 w-4" />
