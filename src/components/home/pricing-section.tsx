@@ -92,8 +92,8 @@ export function PricingSection() {
       );
     }
     return (
-      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10">
-        <X className="h-3 w-3 text-white/50" />
+      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 dark:bg-gray-800">
+        <X className="h-3 w-3 text-white/50 dark:text-gray-600" />
       </div>
     );
   };
@@ -214,11 +214,11 @@ export function PricingSection() {
                 className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
                   plan.recommended
                     ? "bg-white text-[#7ea2d4] shadow-lg hover:bg-white/90 dark:bg-gray-900 dark:text-white"
-                    : "border border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20 dark:border-gray-700 dark:bg-gray-900/50 dark:text-gray-900 dark:hover:bg-gray-900/70"
+                    : "border border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20 dark:border-gray-700 dark:bg-gray-900/50 dark:text-white dark:hover:bg-gray-900/70"
                 }`}
               >
                 Tanlash
-                <ArrowRight className={`h-4 w-4 ${plan.recommended ? "dark:text-white" : "dark:text-gray-900"}`} />
+                <ArrowRight className={`h-4 w-4 ${plan.recommended ? "dark:text-white" : "dark:text-white"}`} />
               </Link>
             </div>
             );
