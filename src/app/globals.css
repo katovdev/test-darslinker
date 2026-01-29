@@ -172,6 +172,17 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Hide scrollbar for all browsers */
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   /* Custom scrollbar styles */

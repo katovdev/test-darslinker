@@ -91,7 +91,7 @@ export function Hero() {
               easing="smooth"
             >
               {/* Card 1 - Courses */}
-              <Card>
+              <Card customClass="!border-2 !border-[#7ea2d4]/25">
                 <div className="flex h-full flex-col justify-between p-8">
                   <div className="flex items-start gap-4">
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] shadow-lg shadow-[#7ea2d4]/50">
@@ -115,7 +115,7 @@ export function Hero() {
               </Card>
 
               {/* Card 2 - Security */}
-              <Card>
+              <Card customClass="!border-2 !border-green-500/25">
                 <div className="flex h-full flex-col justify-between p-8">
                   <div className="flex items-start gap-4">
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/50">
@@ -139,7 +139,7 @@ export function Hero() {
               </Card>
 
               {/* Card 3 - Progress */}
-              <Card>
+              <Card customClass="!border-2 !border-orange-500/25">
                 <div className="flex h-full flex-col justify-between p-8">
                   <div className="flex items-start gap-4">
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 shadow-lg shadow-orange-500/50">
@@ -163,7 +163,7 @@ export function Hero() {
               </Card>
 
               {/* Card 4 - Payment System */}
-              <Card>
+              <Card customClass="!border-2 !border-purple-500/25">
                 <div className="flex h-full flex-col justify-between p-8">
                   <div className="flex items-start gap-4">
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 shadow-lg shadow-purple-500/50">

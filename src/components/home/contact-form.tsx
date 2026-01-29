@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Mail, Phone, Instagram, MessageCircle } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { formatPhoneNumber } from "@/services/auth";
 import { api } from "@/lib/api";
@@ -55,29 +55,70 @@ export function ContactForm() {
       style={{ scrollMarginTop: "100px" }}
     >
       <div className="mx-auto max-w-[1400px]">
-        <div className="rounded-[40px] border-2 border-[#7ea2d4] px-6 py-16 sm:px-8 lg:px-12 lg:py-20">
-          {/* Section Header */}
-          <div className="text-center">
-            <span className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-500">
-              {t("home.contactLabel") || "Contact"}
-            </span>
-            <h2 className="mt-4 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-              {t("home.contactTitle")}
-            </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
-              {t("home.contactSubtitle")}
-            </p>
-          </div>
+        <div
+          className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
+          style={{ backgroundColor: "#232324" }}
+        >
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+            {/* Left Side - Text Content */}
+            <div className="flex flex-col justify-center">
+              <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+                {t("home.contactTitle")}
+              </h2>
+              <p className="mt-4 text-lg text-white/70">
+                {t("home.contactSubtitle")}
+              </p>
 
-          {/* Contact Form */}
-          <form onSubmit={handleSubmit} className="mx-auto mt-12 max-w-3xl">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-lg sm:p-8">
+              {/* Additional info */}
+              <div className="mt-8 space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5">
+                    <Mail className="h-5 w-5 text-[#7ea2d4]" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">Email</h3>
+                    <p className="text-sm text-white/60">support@darslinker.uz</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5">
+                    <Phone className="h-5 w-5 text-[#7ea2d4]" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">Telefon</h3>
+                    <p className="text-sm text-white/60">+998 90 123 45 67</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5">
+                    <Instagram className="h-5 w-5 text-[#7ea2d4]" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">Instagram</h3>
+                    <p className="text-sm text-white/60">@darslinker</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5">
+                    <MessageCircle className="h-5 w-5 text-[#7ea2d4]" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">Telegram</h3>
+                    <p className="text-sm text-white/60">@darslinker_support</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Contact Form */}
+            <form onSubmit={handleSubmit} className="flex flex-col justify-center">
+          <div className="rounded-2xl border border-white/10 p-6 shadow-lg sm:p-8" style={{ backgroundColor: "rgba(255, 255, 255, 0.025)" }}>
             <div className="grid gap-6 sm:grid-cols-2">
               {/* Name */}
               <div>
                 <label
                   htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-foreground"
+                  className="mb-2 block text-sm font-medium text-white"
                 >
                   {t("home.contactName")}
                 </label>
@@ -89,7 +130,7 @@ export function ContactForm() {
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder={t("home.contactName")}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-white/50 transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -97,14 +138,14 @@ export function ContactForm() {
               <div>
                 <label
                   htmlFor="phone"
-                  className="mb-2 block text-sm font-medium text-foreground"
+                  className="mb-2 block text-sm font-medium text-white"
                 >
                   {t("home.contactPhone")}
                 </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-4">
                     <span className="text-lg">🇺🇿</span>
-                    <span className="text-sm text-muted-foreground">+998</span>
+                    <span className="text-sm text-white/70">+998</span>
                   </div>
                   <input
                     id="phone"
@@ -112,7 +153,7 @@ export function ContactForm() {
                     value={formData.phone}
                     onChange={handlePhoneChange}
                     placeholder="XX XXX XX XX"
-                    className="w-full rounded-xl border border-input bg-background py-3 pr-4 pl-24 text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="w-full rounded-xl border border-white/20 bg-white/5 py-3 pr-4 pl-24 text-white placeholder-white/50 transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -122,7 +163,7 @@ export function ContactForm() {
             <div className="mt-6">
               <label
                 htmlFor="message"
-                className="mb-2 block text-sm font-medium text-foreground"
+                className="mb-2 block text-sm font-medium text-white"
               >
                 {t("home.contactMessage")}
               </label>
@@ -134,7 +175,7 @@ export function ContactForm() {
                 }
                 rows={5}
                 placeholder={t("home.contactMessage")}
-                className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-foreground placeholder-muted-foreground transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full resize-none rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-white/50 transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -158,6 +199,7 @@ export function ContactForm() {
             </button>
           </div>
         </form>
+          </div>
         </div>
       </div>
     </section>

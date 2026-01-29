@@ -80,9 +80,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
         }
       : {
           ease: 'power2.out',
-          durDrop: 0.65,
-          durMove: 0.65,
-          durReturn: 0.65,
+          durDrop: 0.4,
+          durMove: 0.4,
+          durReturn: 0.4,
           promoteOverlap: 0.6,
           returnDelay: 0.15
         };
@@ -149,7 +149,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
 
       const backSlot = makeSlot(refs.length - 1, cardDistance, verticalDistance, refs.length);
       const backOpacity = 1; // Keep full opacity
-      tl.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
+      // Start return immediately after drop completes, no pause
+      tl.addLabel('return', `${config.durDrop}`);
       tl.call(
         () => {
           gsap.set(elFront, { zIndex: backSlot.zIndex });

@@ -114,19 +114,22 @@ export function PricingSection() {
             </div>
 
             {/* Pricing Cards */}
-            <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan) => (
+            <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {plans.map((plan, index) => (
             <div
               key={plan.nameKey}
-              className={`group relative flex flex-col rounded-2xl border p-6 transition-all duration-300 ${
+              className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 ${
                 plan.recommended
-                  ? "border-white/20 shadow-lg"
-                  : "border-white/10 hover:border-white/20"
+                  ? "shadow-lg"
+                  : "border-white/20 hover:border-white/30"
+              } ${
+                index === 0 ? "lg:ml-auto" : index === 2 ? "lg:mr-auto" : "mx-auto"
               }`}
               style={{
                 backgroundColor: plan.recommended
                   ? "rgba(255, 255, 255, 0.05)"
-                  : "rgba(255, 255, 255, 0.025)"
+                  : "rgba(255, 255, 255, 0.025)",
+                borderColor: plan.recommended ? "#7ea2d4" : undefined
               }}
             >
               {/* Recommended Badge */}
@@ -140,9 +143,11 @@ export function PricingSection() {
               )}
 
               {/* Plan Name */}
-              <h3 className="text-4xl font-bold text-white mb-6">
-                {t(`pricing.${plan.nameKey}`)}
-              </h3>
+              <div className="mb-6">
+                <h3 className="text-4xl font-bold text-white">
+                  {t(`pricing.${plan.nameKey}`)}
+                </h3>
+              </div>
 
               {/* Features */}
               <ul className="mb-6 flex-1 space-y-3">

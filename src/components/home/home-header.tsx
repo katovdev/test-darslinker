@@ -23,7 +23,6 @@ const navItems = [
   { href: "/", label: "Asosiy" },
   { href: "/#features", label: "Imkoniyatlar" },
   { href: "/#pricing", label: "Narxlar" },
-  { href: "/#blog", label: "Ma'qola" },
   { href: "/#contact", label: "Aloqa" },
 ];
 
