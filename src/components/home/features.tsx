@@ -186,177 +186,126 @@ export function Features() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Scroll hijacking for mobile - lock body scroll when in features section
+  // Auto-scroll animation for mobile - scrolls automatically, user can take control
   useEffect(() => {
     if (!isMobile) return;
 
-    const section = sectionRef.current;
     const scrollContainer = scrollContainerRef.current;
-    if (!section || !scrollContainer) return;
+    const section = sectionRef.current;
+    if (!scrollContainer || !section) return;
 
-    let isLockedRef = false;
-    let lastTouchY = 0;
-    let velocity = 0;
-    let animationId: number | null = null;
-    let lastTime = 0;
+    let autoScrollId: number | null = null;
+    let userHasControl = false;
+    let isVisible = false;
 
-    const checkAndLock = () => {
-      const sectionRect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
+    // Auto-scroll speed (pixels per frame at 60fps)
+    const scrollSpeed = 0.8;
 
-      // Section should be visible and taking up most of the viewport
-      const sectionVisibleTop = Math.max(0, sectionRect.top);
-      const sectionVisibleBottom = Math.min(viewportHeight, sectionRect.bottom);
-      const visibleHeight = sectionVisibleBottom - sectionVisibleTop;
-      const isLargelyVisible = visibleHeight > viewportHeight * 0.5;
-
-      // Check if section top is above viewport center
-      const isSectionCentered = sectionRect.top <= viewportHeight * 0.4 && sectionRect.bottom >= viewportHeight * 0.6;
-
-      return isSectionCentered && isLargelyVisible;
-    };
-
-    // Momentum animation
-    const animateMomentum = () => {
-      if (Math.abs(velocity) < 0.5) {
-        velocity = 0;
-        animationId = null;
+    const autoScroll = () => {
+      if (userHasControl || !isVisible) {
+        autoScrollId = null;
         return;
       }
 
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       const maxScroll = scrollHeight - clientHeight;
 
-      // Apply friction
-      velocity *= 0.95;
-
-      const newScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + velocity));
-      scrollContainer.scrollTop = newScrollTop;
-
-      // Check if at boundaries
-      if (newScrollTop <= 0 || newScrollTop >= maxScroll) {
-        velocity = 0;
-        isLockedRef = false;
-        setIsLocked(false);
-        animationId = null;
-        return;
+      if (scrollTop >= maxScroll - 1) {
+        // Reached bottom - loop back to top smoothly
+        scrollContainer.scrollTop = 0;
+        calculateItemStyles();
+      } else {
+        scrollContainer.scrollTop = scrollTop + scrollSpeed;
+        calculateItemStyles();
       }
 
-      animationId = requestAnimationFrame(animateMomentum);
+      autoScrollId = requestAnimationFrame(autoScroll);
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
-      // Stop any ongoing momentum
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
-      velocity = 0;
-
-      lastTouchY = e.touches[0].clientY;
-      lastTime = performance.now();
-
-      if (checkAndLock()) {
-        isLockedRef = true;
-        setIsLocked(true);
+    const startAutoScroll = () => {
+      if (!autoScrollId && !userHasControl && isVisible) {
+        autoScrollId = requestAnimationFrame(autoScroll);
       }
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isLockedRef) {
-        if (checkAndLock()) {
-          isLockedRef = true;
-          setIsLocked(true);
-          lastTouchY = e.touches[0].clientY;
-          lastTime = performance.now();
+    const stopAutoScroll = () => {
+      if (autoScrollId) {
+        cancelAnimationFrame(autoScrollId);
+        autoScrollId = null;
+      }
+    };
+
+    // Intersection Observer to detect when section is visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        isVisible = entry.isIntersecting && entry.intersectionRatio > 0.3;
+
+        if (isVisible && !userHasControl) {
+          startAutoScroll();
+        } else {
+          stopAutoScroll();
         }
-        return;
+      },
+      { threshold: [0.3, 0.5, 0.7] }
+    );
+
+    observer.observe(section);
+
+    // Touch handlers - user takes control on touch
+    const handleTouchStart = (e: TouchEvent) => {
+      // Check if touch is within the scroll container
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const touchX = e.touches[0].clientX;
+      const touchY = e.touches[0].clientY;
+
+      if (
+        touchX >= containerRect.left &&
+        touchX <= containerRect.right &&
+        touchY >= containerRect.top &&
+        touchY <= containerRect.bottom
+      ) {
+        userHasControl = true;
+        stopAutoScroll();
       }
-
-      const currentY = e.touches[0].clientY;
-      const currentTime = performance.now();
-      const deltaY = lastTouchY - currentY;
-      const deltaTime = currentTime - lastTime;
-
-      // Calculate velocity for momentum
-      if (deltaTime > 0) {
-        velocity = deltaY / deltaTime * 16; // Normalize to ~60fps
-      }
-
-      lastTouchY = currentY;
-      lastTime = currentTime;
-
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const maxScroll = scrollHeight - clientHeight;
-
-      const isScrollingDown = deltaY > 0;
-      const isScrollingUp = deltaY < 0;
-      const atTop = scrollTop <= 2;
-      const atBottom = scrollTop >= maxScroll - 2;
-
-      // If at boundary and trying to scroll past, release lock
-      if ((isScrollingDown && atBottom) || (isScrollingUp && atTop)) {
-        isLockedRef = false;
-        setIsLocked(false);
-        velocity = 0;
-        return;
-      }
-
-      // Prevent page scroll and scroll the container instead
-      e.preventDefault();
-
-      // Apply scroll directly
-      const newScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + deltaY));
-      scrollContainer.scrollTop = newScrollTop;
     };
 
     const handleTouchEnd = () => {
-      // Start momentum animation if there's velocity
-      if (Math.abs(velocity) > 2 && isLockedRef) {
-        animationId = requestAnimationFrame(animateMomentum);
-      } else {
-        // Check if should unlock
-        setTimeout(() => {
-          const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-          const maxScroll = scrollHeight - clientHeight;
-          const atTop = scrollTop <= 2;
-          const atBottom = scrollTop >= maxScroll - 2;
+      // User keeps control - no auto-resume
+      // They've chosen to scroll manually
+    };
 
-          if (atTop || atBottom) {
-            isLockedRef = false;
-            setIsLocked(false);
-          }
-        }, 100);
+    // Also stop on manual scroll via wheel (desktop fallback)
+    const handleWheel = () => {
+      userHasControl = true;
+      stopAutoScroll();
+    };
+
+    scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+    scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+    scrollContainer.addEventListener('wheel', handleWheel, { passive: true });
+
+    // Start auto-scroll if initially visible
+    const initialCheck = () => {
+      const sectionRect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      isVisible = sectionRect.top < viewportHeight && sectionRect.bottom > 0;
+      if (isVisible && !userHasControl) {
+        startAutoScroll();
       }
     };
 
-    const handleWindowScroll = () => {
-      // If page is being scrolled and we should lock, scroll to section
-      if (!isLockedRef && checkAndLock()) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-        const maxScroll = scrollHeight - clientHeight;
-
-        // Only lock if there's content to scroll
-        if (maxScroll > 10 && scrollTop < maxScroll - 5) {
-          isLockedRef = true;
-          setIsLocked(true);
-        }
-      }
-    };
-
-    document.addEventListener('touchstart', handleTouchStart, { passive: true });
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd, { passive: true });
-    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    // Small delay to ensure component is mounted
+    setTimeout(initialCheck, 500);
 
     return () => {
-      if (animationId) cancelAnimationFrame(animationId);
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('scroll', handleWindowScroll);
+      stopAutoScroll();
+      observer.disconnect();
+      scrollContainer.removeEventListener('touchstart', handleTouchStart);
+      scrollContainer.removeEventListener('touchend', handleTouchEnd);
+      scrollContainer.removeEventListener('wheel', handleWheel);
     };
-  }, [isMobile]);
+  }, [isMobile, calculateItemStyles]);
 
   return (
     <section
