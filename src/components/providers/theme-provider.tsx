@@ -12,7 +12,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       attribute="class"
       defaultTheme="system"
       enableSystem={true}
-      disableTransitionOnChange
+      storageKey="darslinker-theme"
     >
       {children}
     </NextThemesProvider>
