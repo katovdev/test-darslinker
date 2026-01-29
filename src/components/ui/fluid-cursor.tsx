@@ -1212,8 +1212,11 @@ export function FluidCursor() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-[9999]"
-      style={{ background: "transparent" }}
+      className="pointer-events-none fixed inset-0"
+      style={{
+        background: "transparent",
+        zIndex: 9999,
+      }}
     />
   );
 }
