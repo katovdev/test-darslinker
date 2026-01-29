@@ -5,8 +5,23 @@ import { useEffect, useRef } from "react";
 export function FluidCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDesktopRef = useRef(false);
+  const isMobileRef = useRef(false);
 
   useEffect(() => {
+    // Check if device is mobile/touch device
+    const checkMobile = () => {
+      return (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.innerWidth < 1024
+      );
+    };
+
+    isMobileRef.current = checkMobile();
+
+    // Don't initialize on mobile devices
+    if (isMobileRef.current) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -1223,10 +1238,19 @@ export function FluidCursor() {
     };
   }, []);
 
+  // Don't render on mobile devices
+  if (typeof window !== 'undefined' && (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    window.innerWidth < 1024
+  )) {
+    return null;
+  }
+
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0"
+      className="pointer-events-none fixed inset-0 hidden lg:block"
       style={{
         background: "transparent",
         zIndex: 9999,
