@@ -1,14 +1,8 @@
 "use client";
 
-import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import './card-swap.css';
-
-// Check if mobile or tablet
-const isMobileOrTablet = () => {
-  if (typeof window === 'undefined') return false;
-  return window.innerWidth < 1024;
-};
 
 export const Card = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { customClass?: string }>(
   ({ customClass, ...rest }, ref) => (
@@ -105,9 +99,6 @@ const CardSwap: React.FC<CardSwapProps> = ({
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Don't run animations on mobile/tablet
-    if (isMobileOrTablet()) return;
-
     const total = refs.length;
     refs.forEach((r, i) => placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount, i));
 
