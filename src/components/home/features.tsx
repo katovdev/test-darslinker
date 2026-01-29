@@ -14,6 +14,12 @@ import {
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
+// Check if we're on mobile
+const isMobileDevice = () => {
+  if (typeof window === 'undefined') return false;
+  return window.innerWidth < 640; // sm breakpoint
+};
+
 const features = [
   {
     key: "featureCourses",
@@ -85,6 +91,8 @@ export function Features() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [itemStyles, setItemStyles] = useState<{ scale: number; opacity: number }[]>(
     features.map((_, index) => {
       // Initial styles - first item is largest, decreasing down
@@ -97,7 +105,10 @@ export function Features() {
     })
   );
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const lastScrollTime = useRef<number>(0);
 
   const calculateItemStyles = useCallback(() => {
     if (!scrollContainerRef.current) return;
@@ -146,8 +157,100 @@ export function Features() {
     return () => clearTimeout(timer);
   }, [calculateItemStyles]);
 
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(isMobileDevice());
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Scroll hijacking for mobile
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const section = sectionRef.current;
+    const scrollContainer = scrollContainerRef.current;
+    if (!section || !scrollContainer) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const sectionRect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Check if section is in the "lock zone" (section top is near or above viewport center)
+      const sectionCenterFromTop = sectionRect.top + sectionRect.height / 2;
+      const isInLockZone = sectionRect.top <= viewportHeight * 0.3 && sectionRect.bottom >= viewportHeight * 0.7;
+
+      if (!isInLockZone) {
+        setIsLocked(false);
+        return;
+      }
+
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const maxScroll = scrollHeight - clientHeight;
+      const isScrollingDown = e.deltaY > 0;
+      const isScrollingUp = e.deltaY < 0;
+
+      // If scrolling down and not at bottom, or scrolling up and not at top, hijack the scroll
+      if ((isScrollingDown && scrollTop < maxScroll - 5) || (isScrollingUp && scrollTop > 5)) {
+        e.preventDefault();
+        setIsLocked(true);
+        scrollContainer.scrollTop += e.deltaY;
+      } else {
+        setIsLocked(false);
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      (section as any)._touchStartY = touch.clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const sectionRect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      const isInLockZone = sectionRect.top <= viewportHeight * 0.3 && sectionRect.bottom >= viewportHeight * 0.7;
+
+      if (!isInLockZone) {
+        setIsLocked(false);
+        return;
+      }
+
+      const touch = e.touches[0];
+      const touchStartY = (section as any)._touchStartY || touch.clientY;
+      const deltaY = touchStartY - touch.clientY;
+      (section as any)._touchStartY = touch.clientY;
+
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const maxScroll = scrollHeight - clientHeight;
+      const isScrollingDown = deltaY > 0;
+      const isScrollingUp = deltaY < 0;
+
+      if ((isScrollingDown && scrollTop < maxScroll - 5) || (isScrollingUp && scrollTop > 5)) {
+        e.preventDefault();
+        setIsLocked(true);
+        scrollContainer.scrollTop += deltaY;
+      } else {
+        setIsLocked(false);
+      }
+    };
+
+    // Add passive: false to allow preventDefault
+    document.addEventListener('wheel', handleWheel, { passive: false });
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener('wheel', handleWheel);
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [isMobile]);
+
   return (
     <section
+      ref={sectionRef}
       id="features"
       className="relative z-0 bg-background px-4 pt-12 pb-16 sm:px-6 lg:px-8 lg:pt-24 lg:pb-20"
       style={{ scrollMarginTop: "64px" }}
