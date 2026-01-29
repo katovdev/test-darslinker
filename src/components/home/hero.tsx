@@ -9,22 +9,22 @@ export function Hero() {
   const t = useTranslations();
 
   return (
-    <section className="relative z-10 px-4 pt-16 pb-24 sm:px-6 sm:pb-28 lg:px-8 lg:pt-24 lg:pb-32">
+    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div className="flex flex-col justify-center text-center lg:text-left">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[#7ea2d4] px-4 py-1.5">
+            <div className="mb-6 mx-auto lg:mx-0 inline-flex items-center gap-2 rounded-full border-2 border-[#7ea2d4] px-3 py-1.5 sm:px-4">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#7ea2d4]" />
-              <span className="text-sm text-foreground">
+              <span className="text-xs sm:text-sm text-foreground">
                 Onlyan kurslarni tizimlashtirish platformasi
               </span>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
               {t("home.heroTitle")}
             </h1>
 
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground lg:text-xl">
+            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground lg:text-xl">
               {t("home.heroSubtitle")}
             </p>
 
@@ -32,14 +32,14 @@ export function Hero() {
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
               <Link
                 href="/register"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-6 py-3 sm:px-8 sm:py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
               >
                 {t("home.getStarted")}
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary px-8 py-4 font-semibold text-foreground transition-all hover:border-primary hover:bg-secondary/80"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary px-6 py-3 sm:px-8 sm:py-4 font-semibold text-foreground transition-all hover:border-primary hover:bg-secondary/80"
               >
                 <Play className="h-5 w-5" />
                 {t("home.viewPricing")}
@@ -47,31 +47,31 @@ export function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-6 border-t border-border pt-8">
+            <div className="mt-12 grid grid-cols-3 gap-3 sm:gap-6 border-t border-border pt-8">
               <div>
-                <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <Users className="h-5 w-5 text-primary" />
-                  <span className="text-2xl font-bold text-foreground">500+</span>
+                <div className="flex items-center justify-center gap-1 sm:gap-2 lg:justify-start">
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  <span className="text-xl sm:text-2xl font-bold text-foreground">500+</span>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                   {t("home.statStudents") || "Students"}
                 </p>
               </div>
               <div>
-                <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <BookOpen className="h-5 w-5 text-green-500" />
-                  <span className="text-2xl font-bold text-foreground">50+</span>
+                <div className="flex items-center justify-center gap-1 sm:gap-2 lg:justify-start">
+                  <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+                  <span className="text-xl sm:text-2xl font-bold text-foreground">50+</span>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                   {t("home.statCourses") || "Courses"}
                 </p>
               </div>
               <div>
-                <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <Award className="h-5 w-5 text-yellow-500" />
-                  <span className="text-2xl font-bold text-foreground">100+</span>
+                <div className="flex items-center justify-center gap-1 sm:gap-2 lg:justify-start">
+                  <Award className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
+                  <span className="text-xl sm:text-2xl font-bold text-foreground">100+</span>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                   {t("home.statCertificates") || "Certificates"}
                 </p>
               </div>

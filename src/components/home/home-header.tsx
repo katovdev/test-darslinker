@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   Moon,
   Sun,
+  Phone,
 } from "lucide-react";
 import { useTranslations, useLocale, useSetLocale } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
@@ -81,23 +82,35 @@ export function HomeHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl shadow-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center">
-          <span className="text-xl font-bold text-foreground">dars</span>
-          <span className="bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] bg-clip-text text-xl font-bold text-transparent">
-            linker
-          </span>
-        </Link>
+    <>
+    <header className="fixed top-0 left-0 right-0 z-[102] bg-background/80 backdrop-blur-xl shadow-sm">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-3 sm:px-4 md:px-6 relative">
+        <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground">dars</span>
+            <span className="bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] bg-clip-text text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-transparent">
+              linker
+            </span>
+          </Link>
+
+          {/* Phone number - Desktop */}
+          <a
+            href="tel:+998901234567"
+            className="hidden sm:flex items-center gap-2 text-sm md:text-base text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Phone className="h-4 w-4" />
+            <span className="font-medium">+998 90 123 45 67</span>
+          </a>
+        </div>
 
         {/* Only show public nav items when NOT authenticated */}
         {!isAuthenticated && (
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="hidden items-center gap-6 lg:gap-8 md:flex absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap"
               >
                 {item.label}
               </Link>
@@ -105,12 +118,12 @@ export function HomeHeader() {
           </nav>
         )}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
           {/* Theme Toggle */}
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex items-center gap-1 sm:gap-2 rounded-lg px-2 py-2 sm:px-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? (
@@ -125,10 +138,10 @@ export function HomeHeader() {
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex items-center gap-1 sm:gap-2 rounded-lg px-2 py-2 sm:px-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
-              <span className="text-base">{currentLanguage?.flag}</span>
-              <ChevronDown className="h-4 w-4" />
+              <span className="text-sm sm:text-base">{currentLanguage?.flag}</span>
+              <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
             </button>
 
             {langOpen && (
@@ -257,13 +270,13 @@ export function HomeHeader() {
                 <>
                   <Link
                     href="/login"
-                    className="hidden rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-secondary/80 sm:inline-flex"
+                    className="hidden rounded-lg border border-border bg-secondary px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-secondary/80 sm:inline-flex whitespace-nowrap"
                   >
                     {t("auth.login")}
                   </Link>
                   <Link
                     href="/login"
-                    className="hidden rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 sm:inline-flex"
+                    className="hidden rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 sm:inline-flex whitespace-nowrap"
                   >
                     {t("home.getStarted")}
                   </Link>
@@ -274,35 +287,55 @@ export function HomeHeader() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
+            className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden overflow-hidden"
           >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <div className="relative h-6 w-6">
+              <Menu className={`absolute inset-0 h-6 w-6 transition-all duration-300 ${
+                isOpen ? 'rotate-90 opacity-0 scale-0' : 'rotate-0 opacity-100 scale-100'
+              }`} />
+              <X className={`absolute inset-0 h-6 w-6 transition-all duration-300 ${
+                isOpen ? 'rotate-0 opacity-100 scale-100' : '-rotate-90 opacity-0 scale-0'
+              }`} />
+            </div>
           </button>
         </div>
       </div>
+    </header>
 
+      {/* Backdrop */}
       {isOpen && (
-        <div className="border-t border-border bg-card md:hidden">
-          <nav className="flex flex-col p-4">
-            {/* Only show public nav items when NOT authenticated */}
-            {!isAuthenticated &&
-              navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
-              ))}
+        <div
+          className="fixed inset-0 bg-black/50 z-[100] md:hidden transition-opacity duration-300"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-            <div className="mt-4 flex flex-col gap-2 border-t border-border pt-4">
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed top-16 left-0 right-0 bg-card border-b border-border shadow-lg z-[101] md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+        isOpen ? 'max-h-[60vh] opacity-100' : 'max-h-0 opacity-0'
+      }`}>
+        <div className="overflow-y-auto max-h-[60vh]">
+          <nav className="flex flex-col px-4 py-3 max-w-md mx-auto gap-2">
+          {/* Only show public nav items when NOT authenticated */}
+          {!isAuthenticated &&
+            navItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground text-center"
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
               {/* Theme Toggle for Mobile */}
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 >
                   {theme === "dark" ? (
                     <>
@@ -320,12 +353,12 @@ export function HomeHeader() {
 
               {!isLoading && isAuthenticated && user ? (
                 <>
-                  <div className="mb-2 flex items-center gap-3 px-4 py-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] font-medium text-white">
+                  <div className="mb-2 flex items-center justify-center gap-2 px-3 py-2">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] font-semibold text-white">
                       {getInitials()}
                     </div>
-                    <div>
-                      <p className="font-medium text-foreground">
+                    <div className="text-left">
+                      <p className="font-semibold text-foreground">
                         {user.firstName} {user.lastName}
                       </p>
                       <p className="text-sm text-muted-foreground">{user.phone}</p>
@@ -334,7 +367,7 @@ export function HomeHeader() {
                   <Link
                     href="/me"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                   >
                     <User className="h-4 w-4" />
                     {t("sidebar.profile") || "Profile"}
@@ -345,7 +378,7 @@ export function HomeHeader() {
                     <Link
                       href="/me/courses"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                      className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       {t("sidebar.myCourses") || "My Courses"}
@@ -355,7 +388,7 @@ export function HomeHeader() {
                   <Link
                     href="/courses"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                   >
                     <BookOpen className="h-4 w-4" />
                     {t("sidebar.browseCourses") || "Browse Courses"}
@@ -370,7 +403,7 @@ export function HomeHeader() {
                       <Link
                         href={dashboard.href}
                         onClick={() => setIsOpen(false)}
-                        className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${dashboard.color}`}
+                        className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${dashboard.color}`}
                       >
                         <Icon className="h-4 w-4" />
                         {dashboard.label}
@@ -382,34 +415,52 @@ export function HomeHeader() {
                       setIsOpen(false);
                       handleLogout();
                     }}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10"
+                    className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10"
                   >
                     <LogOut className="h-4 w-4" />
                     {t("header.logout") || "Chiqish"}
                   </button>
+
+                  {/* Phone number - Mobile (for authenticated users) */}
+                  <a
+                    href="tel:+998901234567"
+                    className="flex sm:hidden items-center justify-center gap-2 rounded-lg bg-secondary border border-border px-4 py-3 text-base font-semibold text-foreground hover:bg-secondary/80 transition-colors mt-2"
+                  >
+                    <Phone className="h-5 w-5" />
+                    <span>+998 90 123 45 67</span>
+                  </a>
                 </>
               ) : (
                 <>
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="rounded-lg border border-border bg-secondary px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:border-primary"
+                    className="rounded-lg border border-border bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-foreground transition-colors hover:border-primary"
                   >
                     {t("auth.login")}
                   </Link>
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
-                    className="rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-3 text-center text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25"
+                    className="rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2.5 text-center text-sm font-semibold text-white shadow-lg shadow-[#7ea2d4]/25"
                   >
                     {t("home.getStarted")}
                   </Link>
+
+                  {/* Phone number - Mobile */}
+                  <a
+                    href="tel:+998901234567"
+                    className="flex sm:hidden items-center justify-center gap-2 rounded-lg bg-secondary border border-border px-4 py-3 text-base font-semibold text-foreground hover:bg-secondary/80 transition-colors mt-2"
+                  >
+                    <Phone className="h-5 w-5" />
+                    <span>+998 90 123 45 67</span>
+                  </a>
                 </>
               )}
             </div>
           </nav>
         </div>
-      )}
-    </header>
+        </div>
+    </>
   );
 }

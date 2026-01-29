@@ -55,53 +55,53 @@ export function ContactForm() {
       style={{ scrollMarginTop: "100px" }}
     >
       <div className="mx-auto max-w-[1400px]">
-        <div className="rounded-[40px] bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] px-6 py-16 sm:px-8 lg:px-12 lg:py-20">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="rounded-[24px] sm:rounded-[32px] lg:rounded-[40px] bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+          <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left Side - Text Content */}
             <div className="flex flex-col justify-center">
-              <h2 className="text-3xl font-bold text-white dark:text-gray-900 sm:text-4xl lg:text-5xl">
+              <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
                 {t("home.contactTitle")}
               </h2>
-              <p className="mt-4 text-lg text-white/80 dark:text-gray-700">
+              <p className="mt-3 sm:mt-4 text-base sm:text-lg text-white/80">
                 {t("home.contactSubtitle")}
               </p>
 
               {/* Additional info */}
-              <div className="mt-8 space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 dark:bg-gray-900/50">
-                    <Mail className="h-5 w-5 text-white dark:text-gray-900" />
+              <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-white dark:text-gray-900">Email</h3>
-                    <p className="text-sm text-white/70 dark:text-gray-700">support@darslinker.uz</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 dark:bg-gray-900/50">
-                    <Phone className="h-5 w-5 text-white dark:text-gray-900" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white dark:text-gray-900">Telefon</h3>
-                    <p className="text-sm text-white/70 dark:text-gray-700">+998 90 123 45 67</p>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-semibold text-white">Email</h3>
+                    <p className="text-xs sm:text-sm text-white/70 break-all">support@darslinker.uz</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 dark:bg-gray-900/50">
-                    <Instagram className="h-5 w-5 text-white dark:text-gray-900" />
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
+                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-white dark:text-gray-900">Instagram</h3>
-                    <p className="text-sm text-white/70 dark:text-gray-700">@darslinker</p>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-semibold text-white">Telefon</h3>
+                    <p className="text-xs sm:text-sm text-white/70">+998 90 123 45 67</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 dark:bg-gray-900/50">
-                    <MessageCircle className="h-5 w-5 text-white dark:text-gray-900" />
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
+                    <Instagram className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-white dark:text-gray-900">Telegram</h3>
-                    <p className="text-sm text-white/70 dark:text-gray-700">@darslinker_support</p>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-semibold text-white">Instagram</h3>
+                    <p className="text-xs sm:text-sm text-white/70">@darslinker</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
+                    <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-semibold text-white">Telegram</h3>
+                    <p className="text-xs sm:text-sm text-white/70">@darslinker_support</p>
                   </div>
                 </div>
               </div>
@@ -109,13 +109,13 @@ export function ContactForm() {
 
             {/* Right Side - Contact Form */}
             <form onSubmit={handleSubmit} className="flex flex-col justify-center">
-          <div className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-900/50 sm:p-8">
+          <div className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg sm:p-8">
             <div className="grid gap-6 sm:grid-cols-2">
               {/* Name */}
               <div>
                 <label
                   htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-white dark:text-gray-900"
+                  className="mb-2 block text-sm font-medium text-white"
                 >
                   {t("home.contactName")}
                 </label>
@@ -127,7 +127,7 @@ export function ContactForm() {
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
                   placeholder={t("home.contactName")}
-                  className="w-full rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white dark:border-gray-600 dark:bg-gray-800/50 dark:text-gray-900 dark:placeholder-gray-500 dark:focus:border-gray-900"
+                  className="w-full rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
                 />
               </div>
 
@@ -135,14 +135,14 @@ export function ContactForm() {
               <div>
                 <label
                   htmlFor="phone"
-                  className="mb-2 block text-sm font-medium text-white dark:text-gray-900"
+                  className="mb-2 block text-sm font-medium text-white"
                 >
                   {t("home.contactPhone")}
                 </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-4">
                     <span className="text-lg">🇺🇿</span>
-                    <span className="text-sm text-white/80 dark:text-gray-700">+998</span>
+                    <span className="text-sm text-white/80">+998</span>
                   </div>
                   <input
                     id="phone"
@@ -150,7 +150,7 @@ export function ContactForm() {
                     value={formData.phone}
                     onChange={handlePhoneChange}
                     placeholder="XX XXX XX XX"
-                    className="w-full rounded-xl border border-white/30 bg-white/10 py-3 pr-4 pl-24 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white dark:border-gray-600 dark:bg-gray-800/50 dark:text-gray-900 dark:placeholder-gray-500 dark:focus:border-gray-900"
+                    className="w-full rounded-xl border border-white/30 bg-white/10 py-3 pr-4 pl-24 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
                   />
                 </div>
               </div>
@@ -160,7 +160,7 @@ export function ContactForm() {
             <div className="mt-6">
               <label
                 htmlFor="message"
-                className="mb-2 block text-sm font-medium text-white dark:text-gray-900"
+                className="mb-2 block text-sm font-medium text-white"
               >
                 {t("home.contactMessage")}
               </label>
@@ -172,7 +172,7 @@ export function ContactForm() {
                 }
                 rows={5}
                 placeholder={t("home.contactMessage")}
-                className="w-full resize-none rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white dark:border-gray-600 dark:bg-gray-800/50 dark:text-gray-900 dark:placeholder-gray-500 dark:focus:border-gray-900"
+                className="w-full resize-none rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
               />
             </div>
 
@@ -180,16 +180,16 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-900 dark:text-white sm:w-auto"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin dark:text-white" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   {t("common.loading")}
                 </>
               ) : (
                 <>
-                  <Send className="h-5 w-5 dark:text-white" />
+                  <Send className="h-5 w-5" />
                   {t("home.contactSubmit")}
                 </>
               )}

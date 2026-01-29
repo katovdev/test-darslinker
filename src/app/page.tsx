@@ -8,6 +8,7 @@ import { FluidCursor } from "@/components/ui/fluid-cursor";
 import {
   HomeHeader,
   Hero,
+  HighlightsSection,
   Features,
   PricingSection,
   ArticlesSection,
@@ -62,11 +63,12 @@ export default function Home() {
 
   // Show public home page only for unauthenticated users
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <FluidCursor />
       <HomeHeader />
-      <main>
+      <main className="pt-16">
         <Hero />
+        <HighlightsSection />
         <Features />
         <PricingSection />
         <ArticlesSection />

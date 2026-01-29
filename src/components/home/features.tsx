@@ -90,41 +90,41 @@ export function Features() {
     >
       <div className="mx-auto max-w-[1400px]">
         <div
-          className="overflow-hidden rounded-[40px] border-2 px-6 pt-8 pb-16 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
+          className="overflow-hidden rounded-[24px] sm:rounded-[32px] lg:rounded-[40px] border-2 px-4 pt-8 pb-12 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
           style={{ borderColor: "#7ea2d4" }}
         >
           <div className="mx-auto">
             {/* Section subtitle - inside dark box */}
             <div className="mb-8 text-center sm:mb-12 lg:mb-16">
-              <p className="text-3xl font-bold sm:text-4xl lg:text-5xl text-foreground">
+              <p className="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl text-foreground">
                 Platformaning asosiy imkoniyatlari
               </p>
             </div>
 
             {/* Features grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature, index) => (
                 <div
                   key={feature.key}
-                  className="group relative rounded-2xl border border-border bg-card p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/30"
+                  className="group relative rounded-xl sm:rounded-2xl border border-border bg-card p-4 sm:p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/30"
                 >
                   {/* Icon */}
                   <div
-                    className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10"
+                    className="mb-3 sm:mb-4 inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-primary/10"
                   >
-                    <feature.icon className="h-6 w-6 text-primary" />
+                    <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="mb-2 text-lg font-semibold text-foreground">
+                  <h3 className="mb-2 text-base sm:text-lg font-semibold text-foreground">
                     {t(`home.${feature.key}`)}
                   </h3>
-                  <p className="leading-relaxed text-muted-foreground">
+                  <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
                     {t(`home.${feature.key}Desc`)}
                   </p>
 
                   {/* Number indicator */}
-                  <div className="absolute top-6 right-6 text-4xl font-bold text-primary/15">
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 text-3xl sm:text-4xl font-bold text-primary/15">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                 </div>
