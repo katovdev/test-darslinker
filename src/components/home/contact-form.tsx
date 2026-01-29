@@ -184,12 +184,12 @@ export function ContactForm() {
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin dark:text-white" />
                   {t("common.loading")}
                 </>
               ) : (
                 <>
-                  <Send className="h-5 w-5" />
+                  <Send className="h-5 w-5 dark:text-white" />
                   {t("home.contactSubmit")}
                 </>
               )}

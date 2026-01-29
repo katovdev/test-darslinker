@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { Check, ArrowRight, Sparkles, X } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
@@ -66,6 +67,7 @@ const plans: Plan[] = [
 export function PricingSection() {
   const t = useTranslations();
   const router = useRouter();
+  const { theme } = useTheme();
 
   const renderFeatureValue = (feature: PlanFeature) => {
     if (feature.included === "unlimited") {
@@ -115,13 +117,20 @@ export function PricingSection() {
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 px-8 py-4 font-semibold text-white transition-all hover:bg-white/20 dark:bg-gray-900/50 dark:text-gray-900 dark:hover:bg-gray-900/70"
               >
                 Batafsil ma&apos;lumot
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 dark:text-gray-900" />
               </Link>
             </div>
 
             {/* Pricing Cards */}
             <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {plans.map((plan, index) => (
+          {plans.map((plan, index) => {
+            const isDark = theme === "dark";
+            const defaultBorderColor = isDark
+              ? (plan.recommended ? "rgba(17, 24, 39, 0.5)" : "rgba(17, 24, 39, 0.3)")
+              : (plan.recommended ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.2)");
+            const hoverBorderColor = isDark ? "rgba(17, 24, 39, 0.7)" : "rgba(255, 255, 255, 0.5)";
+
+            return (
             <div
               key={plan.nameKey}
               className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 cursor-pointer ${
@@ -132,17 +141,15 @@ export function PricingSection() {
                 index === 0 ? "lg:ml-auto" : index === 2 ? "lg:mr-auto" : "mx-auto"
               }`}
               style={{
-                borderColor: plan.recommended ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.2)",
+                borderColor: defaultBorderColor,
                 transition: "border-color 0.3s ease"
               }}
               onClick={() => router.push("/pricing")}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.5)";
+                e.currentTarget.style.borderColor = hoverBorderColor;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = plan.recommended
-                  ? "rgba(255, 255, 255, 0.3)"
-                  : "rgba(255, 255, 255, 0.2)";
+                e.currentTarget.style.borderColor = defaultBorderColor;
               }}
             >
               {/* Recommended Badge */}
@@ -211,10 +218,11 @@ export function PricingSection() {
                 }`}
               >
                 Tanlash
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className={`h-4 w-4 ${plan.recommended ? "dark:text-white" : "dark:text-gray-900"}`} />
               </Link>
             </div>
-          ))}
+            );
+          })}
             </div>
           </div>
         </div>
