@@ -194,9 +194,11 @@ export function Features() {
     const scrollContainer = scrollContainerRef.current;
     if (!section || !scrollContainer) return;
 
-    let touchStartY = 0;
     let isLockedRef = false;
     let lastTouchY = 0;
+    let velocity = 0;
+    let animationId: number | null = null;
+    let lastTime = 0;
 
     const checkAndLock = () => {
       const sectionRect = section.getBoundingClientRect();
@@ -214,9 +216,45 @@ export function Features() {
       return isSectionCentered && isLargelyVisible;
     };
 
+    // Momentum animation
+    const animateMomentum = () => {
+      if (Math.abs(velocity) < 0.5) {
+        velocity = 0;
+        animationId = null;
+        return;
+      }
+
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const maxScroll = scrollHeight - clientHeight;
+
+      // Apply friction
+      velocity *= 0.95;
+
+      const newScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + velocity));
+      scrollContainer.scrollTop = newScrollTop;
+
+      // Check if at boundaries
+      if (newScrollTop <= 0 || newScrollTop >= maxScroll) {
+        velocity = 0;
+        isLockedRef = false;
+        setIsLocked(false);
+        animationId = null;
+        return;
+      }
+
+      animationId = requestAnimationFrame(animateMomentum);
+    };
+
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-      lastTouchY = touchStartY;
+      // Stop any ongoing momentum
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+      velocity = 0;
+
+      lastTouchY = e.touches[0].clientY;
+      lastTime = performance.now();
 
       if (checkAndLock()) {
         isLockedRef = true;
@@ -229,15 +267,24 @@ export function Features() {
         if (checkAndLock()) {
           isLockedRef = true;
           setIsLocked(true);
-          touchStartY = e.touches[0].clientY;
-          lastTouchY = touchStartY;
+          lastTouchY = e.touches[0].clientY;
+          lastTime = performance.now();
         }
         return;
       }
 
       const currentY = e.touches[0].clientY;
+      const currentTime = performance.now();
       const deltaY = lastTouchY - currentY;
+      const deltaTime = currentTime - lastTime;
+
+      // Calculate velocity for momentum
+      if (deltaTime > 0) {
+        velocity = deltaY / deltaTime * 16; // Normalize to ~60fps
+      }
+
       lastTouchY = currentY;
+      lastTime = currentTime;
 
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       const maxScroll = scrollHeight - clientHeight;
@@ -251,33 +298,39 @@ export function Features() {
       if ((isScrollingDown && atBottom) || (isScrollingUp && atTop)) {
         isLockedRef = false;
         setIsLocked(false);
+        velocity = 0;
         return;
       }
 
       // Prevent page scroll and scroll the container instead
       e.preventDefault();
 
-      // Apply smooth scroll with multiplier for better feel
-      const newScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + deltaY * 1.5));
+      // Apply scroll directly
+      const newScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + deltaY));
       scrollContainer.scrollTop = newScrollTop;
     };
 
     const handleTouchEnd = () => {
-      // Small delay before releasing lock to prevent accidental release
-      setTimeout(() => {
-        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-        const maxScroll = scrollHeight - clientHeight;
-        const atTop = scrollTop <= 2;
-        const atBottom = scrollTop >= maxScroll - 2;
+      // Start momentum animation if there's velocity
+      if (Math.abs(velocity) > 2 && isLockedRef) {
+        animationId = requestAnimationFrame(animateMomentum);
+      } else {
+        // Check if should unlock
+        setTimeout(() => {
+          const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+          const maxScroll = scrollHeight - clientHeight;
+          const atTop = scrollTop <= 2;
+          const atBottom = scrollTop >= maxScroll - 2;
 
-        if (atTop || atBottom) {
-          isLockedRef = false;
-          setIsLocked(false);
-        }
-      }, 100);
+          if (atTop || atBottom) {
+            isLockedRef = false;
+            setIsLocked(false);
+          }
+        }, 100);
+      }
     };
 
-    const handleScroll = () => {
+    const handleWindowScroll = () => {
       // If page is being scrolled and we should lock, scroll to section
       if (!isLockedRef && checkAndLock()) {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
@@ -294,13 +347,14 @@ export function Features() {
     document.addEventListener('touchstart', handleTouchStart, { passive: true });
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
 
     return () => {
+      if (animationId) cancelAnimationFrame(animationId);
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleWindowScroll);
     };
   }, [isMobile]);
 
@@ -326,10 +380,10 @@ export function Features() {
 
             {/* Features - Scrollable list on mobile, grid on desktop */}
             {/* Mobile scrollable container - shows 3 items, scroll for more */}
-            <div className="sm:hidden relative">
+            <div className="sm:hidden relative -mx-4">
               {/* Top blur overlay */}
               <div
-                className="absolute top-0 left-0 right-2 h-12 z-10 pointer-events-none"
+                className="absolute top-0 left-0 right-0 h-12 z-10 pointer-events-none"
                 style={{
                   background: 'linear-gradient(to bottom, var(--background) 0%, transparent 100%)',
                   backdropFilter: 'blur(4px)',
@@ -340,7 +394,7 @@ export function Features() {
               />
               {/* Bottom blur overlay */}
               <div
-                className="absolute bottom-0 left-0 right-2 h-12 z-10 pointer-events-none"
+                className="absolute bottom-0 left-0 right-0 h-12 z-10 pointer-events-none"
                 style={{
                   background: 'linear-gradient(to top, var(--background) 0%, transparent 100%)',
                   backdropFilter: 'blur(4px)',
@@ -352,8 +406,8 @@ export function Features() {
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="max-h-[360px] overflow-y-auto flex flex-col gap-3 scrollbar-hide"
-                style={{ scrollBehavior: 'auto', WebkitOverflowScrolling: 'touch' }}
+                className="max-h-[360px] overflow-y-auto flex flex-col gap-3 scrollbar-hide px-4"
+                style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {/* Invisible spacer for top blur area */}
                 <div className="h-14 flex-shrink-0" aria-hidden="true" />
