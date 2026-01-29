@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import {
   Menu,
   X,
@@ -13,6 +14,8 @@ import {
   Shield,
   GraduationCap,
   LayoutDashboard,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useTranslations, useLocale, useSetLocale } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
@@ -38,12 +41,19 @@ export function HomeHeader() {
   const setLocale = useSetLocale();
   const router = useRouter();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const currentLanguage = languages.find((l) => l.value === locale);
+
+  // Avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     setProfileOpen(false);
@@ -96,6 +106,22 @@ export function HomeHeader() {
         )}
 
         <div className="flex items-center gap-3">
+          {/* Theme Toggle */}
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </button>
+          )}
+
+          {/* Language Selector */}
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
@@ -272,6 +298,26 @@ export function HomeHeader() {
               ))}
 
             <div className="mt-4 flex flex-col gap-2 border-t border-border pt-4">
+              {/* Theme Toggle for Mobile */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  {theme === "dark" ? (
+                    <>
+                      <Sun className="h-4 w-4" />
+                      Light Mode
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="h-4 w-4" />
+                      Dark Mode
+                    </>
+                  )}
+                </button>
+              )}
+
               {!isLoading && isAuthenticated && user ? (
                 <>
                   <div className="mb-2 flex items-center gap-3 px-4 py-2">
