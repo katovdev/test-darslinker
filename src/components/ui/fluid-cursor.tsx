@@ -19,9 +19,6 @@ export function FluidCursor() {
 
     isMobileRef.current = checkMobile();
 
-    // Don't initialize on mobile devices
-    if (isMobileRef.current) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
