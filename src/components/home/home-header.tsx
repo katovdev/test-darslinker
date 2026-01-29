@@ -110,7 +110,7 @@ export function HomeHeader() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap"
+                className="text-sm font-medium text-muted-foreground transition-colors duration-100 hover:text-[#7ea2d4] whitespace-nowrap"
               >
                 {item.label}
               </Link>
@@ -123,13 +123,13 @@ export function HomeHeader() {
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="flex items-center gap-1 sm:gap-2 rounded-lg px-2 py-2 sm:px-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex items-center gap-1 sm:gap-2 rounded-lg px-2 py-2 sm:px-3 text-sm text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground active:scale-90"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? (
-                <Sun className="h-4 w-4" />
+                <Sun className="h-4 w-4 transition-transform duration-300 hover:rotate-180" />
               ) : (
-                <Moon className="h-4 w-4" />
+                <Moon className="h-4 w-4 transition-transform duration-300 hover:-rotate-12" />
               )}
             </button>
           )}
@@ -324,7 +324,7 @@ export function HomeHeader() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground text-center"
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors duration-100 hover:bg-secondary hover:text-[#7ea2d4] text-center"
               >
                 {item.label}
               </Link>
@@ -335,16 +335,16 @@ export function HomeHeader() {
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  className="flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground active:scale-95"
                 >
                   {theme === "dark" ? (
                     <>
-                      <Sun className="h-4 w-4" />
+                      <Sun className="h-4 w-4 transition-transform duration-300 hover:rotate-180" />
                       Light Mode
                     </>
                   ) : (
                     <>
-                      <Moon className="h-4 w-4" />
+                      <Moon className="h-4 w-4 transition-transform duration-300 hover:-rotate-12" />
                       Dark Mode
                     </>
                   )}

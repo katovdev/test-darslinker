@@ -86,8 +86,8 @@ export function PricingSection() {
     }
     if (feature.included === true) {
       return (
-        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/20">
-          <Check className="h-3 w-3 text-green-500" />
+        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+          <Check className="h-3 w-3 text-white" />
         </div>
       );
     }

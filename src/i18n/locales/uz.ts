@@ -319,10 +319,10 @@ export const uz: Translations = {
 
   // Home
   home: {
-    heroTitle: "O'qituvchilar uchun eng yaxshi platforma",
+    heroTitle: "Onlayn kurslarni tizimlashtirish",
     heroSubtitle:
       "Kurslaringizni yarating, o'quvchilarni boshqaring va daromadingizni oshiring",
-    heroBadge: "Zamonaviy ta'lim platformasi",
+    heroBadge: "Joylang, boshqaring, soting",
     getStarted: "Boshlash",
     viewPricing: "Narxlarni ko'rish",
     watchVideo: "Videoni ko'rish",

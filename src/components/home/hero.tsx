@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Play, Users, BookOpen, Award, Shield, TrendingUp, CreditCard } from "lucide-react";
+import { ArrowRight, Shield, TrendingUp, CreditCard, BookOpen } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import CardSwap, { Card } from "@/components/ui/card-swap";
 
@@ -9,71 +9,57 @@ export function Hero() {
   const t = useTranslations();
 
   return (
-    <section className="relative z-10 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <section className="relative z-10 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:pt-28 lg:pb-12">
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div className="flex flex-col justify-center text-center lg:text-left">
-            <div className="mb-6 mx-auto lg:mx-0 inline-flex items-center gap-2 rounded-full border-2 border-[#7ea2d4] px-3 py-1.5 sm:px-4">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-[#7ea2d4]" />
-              <span className="text-xs sm:text-sm text-foreground">
-                Onlyan kurslarni tizimlashtirish platformasi
-              </span>
+            <div className="mb-6 mx-auto lg:mx-0 inline-flex w-fit items-center gap-2 lg:gap-3 rounded-full border-2 border-[#7ea2d4] px-3 py-1.5 sm:px-4 lg:px-6 lg:py-2.5">
+              <span className="h-2 w-2 lg:h-3 lg:w-3 animate-pulse rounded-full bg-[#7ea2d4]" />
+              <span className="text-xs sm:text-sm lg:text-lg text-foreground whitespace-nowrap">Joylang</span>
+              <span className="h-2 w-2 lg:h-3 lg:w-3 animate-pulse rounded-full bg-[#7ea2d4]" />
+              <span className="text-xs sm:text-sm lg:text-lg text-foreground whitespace-nowrap">Boshqaring</span>
+              <span className="h-2 w-2 lg:h-3 lg:w-3 animate-pulse rounded-full bg-[#7ea2d4]" />
+              <span className="text-xs sm:text-sm lg:text-lg text-foreground whitespace-nowrap">Soting</span>
             </div>
 
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
-              {t("home.heroTitle")}
+            <h1 className="font-google-sans font-bold tracking-tight text-foreground text-4xl sm:text-5xl md:text-5xl lg:text-[4.875rem] lg:leading-[1.1]">
+              {/* Mobile - single line */}
+              <span className="lg:hidden">Onlayn kurslarni tizimlashtirish</span>
+              {/* Desktop - two lines */}
+              <span className="hidden lg:block whitespace-nowrap">Onlayn kurslarni</span>
+              <span className="hidden lg:block whitespace-nowrap">tizimlashtirish</span>
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground lg:text-xl">
-              {t("home.heroSubtitle")}
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+            {/* CTA Button */}
+            <div className="mt-10 flex justify-center lg:justify-start">
               <Link
                 href="/register"
                 className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-6 py-3 sm:px-8 sm:py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
               >
-                {t("home.getStarted")}
+                Bepul boshlash
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/pricing"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary px-6 py-3 sm:px-8 sm:py-4 font-semibold text-foreground transition-all hover:border-primary hover:bg-secondary/80"
-              >
-                <Play className="h-5 w-5" />
-                {t("home.viewPricing")}
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-3 sm:gap-6 border-t border-border pt-8">
-              <div>
-                <div className="flex items-center justify-center gap-1 sm:gap-2 lg:justify-start">
-                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                  <span className="text-xl sm:text-2xl font-bold text-foreground">500+</span>
-                </div>
-                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-                  {t("home.statStudents") || "Students"}
-                </p>
-              </div>
-              <div>
-                <div className="flex items-center justify-center gap-1 sm:gap-2 lg:justify-start">
-                  <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                  <span className="text-xl sm:text-2xl font-bold text-foreground">50+</span>
-                </div>
-                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-                  {t("home.statCourses") || "Courses"}
-                </p>
-              </div>
-              <div>
-                <div className="flex items-center justify-center gap-1 sm:gap-2 lg:justify-start">
-                  <Award className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
-                  <span className="text-xl sm:text-2xl font-bold text-foreground">100+</span>
-                </div>
-                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-                  {t("home.statCertificates") || "Certificates"}
-                </p>
+            {/* Process Steps - Minimal Vertical Timeline (Desktop only) */}
+            <div className="hidden lg:flex mt-12 justify-start">
+              <div className="flex flex-col">
+                {[
+                  "Ro'yhatdan o'ting",
+                  "Darslarni joylang",
+                  "O'quvchilarga yetkazing",
+                  "Daromad qiling"
+                ].map((step, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="flex flex-col items-center">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-xs font-medium text-muted-foreground">
+                        {index + 1}
+                      </div>
+                      {index < 3 && <div className="w-px h-4 bg-border" />}
+                    </div>
+                    <span className="text-sm text-muted-foreground pb-2">{step}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
