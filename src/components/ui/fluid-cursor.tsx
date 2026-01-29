@@ -1238,19 +1238,10 @@ export function FluidCursor() {
     };
   }, []);
 
-  // Don't render on mobile devices
-  if (typeof window !== 'undefined' && (
-    'ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    window.innerWidth < 1024
-  )) {
-    return null;
-  }
-
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 hidden lg:block"
+      className="pointer-events-none fixed inset-0"
       style={{
         background: "transparent",
         zIndex: 9999,
