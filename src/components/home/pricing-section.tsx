@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check, ArrowRight, Sparkles, X } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
@@ -64,6 +65,7 @@ const plans: Plan[] = [
 
 export function PricingSection() {
   const t = useTranslations();
+  const router = useRouter();
 
   const renderFeatureValue = (feature: PlanFeature) => {
     if (feature.included === "unlimited") {
@@ -107,7 +109,7 @@ export function PricingSection() {
         >
           <div className="mx-auto">
             {/* Section header */}
-            <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
               <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
                 Mos tarifni tanlang
               </h2>
@@ -125,7 +127,7 @@ export function PricingSection() {
           {plans.map((plan, index) => (
             <div
               key={plan.nameKey}
-              className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 ${
+              className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 cursor-pointer ${
                 plan.recommended
                   ? "shadow-lg"
                   : ""
@@ -139,6 +141,7 @@ export function PricingSection() {
                 borderColor: plan.recommended ? "rgba(126, 162, 212, 0.5)" : "rgba(255, 255, 255, 0.5)",
                 transition: "border-color 0.3s ease"
               }}
+              onClick={() => router.push("/pricing")}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = plan.recommended
                   ? "rgba(126, 162, 212, 1)"
@@ -208,6 +211,7 @@ export function PricingSection() {
               {/* CTA Button - Goes to full pricing page */}
               <Link
                 href="/pricing"
+                onClick={(e) => e.stopPropagation()}
                 className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
                   plan.recommended
                     ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
