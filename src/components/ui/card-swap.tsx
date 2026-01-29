@@ -102,12 +102,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
     const total = refs.length;
     refs.forEach((r, i) => placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount, i));
 
-    let isScrolling = false;
-    let scrollTimeout: number | undefined;
-    let isPaused = false;
-
     const swap = () => {
-      if (order.current.length < 2 || isPaused) return;
+      if (order.current.length < 2) return;
 
       const [front, ...rest] = order.current;
       const elFront = refs[front].current;
@@ -180,42 +176,6 @@ const CardSwap: React.FC<CardSwapProps> = ({
       });
     };
 
-    // Pause animations during scroll for smooth scrolling
-    const handleScroll = () => {
-      if (!isScrolling) {
-        isScrolling = true;
-        isPaused = true;
-        tlRef.current?.pause();
-      }
-
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = window.setTimeout(() => {
-        isScrolling = false;
-        isPaused = false;
-        tlRef.current?.play();
-      }, 150);
-    };
-
-    // Use IntersectionObserver to only run when visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isPaused) {
-            tlRef.current?.play();
-          } else {
-            tlRef.current?.pause();
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (container.current) {
-      observer.observe(container.current);
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
     swap();
     intervalRef.current = window.setInterval(swap, delay);
 
@@ -224,12 +184,10 @@ const CardSwap: React.FC<CardSwapProps> = ({
       if (!node) return;
 
       const pause = () => {
-        isPaused = true;
         tlRef.current?.pause();
         if (intervalRef.current) clearInterval(intervalRef.current);
       };
       const resume = () => {
-        isPaused = false;
         tlRef.current?.play();
         intervalRef.current = window.setInterval(swap, delay);
       };
@@ -238,17 +196,11 @@ const CardSwap: React.FC<CardSwapProps> = ({
       return () => {
         node.removeEventListener('mouseenter', pause);
         node.removeEventListener('mouseleave', resume);
-        window.removeEventListener('scroll', handleScroll);
-        observer.disconnect();
         if (intervalRef.current) clearInterval(intervalRef.current);
-        if (scrollTimeout) clearTimeout(scrollTimeout);
       };
     }
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
       if (intervalRef.current) clearInterval(intervalRef.current);
-      if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing, config, refs]);
 
