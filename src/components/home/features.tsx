@@ -20,6 +20,27 @@ const isMobileDevice = () => {
   return window.innerWidth < 640; // sm breakpoint
 };
 
+// Smooth scroll helper
+const smoothScrollTo = (element: HTMLElement, target: number, duration: number = 300) => {
+  const start = element.scrollTop;
+  const change = target - start;
+  const startTime = performance.now();
+
+  const animateScroll = (currentTime: number) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    element.scrollTop = start + change * easeOut;
+
+    if (progress < 1) {
+      requestAnimationFrame(animateScroll);
+    }
+  };
+
+  requestAnimationFrame(animateScroll);
+};
+
 const features = [
   {
     key: "featureCourses",
@@ -165,7 +186,7 @@ export function Features() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Scroll hijacking for mobile
+  // Scroll hijacking for mobile - lock body scroll when in features section
   useEffect(() => {
     if (!isMobile) return;
 
@@ -173,78 +194,113 @@ export function Features() {
     const scrollContainer = scrollContainerRef.current;
     if (!section || !scrollContainer) return;
 
-    const handleWheel = (e: WheelEvent) => {
+    let touchStartY = 0;
+    let isLockedRef = false;
+    let lastTouchY = 0;
+
+    const checkAndLock = () => {
       const sectionRect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
 
-      // Check if section is in the "lock zone" (section top is near or above viewport center)
-      const sectionCenterFromTop = sectionRect.top + sectionRect.height / 2;
-      const isInLockZone = sectionRect.top <= viewportHeight * 0.3 && sectionRect.bottom >= viewportHeight * 0.7;
+      // Section should be visible and taking up most of the viewport
+      const sectionVisibleTop = Math.max(0, sectionRect.top);
+      const sectionVisibleBottom = Math.min(viewportHeight, sectionRect.bottom);
+      const visibleHeight = sectionVisibleBottom - sectionVisibleTop;
+      const isLargelyVisible = visibleHeight > viewportHeight * 0.5;
 
-      if (!isInLockZone) {
-        setIsLocked(false);
-        return;
-      }
+      // Check if section top is above viewport center
+      const isSectionCentered = sectionRect.top <= viewportHeight * 0.4 && sectionRect.bottom >= viewportHeight * 0.6;
 
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const maxScroll = scrollHeight - clientHeight;
-      const isScrollingDown = e.deltaY > 0;
-      const isScrollingUp = e.deltaY < 0;
-
-      // If scrolling down and not at bottom, or scrolling up and not at top, hijack the scroll
-      if ((isScrollingDown && scrollTop < maxScroll - 5) || (isScrollingUp && scrollTop > 5)) {
-        e.preventDefault();
-        setIsLocked(true);
-        scrollContainer.scrollTop += e.deltaY;
-      } else {
-        setIsLocked(false);
-      }
+      return isSectionCentered && isLargelyVisible;
     };
 
     const handleTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      (section as any)._touchStartY = touch.clientY;
+      touchStartY = e.touches[0].clientY;
+      lastTouchY = touchStartY;
+
+      if (checkAndLock()) {
+        isLockedRef = true;
+        setIsLocked(true);
+      }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      const sectionRect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
+      if (!isLockedRef) {
+        if (checkAndLock()) {
+          isLockedRef = true;
+          setIsLocked(true);
+          touchStartY = e.touches[0].clientY;
+          lastTouchY = touchStartY;
+        }
+        return;
+      }
 
-      const isInLockZone = sectionRect.top <= viewportHeight * 0.3 && sectionRect.bottom >= viewportHeight * 0.7;
+      const currentY = e.touches[0].clientY;
+      const deltaY = lastTouchY - currentY;
+      lastTouchY = currentY;
 
-      if (!isInLockZone) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const maxScroll = scrollHeight - clientHeight;
+
+      const isScrollingDown = deltaY > 0;
+      const isScrollingUp = deltaY < 0;
+      const atTop = scrollTop <= 2;
+      const atBottom = scrollTop >= maxScroll - 2;
+
+      // If at boundary and trying to scroll past, release lock
+      if ((isScrollingDown && atBottom) || (isScrollingUp && atTop)) {
+        isLockedRef = false;
         setIsLocked(false);
         return;
       }
 
-      const touch = e.touches[0];
-      const touchStartY = (section as any)._touchStartY || touch.clientY;
-      const deltaY = touchStartY - touch.clientY;
-      (section as any)._touchStartY = touch.clientY;
+      // Prevent page scroll and scroll the container instead
+      e.preventDefault();
 
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const maxScroll = scrollHeight - clientHeight;
-      const isScrollingDown = deltaY > 0;
-      const isScrollingUp = deltaY < 0;
+      // Apply smooth scroll with multiplier for better feel
+      const newScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + deltaY * 1.5));
+      scrollContainer.scrollTop = newScrollTop;
+    };
 
-      if ((isScrollingDown && scrollTop < maxScroll - 5) || (isScrollingUp && scrollTop > 5)) {
-        e.preventDefault();
-        setIsLocked(true);
-        scrollContainer.scrollTop += deltaY;
-      } else {
-        setIsLocked(false);
+    const handleTouchEnd = () => {
+      // Small delay before releasing lock to prevent accidental release
+      setTimeout(() => {
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+        const maxScroll = scrollHeight - clientHeight;
+        const atTop = scrollTop <= 2;
+        const atBottom = scrollTop >= maxScroll - 2;
+
+        if (atTop || atBottom) {
+          isLockedRef = false;
+          setIsLocked(false);
+        }
+      }, 100);
+    };
+
+    const handleScroll = () => {
+      // If page is being scrolled and we should lock, scroll to section
+      if (!isLockedRef && checkAndLock()) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+        const maxScroll = scrollHeight - clientHeight;
+
+        // Only lock if there's content to scroll
+        if (maxScroll > 10 && scrollTop < maxScroll - 5) {
+          isLockedRef = true;
+          setIsLocked(true);
+        }
       }
     };
 
-    // Add passive: false to allow preventDefault
-    document.addEventListener('wheel', handleWheel, { passive: false });
     document.addEventListener('touchstart', handleTouchStart, { passive: true });
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      document.removeEventListener('wheel', handleWheel);
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [isMobile]);
 
@@ -297,6 +353,7 @@ export function Features() {
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
                 className="max-h-[360px] overflow-y-auto flex flex-col gap-3 scrollbar-hide"
+                style={{ scrollBehavior: 'auto', WebkitOverflowScrolling: 'touch' }}
               >
                 {/* Invisible spacer for top blur area */}
                 <div className="h-14 flex-shrink-0" aria-hidden="true" />
