@@ -77,7 +77,7 @@ export function PricingSection() {
     }
     if (typeof feature.included === "string") {
       return (
-        <span className="text-sm font-semibold text-white">
+        <span className="text-sm font-semibold text-gray-900 dark:text-white">
           {feature.included}
         </span>
       );
@@ -103,19 +103,16 @@ export function PricingSection() {
       style={{ scrollMarginTop: "40px" }}
     >
       <div className="mx-auto max-w-[1400px]">
-        <div
-          className="rounded-[40px] px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
-          style={{ backgroundColor: "#232324" }}
-        >
+        <div className="rounded-[40px] bg-white px-6 py-16 dark:bg-[#232324] sm:px-8 lg:px-12 lg:py-20">
           <div className="mx-auto">
             {/* Section header */}
             <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
-              <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
                 Mos tarifni tanlang
               </h2>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-100 px-8 py-4 font-semibold text-gray-900 transition-all hover:bg-gray-200 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               >
                 Batafsil ma&apos;lumot
                 <ArrowRight className="h-4 w-4" />
@@ -129,28 +126,25 @@ export function PricingSection() {
               key={plan.nameKey}
               className={`group relative flex w-full max-w-xs flex-col rounded-2xl border-2 p-6 transition-all duration-300 cursor-pointer ${
                 plan.recommended
-                  ? "shadow-lg"
-                  : ""
+                  ? "bg-gray-50 shadow-lg dark:bg-white/5"
+                  : "bg-gray-50/50 dark:bg-white/[0.025]"
               } ${
                 index === 0 ? "lg:ml-auto" : index === 2 ? "lg:mr-auto" : "mx-auto"
               }`}
               style={{
-                backgroundColor: plan.recommended
-                  ? "rgba(255, 255, 255, 0.05)"
-                  : "rgba(255, 255, 255, 0.025)",
-                borderColor: plan.recommended ? "rgba(126, 162, 212, 0.5)" : "rgba(255, 255, 255, 0.5)",
+                borderColor: plan.recommended ? "rgba(126, 162, 212, 0.5)" : "rgba(209, 213, 219, 0.5)",
                 transition: "border-color 0.3s ease"
               }}
               onClick={() => router.push("/pricing")}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = plan.recommended
                   ? "rgba(126, 162, 212, 1)"
-                  : "rgba(255, 255, 255, 1)";
+                  : "rgba(107, 114, 128, 1)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = plan.recommended
                   ? "rgba(126, 162, 212, 0.5)"
-                  : "rgba(255, 255, 255, 0.5)";
+                  : "rgba(209, 213, 219, 0.5)";
               }}
             >
               {/* Recommended Badge */}
@@ -165,7 +159,7 @@ export function PricingSection() {
 
               {/* Plan Name */}
               <div className="mb-6">
-                <h3 className="text-4xl font-bold text-white">
+                <h3 className="text-4xl font-bold text-gray-900 dark:text-white">
                   {t(`pricing.${plan.nameKey}`)}
                 </h3>
               </div>
@@ -178,7 +172,7 @@ export function PricingSection() {
                     key={feature.key}
                     className="flex items-center justify-between text-sm"
                   >
-                    <span className="text-white/70">
+                    <span className="text-gray-600 dark:text-white/70">
                       {feature.label}
                     </span>
                     {renderFeatureValue(feature)}
@@ -189,19 +183,19 @@ export function PricingSection() {
               {/* Price */}
               <div className="mb-4 mt-auto">
                 {plan.price === "free" ? (
-                  <span className="text-4xl font-bold text-white">
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">
                     Bepul
                   </span>
                 ) : plan.price === "custom" ? (
-                  <span className="text-4xl font-bold text-white">
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">
                     {t("pricing.contactUs")}
                   </span>
                 ) : (
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-white">
+                    <span className="text-4xl font-bold text-gray-900 dark:text-white">
                       {plan.price}
                     </span>
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-gray-500 dark:text-white/60">
                       so&apos;m/{t("pricing.perMonth")}
                     </span>
                   </div>
@@ -215,7 +209,7 @@ export function PricingSection() {
                 className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all ${
                   plan.recommended
                     ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
-                    : "border border-white/20 bg-white/5 text-white hover:border-white/30 hover:bg-white/10"
+                    : "border border-gray-300 bg-gray-100 text-gray-900 hover:border-gray-400 hover:bg-gray-200 dark:border-white/20 dark:bg-white/5 dark:text-white dark:hover:border-white/30 dark:hover:bg-white/10"
                 }`}
               >
                 Tanlash
