@@ -369,30 +369,30 @@ export function Features() {
             </div>
 
             {/* Features - Scrollable list on mobile, grid on desktop */}
-            {/* Mobile scrollable container - shows 3 items, scroll for more */}
+            {/* Mobile scrollable container - shows 4 items, scroll for more */}
             <div className="sm:hidden relative -mx-4">
               {/* Top fade overlay */}
               <div
-                className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
+                className="absolute -top-1 left-0 right-0 h-16 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 50%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 60%, transparent 100%)'
                 }}
               />
               {/* Bottom fade overlay */}
               <div
-                className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
+                className="absolute -bottom-1 left-0 right-0 h-16 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 50%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 60%, transparent 100%)'
                 }}
               />
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="max-h-[400px] overflow-y-auto flex flex-col gap-4 scrollbar-hide px-4"
+                className="max-h-[520px] overflow-y-auto flex flex-col gap-4 scrollbar-hide px-4"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {/* Invisible spacer for top fade area */}
-                <div className="h-16 flex-shrink-0" aria-hidden="true" />
+                <div className="h-12 flex-shrink-0" aria-hidden="true" />
                 {features.map((feature, index) => (
                   <div
                     key={feature.key}
@@ -427,7 +427,7 @@ export function Features() {
                   </div>
                 ))}
                 {/* Invisible spacer for bottom fade area */}
-                <div className="h-16 flex-shrink-0" aria-hidden="true" />
+                <div className="h-12 flex-shrink-0" aria-hidden="true" />
               </div>
             </div>
 
