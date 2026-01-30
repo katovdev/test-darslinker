@@ -397,7 +397,7 @@ export function Features() {
                   <div
                     key={feature.key}
                     ref={(el) => { itemRefs.current[index] = el; }}
-                    className="group relative flex items-start gap-4 rounded-2xl bg-card p-5 backdrop-blur-sm flex-shrink-0"
+                    className="group relative flex items-start gap-4 rounded-2xl bg-[#7ea2d4]/10 dark:bg-card p-5 backdrop-blur-sm flex-shrink-0"
                     style={{
                       transform: `scale(${itemStyles[index]?.scale || 1})`,
                       opacity: itemStyles[index]?.opacity || 1,
