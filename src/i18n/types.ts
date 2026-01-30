@@ -328,6 +328,7 @@ export interface Translations {
     contactName: string;
     contactPhone: string;
     contactMessage: string;
+    contactMessagePlaceholder: string;
     contactSubmit: string;
     contactSuccess: string;
     // Navigation
