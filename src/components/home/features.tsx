@@ -164,16 +164,16 @@ export function Features() {
               </p>
               {/* Top fade overlay */}
               <div
-                className="absolute -top-1 left-0 right-0 h-24 z-10 pointer-events-none"
+                className="absolute -top-2 left-0 right-0 h-28 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 60%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 70%, transparent 100%)'
                 }}
               />
               {/* Bottom fade overlay */}
               <div
-                className="absolute -bottom-1 left-0 right-0 h-24 z-10 pointer-events-none"
+                className="absolute -bottom-2 left-0 right-0 h-28 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 60%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 70%, transparent 100%)'
                 }}
               />
               {/* Animated content wrapper */}
