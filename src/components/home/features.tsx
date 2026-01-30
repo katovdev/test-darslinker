@@ -158,15 +158,15 @@ export function Features() {
             {/* Features - Transform-based animation on mobile, grid on desktop */}
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
-              {/* Mobile title - positioned at top fade area */}
-              <p className="absolute -top-1 left-0 right-0 z-20 text-center text-3xl font-bold text-foreground px-4">
+              {/* Mobile title - positioned at top */}
+              <p className="absolute -top-3 left-0 right-0 z-20 text-center text-3xl font-bold text-foreground px-4">
                 Asosiy imkoniyatlar
               </p>
-              {/* Top fade overlay */}
+              {/* Top fade overlay - stronger to hide line */}
               <div
-                className="absolute -top-2 left-0 right-0 h-28 z-10 pointer-events-none"
+                className="absolute -top-4 left-0 right-0 h-32 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 70%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 75%, transparent 100%)'
                 }}
               />
               {/* Bottom fade overlay */}
