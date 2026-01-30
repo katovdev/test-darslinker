@@ -81,16 +81,21 @@ export function PricingSection() {
       setExpandedCard(null);
     } else {
       setExpandedCard(index);
-      // Scroll to center after state update and animation
+      // Wait for expansion animation to complete (300ms), then scroll to center
       setTimeout(() => {
         const card = cardRefs.current[index];
         if (card) {
-          card.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.top + cardRect.height / 2;
+          const viewportCenter = window.innerHeight / 2;
+          const scrollOffset = cardCenter - viewportCenter;
+
+          window.scrollBy({
+            top: scrollOffset,
+            behavior: 'smooth'
           });
         }
-      }, 50);
+      }, 350);
     }
   };
 
