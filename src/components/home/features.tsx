@@ -135,21 +135,6 @@ export function Features() {
     };
   }, [isMobile]);
 
-  // Calculate item styles based on translateY position
-  const getItemStyle = (index: number) => {
-    if (!isMobile) return {};
-
-    const CARD_HEIGHT = 100;
-    const itemPosition = index * CARD_HEIGHT - translateY;
-    const viewportCenter = 200; // Center of visible area
-    const distance = Math.abs(itemPosition - viewportCenter) / viewportCenter;
-    const clampedDistance = Math.min(1, distance);
-
-    return {
-      transform: `scale(${1 - clampedDistance * 0.1})`,
-      opacity: 1 - clampedDistance * 0.3,
-    };
-  };
 
   return (
     <section
@@ -177,7 +162,7 @@ export function Features() {
 
             {/* Features - Transform-based animation on mobile, grid on desktop */}
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
-            <div className="sm:hidden relative -mx-4 h-[420px] overflow-hidden">
+            <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
               {/* Top fade overlay */}
               <div
                 className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
@@ -204,11 +189,6 @@ export function Features() {
                   <div
                     key={feature.key}
                     className="group relative flex items-start gap-4 rounded-2xl bg-[#7ea2d4]/10 dark:bg-card p-5 backdrop-blur-sm"
-                    style={{
-                      ...getItemStyle(index),
-                      transformOrigin: 'center center',
-                      transition: 'transform 0.1s linear, opacity 0.1s linear'
-                    }}
                   >
                     {/* Icon */}
                     <div className="flex-shrink-0 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
