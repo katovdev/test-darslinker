@@ -153,7 +153,6 @@ export function Features() {
 
   return (
     <section
-      ref={sectionRef}
       id="features"
       className="relative z-0 bg-background px-4 pt-12 pb-16 sm:px-6 lg:px-8 lg:pt-24 lg:pb-20"
       style={{ scrollMarginTop: "64px" }}
