@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Shield, TrendingUp, CreditCard, BookOpen } from "lucide-react";
+import { ArrowDown, Shield, TrendingUp, CreditCard, BookOpen } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import CardSwap, { Card } from "@/components/ui/card-swap";
 
@@ -33,11 +33,11 @@ export function Hero() {
             {/* CTA Button */}
             <div className="mt-10 flex justify-center lg:justify-start">
               <Link
-                href="/register"
+                href="/#pricing"
                 className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-6 py-3 sm:px-8 sm:py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
               >
-                Bepul boshlash
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                Tariflar bilan tanishish
+                <ArrowDown className="h-5 w-5 transition-transform group-hover:translate-y-1" />
               </Link>
             </div>
 

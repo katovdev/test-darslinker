@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Send, Loader2, Mail, Phone, Instagram, MessageCircle } from "lucide-react";
+import { Send, Loader2, Phone, Instagram, MessageCircle } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { formatPhoneNumber } from "@/services/auth";
 import { api } from "@/lib/api";
@@ -59,51 +59,56 @@ export function ContactForm() {
           <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left Side - Text Content */}
             <div className="flex flex-col justify-center">
-              <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
-                {t("home.contactTitle")}
+              <h2 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                Keling, gaplashamiz.
               </h2>
-              <p className="mt-3 sm:mt-4 text-base sm:text-lg text-white/80">
-                {t("home.contactSubtitle")}
+
+              {/* Mobile - Icons with phone number */}
+              <div className="sm:hidden mt-4 flex items-center gap-3">
+                <a href="https://t.me/DarslinkerSupport" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                  <MessageCircle className="h-5 w-5 text-white" />
+                </a>
+                <a href="https://instagram.com/darslinker" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                  <Instagram className="h-5 w-5 text-white" />
+                </a>
+                <a href="tel:+998773054755" className="text-sm font-medium text-white/90">
+                  +998 77-305-47-55
+                </a>
+              </div>
+
+              <p className="hidden sm:block mt-3 sm:mt-4 text-base sm:text-lg text-white/80">
+                Savollaringiz bo'lsa yoki batafsil ma'lumot olmoqchi bo'lsangiz raqamingizni qoldiring, o'zimiz aloqaga chiqamiz.
               </p>
 
-              {/* Additional info */}
-              <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
-                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              {/* Contact info */}
+              <div className="hidden sm:flex mt-8 sm:mt-10 flex-col gap-3 sm:gap-4">
+                <a href="tel:+998773054755" className="flex items-center gap-4 hover:bg-white/5 rounded-lg p-3 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 flex-shrink-0">
+                    <Phone className="h-6 w-6 text-white" />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-semibold text-white">Email</h3>
-                    <p className="text-xs sm:text-sm text-white/70 break-all">support@darslinker.uz</p>
+                  <div>
+                    <h3 className="text-base font-semibold text-white">Telefon</h3>
+                    <p className="text-sm text-white/70">+998 77-305-47-55</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
-                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                </a>
+                <a href="https://t.me/DarslinkerSupport" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:bg-white/5 rounded-lg p-3 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 flex-shrink-0">
+                    <MessageCircle className="h-6 w-6 text-white" />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-semibold text-white">Telefon</h3>
-                    <p className="text-xs sm:text-sm text-white/70">+998 90 123 45 67</p>
+                  <div>
+                    <h3 className="text-base font-semibold text-white">Telegram</h3>
+                    <p className="text-sm text-white/70">@DarslinkerSupport</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
-                    <Instagram className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                </a>
+                <a href="https://instagram.com/darslinker" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 hover:bg-white/5 rounded-lg p-3 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 flex-shrink-0">
+                    <Instagram className="h-6 w-6 text-white" />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-semibold text-white">Instagram</h3>
-                    <p className="text-xs sm:text-sm text-white/70">@darslinker</p>
+                  <div>
+                    <h3 className="text-base font-semibold text-white">Instagram</h3>
+                    <p className="text-sm text-white/70">@darslinker</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-white/10 flex-shrink-0">
-                    <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-semibold text-white">Telegram</h3>
-                    <p className="text-xs sm:text-sm text-white/70">@darslinker_support</p>
-                  </div>
-                </div>
+                </a>
               </div>
             </div>
 
@@ -180,7 +185,11 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-8 py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-[#5b8ac4] shadow-lg transition-all hover:bg-white/90 disabled:cursor-not-allowed sm:w-auto ${
+                formData.name.trim() && formData.phone && formData.message.trim()
+                  ? "opacity-100"
+                  : "opacity-30"
+              }`}
             >
               {isLoading ? (
                 <>

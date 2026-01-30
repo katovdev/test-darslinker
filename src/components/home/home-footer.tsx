@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from "@/hooks/use-locale";
-import { Send, Instagram, Youtube } from "lucide-react";
+import { Send, Instagram, Phone } from "lucide-react";
 
 const socialLinks = [
   { icon: Send, href: "https://t.me/darslinker", label: "Telegram" },
@@ -11,7 +11,6 @@ const socialLinks = [
     href: "https://instagram.com/darslinker",
     label: "Instagram",
   },
-  { icon: Youtube, href: "https://youtube.com/darslinker", label: "YouTube" },
 ];
 
 const footerLinks = [
@@ -53,7 +52,7 @@ export function HomeFooter() {
             </p>
 
             {/* Social Links */}
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex items-center gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -65,6 +64,13 @@ export function HomeFooter() {
                   <social.icon className="h-5 w-5" />
                 </a>
               ))}
+              <a
+                href="tel:+998773054755"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Phone className="h-4 w-4" />
+                +998 77-305-47-55
+              </a>
             </div>
           </div>
 

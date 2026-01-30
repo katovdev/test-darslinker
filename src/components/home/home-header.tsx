@@ -16,7 +16,6 @@ import {
   LayoutDashboard,
   Moon,
   Sun,
-  Phone,
 } from "lucide-react";
 import { useTranslations, useLocale, useSetLocale } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
@@ -93,14 +92,6 @@ export function HomeHeader() {
             </span>
           </Link>
 
-          {/* Phone number - Desktop */}
-          <a
-            href="tel:+998901234567"
-            className="hidden sm:flex items-center gap-2 text-sm md:text-base text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Phone className="h-4 w-4" />
-            <span className="font-medium">+998 90 123 45 67</span>
-          </a>
         </div>
 
         {/* Only show public nav items when NOT authenticated */}
@@ -421,14 +412,6 @@ export function HomeHeader() {
                     {t("header.logout") || "Chiqish"}
                   </button>
 
-                  {/* Phone number - Mobile (for authenticated users) */}
-                  <a
-                    href="tel:+998901234567"
-                    className="flex sm:hidden items-center justify-center gap-2 rounded-lg bg-secondary border border-border px-4 py-3 text-base font-semibold text-foreground hover:bg-secondary/80 transition-colors mt-2"
-                  >
-                    <Phone className="h-5 w-5" />
-                    <span>+998 90 123 45 67</span>
-                  </a>
                 </>
               ) : (
                 <>
@@ -447,14 +430,6 @@ export function HomeHeader() {
                     {t("home.getStarted")}
                   </Link>
 
-                  {/* Phone number - Mobile */}
-                  <a
-                    href="tel:+998901234567"
-                    className="flex sm:hidden items-center justify-center gap-2 rounded-lg bg-secondary border border-border px-4 py-3 text-base font-semibold text-foreground hover:bg-secondary/80 transition-colors mt-2"
-                  >
-                    <Phone className="h-5 w-5" />
-                    <span>+998 90 123 45 67</span>
-                  </a>
                 </>
               )}
             </div>
