@@ -359,6 +359,7 @@ export const en: Translations = {
     contactName: "Your Name",
     contactPhone: "Your Phone",
     contactMessage: "Your Message",
+    contactMessagePlaceholder: "Brief description of the topic...",
     contactSubmit: "Submit",
     contactSuccess: "Your message has been sent!",
     navHome: "Home",

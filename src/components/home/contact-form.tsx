@@ -59,22 +59,10 @@ export function ContactForm() {
           <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left Side - Text Content */}
             <div className="flex flex-col justify-center">
-              <h2 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl">
+              <h2 className="text-3xl font-bold text-white text-center sm:text-left sm:text-4xl md:text-5xl lg:text-6xl">
                 Keling, gaplashamiz.
               </h2>
 
-              {/* Mobile - Icons with phone number */}
-              <div className="sm:hidden mt-4 flex items-center gap-3">
-                <a href="https://t.me/DarslinkerSupport" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                  <MessageCircle className="h-5 w-5 text-white" />
-                </a>
-                <a href="https://instagram.com/darslinker" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                  <Instagram className="h-5 w-5 text-white" />
-                </a>
-                <a href="tel:+998773054755" className="text-sm font-medium text-white/90">
-                  +998 77-305-47-55
-                </a>
-              </div>
 
               <p className="hidden sm:block mt-3 sm:mt-4 text-base sm:text-lg text-white/80">
                 Savollaringiz bo'lsa yoki batafsil ma'lumot olmoqchi bo'lsangiz raqamingizni qoldiring, o'zimiz aloqaga chiqamiz.
@@ -176,7 +164,7 @@ export function ContactForm() {
                   setFormData((prev) => ({ ...prev, message: e.target.value }))
                 }
                 rows={5}
-                placeholder={t("home.contactMessage")}
+                placeholder={t("home.contactMessagePlaceholder")}
                 className="w-full resize-none rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
               />
             </div>

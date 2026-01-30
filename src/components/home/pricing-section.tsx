@@ -206,7 +206,7 @@ export function PricingSection() {
                             <h3 className="text-xl font-bold text-white">
                               {t(`pricing.${plan.nameKey}`)}
                             </h3>
-                            <p className="mt-1.5 text-xs text-white/60 leading-relaxed">
+                            <p className="mt-1.5 text-sm text-white leading-relaxed">
                               {plan.description}
                             </p>
                           </div>
@@ -233,9 +233,9 @@ export function PricingSection() {
                             {plan.displayFeatures.map((feature) => (
                               <li
                                 key={feature.key}
-                                className="flex items-center justify-between text-xs"
+                                className="flex items-center justify-between text-sm"
                               >
-                                <span className="text-white/70">
+                                <span className="text-white">
                                   {feature.label}
                                 </span>
                                 {renderFeatureValue(feature)}

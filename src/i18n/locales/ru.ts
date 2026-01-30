@@ -363,6 +363,7 @@ export const ru: Translations = {
     contactName: "Ваше имя",
     contactPhone: "Ваш телефон",
     contactMessage: "Ваше сообщение",
+    contactMessagePlaceholder: "Кратко о теме...",
     contactSubmit: "Отправить",
     contactSuccess: "Ваше сообщение отправлено!",
     navHome: "Главная",

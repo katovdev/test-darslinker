@@ -33,7 +33,7 @@ export function Hero() {
             {/* CTA Button */}
             <div className="mt-10 flex justify-center lg:justify-start">
               <Link
-                href="/#pricing"
+                href="#pricing"
                 className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-6 py-3 sm:px-8 sm:py-4 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
               >
                 Tariflar bilan tanishish
