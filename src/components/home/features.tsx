@@ -158,28 +158,29 @@ export function Features() {
             {/* Features - Transform-based animation on mobile, grid on desktop */}
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
-              {/* Top section - title + fade combined */}
-              <div
-                className="absolute -top-1 left-0 right-0 z-20 pointer-events-none"
-                style={{
-                  height: '130px',
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 75%, transparent 100%)'
-                }}
-              >
-                <p className="text-center text-3xl font-bold text-foreground px-4 pt-3 pointer-events-auto">
+              {/* Title at top */}
+              <div className="absolute top-0 left-0 right-0 z-30 bg-background px-4 pt-2 pb-2">
+                <p className="text-center text-3xl font-bold text-foreground">
                   Asosiy imkoniyatlar
                 </p>
               </div>
+              {/* Top fade mask */}
+              <div
+                className="absolute top-[52px] left-0 right-0 h-20 z-20 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 50%, transparent 100%)'
+                }}
+              />
               {/* Bottom fade overlay */}
               <div
-                className="absolute -bottom-1 left-0 right-0 h-28 z-10 pointer-events-none"
+                className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 60%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 50%, transparent 100%)'
                 }}
               />
               {/* Animated content wrapper */}
               <div
-                className="flex flex-col gap-3 px-4 pt-[100px]"
+                className="flex flex-col gap-3 px-4 pt-[72px]"
                 style={{
                   transform: `translateY(-${translateY}px)`,
                   willChange: 'transform',
