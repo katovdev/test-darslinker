@@ -153,106 +153,49 @@ export function PricingSection() {
                 Mos tarifni tanlang
               </h2>
               <div className="flex flex-col gap-4">
-                {plans.map((plan, index) => {
-                  const isExpanded = expandedCard === index;
-
-                  return (
-                    <div
-                      key={plan.nameKey}
-                      className={`relative rounded-2xl border-2 overflow-hidden transition-all duration-300 ${
-                        plan.recommended
-                          ? "bg-white/10 border-white/30"
-                          : "bg-white/5 border-white/20"
-                      }`}
-                    >
-                      {/* Recommended Badge */}
-                      {plan.recommended && (
-                        <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 z-10">
-                          <div className="inline-flex items-center gap-1 rounded-b-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-2 py-0.5 text-[10px] font-semibold text-white shadow-md">
-                            <Sparkles className="h-2.5 w-2.5" />
-                            Tavsiya
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Compact Header - Always visible, entire card is clickable */}
-                      <div
-                        className="p-5 cursor-pointer"
-                        onClick={() => toggleCard(index)}
-                      >
-                        <div className="flex flex-col gap-3">
-                          <div className="flex-1">
-                            <h3 className="text-xl font-bold text-white">
-                              {t(`pricing.${plan.nameKey}`)}
-                            </h3>
-                            <p className="mt-1.5 text-xs text-white/60 leading-relaxed">
-                              {plan.description}
-                            </p>
-                          </div>
-                          <button
-                            className={`flex items-center justify-center gap-1 rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition-all hover:bg-white/20 ${
-                              isExpanded ? "bg-white/20" : ""
-                            }`}
-                          >
-                            Ko'proq
-                            <ChevronDown className={`h-3 w-3 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
-                          </button>
+                {plans.map((plan, index) => (
+                  <div
+                    key={plan.nameKey}
+                    className={`relative rounded-2xl border-2 overflow-hidden transition-all duration-300 ${
+                      plan.recommended
+                        ? "bg-white/10 border-white/30"
+                        : "bg-white/5 border-white/20"
+                    }`}
+                  >
+                    {/* Recommended Badge */}
+                    {plan.recommended && (
+                      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 z-10">
+                        <div className="inline-flex items-center gap-1 rounded-b-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-2 py-0.5 text-[10px] font-semibold text-white shadow-md">
+                          <Sparkles className="h-2.5 w-2.5" />
+                          Tavsiya
                         </div>
                       </div>
+                    )}
 
-                      {/* Expandable Content */}
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-                        }`}
-                      >
-                        <div className="px-4 pb-4 border-t border-white/10 pt-3">
-                          {/* Features */}
-                          <ul className="space-y-2 mb-4">
-                            {plan.displayFeatures.map((feature) => (
-                              <li
-                                key={feature.key}
-                                className="flex items-center justify-between text-xs"
-                              >
-                                <span className="text-white/70">
-                                  {feature.label}
-                                </span>
-                                {renderFeatureValue(feature)}
-                              </li>
-                            ))}
-                          </ul>
-
-                          {/* Price */}
-                          <div className="mb-3 pt-2 border-t border-white/10">
-                            {plan.price === "free" ? (
-                              <span className="text-lg font-bold text-white">
-                                Bepul
-                              </span>
-                            ) : (
-                              <div className="flex items-baseline gap-1">
-                                <span className="text-lg font-bold text-white">
-                                  {plan.price}
-                                </span>
-                                <span className="text-xs text-white/60">
-                                  so&apos;m/oy
-                                </span>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* CTA Button */}
-                          <Link
-                            href="/pricing"
-                            className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all bg-white text-[#7ea2d4] shadow-lg hover:bg-white/90"
-                          >
-                            Tanlash
-                            <ArrowRight className="h-4 w-4" />
-                          </Link>
+                    {/* Compact Header - Always visible, entire card is clickable */}
+                    <div
+                      className="p-5 cursor-pointer"
+                      onClick={() => toggleCard(index)}
+                    >
+                      <div className="flex flex-col gap-3">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-white">
+                            {t(`pricing.${plan.nameKey}`)}
+                          </h3>
+                          <p className="mt-1.5 text-xs text-white/60 leading-relaxed">
+                            {plan.description}
+                          </p>
                         </div>
+                        <button
+                          className="flex items-center justify-center gap-1 rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition-all hover:bg-white/20"
+                        >
+                          Ko'proq
+                          <ChevronDown className="h-3 w-3" />
+                        </button>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
 
               {/* Mobile Action Buttons - Below cards, inside blue background */}
@@ -273,6 +216,83 @@ export function PricingSection() {
                 </Link>
               </div>
             </div>
+
+            {/* Mobile Modal - Centered on screen */}
+            {expandedCard !== null && (
+              <div
+                className="sm:hidden fixed inset-0 z-50 flex items-center justify-center p-4"
+                onClick={() => setExpandedCard(null)}
+              >
+                {/* Backdrop */}
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+                {/* Modal Content */}
+                <div
+                  className="relative w-full max-w-sm rounded-2xl bg-gradient-to-br from-[#7ea2d4] to-[#5b8ac4] p-5 shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Close Button */}
+                  <button
+                    onClick={() => setExpandedCard(null)}
+                    className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition-all hover:bg-white/20"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+
+                  {/* Plan Name */}
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {t(`pricing.${plans[expandedCard].nameKey}`)}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-white/70 leading-relaxed mb-4">
+                    {plans[expandedCard].description}
+                  </p>
+
+                  {/* Features */}
+                  <ul className="space-y-2.5 mb-4">
+                    {plans[expandedCard].displayFeatures.map((feature) => (
+                      <li
+                        key={feature.key}
+                        className="flex items-center justify-between text-sm"
+                      >
+                        <span className="text-white/80">
+                          {feature.label}
+                        </span>
+                        {renderFeatureValue(feature)}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Price */}
+                  <div className="mb-4 pt-3 border-t border-white/20">
+                    {plans[expandedCard].price === "free" ? (
+                      <span className="text-2xl font-bold text-white">
+                        Bepul
+                      </span>
+                    ) : (
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl font-bold text-white">
+                          {plans[expandedCard].price}
+                        </span>
+                        <span className="text-sm text-white/60">
+                          so&apos;m/oy
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* CTA Button */}
+                  <Link
+                    href="/pricing"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all bg-white text-[#7ea2d4] shadow-lg hover:bg-white/90"
+                  >
+                    Tanlash
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            )}
 
             {/* Desktop Pricing Cards */}
             <div className="mt-12 hidden sm:grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
