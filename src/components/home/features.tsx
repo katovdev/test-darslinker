@@ -148,14 +148,9 @@ export function Features() {
           style={{ borderColor: "#7ea2d4" }}
         >
           <div className="mx-auto">
-            {/* Section subtitle - inside dark box */}
-            <div className="mb-6 text-center sm:mb-12 lg:mb-16">
-              {/* Mobile title */}
-              <p className="text-3xl font-bold text-foreground sm:hidden">
-                Asosiy imkoniyatlar
-              </p>
-              {/* Desktop title */}
-              <p className="hidden sm:block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground whitespace-nowrap">
+            {/* Section subtitle - Desktop only */}
+            <div className="hidden sm:block mb-12 text-center lg:mb-16">
+              <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground whitespace-nowrap">
                 Platformaning asosiy imkoniyatlari
               </p>
             </div>
@@ -163,6 +158,10 @@ export function Features() {
             {/* Features - Transform-based animation on mobile, grid on desktop */}
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
+              {/* Mobile title - positioned at top fade area */}
+              <p className="absolute top-0 left-0 right-0 z-20 text-center text-3xl font-bold text-foreground px-4 pt-2">
+                Asosiy imkoniyatlar
+              </p>
               {/* Top fade overlay */}
               <div
                 className="absolute -top-1 left-0 right-0 h-24 z-10 pointer-events-none"
@@ -179,7 +178,7 @@ export function Features() {
               />
               {/* Animated content wrapper */}
               <div
-                className="flex flex-col gap-3 px-4 pt-8"
+                className="flex flex-col gap-3 px-4 pt-14"
                 style={{
                   transform: `translateY(-${translateY}px)`,
                   willChange: 'transform',
