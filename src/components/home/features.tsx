@@ -159,16 +159,16 @@ export function Features() {
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
               {/* Mobile title - positioned at top with solid background */}
-              <div className="absolute top-0 left-0 right-0 z-20 bg-background pt-2 pb-4 px-4">
+              <div className="absolute -top-2 left-0 right-0 z-20 bg-background pt-2 pb-3 px-4">
                 <p className="text-center text-3xl font-bold text-foreground">
                   Asosiy imkoniyatlar
                 </p>
               </div>
               {/* Top fade overlay - starts below title */}
               <div
-                className="absolute top-12 left-0 right-0 h-12 z-10 pointer-events-none"
+                className="absolute top-9 left-0 right-0 h-14 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 30%, transparent 100%)'
                 }}
               />
               {/* Bottom fade overlay */}
