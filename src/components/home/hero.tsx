@@ -52,10 +52,10 @@ export function Hero() {
                 ].map((step, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <div className="flex flex-col items-center">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-xs font-medium text-muted-foreground">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full border border-muted-foreground/50 text-xs font-medium text-muted-foreground">
                         {index + 1}
                       </div>
-                      {index < 3 && <div className="w-px h-4 bg-border" />}
+                      {index < 3 && <div className="w-px h-4 bg-muted-foreground/30" />}
                     </div>
                     <span className="text-sm text-muted-foreground pb-2">{step}</span>
                   </div>
