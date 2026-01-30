@@ -373,24 +373,24 @@ export function Features() {
             <div className="sm:hidden relative -mx-4">
               {/* Top blur overlay */}
               <div
-                className="absolute top-0 left-0 right-0 h-12 z-10 pointer-events-none"
+                className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, transparent 100%)',
-                  backdropFilter: 'blur(4px)',
-                  WebkitBackdropFilter: 'blur(4px)',
-                  maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 30%, transparent 100%)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  maskImage: 'linear-gradient(to bottom, black 0%, black 40%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 40%, transparent 100%)'
                 }}
               />
               {/* Bottom blur overlay */}
               <div
-                className="absolute bottom-0 left-0 right-0 h-12 z-10 pointer-events-none"
+                className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, transparent 100%)',
-                  backdropFilter: 'blur(4px)',
-                  WebkitBackdropFilter: 'blur(4px)',
-                  maskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to top, black 0%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 30%, transparent 100%)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  maskImage: 'linear-gradient(to top, black 0%, black 40%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to top, black 0%, black 40%, transparent 100%)'
                 }}
               />
               <div
@@ -436,13 +436,6 @@ export function Features() {
                 ))}
                 {/* Invisible spacer for bottom blur area */}
                 <div className="h-14 flex-shrink-0" aria-hidden="true" />
-              </div>
-              {/* Scroll indicator - always takes space, visibility changes */}
-              <div
-                className="flex justify-center mt-2"
-                style={{ visibility: isAtBottom ? 'hidden' : 'visible' }}
-              >
-                <div className="w-6 h-1 rounded-full bg-primary/30 animate-pulse" />
               </div>
             </div>
 
