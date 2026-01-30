@@ -158,33 +158,26 @@ export function Features() {
             {/* Features - Transform-based animation on mobile, grid on desktop */}
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
-              {/* Title at top with extended solid background */}
+              {/* Title at top */}
+              <p className="absolute top-0 left-0 right-0 z-30 text-center text-3xl font-bold text-foreground bg-background px-4 py-3">
+                Asosiy imkoniyatlar
+              </p>
+              {/* Cards container with mask */}
               <div
-                className="absolute top-0 left-0 right-0 z-30 px-4 pt-2"
+                className="absolute top-[52px] left-0 right-0 bottom-0"
                 style={{
-                  height: '90px',
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 70%, transparent 100%)'
+                  maskImage: 'linear-gradient(to bottom, transparent 0%, black 40px, black calc(100% - 60px), transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 40px, black calc(100% - 60px), transparent 100%)'
                 }}
               >
-                <p className="text-center text-3xl font-bold text-foreground">
-                  Asosiy imkoniyatlar
-                </p>
-              </div>
-              {/* Bottom fade overlay */}
-              <div
-                className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 50%, transparent 100%)'
-                }}
-              />
-              {/* Animated content wrapper */}
-              <div
-                className="flex flex-col gap-3 px-4 pt-[64px]"
-                style={{
-                  transform: `translateY(-${translateY}px)`,
-                  willChange: 'transform',
-                }}
-              >
+                {/* Animated content wrapper */}
+                <div
+                  className="flex flex-col gap-3 px-4 pt-3"
+                  style={{
+                    transform: `translateY(-${translateY}px)`,
+                    willChange: 'transform',
+                  }}
+                >
                 {features.map((feature, index) => (
                   <div
                     key={feature.key}
@@ -212,6 +205,7 @@ export function Features() {
                   </div>
                 ))}
               </div>
+            </div>
             </div>
 
             {/* Desktop grid */}
