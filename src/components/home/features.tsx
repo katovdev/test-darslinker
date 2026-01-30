@@ -194,9 +194,8 @@ export function Features() {
     const section = sectionRef.current;
     if (!scrollContainer || !section) return;
 
-    let autoScrollId: number | null = null;
+    let animationRunning = false;
     let userHasControl = false;
-    let isVisible = false;
     let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
     let scrollDirection = 1; // 1 = down, -1 = up
 
@@ -205,17 +204,9 @@ export function Features() {
     // Resume delay after user stops (1 second)
     const RESUME_DELAY = 1000;
 
-    // Simple visibility check that works on all browsers
-    const checkVisibility = () => {
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      // Section is visible if it's at least partially in viewport
-      return rect.top < viewportHeight && rect.bottom > 0;
-    };
-
-    const autoScroll = () => {
-      if (userHasControl || !isVisible) {
-        autoScrollId = null;
+    const runAnimation = () => {
+      if (userHasControl) {
+        animationRunning = false;
         return;
       }
 
@@ -224,31 +215,29 @@ export function Features() {
 
       // Check boundaries and reverse direction
       if (scrollTop >= maxScroll - 1 && scrollDirection === 1) {
-        // Reached bottom - reverse to scroll up
         scrollDirection = -1;
       } else if (scrollTop <= 1 && scrollDirection === -1) {
-        // Reached top - reverse to scroll down
         scrollDirection = 1;
       }
 
-      // Apply scroll in current direction
+      // Apply scroll
       scrollContainer.scrollTop = scrollTop + (scrollSpeed * scrollDirection);
       calculateItemStyles();
 
-      autoScrollId = requestAnimationFrame(autoScroll);
+      animationRunning = true;
+      requestAnimationFrame(runAnimation);
     };
 
-    const startAutoScroll = () => {
-      if (!autoScrollId && !userHasControl && isVisible) {
-        autoScrollId = requestAnimationFrame(autoScroll);
+    const startAnimation = () => {
+      if (!animationRunning && !userHasControl) {
+        animationRunning = true;
+        requestAnimationFrame(runAnimation);
       }
     };
 
-    const stopAutoScroll = () => {
-      if (autoScrollId) {
-        cancelAnimationFrame(autoScrollId);
-        autoScrollId = null;
-      }
+    const stopAnimation = () => {
+      animationRunning = false;
+      userHasControl = true;
     };
 
     const clearResumeTimeout = () => {
@@ -262,89 +251,40 @@ export function Features() {
       clearResumeTimeout();
       resumeTimeout = setTimeout(() => {
         userHasControl = false;
-        if (isVisible) {
-          startAutoScroll();
-        }
+        startAnimation();
       }, RESUME_DELAY);
     };
 
-    // Update visibility and start/stop auto-scroll
-    const updateVisibility = () => {
-      const wasVisible = isVisible;
-      isVisible = checkVisibility();
-
-      if (isVisible && !userHasControl && !autoScrollId) {
-        startAutoScroll();
-      } else if (!isVisible && autoScrollId) {
-        stopAutoScroll();
-      }
-    };
-
-    // Touch handlers - user takes control on touch
-    const handleTouchStart = (e: TouchEvent) => {
-      // Check if touch is within the scroll container
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const touchX = e.touches[0].clientX;
-      const touchY = e.touches[0].clientY;
-
-      if (
-        touchX >= containerRect.left &&
-        touchX <= containerRect.right &&
-        touchY >= containerRect.top &&
-        touchY <= containerRect.bottom
-      ) {
-        userHasControl = true;
-        stopAutoScroll();
-        clearResumeTimeout();
-      }
+    // Touch handlers
+    const handleTouchStart = () => {
+      stopAnimation();
+      clearResumeTimeout();
     };
 
     const handleTouchEnd = () => {
-      // Schedule auto-scroll resume after 1 second
-      if (userHasControl) {
-        scheduleResume();
-      }
-    };
-
-    // Also stop on manual scroll via wheel (desktop fallback)
-    const handleWheel = () => {
-      userHasControl = true;
-      stopAutoScroll();
-      clearResumeTimeout();
       scheduleResume();
     };
 
-    // Window scroll handler - check visibility on page scroll
-    const handleWindowScroll = () => {
-      updateVisibility();
+    // Wheel handler (desktop fallback)
+    const handleWheel = () => {
+      stopAnimation();
+      clearResumeTimeout();
+      scheduleResume();
     };
 
     scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
     scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
     scrollContainer.addEventListener('wheel', handleWheel, { passive: true });
-    window.addEventListener('scroll', handleWindowScroll, { passive: true });
 
-    // Initial check with multiple retries for mobile browsers
-    const initialCheck = () => {
-      isVisible = checkVisibility();
-      if (isVisible && !userHasControl) {
-        startAutoScroll();
-      }
-    };
-
-    // Run initial check immediately, then again after delays for mobile
-    initialCheck();
-    setTimeout(initialCheck, 100);
-    setTimeout(initialCheck, 500);
-    setTimeout(initialCheck, 1000);
+    // Start animation immediately
+    startAnimation();
 
     return () => {
-      stopAutoScroll();
+      animationRunning = false;
       clearResumeTimeout();
       scrollContainer.removeEventListener('touchstart', handleTouchStart);
       scrollContainer.removeEventListener('touchend', handleTouchEnd);
       scrollContainer.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('scroll', handleWindowScroll);
     };
   }, [isMobile, calculateItemStyles]);
 
@@ -363,7 +303,12 @@ export function Features() {
           <div className="mx-auto">
             {/* Section subtitle - inside dark box */}
             <div className="mb-6 text-center sm:mb-12 lg:mb-16">
-              <p className="text-lg font-bold sm:text-3xl md:text-4xl lg:text-5xl text-foreground whitespace-nowrap">
+              {/* Mobile title */}
+              <p className="text-2xl font-bold text-foreground sm:hidden">
+                Asosiy imkoniyatlar
+              </p>
+              {/* Desktop title */}
+              <p className="hidden sm:block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground whitespace-nowrap">
                 Platformaning asosiy imkoniyatlari
               </p>
             </div>
