@@ -16,6 +16,7 @@ interface PlanFeature {
 interface Plan {
   nameKey: string;
   price: string;
+  description: string;
   recommended?: boolean;
   allFeatures: PlanFeature[];
 }
@@ -24,10 +25,11 @@ const plans: Plan[] = [
   {
     nameKey: "planMinimal",
     price: "Bepul",
+    description: "Dars berishni endi boshlaganlar va kichik auditoriya bilan ishlovchi o'qituvchilar uchun",
     allFeatures: [
       { key: "courses", included: "1" },
       { key: "admins", included: "1" },
-      { key: "students", included: "20/oy" },
+      { key: "students", included: "20" },
       { key: "support", included: true },
       { key: "analytics", included: true },
       { key: "telegramBot", included: true },
@@ -42,6 +44,7 @@ const plans: Plan[] = [
   {
     nameKey: "planStandard",
     price: "670,000",
+    description: "Doimiy o'quvchilar bazasiga ega va kurslar sonini ko'paytirmoqchi bo'lgan faol o'qituvchilar uchun",
     recommended: true,
     allFeatures: [
       { key: "courses", included: "3" },
@@ -61,6 +64,7 @@ const plans: Plan[] = [
   {
     nameKey: "planPro",
     price: "1,270,000",
+    description: "Professional ta'lim biznesini yuritayotgan va bozorda o'z o'rnini mustahkamlamoqchi bo'lganlar uchun",
     allFeatures: [
       { key: "courses", included: "6" },
       { key: "admins", included: "6" },
@@ -181,12 +185,15 @@ export default function PricingPage() {
                         <span className="text-xl sm:text-2xl font-bold text-foreground">
                           {t(`pricing.${plan.nameKey}`)}
                         </span>
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-2xl sm:text-3xl font-bold text-foreground">
+                        <p className="text-xs text-muted-foreground leading-relaxed max-w-[180px] font-normal rounded-lg bg-secondary/50 px-2 py-1.5">
+                          {plan.description}
+                        </p>
+                        <div className="flex items-baseline gap-1 mt-1">
+                          <span className="text-lg sm:text-xl font-bold text-foreground">
                             {plan.price}
                           </span>
                           {plan.price !== "Bepul" && (
-                            <span className="text-sm text-muted-foreground">so'm/oy</span>
+                            <span className="text-xs text-muted-foreground">so'm/oy</span>
                           )}
                         </div>
                       </div>
