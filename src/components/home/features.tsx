@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   BookOpen,
   CreditCard,
@@ -13,36 +13,6 @@ import {
   FileText,
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
-
-// Check if we're on mobile - more reliable detection
-const isMobileDevice = () => {
-  if (typeof window === 'undefined') return false;
-  // Check both width and touch capability
-  const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const isSmallScreen = window.innerWidth < 640;
-  return isSmallScreen || (hasTouch && window.innerWidth < 768);
-};
-
-// Smooth scroll helper
-const smoothScrollTo = (element: HTMLElement, target: number, duration: number = 300) => {
-  const start = element.scrollTop;
-  const change = target - start;
-  const startTime = performance.now();
-
-  const animateScroll = (currentTime: number) => {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    // Ease out cubic
-    const easeOut = 1 - Math.pow(1 - progress, 3);
-    element.scrollTop = start + change * easeOut;
-
-    if (progress < 1) {
-      requestAnimationFrame(animateScroll);
-    }
-  };
-
-  requestAnimationFrame(animateScroll);
-};
 
 const features = [
   {
@@ -112,125 +82,74 @@ const features = [
 
 export function Features() {
   const t = useTranslations();
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isAtTop, setIsAtTop] = useState(true);
-  const [isAtBottom, setIsAtBottom] = useState(false);
-  const [isLocked, setIsLocked] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [itemStyles, setItemStyles] = useState<{ scale: number; opacity: number }[]>(
-    features.map((_, index) => {
-      // Initial styles - first item is largest, decreasing down
-      const distanceFromTop = index / 3; // 0 for first, increases for others
-      const clampedDistance = Math.min(1, distanceFromTop);
-      return {
-        scale: 1 - (clampedDistance * 0.12),
-        opacity: 1 - (clampedDistance * 0.4)
-      };
-    })
-  );
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const mobileContainerRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const lastScrollTime = useRef<number>(0);
-
-  const calculateItemStyles = useCallback(() => {
-    if (!scrollContainerRef.current) return;
-
-    const container = scrollContainerRef.current;
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    const maxScroll = scrollHeight - clientHeight;
-    const progress = maxScroll > 0 ? Math.min(scrollTop / 50, 1) : 0;
-    setScrollProgress(progress);
-    setIsAtTop(scrollTop < 10);
-    setIsAtBottom(scrollTop >= maxScroll - 10);
-
-    const containerRect = container.getBoundingClientRect();
-    // Dynamic focal point: moves from 25% at top to 75% at bottom based on scroll
-    const scrollRatio = maxScroll > 0 ? scrollTop / maxScroll : 0;
-    const focalPointY = clientHeight * (0.25 + scrollRatio * 0.5); // 25% -> 75%
-
-    const newStyles = itemRefs.current.map((itemRef) => {
-      if (!itemRef) return { scale: 1, opacity: 1 };
-
-      const itemRect = itemRef.getBoundingClientRect();
-      const itemCenter = itemRect.top + itemRect.height / 2 - containerRect.top;
-
-      // Distance from focal point (0 = at focal point, 1 = far from it)
-      const distanceFromFocal = Math.abs(itemCenter - focalPointY) / (clientHeight * 0.5);
-      const clampedDistance = Math.min(1, distanceFromFocal);
-
-      // Items at focal point are full size, items away are smaller
-      const scale = 1 - (clampedDistance * 0.12);
-      const opacity = 1 - (clampedDistance * 0.4);
-
-      return { scale, opacity };
-    });
-
-    setItemStyles(newStyles);
-  }, []);
-
-  const handleScroll = () => {
-    calculateItemStyles();
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      calculateItemStyles();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [calculateItemStyles]);
+  const [translateY, setTranslateY] = useState(0);
+  const animationRef = useRef<number | null>(null);
+  const directionRef = useRef(1); // 1 = down, -1 = up
 
   // Check if mobile on mount and resize
   useEffect(() => {
-    const checkMobile = () => setIsMobile(isMobileDevice());
+    const checkMobile = () => {
+      if (typeof window === 'undefined') return;
+      const isSmall = window.innerWidth < 640;
+      setIsMobile(isSmall);
+    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-scroll animation for mobile - continuous animation, no manual scroll
+  // Transform-based animation for mobile - doesn't block page scroll
   useEffect(() => {
     if (!isMobile) return;
 
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer) return;
+    const CARD_HEIGHT = 100; // approximate card height + gap
+    const TOTAL_CARDS = features.length;
+    const MAX_TRANSLATE = CARD_HEIGHT * (TOTAL_CARDS - 4); // Show 4 cards
+    const SPEED = 0.3;
 
-    let isRunning = true;
-    let direction = 1; // 1 = down, -1 = up
-    const SPEED = 0.5;
+    let currentY = 0;
 
     const animate = () => {
-      if (!isRunning) return;
-
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const maxScroll = scrollHeight - clientHeight;
-
-      // Reverse at boundaries
-      if (scrollTop >= maxScroll - 1) {
-        direction = -1;
-      } else if (scrollTop <= 1) {
-        direction = 1;
+      // Update direction at boundaries
+      if (currentY >= MAX_TRANSLATE) {
+        directionRef.current = -1;
+      } else if (currentY <= 0) {
+        directionRef.current = 1;
       }
 
-      scrollContainer.scrollTop = scrollTop + (SPEED * direction);
-      calculateItemStyles();
+      currentY += SPEED * directionRef.current;
+      currentY = Math.max(0, Math.min(MAX_TRANSLATE, currentY));
 
-      requestAnimationFrame(animate);
+      setTranslateY(currentY);
+      animationRef.current = requestAnimationFrame(animate);
     };
 
-    // Start animation with delays for mobile browser compatibility
-    const timers = [
-      setTimeout(() => { if (isRunning) requestAnimationFrame(animate); }, 100),
-      setTimeout(() => { if (isRunning) requestAnimationFrame(animate); }, 500),
-      setTimeout(() => { if (isRunning) requestAnimationFrame(animate); }, 1000),
-    ];
+    // Start animation
+    animationRef.current = requestAnimationFrame(animate);
 
     return () => {
-      isRunning = false;
-      timers.forEach(t => clearTimeout(t));
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
-  }, [isMobile, calculateItemStyles]);
+  }, [isMobile]);
+
+  // Calculate item styles based on translateY position
+  const getItemStyle = (index: number) => {
+    if (!isMobile) return {};
+
+    const CARD_HEIGHT = 100;
+    const itemPosition = index * CARD_HEIGHT - translateY;
+    const viewportCenter = 200; // Center of visible area
+    const distance = Math.abs(itemPosition - viewportCenter) / viewportCenter;
+    const clampedDistance = Math.min(1, distance);
+
+    return {
+      transform: `scale(${1 - clampedDistance * 0.1})`,
+      opacity: 1 - clampedDistance * 0.3,
+    };
+  };
 
   return (
     <section
@@ -257,45 +176,43 @@ export function Features() {
               </p>
             </div>
 
-            {/* Features - Scrollable list on mobile, grid on desktop */}
-            {/* Mobile scrollable container - shows 4 items, scroll for more */}
-            <div className="sm:hidden relative -mx-4">
+            {/* Features - Transform-based animation on mobile, grid on desktop */}
+            {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
+            <div className="sm:hidden relative -mx-4 h-[420px] overflow-hidden">
               {/* Top fade overlay */}
               <div
-                className="absolute -top-1 left-0 right-0 h-16 z-10 pointer-events-none"
+                className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 60%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 40%, transparent 100%)'
                 }}
               />
               {/* Bottom fade overlay */}
               <div
-                className="absolute -bottom-1 left-0 right-0 h-16 z-10 pointer-events-none"
+                className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 60%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 40%, transparent 100%)'
                 }}
               />
+              {/* Animated content wrapper */}
               <div
-                ref={scrollContainerRef}
-                onScroll={handleScroll}
-                className="max-h-[520px] overflow-y-scroll flex flex-col gap-4 scrollbar-hide px-4"
-                style={{ touchAction: 'none', overscrollBehavior: 'none' }}
+                className="flex flex-col gap-3 px-4 pt-8"
+                style={{
+                  transform: `translateY(-${translateY}px)`,
+                  willChange: 'transform',
+                }}
               >
-                {/* Invisible spacer for top fade area */}
-                <div className="h-12 flex-shrink-0" aria-hidden="true" />
                 {features.map((feature, index) => (
                   <div
                     key={feature.key}
-                    ref={(el) => { itemRefs.current[index] = el; }}
-                    className="group relative flex items-start gap-4 rounded-2xl bg-[#7ea2d4]/10 dark:bg-card p-5 backdrop-blur-sm flex-shrink-0"
+                    className="group relative flex items-start gap-4 rounded-2xl bg-[#7ea2d4]/10 dark:bg-card p-5 backdrop-blur-sm"
                     style={{
-                      transform: `scale(${itemStyles[index]?.scale || 1})`,
-                      opacity: itemStyles[index]?.opacity || 1,
+                      ...getItemStyle(index),
                       transformOrigin: 'center center',
-                      transition: 'transform 0.15s ease-out, opacity 0.15s ease-out'
+                      transition: 'transform 0.1s linear, opacity 0.1s linear'
                     }}
                   >
                     {/* Icon */}
-                    <div className="flex-shrink-0 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-transform duration-300 group-hover:scale-110">
+                    <div className="flex-shrink-0 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
                       <feature.icon className="h-7 w-7 text-primary" />
                     </div>
 
@@ -315,8 +232,6 @@ export function Features() {
                     </div>
                   </div>
                 ))}
-                {/* Invisible spacer for bottom fade area */}
-                <div className="h-12 flex-shrink-0" aria-hidden="true" />
               </div>
             </div>
 
