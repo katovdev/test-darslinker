@@ -14,10 +14,13 @@ import {
 } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
-// Check if we're on mobile
+// Check if we're on mobile - more reliable detection
 const isMobileDevice = () => {
   if (typeof window === 'undefined') return false;
-  return window.innerWidth < 640; // sm breakpoint
+  // Check both width and touch capability
+  const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isSmallScreen = window.innerWidth < 640;
+  return isSmallScreen || (hasTouch && window.innerWidth < 768);
 };
 
 // Smooth scroll helper
@@ -191,100 +194,84 @@ export function Features() {
     if (!isMobile) return;
 
     const scrollContainer = scrollContainerRef.current;
-    const section = sectionRef.current;
-    if (!scrollContainer || !section) return;
+    if (!scrollContainer) return;
 
-    let animationRunning = false;
-    let userHasControl = false;
-    let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
-    let scrollDirection = 1; // 1 = down, -1 = up
+    let isRunning = true;
+    let isPaused = false;
+    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let direction = 1; // 1 = down, -1 = up
+    let rafId: number | null = null;
 
-    // Auto-scroll speed (pixels per frame at 60fps)
-    const scrollSpeed = 0.8;
-    // Resume delay after user stops (1 second)
+    const SPEED = 0.8;
     const RESUME_DELAY = 1000;
 
-    const runAnimation = () => {
-      if (userHasControl) {
-        animationRunning = false;
+    const animate = () => {
+      if (!isRunning) return;
+
+      if (isPaused) {
+        rafId = requestAnimationFrame(animate);
         return;
       }
 
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       const maxScroll = scrollHeight - clientHeight;
 
-      // Check boundaries and reverse direction
-      if (scrollTop >= maxScroll - 1 && scrollDirection === 1) {
-        scrollDirection = -1;
-      } else if (scrollTop <= 1 && scrollDirection === -1) {
-        scrollDirection = 1;
+      // Reverse at boundaries
+      if (scrollTop >= maxScroll - 1) {
+        direction = -1;
+      } else if (scrollTop <= 1) {
+        direction = 1;
       }
 
-      // Apply scroll
-      scrollContainer.scrollTop = scrollTop + (scrollSpeed * scrollDirection);
+      scrollContainer.scrollTop = scrollTop + (SPEED * direction);
       calculateItemStyles();
 
-      animationRunning = true;
-      requestAnimationFrame(runAnimation);
+      rafId = requestAnimationFrame(animate);
     };
 
-    const startAnimation = () => {
-      if (!animationRunning && !userHasControl) {
-        animationRunning = true;
-        requestAnimationFrame(runAnimation);
-      }
-    };
-
-    const stopAnimation = () => {
-      animationRunning = false;
-      userHasControl = true;
-    };
-
-    const clearResumeTimeout = () => {
-      if (resumeTimeout) {
-        clearTimeout(resumeTimeout);
-        resumeTimeout = null;
-      }
+    const pause = () => {
+      isPaused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
     };
 
     const scheduleResume = () => {
-      clearResumeTimeout();
-      resumeTimeout = setTimeout(() => {
-        userHasControl = false;
-        startAnimation();
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        isPaused = false;
       }, RESUME_DELAY);
     };
 
-    // Touch handlers
-    const handleTouchStart = () => {
-      stopAnimation();
-      clearResumeTimeout();
-    };
-
-    const handleTouchEnd = () => {
+    const onTouchStart = () => pause();
+    const onTouchEnd = () => scheduleResume();
+    const onWheel = () => {
+      pause();
       scheduleResume();
     };
 
-    // Wheel handler (desktop fallback)
-    const handleWheel = () => {
-      stopAnimation();
-      clearResumeTimeout();
-      scheduleResume();
+    scrollContainer.addEventListener('touchstart', onTouchStart, { passive: true });
+    scrollContainer.addEventListener('touchend', onTouchEnd, { passive: true });
+    scrollContainer.addEventListener('wheel', onWheel, { passive: true });
+
+    // Start with delays for mobile browser compatibility
+    const startWithDelay = (delay: number) => {
+      setTimeout(() => {
+        if (isRunning && !rafId) {
+          rafId = requestAnimationFrame(animate);
+        }
+      }, delay);
     };
 
-    scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
-    scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
-    scrollContainer.addEventListener('wheel', handleWheel, { passive: true });
-
-    // Start animation immediately
-    startAnimation();
+    startWithDelay(100);
+    startWithDelay(500);
+    startWithDelay(1000);
 
     return () => {
-      animationRunning = false;
-      clearResumeTimeout();
-      scrollContainer.removeEventListener('touchstart', handleTouchStart);
-      scrollContainer.removeEventListener('touchend', handleTouchEnd);
-      scrollContainer.removeEventListener('wheel', handleWheel);
+      isRunning = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      if (resumeTimer) clearTimeout(resumeTimer);
+      scrollContainer.removeEventListener('touchstart', onTouchStart);
+      scrollContainer.removeEventListener('touchend', onTouchEnd);
+      scrollContainer.removeEventListener('wheel', onWheel);
     };
   }, [isMobile, calculateItemStyles]);
 
