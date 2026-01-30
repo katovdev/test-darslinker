@@ -106,7 +106,7 @@ export function Features() {
     const CARD_HEIGHT = 100; // approximate card height + gap
     const TOTAL_CARDS = features.length;
     const MAX_TRANSLATE = CARD_HEIGHT * (TOTAL_CARDS - 4); // Show 4 cards
-    const SPEED = 0.3;
+    const SPEED = 0.8;
 
     let currentY = 0;
 
@@ -165,16 +165,16 @@ export function Features() {
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
               {/* Top fade overlay */}
               <div
-                className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
+                className="absolute -top-1 left-0 right-0 h-24 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 40%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 60%, transparent 100%)'
                 }}
               />
               {/* Bottom fade overlay */}
               <div
-                className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
+                className="absolute -bottom-1 left-0 right-0 h-24 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 40%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 60%, transparent 100%)'
                 }}
               />
               {/* Animated content wrapper */}
