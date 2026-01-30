@@ -304,7 +304,7 @@ export function Features() {
             {/* Section subtitle - inside dark box */}
             <div className="mb-6 text-center sm:mb-12 lg:mb-16">
               {/* Mobile title */}
-              <p className="text-2xl font-bold text-foreground sm:hidden">
+              <p className="text-3xl font-bold text-foreground sm:hidden">
                 Asosiy imkoniyatlar
               </p>
               {/* Desktop title */}
