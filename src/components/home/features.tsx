@@ -357,7 +357,7 @@ export function Features() {
     >
       <div className="mx-auto max-w-[1400px]">
         <div
-          className="overflow-hidden rounded-[24px] sm:rounded-[32px] lg:rounded-[40px] border-2 px-4 pt-8 pb-12 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
+          className="overflow-hidden sm:rounded-[32px] lg:rounded-[40px] sm:border-2 px-0 pt-8 pb-12 sm:px-8 sm:pt-12 lg:px-12 lg:pt-16 lg:pb-20"
           style={{ borderColor: "#7ea2d4" }}
         >
           <div className="mx-auto">
@@ -396,7 +396,7 @@ export function Features() {
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="max-h-[360px] overflow-y-auto flex flex-col gap-3 scrollbar-hide px-4"
+                className="max-h-[420px] overflow-y-auto flex flex-col gap-4 scrollbar-hide px-4"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {/* Invisible spacer for top blur area */}
@@ -405,7 +405,7 @@ export function Features() {
                   <div
                     key={feature.key}
                     ref={(el) => { itemRefs.current[index] = el; }}
-                    className="group relative flex items-start gap-3 rounded-xl border border-border bg-card p-3 backdrop-blur-sm flex-shrink-0"
+                    className="group relative flex items-start gap-4 rounded-2xl bg-card p-5 backdrop-blur-sm flex-shrink-0"
                     style={{
                       transform: `scale(${itemStyles[index]?.scale || 1})`,
                       opacity: itemStyles[index]?.opacity || 1,
@@ -414,22 +414,22 @@ export function Features() {
                     }}
                   >
                     {/* Icon */}
-                    <div className="flex-shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-300 group-hover:scale-110">
-                      <feature.icon className="h-5 w-5 text-primary" />
+                    <div className="flex-shrink-0 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-transform duration-300 group-hover:scale-110">
+                      <feature.icon className="h-7 w-7 text-primary" />
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-foreground">
+                      <h3 className="text-base font-semibold text-foreground">
                         {t(`home.${feature.key}`)}
                       </h3>
-                      <p className="text-xs leading-relaxed text-muted-foreground mt-0.5 line-clamp-2 min-h-[2.5em]">
+                      <p className="text-sm leading-relaxed text-muted-foreground mt-1 line-clamp-2">
                         {t(`home.${feature.key}Desc`)}
                       </p>
                     </div>
 
                     {/* Number indicator */}
-                    <div className="flex-shrink-0 text-2xl font-bold text-primary/15">
+                    <div className="flex-shrink-0 text-3xl font-bold text-primary/15">
                       {String(index + 1).padStart(2, "0")}
                     </div>
                   </div>
