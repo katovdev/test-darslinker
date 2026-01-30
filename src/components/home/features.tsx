@@ -162,8 +162,8 @@ export function Features() {
               <div
                 className="absolute -top-1 left-0 right-0 z-20 pointer-events-none"
                 style={{
-                  height: '90px',
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 55%, transparent 100%)'
+                  height: '110px',
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 65%, transparent 100%)'
                 }}
               >
                 <p className="text-center text-3xl font-bold text-foreground px-4 pt-3 pointer-events-auto">
@@ -179,7 +179,7 @@ export function Features() {
               />
               {/* Animated content wrapper */}
               <div
-                className="flex flex-col gap-3 px-4 pt-14"
+                className="flex flex-col gap-3 px-4 pt-[72px]"
                 style={{
                   transform: `translateY(-${translateY}px)`,
                   willChange: 'transform',
