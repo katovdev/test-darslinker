@@ -159,7 +159,7 @@ export function Features() {
             {/* Mobile container - uses CSS transform for animation, doesn't block page scroll */}
             <div className="sm:hidden relative -mx-4 h-[520px] overflow-hidden">
               {/* Mobile title - positioned at top fade area */}
-              <p className="absolute top-0 left-0 right-0 z-20 text-center text-3xl font-bold text-foreground px-4 pt-2">
+              <p className="absolute -top-1 left-0 right-0 z-20 text-center text-3xl font-bold text-foreground px-4">
                 Asosiy imkoniyatlar
               </p>
               {/* Top fade overlay */}
