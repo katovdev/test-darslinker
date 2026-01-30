@@ -370,37 +370,29 @@ export function Features() {
 
             {/* Features - Scrollable list on mobile, grid on desktop */}
             {/* Mobile scrollable container - shows 3 items, scroll for more */}
-            <div className="sm:hidden relative -mx-4 overflow-hidden">
-              {/* Top blur overlay */}
+            <div className="sm:hidden relative -mx-4">
+              {/* Top fade overlay */}
               <div
-                className="absolute top-0 left-0 right-0 h-24 z-10 pointer-events-none"
+                className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 40%, transparent 100%)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
+                  background: 'linear-gradient(to bottom, var(--background) 0%, var(--background) 50%, transparent 100%)'
                 }}
               />
-              {/* Bottom blur overlay */}
+              {/* Bottom fade overlay */}
               <div
-                className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none"
+                className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 40%, transparent 100%)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  maskImage: 'linear-gradient(to top, black 0%, black 50%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to top, black 0%, black 50%, transparent 100%)'
+                  background: 'linear-gradient(to top, var(--background) 0%, var(--background) 50%, transparent 100%)'
                 }}
               />
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="max-h-[440px] overflow-y-auto flex flex-col gap-4 scrollbar-hide px-4"
+                className="max-h-[400px] overflow-y-auto flex flex-col gap-4 scrollbar-hide px-4"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
-                {/* Invisible spacer for top blur area */}
-                <div className="h-20 flex-shrink-0" aria-hidden="true" />
+                {/* Invisible spacer for top fade area */}
+                <div className="h-16 flex-shrink-0" aria-hidden="true" />
                 {features.map((feature, index) => (
                   <div
                     key={feature.key}
@@ -434,8 +426,8 @@ export function Features() {
                     </div>
                   </div>
                 ))}
-                {/* Invisible spacer for bottom blur area */}
-                <div className="h-20 flex-shrink-0" aria-hidden="true" />
+                {/* Invisible spacer for bottom fade area */}
+                <div className="h-16 flex-shrink-0" aria-hidden="true" />
               </div>
             </div>
 
