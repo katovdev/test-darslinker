@@ -189,7 +189,7 @@ export function Features() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-scroll animation for mobile - scrolls automatically, resumes after 1s of inactivity
+  // Auto-scroll animation for mobile - continuous animation, no manual scroll
   useEffect(() => {
     if (!isMobile) return;
 
@@ -197,21 +197,11 @@ export function Features() {
     if (!scrollContainer) return;
 
     let isRunning = true;
-    let isPaused = false;
-    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
     let direction = 1; // 1 = down, -1 = up
-    let rafId: number | null = null;
-
-    const SPEED = 0.8;
-    const RESUME_DELAY = 1000;
+    const SPEED = 0.5;
 
     const animate = () => {
       if (!isRunning) return;
-
-      if (isPaused) {
-        rafId = requestAnimationFrame(animate);
-        return;
-      }
 
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       const maxScroll = scrollHeight - clientHeight;
@@ -226,52 +216,19 @@ export function Features() {
       scrollContainer.scrollTop = scrollTop + (SPEED * direction);
       calculateItemStyles();
 
-      rafId = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     };
 
-    const pause = () => {
-      isPaused = true;
-      if (resumeTimer) clearTimeout(resumeTimer);
-    };
-
-    const scheduleResume = () => {
-      if (resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => {
-        isPaused = false;
-      }, RESUME_DELAY);
-    };
-
-    const onTouchStart = () => pause();
-    const onTouchEnd = () => scheduleResume();
-    const onWheel = () => {
-      pause();
-      scheduleResume();
-    };
-
-    scrollContainer.addEventListener('touchstart', onTouchStart, { passive: true });
-    scrollContainer.addEventListener('touchend', onTouchEnd, { passive: true });
-    scrollContainer.addEventListener('wheel', onWheel, { passive: true });
-
-    // Start with delays for mobile browser compatibility
-    const startWithDelay = (delay: number) => {
-      setTimeout(() => {
-        if (isRunning && !rafId) {
-          rafId = requestAnimationFrame(animate);
-        }
-      }, delay);
-    };
-
-    startWithDelay(100);
-    startWithDelay(500);
-    startWithDelay(1000);
+    // Start animation with delays for mobile browser compatibility
+    const timers = [
+      setTimeout(() => { if (isRunning) requestAnimationFrame(animate); }, 100),
+      setTimeout(() => { if (isRunning) requestAnimationFrame(animate); }, 500),
+      setTimeout(() => { if (isRunning) requestAnimationFrame(animate); }, 1000),
+    ];
 
     return () => {
       isRunning = false;
-      if (rafId) cancelAnimationFrame(rafId);
-      if (resumeTimer) clearTimeout(resumeTimer);
-      scrollContainer.removeEventListener('touchstart', onTouchStart);
-      scrollContainer.removeEventListener('touchend', onTouchEnd);
-      scrollContainer.removeEventListener('wheel', onWheel);
+      timers.forEach(t => clearTimeout(t));
     };
   }, [isMobile, calculateItemStyles]);
 
@@ -320,8 +277,8 @@ export function Features() {
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="max-h-[520px] overflow-y-auto flex flex-col gap-4 scrollbar-hide px-4"
-                style={{ WebkitOverflowScrolling: 'touch' }}
+                className="max-h-[520px] overflow-y-scroll flex flex-col gap-4 scrollbar-hide px-4"
+                style={{ touchAction: 'none', overscrollBehavior: 'none' }}
               >
                 {/* Invisible spacer for top fade area */}
                 <div className="h-12 flex-shrink-0" aria-hidden="true" />
