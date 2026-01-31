@@ -211,16 +211,16 @@ export default function MePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("sidebar.profile")}
           </h1>
-          <p className="mt-1 text-gray-400">{t("profile.updateInfo")}</p>
+          <p className="mt-1 text-muted-foreground">{t("profile.updateInfo")}</p>
         </div>
         {!isEditing && (
           <Button
             onClick={handleEditClick}
             variant="outline"
-            className="border-gray-700 bg-gray-800 hover:bg-gray-700"
+            className="border-border bg-secondary hover:bg-secondary"
           >
             <Pencil className="mr-2 h-4 w-4" />
             {t("common.edit")}
@@ -234,7 +234,7 @@ export default function MePage() {
         </div>
       )}
 
-      <Card className="border-gray-800 bg-gray-800/50">
+      <Card className="border-border bg-card">
         <CardContent className="p-6">
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
             <div className="relative">
@@ -242,7 +242,7 @@ export default function MePage() {
                 {user?.avatar ? (
                   <AvatarImage src={user.avatar} alt={user.firstName} />
                 ) : null}
-                <AvatarFallback className="bg-transparent text-3xl font-bold text-white">
+                <AvatarFallback className="bg-transparent text-3xl font-bold text-foreground">
                   {getInitials()}
                 </AvatarFallback>
               </Avatar>
@@ -260,7 +260,7 @@ export default function MePage() {
                 <button
                   onClick={handleAvatarClick}
                   disabled={isUploadingAvatar}
-                  className="rounded-full bg-blue-500 p-1.5 text-white shadow-lg transition-colors hover:bg-blue-600 disabled:opacity-50"
+                  className="rounded-full bg-blue-500 p-1.5 text-foreground shadow-lg transition-colors hover:bg-blue-600 disabled:opacity-50"
                   title={t("profile.changeAvatar")}
                 >
                   {isUploadingAvatar ? (
@@ -274,7 +274,7 @@ export default function MePage() {
                   <button
                     onClick={handleDeleteAvatar}
                     disabled={isDeletingAvatar}
-                    className="rounded-full bg-red-500 p-1.5 text-white shadow-lg transition-colors hover:bg-red-600 disabled:opacity-50"
+                    className="rounded-full bg-red-500 p-1.5 text-foreground shadow-lg transition-colors hover:bg-red-600 disabled:opacity-50"
                     title={t("profile.deleteAvatar")}
                   >
                     {isDeletingAvatar ? (
@@ -289,24 +289,24 @@ export default function MePage() {
 
             <div className="flex-1 text-center sm:text-left">
               <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start">
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-2xl font-bold text-foreground">
                   {user?.firstName} {user?.lastName}
                 </h2>
                 {getStatusBadge()}
               </div>
-              <p className="mt-1 text-gray-400">{getRoleLabel()}</p>
+              <p className="mt-1 text-muted-foreground">{getRoleLabel()}</p>
               {user?.username && (
                 <p className="mt-1 text-sm text-blue-400">@{user.username}</p>
               )}
 
               <div className="mt-4 flex flex-col gap-2 text-sm">
-                <div className="flex items-center justify-center gap-2 text-gray-300 sm:justify-start">
-                  <Phone className="h-4 w-4 text-gray-500" />
+                <div className="flex items-center justify-center gap-2 text-foreground sm:justify-start">
+                  <Phone className="h-4 w-4 text-muted-foreground" />
                   <span>{user?.phone}</span>
                 </div>
                 {user?.telegramUsername && (
-                  <div className="flex items-center justify-center gap-2 text-gray-300 sm:justify-start">
-                    <User className="h-4 w-4 text-gray-500" />
+                  <div className="flex items-center justify-center gap-2 text-foreground sm:justify-start">
+                    <User className="h-4 w-4 text-muted-foreground" />
                     <span>@{user.telegramUsername}</span>
                   </div>
                 )}
@@ -318,50 +318,50 @@ export default function MePage() {
 
       {user?.role === "student" && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="border-gray-800 bg-gray-800/50">
+          <Card className="border-border bg-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 {t("dashboard.totalPoints")}
               </CardTitle>
               <Trophy className="h-4 w-4 text-yellow-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {user.points ?? 0}
               </div>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {t("course.progress")}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-gray-800 bg-gray-800/50">
+          <Card className="border-border bg-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 {t("profile.level")}
               </CardTitle>
               <Star className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {user.level ?? 1}
               </div>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {getLevelName(user.level ?? 1)}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-gray-800 bg-gray-800/50">
+          <Card className="border-border bg-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-400">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 {t("dashboard.activeCourses")}
               </CardTitle>
               <BookOpen className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">-</div>
-              <p className="mt-1 text-xs text-gray-500">
+              <div className="text-2xl font-bold text-foreground">-</div>
+              <p className="mt-1 text-xs text-muted-foreground">
                 {t("course.enrolledCourses")}
               </p>
             </CardContent>
@@ -369,14 +369,14 @@ export default function MePage() {
         </div>
       )}
 
-      <Card className="border-gray-800 bg-gray-800/50 transition-colors hover:border-gray-700">
+      <Card className="border-border bg-card transition-colors hover:border-border">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-white">
+              <h3 className="font-semibold text-foreground">
                 {t("dashboard.myCourses")}
               </h3>
-              <p className="mt-1 text-sm text-gray-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {t("dashboard.continueJourney")}
               </p>
             </div>
@@ -389,9 +389,9 @@ export default function MePage() {
         </CardContent>
       </Card>
 
-      <Card className="border-gray-800 bg-gray-800/50">
+      <Card className="border-border bg-card">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
+          <CardTitle className="flex items-center gap-2 text-foreground">
             <User className="h-5 w-5" />
             {t("sidebar.account")}
           </CardTitle>
@@ -401,7 +401,7 @@ export default function MePage() {
             <>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <Label htmlFor="firstName" className="text-gray-400">
+                  <Label htmlFor="firstName" className="text-muted-foreground">
                     {t("profile.firstName")}
                   </Label>
                   <Input
@@ -410,12 +410,12 @@ export default function MePage() {
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
-                    className="mt-1 border-gray-700 bg-gray-900/50 text-white"
+                    className="mt-1 border-border bg-background/50 text-foreground"
                     placeholder={t("profile.firstName")}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName" className="text-gray-400">
+                  <Label htmlFor="lastName" className="text-muted-foreground">
                     {t("profile.lastName")}
                   </Label>
                   <Input
@@ -424,12 +424,12 @@ export default function MePage() {
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
                     }
-                    className="mt-1 border-gray-700 bg-gray-900/50 text-white"
+                    className="mt-1 border-border bg-background/50 text-foreground"
                     placeholder={t("profile.lastName")}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="username" className="text-gray-400">
+                  <Label htmlFor="username" className="text-muted-foreground">
                     {t("profile.username")}
                   </Label>
                   <Input
@@ -443,19 +443,19 @@ export default function MePage() {
                           .replace(/[^a-z0-9_-]/g, ""),
                       })
                     }
-                    className="mt-1 border-gray-700 bg-gray-900/50 text-white"
+                    className="mt-1 border-border bg-background/50 text-foreground"
                     placeholder="username"
                   />
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {t("profile.usernameHint")}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-gray-400">{t("profile.phone")}</Label>
-                  <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-gray-500">
+                  <Label className="text-muted-foreground">{t("profile.phone")}</Label>
+                  <div className="mt-1 rounded-lg border border-border bg-background/50 px-3 py-2 text-muted-foreground">
                     {user?.phone || "-"}
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {t("profile.phoneCannotChange")}
                   </p>
                 </div>
@@ -466,7 +466,7 @@ export default function MePage() {
                   variant="outline"
                   onClick={handleCancel}
                   disabled={isSaving}
-                  className="border-gray-700 bg-gray-800 hover:bg-gray-700"
+                  className="border-border bg-secondary hover:bg-secondary"
                 >
                   <X className="mr-2 h-4 w-4" />
                   {t("common.cancel")}
@@ -487,42 +487,42 @@ export default function MePage() {
             <>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="text-sm font-medium text-gray-400">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("profile.firstName")}
                   </label>
-                  <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-white">
+                  <div className="mt-1 rounded-lg border border-border bg-background/50 px-3 py-2 text-foreground">
                     {user?.firstName || "-"}
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-400">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("profile.lastName")}
                   </label>
-                  <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-white">
+                  <div className="mt-1 rounded-lg border border-border bg-background/50 px-3 py-2 text-foreground">
                     {user?.lastName || "-"}
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-400">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("profile.username")}
                   </label>
-                  <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-white">
+                  <div className="mt-1 rounded-lg border border-border bg-background/50 px-3 py-2 text-foreground">
                     {user?.username ? `@${user.username}` : "-"}
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-400">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("profile.phone")}
                   </label>
-                  <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-white">
+                  <div className="mt-1 rounded-lg border border-border bg-background/50 px-3 py-2 text-foreground">
                     {user?.phone || "-"}
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-400">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("sidebar.account")}
                   </label>
-                  <div className="mt-1 rounded-lg border border-gray-700 bg-gray-900/50 px-3 py-2 text-white">
+                  <div className="mt-1 rounded-lg border border-border bg-background/50 px-3 py-2 text-foreground">
                     {getRoleLabel()}
                   </div>
                 </div>

@@ -53,10 +53,10 @@ export default function ProgressPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           {t("dashboard.progress") || "My Progress"}
         </h1>
-        <p className="mt-1 text-gray-400">
+        <p className="mt-1 text-muted-foreground">
           {t("dashboard.progressSubtitle") || "Track your learning journey"}
         </p>
       </div>
@@ -67,8 +67,8 @@ export default function ProgressPage() {
           onClick={() => setFilter("all")}
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             filter === "all"
-              ? "bg-blue-600 text-white"
-              : "border border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-600 hover:text-white"
+              ? "bg-blue-600 text-foreground"
+              : "border border-border bg-secondary text-muted-foreground hover:border-border hover:text-foreground"
           }`}
         >
           <span className="flex items-center gap-2">
@@ -80,8 +80,8 @@ export default function ProgressPage() {
           onClick={() => setFilter("in-progress")}
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             filter === "in-progress"
-              ? "bg-blue-600 text-white"
-              : "border border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-600 hover:text-white"
+              ? "bg-blue-600 text-foreground"
+              : "border border-border bg-secondary text-muted-foreground hover:border-border hover:text-foreground"
           }`}
         >
           <span className="flex items-center gap-2">
@@ -93,8 +93,8 @@ export default function ProgressPage() {
           onClick={() => setFilter("completed")}
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             filter === "completed"
-              ? "bg-blue-600 text-white"
-              : "border border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-600 hover:text-white"
+              ? "bg-blue-600 text-foreground"
+              : "border border-border bg-secondary text-muted-foreground hover:border-border hover:text-foreground"
           }`}
         >
           <span className="flex items-center gap-2">
@@ -109,7 +109,7 @@ export default function ProgressPage() {
         <div className="flex min-h-[200px] items-center justify-center">
           <div className="text-center">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-blue-500" />
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("common.loading") || "Loading..."}
             </p>
           </div>
@@ -118,19 +118,19 @@ export default function ProgressPage() {
 
       {/* Empty State */}
       {!isLoading && filteredCourses.length === 0 && (
-        <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-gray-800 bg-gray-800/30 p-12">
+        <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-border bg-card/50 p-12">
           <div className="text-center">
-            <TrendingUp className="mx-auto h-12 w-12 text-gray-600" />
-            <h3 className="mt-4 text-lg font-semibold text-white">
+            <TrendingUp className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-4 text-lg font-semibold text-foreground">
               {t("dashboard.noProgress") || "No progress to show"}
             </h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("dashboard.startLearningMessage") ||
                 "Enroll in courses to start tracking your progress"}
             </p>
             <Link
               href="/courses"
-              className="mt-4 inline-block rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              className="mt-4 inline-block rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
             >
               {t("dashboard.browseCourses") || "Browse Courses"}
             </Link>
@@ -145,20 +145,20 @@ export default function ProgressPage() {
             <Link
               key={course.id}
               href={`/learn/${course.id}`}
-              className="block rounded-lg border border-gray-800 bg-gray-800/50 p-6 backdrop-blur transition-all hover:border-gray-700 hover:bg-gray-800"
+              className="block rounded-lg border border-border bg-card p-6 backdrop-blur transition-all hover:border-border hover:bg-secondary"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-lg font-semibold text-foreground">
                     {course.title}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-400">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     {t("dashboard.by") || "By"} {course.teacher.firstName}{" "}
                     {course.teacher.lastName}
                   </p>
 
                   {/* Stats */}
-                  <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
+                  <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <BookOpen className="h-4 w-4" />
                       {course.lessonsCount}{" "}
@@ -174,12 +174,12 @@ export default function ProgressPage() {
                   {/* Progress Bar - TODO: Replace with real progress */}
                   <div className="mt-4">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">
+                      <span className="text-muted-foreground">
                         {t("dashboard.progress") || "Progress"}
                       </span>
                       <span className="font-medium text-blue-400">0%</span>
                     </div>
-                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-700">
+                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
                       <div
                         className="h-full bg-gradient-to-r from-blue-500 to-blue-600"
                         style={{ width: "0%" }}
@@ -188,13 +188,13 @@ export default function ProgressPage() {
                   </div>
 
                   {/* Module Progress - Coming Soon */}
-                  <div className="mt-4 text-xs text-gray-500">
+                  <div className="mt-4 text-xs text-muted-foreground">
                     {t("dashboard.detailedProgressComingSoon") ||
                       "Detailed module and lesson progress tracking coming soon"}
                   </div>
                 </div>
 
-                <ChevronRight className="ml-4 h-5 w-5 flex-shrink-0 text-gray-600" />
+                <ChevronRight className="ml-4 h-5 w-5 flex-shrink-0 text-muted-foreground" />
               </div>
             </Link>
           ))}

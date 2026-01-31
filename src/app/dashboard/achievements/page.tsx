@@ -52,10 +52,10 @@ export default function AchievementsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           {t("dashboard.achievements") || "Achievements"}
         </h1>
-        <p className="mt-1 text-gray-400">
+        <p className="mt-1 text-muted-foreground">
           {t("dashboard.achievementsSubtitle") ||
             "Unlock badges and track your milestones"}
         </p>
@@ -65,12 +65,12 @@ export default function AchievementsPage() {
       <div className="rounded-lg border border-blue-900/50 bg-gradient-to-r from-blue-900/20 to-purple-900/20 p-8">
         <div className="text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
-            <Trophy className="h-8 w-8 text-white" />
+            <Trophy className="h-8 w-8 text-foreground" />
           </div>
-          <h2 className="mt-4 text-xl font-bold text-white">
+          <h2 className="mt-4 text-xl font-bold text-foreground">
             {t("dashboard.comingSoon") || "Coming Soon"}
           </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-gray-400">
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
             {t("dashboard.achievementsComingSoonDesc") ||
               "We're building an exciting achievement system to reward your learning progress. Stay tuned!"}
           </p>
@@ -79,7 +79,7 @@ export default function AchievementsPage() {
 
       {/* Achievement Preview (Locked) */}
       <div>
-        <h3 className="mb-4 text-lg font-semibold text-white">
+        <h3 className="mb-4 text-lg font-semibold text-foreground">
           {t("dashboard.upcomingAchievements") || "Upcoming Achievements"}
         </h3>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -88,35 +88,35 @@ export default function AchievementsPage() {
             return (
               <div
                 key={index}
-                className="relative overflow-hidden rounded-lg border border-gray-800 bg-gray-800/30 p-6 backdrop-blur"
+                className="relative overflow-hidden rounded-lg border border-border bg-card/50 p-6 backdrop-blur"
               >
                 {/* Locked Overlay */}
                 <div className="absolute top-2 right-2">
-                  <Lock className="h-5 w-5 text-gray-600" />
+                  <Lock className="h-5 w-5 text-muted-foreground" />
                 </div>
 
                 {/* Icon */}
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-700/50">
-                  <Icon className="h-6 w-6 text-gray-600" />
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-secondary">
+                  <Icon className="h-6 w-6 text-muted-foreground" />
                 </div>
 
                 {/* Info */}
-                <h4 className="font-semibold text-gray-400">
+                <h4 className="font-semibold text-muted-foreground">
                   {achievement.name}
                 </h4>
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {achievement.description}
                 </p>
 
                 {/* Progress Bar (Placeholder) */}
                 <div className="mt-4">
-                  <div className="h-1 overflow-hidden rounded-full bg-gray-700">
+                  <div className="h-1 overflow-hidden rounded-full bg-secondary">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-purple-600"
                       style={{ width: `${achievement.progress}%` }}
                     />
                   </div>
-                  <p className="mt-1 text-xs text-gray-600">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {achievement.progress}%{" "}
                     {t("dashboard.complete") || "complete"}
                   </p>
@@ -128,41 +128,41 @@ export default function AchievementsPage() {
       </div>
 
       {/* Stats Preview */}
-      <div className="rounded-lg border border-gray-800 bg-gray-800/30 p-6">
-        <h3 className="mb-4 text-lg font-semibold text-white">
+      <div className="rounded-lg border border-border bg-card/50 p-6">
+        <h3 className="mb-4 text-lg font-semibold text-foreground">
           {t("dashboard.yourStats") || "Your Stats"}
         </h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg bg-gray-800/50 p-4">
-            <p className="text-sm text-gray-400">
+          <div className="rounded-lg bg-card p-4">
+            <p className="text-sm text-muted-foreground">
               {t("dashboard.coursesCompleted") || "Courses Completed"}
             </p>
-            <p className="mt-1 text-2xl font-bold text-white">0</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">0</p>
           </div>
-          <div className="rounded-lg bg-gray-800/50 p-4">
-            <p className="text-sm text-gray-400">
+          <div className="rounded-lg bg-card p-4">
+            <p className="text-sm text-muted-foreground">
               {t("dashboard.lessonsCompleted") || "Lessons Completed"}
             </p>
-            <p className="mt-1 text-2xl font-bold text-white">0</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">0</p>
           </div>
-          <div className="rounded-lg bg-gray-800/50 p-4">
-            <p className="text-sm text-gray-400">
+          <div className="rounded-lg bg-card p-4">
+            <p className="text-sm text-muted-foreground">
               {t("dashboard.quizzesPassed") || "Quizzes Passed"}
             </p>
-            <p className="mt-1 text-2xl font-bold text-white">0</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">0</p>
           </div>
-          <div className="rounded-lg bg-gray-800/50 p-4">
-            <p className="text-sm text-gray-400">
+          <div className="rounded-lg bg-card p-4">
+            <p className="text-sm text-muted-foreground">
               {t("dashboard.currentStreak") || "Current Streak"}
             </p>
-            <p className="mt-1 text-2xl font-bold text-white">0 days</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">0 days</p>
           </div>
         </div>
       </div>
 
       {/* Backend Note */}
-      <div className="rounded-lg border border-gray-800 bg-gray-800/30 p-4">
-        <p className="text-sm text-gray-500">
+      <div className="rounded-lg border border-border bg-card/50 p-4">
+        <p className="text-sm text-muted-foreground">
           <strong>{t("dashboard.note") || "Note"}:</strong>{" "}
           {t("dashboard.achievementsNote") ||
             "Achievement system requires backend API for tracking progress, awarding badges, and calculating stats."}

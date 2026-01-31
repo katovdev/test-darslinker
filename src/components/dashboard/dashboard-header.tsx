@@ -45,18 +45,18 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 border-b border-gray-800 bg-gray-900/95 backdrop-blur-sm">
+    <header className="fixed top-0 right-0 left-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
         <div className="flex items-center gap-4">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild className="lg:hidden">
-              <Button variant="ghost" size="icon" className="text-white">
+              <Button variant="ghost" size="icon" className="text-foreground">
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-64 border-gray-800 bg-gray-900 p-0"
+              className="w-64 border-border bg-background p-0"
             >
               <div className="pt-4">
                 <Link
@@ -64,7 +64,7 @@ export function DashboardHeader() {
                   className="flex items-center gap-1 px-4"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <span className="text-2xl font-bold text-white">dars</span>
+                  <span className="text-2xl font-bold text-foreground">dars</span>
                   <span className="text-2xl font-bold text-[#7EA2D4]">
                     linker
                   </span>
@@ -75,7 +75,7 @@ export function DashboardHeader() {
           </Sheet>
 
           <Link href="/dashboard" className="flex items-center gap-1">
-            <span className="text-2xl font-bold text-white">dars</span>
+            <span className="text-2xl font-bold text-foreground">dars</span>
             <span className="text-2xl font-bold text-[#7EA2D4]">linker</span>
           </Link>
         </div>
@@ -84,7 +84,7 @@ export function DashboardHeader() {
           <Button
             variant="ghost"
             size="sm"
-            className="hidden gap-2 text-gray-400 hover:text-white sm:flex"
+            className="hidden gap-2 text-muted-foreground hover:text-foreground sm:flex"
             asChild
           >
             <a
@@ -100,7 +100,7 @@ export function DashboardHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-400 hover:text-white"
+            className="text-muted-foreground hover:text-foreground"
           >
             <Bell className="h-5 w-5" />
           </Button>
@@ -112,23 +112,23 @@ export function DashboardHeader() {
                 className="relative flex items-center gap-2 pr-3 pl-2"
               >
                 <Avatar className="h-8 w-8 bg-gradient-to-br from-[#7EA2D4] to-[#5A85C7]">
-                  <AvatarFallback className="bg-transparent text-sm font-medium text-white">
+                  <AvatarFallback className="bg-transparent text-sm font-medium text-foreground">
                     {getInitials()}
                   </AvatarFallback>
                 </Avatar>
-                <span className="hidden text-sm font-medium text-white md:block">
+                <span className="hidden text-sm font-medium text-foreground md:block">
                   {user?.firstName}
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-48 border-gray-700 bg-gray-800"
+              className="w-48 border-border bg-secondary"
             >
               <DropdownMenuItem asChild>
                 <Link
                   href="/dashboard/profile"
-                  className="cursor-pointer text-white hover:bg-gray-700 focus:bg-gray-700"
+                  className="cursor-pointer text-foreground hover:bg-secondary focus:bg-secondary"
                 >
                   {t("sidebar.profile")}
                 </Link>
@@ -136,16 +136,16 @@ export function DashboardHeader() {
               <DropdownMenuItem asChild>
                 <Link
                   href="/dashboard/settings"
-                  className="cursor-pointer text-white hover:bg-gray-700 focus:bg-gray-700"
+                  className="cursor-pointer text-foreground hover:bg-secondary focus:bg-secondary"
                 >
                   {t("sidebar.settings")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-gray-700" />
+              <DropdownMenuSeparator className="bg-secondary" />
               <DropdownMenuItem
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="cursor-pointer text-red-400 hover:bg-gray-700 hover:text-red-400 focus:bg-gray-700 focus:text-red-400"
+                className="cursor-pointer text-red-400 hover:bg-secondary hover:text-red-400 focus:bg-secondary focus:text-red-400"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 {isLoggingOut ? t("dashboard.loggingOut") : t("header.logout")}

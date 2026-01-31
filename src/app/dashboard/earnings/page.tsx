@@ -82,13 +82,13 @@ export default function DashboardEarningsPage() {
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
           <ShieldAlert className="mx-auto h-16 w-16 text-red-400" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Access Denied</h2>
-          <p className="mt-2 text-gray-400">
+          <h2 className="mt-4 text-2xl font-bold text-foreground">Access Denied</h2>
+          <p className="mt-2 text-muted-foreground">
             You don&apos;t have permission to access this page.
           </p>
           <button
             onClick={() => router.push("/dashboard")}
-            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
           >
             Go to Dashboard
           </button>
@@ -101,17 +101,17 @@ export default function DashboardEarningsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("admin.earnings") || "Earnings"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             Teacher earnings and balances overview
           </p>
         </div>
         <button
           onClick={loadEarnings}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           {t("common.refresh") || "Refresh"}
@@ -120,22 +120,22 @@ export default function DashboardEarningsPage() {
 
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card/50 p-6">
           <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
             <TrendingUp className="h-5 w-5 text-green-400" />
           </div>
-          <p className="text-sm text-gray-400">Total Earnings (All Time)</p>
-          <p className="mt-1 text-2xl font-bold text-white">
+          <p className="text-sm text-muted-foreground">Total Earnings (All Time)</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">
             {isLoading ? "..." : formatCurrency(totals.totalEarnings)}
           </p>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card/50 p-6">
           <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
             <Wallet className="h-5 w-5 text-purple-400" />
           </div>
-          <p className="text-sm text-gray-400">Current Teacher Balances</p>
-          <p className="mt-1 text-2xl font-bold text-white">
+          <p className="text-sm text-muted-foreground">Current Teacher Balances</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">
             {isLoading ? "..." : formatCurrency(totals.totalBalance)}
           </p>
         </div>
@@ -148,24 +148,24 @@ export default function DashboardEarningsPage() {
       )}
 
       {/* Earnings Table */}
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30">
+      <div className="overflow-hidden rounded-xl border border-border bg-card/50">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800 text-left">
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+              <tr className="border-b border-border text-left">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Teacher
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Courses
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Students
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Total Earnings
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Current Balance
                 </th>
               </tr>
@@ -173,56 +173,56 @@ export default function DashboardEarningsPage() {
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-gray-800">
+                  <tr key={i} className="border-b border-border">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 animate-pulse rounded-full bg-gray-700" />
-                        <div className="h-4 w-32 animate-pulse rounded bg-gray-700" />
+                        <div className="h-10 w-10 animate-pulse rounded-full bg-secondary" />
+                        <div className="h-4 w-32 animate-pulse rounded bg-secondary" />
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-12 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-12 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-28 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-28 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-28 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-28 animate-pulse rounded bg-secondary" />
                     </td>
                   </tr>
                 ))
               ) : earnings.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-4 py-12 text-center">
-                    <DollarSign className="mx-auto h-12 w-12 text-gray-600" />
-                    <p className="mt-2 text-gray-400">No earnings data found</p>
+                    <DollarSign className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2 text-muted-foreground">No earnings data found</p>
                   </td>
                 </tr>
               ) : (
                 earnings.map((earning) => (
                   <tr
                     key={earning.id}
-                    className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
+                    className="border-b border-border transition-colors hover:bg-card"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-white">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-foreground">
                           {earning.firstName?.charAt(0)}
                           {earning.lastName?.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-medium text-white">
+                          <p className="font-medium text-foreground">
                             {earning.firstName} {earning.lastName}
                           </p>
                           {earning.username ? (
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                               @{earning.username}
                             </p>
                           ) : earning.businessName ? (
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                               {earning.businessName}
                             </p>
                           ) : null}
@@ -230,14 +230,14 @@ export default function DashboardEarningsPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1 text-gray-300">
-                        <BookOpen className="h-4 w-4 text-gray-500" />
+                      <div className="flex items-center gap-1 text-foreground">
+                        <BookOpen className="h-4 w-4 text-muted-foreground" />
                         {earning.coursesCount}
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1 text-gray-300">
-                        <Users className="h-4 w-4 text-gray-500" />
+                      <div className="flex items-center gap-1 text-foreground">
+                        <Users className="h-4 w-4 text-muted-foreground" />
                         {earning.studentsCount}
                       </div>
                     </td>
@@ -247,7 +247,7 @@ export default function DashboardEarningsPage() {
                       </p>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="font-medium text-white">
+                      <p className="font-medium text-foreground">
                         {formatCurrency(earning.currentBalance)}
                       </p>
                     </td>
@@ -260,8 +260,8 @@ export default function DashboardEarningsPage() {
 
         {/* Pagination */}
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
-            <p className="text-sm text-gray-400">
+          <div className="flex items-center justify-between border-t border-border px-4 py-3">
+            <p className="text-sm text-muted-foreground">
               Page {pagination.page} of {pagination.totalPages} (
               {pagination.total} teachers)
             </p>
@@ -269,7 +269,7 @@ export default function DashboardEarningsPage() {
               <button
                 onClick={() => setPage(page - 1)}
                 disabled={page <= 1}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 <ChevronLeft className="h-4 w-4" />
                 {t("blog.previous") || "Previous"}
@@ -277,7 +277,7 @@ export default function DashboardEarningsPage() {
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page >= pagination.totalPages}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 {t("blog.next") || "Next"}
                 <ChevronRight className="h-4 w-4" />

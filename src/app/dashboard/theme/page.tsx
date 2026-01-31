@@ -24,13 +24,13 @@ export default function DashboardThemePage() {
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
           <ShieldAlert className="mx-auto h-16 w-16 text-red-400" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Access Denied</h2>
-          <p className="mt-2 text-gray-400">
+          <h2 className="mt-4 text-2xl font-bold text-foreground">Access Denied</h2>
+          <p className="mt-2 text-muted-foreground">
             You don&apos;t have permission to access this page.
           </p>
           <button
             onClick={() => router.push("/dashboard")}
-            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
           >
             Go to Dashboard
           </button>

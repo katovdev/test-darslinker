@@ -145,13 +145,13 @@ export default function DashboardPaymentsPage() {
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
           <ShieldAlert className="mx-auto h-16 w-16 text-red-400" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Access Denied</h2>
-          <p className="mt-2 text-gray-400">
+          <h2 className="mt-4 text-2xl font-bold text-foreground">Access Denied</h2>
+          <p className="mt-2 text-muted-foreground">
             You don&apos;t have permission to access this page.
           </p>
           <button
             onClick={() => router.push("/dashboard")}
-            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
           >
             Go to Dashboard
           </button>
@@ -164,17 +164,17 @@ export default function DashboardPaymentsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("admin.payments") || "Payments"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             {t("teacher.managePayments") || "Manage all payments"}
           </p>
         </div>
         <button
           onClick={loadPayments}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           {t("common.refresh") || "Refresh"}
@@ -188,7 +188,7 @@ export default function DashboardPaymentsPage() {
             setStatusFilter(e.target.value as StatusFilter);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+          className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
         >
           <option value="all">
             {t("teacher.allPayments") || "All Payments"}
@@ -205,53 +205,53 @@ export default function DashboardPaymentsPage() {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30">
+      <div className="overflow-hidden rounded-xl border border-border bg-card/50">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800 text-left">
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+              <tr className="border-b border-border text-left">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Student
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Course
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Amount
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Status
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Date
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Receipt
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400"></th>
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground"></th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-gray-800">
+                  <tr key={i} className="border-b border-border">
                     <td className="px-4 py-3">
-                      <div className="h-4 w-32 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-32 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-40 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-40 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-24 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-24 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-16 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-20 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-20 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-8 w-12 animate-pulse rounded bg-gray-700" />
+                      <div className="h-8 w-12 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3" />
                   </tr>
@@ -259,8 +259,8 @@ export default function DashboardPaymentsPage() {
               ) : payments.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-4 py-12 text-center">
-                    <CreditCard className="mx-auto h-12 w-12 text-gray-600" />
-                    <p className="mt-2 text-gray-400">
+                    <CreditCard className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2 text-muted-foreground">
                       {t("teacher.noPayments") || "No payments found"}
                     </p>
                   </td>
@@ -269,24 +269,24 @@ export default function DashboardPaymentsPage() {
                 payments.map((payment) => (
                   <tr
                     key={payment.id}
-                    className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
+                    className="border-b border-border transition-colors hover:bg-card"
                   >
                     <td className="px-4 py-3">
-                      <p className="font-medium text-white">
+                      <p className="font-medium text-foreground">
                         {payment.student.firstName} {payment.student.lastName}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         {payment.student.phone}
                       </p>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="text-gray-300">{payment.course.title}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-foreground">{payment.course.title}</p>
+                      <p className="text-sm text-muted-foreground">
                         by {payment.course.teacher.firstName}{" "}
                         {payment.course.teacher.lastName}
                       </p>
                     </td>
-                    <td className="px-4 py-3 font-medium text-white">
+                    <td className="px-4 py-3 font-medium text-foreground">
                       {formatCurrency(payment.amount)}
                     </td>
                     <td className="px-4 py-3">
@@ -297,7 +297,7 @@ export default function DashboardPaymentsPage() {
                         </p>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-400">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(payment.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
@@ -313,7 +313,7 @@ export default function DashboardPaymentsPage() {
                             className="h-10 w-14 rounded object-cover transition-transform group-hover:scale-105"
                           />
                           <div className="absolute inset-0 flex items-center justify-center rounded bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                            <Eye className="h-4 w-4 text-white" />
+                            <Eye className="h-4 w-4 text-foreground" />
                           </div>
                         </button>
                       )}
@@ -351,8 +351,8 @@ export default function DashboardPaymentsPage() {
         </div>
 
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
-            <p className="text-sm text-gray-400">
+          <div className="flex items-center justify-between border-t border-border px-4 py-3">
+            <p className="text-sm text-muted-foreground">
               Page {pagination.page} of {pagination.totalPages} (
               {pagination.total} payments)
             </p>
@@ -360,7 +360,7 @@ export default function DashboardPaymentsPage() {
               <button
                 onClick={() => setPage(page - 1)}
                 disabled={page <= 1}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 <ChevronLeft className="h-4 w-4" />
                 {t("blog.previous") || "Previous"}
@@ -368,7 +368,7 @@ export default function DashboardPaymentsPage() {
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page >= pagination.totalPages}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 {t("blog.next") || "Next"}
                 <ChevronRight className="h-4 w-4" />
@@ -380,11 +380,11 @@ export default function DashboardPaymentsPage() {
 
       {rejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-xl border border-gray-700 bg-gray-800 p-6">
-            <h3 className="text-lg font-semibold text-white">
+          <div className="w-full max-w-md rounded-xl border border-border bg-secondary p-6">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("teacher.rejectPayment") || "Reject Payment"}
             </h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("teacher.rejectPaymentDesc") ||
                 "Please provide a reason for rejection."}
             </p>
@@ -397,21 +397,21 @@ export default function DashboardPaymentsPage() {
               placeholder={
                 t("teacher.rejectionReasonPlaceholder") || "Enter reason..."
               }
-              className="mt-4 w-full rounded-lg border border-gray-700 bg-gray-900 p-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+              className="mt-4 w-full rounded-lg border border-border bg-background p-3 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
               rows={3}
             />
 
             <div className="mt-4 flex justify-end gap-2">
               <button
                 onClick={() => setRejectModal(null)}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
               <button
                 onClick={handleReject}
                 disabled={isUpdating === rejectModal.paymentId}
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-red-700 disabled:opacity-50"
               >
                 {isUpdating === rejectModal.paymentId ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />

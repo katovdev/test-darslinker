@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { LogOut, Menu, X, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
@@ -104,9 +105,15 @@ export function CollapsibleSidebar({
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { logout: authLogout } = useAuth();
+  const { theme: currentTheme, setTheme } = useTheme();
 
   const themeConfig = themeClasses[theme];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     if (onLogout) {
@@ -132,7 +139,7 @@ export function CollapsibleSidebar({
       {/* Mobile menu toggle button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-50 rounded-lg bg-gray-800 p-2 text-white lg:hidden"
+        className="fixed top-4 left-4 z-50 rounded-lg bg-card p-2 text-foreground lg:hidden"
         aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
       >
         {isMobileMenuOpen ? (
@@ -154,7 +161,7 @@ export function CollapsibleSidebar({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-40 h-screen transform border-r border-gray-800 bg-gray-900 transition-all duration-300 ease-in-out lg:translate-x-0",
+          "fixed top-0 left-0 z-40 h-screen transform border-r border-border bg-background transition-all duration-300 ease-in-out lg:translate-x-0",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
           isCollapsed ? "lg:w-20" : "lg:w-64",
           "w-64", // Mobile always full width
@@ -163,7 +170,7 @@ export function CollapsibleSidebar({
       >
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex h-16 items-center justify-between border-b border-gray-800 px-4">
+          <div className="flex h-16 items-center justify-between border-b border-border px-4">
             <div className="flex items-center gap-2 overflow-hidden">
               <div
                 className={cn(
@@ -171,17 +178,17 @@ export function CollapsibleSidebar({
                   themeConfig.gradient
                 )}
               >
-                <span className="text-sm font-bold text-white">
+                <span className="text-sm font-bold text-foreground">
                   {logoText || title.charAt(0)}
                 </span>
               </div>
               {!isCollapsed && (
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-lg font-semibold text-white">
+                  <div className="truncate text-lg font-semibold text-foreground">
                     {title}
                   </div>
                   {subtitle && (
-                    <div className="truncate text-sm text-gray-500">
+                    <div className="truncate text-sm text-muted-foreground">
                       {subtitle}
                     </div>
                   )}
@@ -192,7 +199,7 @@ export function CollapsibleSidebar({
             {/* Desktop collapse button */}
             <button
               onClick={toggleCollapse}
-              className="hidden rounded-lg p-1.5 text-gray-400 hover:bg-gray-800 hover:text-white lg:block"
+              className="hidden rounded-lg p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground lg:block"
               aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               {isCollapsed ? (
@@ -217,7 +224,7 @@ export function CollapsibleSidebar({
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                     active
                       ? themeConfig.active
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white",
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                     isCollapsed && "justify-center lg:px-2"
                   )}
                   title={isCollapsed ? item.label : undefined}
@@ -256,12 +263,29 @@ export function CollapsibleSidebar({
             })}
           </nav>
 
-          {/* Logout button */}
-          <div className="border-t border-gray-800 p-3">
+          {/* Theme toggle and Logout */}
+          <div className="border-t border-border p-3 space-y-1">
+            {/* Theme toggle button */}
+            <button
+              onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+              className={cn(
+                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
+                isCollapsed && "justify-center lg:px-2"
+              )}
+              title={isCollapsed ? (mounted && currentTheme === "dark" ? t("common.lightMode") || "Light Mode" : t("common.darkMode") || "Dark Mode") : undefined}
+            >
+              {mounted && currentTheme === "dark" ? (
+                <Sun className="h-5 w-5 flex-shrink-0" />
+              ) : (
+                <Moon className="h-5 w-5 flex-shrink-0" />
+              )}
+              {!isCollapsed && <span>{mounted && (currentTheme === "dark" ? (t("common.lightMode") || "Light Mode") : (t("common.darkMode") || "Dark Mode"))}</span>}
+            </button>
+            {/* Logout button */}
             <button
               onClick={handleLogout}
               className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white",
+                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground",
                 isCollapsed && "justify-center lg:px-2"
               )}
               title={isCollapsed ? t("common.logout") || "Logout" : undefined}

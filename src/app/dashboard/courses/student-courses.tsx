@@ -67,23 +67,23 @@ export function StudentCoursesView() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           {t("dashboard.courses") || "Courses"}
         </h1>
-        <p className="mt-1 text-gray-400">
+        <p className="mt-1 text-muted-foreground">
           {t("dashboard.myCoursesSubtitle") || "Continue your learning journey"}
         </p>
       </div>
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
+        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t("dashboard.searchCourses") || "Search courses..."}
-          className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-border bg-secondary py-2 pr-4 pl-10 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
         />
       </div>
 
@@ -92,7 +92,7 @@ export function StudentCoursesView() {
         <div className="flex min-h-[200px] items-center justify-center">
           <div className="text-center">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-blue-500" />
-            <p className="mt-2 text-sm text-gray-400">Loading courses...</p>
+            <p className="mt-2 text-sm text-muted-foreground">Loading courses...</p>
           </div>
         </div>
       )}
@@ -108,21 +108,21 @@ export function StudentCoursesView() {
         <>
           {/* My Courses Section */}
           <div>
-            <h2 className="mb-4 text-xl font-semibold text-white">
+            <h2 className="mb-4 text-xl font-semibold text-foreground">
               {t("dashboard.myCourses") || "My Courses"}
             </h2>
 
             {filteredEnrolledCourses.length === 0 ? (
-              <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-gray-800 bg-gray-800/30 p-12">
+              <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-border bg-card/50 p-12">
                 <div className="text-center">
-                  <BookOpen className="mx-auto h-12 w-12 text-gray-600" />
-                  <h3 className="mt-4 text-lg font-semibold text-white">
+                  <BookOpen className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <h3 className="mt-4 text-lg font-semibold text-foreground">
                     {search
                       ? t("dashboard.noCoursesFound") || "No courses found"
                       : t("dashboard.noEnrolledCourses") ||
                         "No enrolled courses yet"}
                   </h3>
-                  <p className="mt-2 text-sm text-gray-400">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     {search
                       ? t("dashboard.tryDifferentSearch") ||
                         "Try a different search term"
@@ -148,21 +148,21 @@ export function StudentCoursesView() {
 
           {/* Available Courses Section */}
           <div>
-            <h2 className="mb-4 text-xl font-semibold text-white">
+            <h2 className="mb-4 text-xl font-semibold text-foreground">
               {t("dashboard.availableCourses") || "Courses"}
             </h2>
 
             {filteredAvailableCourses.length === 0 ? (
-              <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-gray-800 bg-gray-800/30 p-12">
+              <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-border bg-card/50 p-12">
                 <div className="text-center">
-                  <BookOpen className="mx-auto h-12 w-12 text-gray-600" />
-                  <h3 className="mt-4 text-lg font-semibold text-white">
+                  <BookOpen className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <h3 className="mt-4 text-lg font-semibold text-foreground">
                     {search
                       ? t("dashboard.noCoursesFound") || "No courses found"
                       : t("dashboard.noMoreCourses") ||
                         "No more courses available"}
                   </h3>
-                  <p className="mt-2 text-sm text-gray-400">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     {search
                       ? t("dashboard.tryDifferentSearch") ||
                         "Try a different search term"
@@ -209,7 +209,7 @@ function CourseCard({
   return (
     <Link
       href={href}
-      className="group rounded-lg border border-gray-800 bg-gray-800/50 p-6 backdrop-blur transition-all hover:border-gray-700 hover:bg-gray-800"
+      className="group rounded-lg border border-border bg-card p-6 backdrop-blur transition-all hover:border-border hover:bg-secondary"
     >
       {/* Thumbnail */}
       {course.thumbnail ? (
@@ -220,25 +220,25 @@ function CourseCard({
           className="mb-4 h-40 w-full rounded-lg object-cover"
         />
       ) : (
-        <div className="mb-4 flex h-40 items-center justify-center rounded-lg bg-gray-700">
-          <BookOpen className="h-12 w-12 text-gray-600" />
+        <div className="mb-4 flex h-40 items-center justify-center rounded-lg bg-secondary">
+          <BookOpen className="h-12 w-12 text-muted-foreground" />
         </div>
       )}
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-white group-hover:text-blue-400">
+      <h3 className="text-lg font-semibold text-foreground group-hover:text-blue-400">
         {course.title}
       </h3>
 
       {/* Description */}
       {course.description && (
-        <p className="mt-2 line-clamp-2 text-sm text-gray-400">
+        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
           {course.description}
         </p>
       )}
 
       {/* Teacher */}
-      <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
+      <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
         <span>
           {t("dashboard.by") || "By"} {course.teacher.firstName}{" "}
           {course.teacher.lastName}
@@ -246,7 +246,7 @@ function CourseCard({
       </div>
 
       {/* Stats */}
-      <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+      <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <span className="flex items-center gap-1">
           <Layers className="h-4 w-4" />
           {course.modulesCount} {t("dashboard.modules") || "modules"}
@@ -268,12 +268,12 @@ function CourseCard({
           {/* Progress */}
           <div className="mt-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-400">
+              <span className="text-muted-foreground">
                 {t("dashboard.progress") || "Progress"}
               </span>
-              <span className="text-gray-400">0%</span>
+              <span className="text-muted-foreground">0%</span>
             </div>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-700">
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
               <div
                 className="h-full bg-gradient-to-r from-blue-500 to-blue-600"
                 style={{ width: "0%" }}
@@ -283,7 +283,7 @@ function CourseCard({
 
           {/* Continue Learning Button */}
           <div className="mt-4">
-            <div className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition-colors group-hover:bg-blue-700">
+            <div className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-2 text-sm font-medium text-foreground transition-colors group-hover:bg-blue-700">
               <TrendingUp className="h-4 w-4" />
               {t("dashboard.continueLearning") || "Continue Learning"}
             </div>
@@ -298,7 +298,7 @@ function CourseCard({
                 {t("course.free") || "Free"}
               </div>
             ) : (
-              <div className="text-lg font-bold text-white">
+              <div className="text-lg font-bold text-foreground">
                 {formatCurrency(course.price)}
               </div>
             )}
@@ -306,7 +306,7 @@ function CourseCard({
 
           {/* Enroll Button */}
           <div className="mt-4">
-            <div className="flex items-center justify-center gap-2 rounded-lg border-2 border-blue-600 py-2 text-sm font-medium text-blue-400 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+            <div className="flex items-center justify-center gap-2 rounded-lg border-2 border-blue-600 py-2 text-sm font-medium text-blue-400 transition-colors group-hover:bg-blue-600 group-hover:text-foreground">
               <BookOpen className="h-4 w-4" />
               {course.type === "free" || course.price === 0
                 ? t("course.startLearning") || "Start Learning"

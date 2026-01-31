@@ -32,13 +32,13 @@ export default function DashboardLayout({
   // Show loading while checking authentication
   if (isLoading || !hasHydrated || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 opacity-20 blur-xl" />
             <Loader2 className="relative mx-auto h-10 w-10 animate-spin text-emerald-500" />
           </div>
-          <p className="mt-4 text-sm text-gray-400">Loading...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
@@ -47,13 +47,13 @@ export default function DashboardLayout({
   // Redirect if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 opacity-20 blur-xl" />
             <Loader2 className="relative mx-auto h-10 w-10 animate-spin text-emerald-500" />
           </div>
-          <p className="mt-4 text-sm text-gray-400">Redirecting...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Redirecting...</p>
         </div>
       </div>
     );
@@ -64,7 +64,7 @@ export default function DashboardLayout({
   const title = getRoleTitle(user.role, t);
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       <CollapsibleSidebar
         navItems={navItems}
         title={title}

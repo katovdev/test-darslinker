@@ -126,15 +126,15 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">{welcome.title}</h1>
-          <p className="mt-2 text-gray-400">{welcome.subtitle}</p>
+          <h1 className="text-3xl font-bold text-foreground">{welcome.title}</h1>
+          <p className="mt-2 text-muted-foreground">{welcome.subtitle}</p>
         </div>
 
         {/* Refresh Button */}
         {!loading && (
           <button
             onClick={handleRefresh}
-            className="rounded-lg border border-gray-800 bg-gray-800/50 p-2 text-gray-400 transition-colors hover:border-gray-700 hover:bg-gray-800 hover:text-white"
+            className="rounded-lg border border-border bg-card p-2 text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
             title="Refresh statistics"
           >
             <RefreshCw className="h-5 w-5" />
@@ -147,7 +147,7 @@ export default function DashboardPage() {
         <div className="flex min-h-[200px] items-center justify-center">
           <div className="text-center">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-blue-500" />
-            <p className="mt-2 text-sm text-gray-400">Loading statistics...</p>
+            <p className="mt-2 text-sm text-muted-foreground">Loading statistics...</p>
           </div>
         </div>
       )}
@@ -161,7 +161,7 @@ export default function DashboardPage() {
               <h3 className="font-semibold text-red-400">
                 Error Loading Statistics
               </h3>
-              <p className="mt-1 text-sm text-gray-400">{error}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{error}</p>
               <button
                 onClick={handleRefresh}
                 className="mt-3 inline-flex items-center gap-2 rounded-lg bg-red-900/20 px-4 py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-900/30"
@@ -182,12 +182,12 @@ export default function DashboardPage() {
             return (
               <div
                 key={stat.label}
-                className="rounded-lg border border-gray-800 bg-gray-800/50 p-6 backdrop-blur transition-colors hover:border-gray-700"
+                className="rounded-lg border border-border bg-card p-6 backdrop-blur transition-colors hover:border-border"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <p className="text-sm text-gray-400">{stat.label}</p>
-                    <p className="mt-2 text-2xl font-bold text-white">
+                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">
                       {stat.value}
                     </p>
                     {stat.change && (
@@ -197,15 +197,15 @@ export default function DashboardPage() {
                             ? "text-green-400"
                             : stat.trend === "down"
                               ? "text-red-400"
-                              : "text-gray-400"
+                              : "text-muted-foreground"
                         }`}
                       >
                         {stat.change}
                       </p>
                     )}
                   </div>
-                  <div className="rounded-lg bg-gray-700/50 p-3">
-                    <Icon className="h-6 w-6 text-gray-400" />
+                  <div className="rounded-lg bg-secondary p-3">
+                    <Icon className="h-6 w-6 text-muted-foreground" />
                   </div>
                 </div>
               </div>
@@ -217,7 +217,7 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       {!loading && (
         <div className="mt-8">
-          <h2 className="mb-4 text-xl font-semibold text-white">
+          <h2 className="mb-4 text-xl font-semibold text-foreground">
             {t("dashboard.quickActions") || "Quick Actions"}
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -286,8 +286,8 @@ export default function DashboardPage() {
 
       {/* Cache Info (only in development) */}
       {process.env.NODE_ENV === "development" && stats && (
-        <div className="mt-8 rounded-lg border border-gray-800 bg-gray-800/30 p-4">
-          <p className="text-xs text-gray-500">
+        <div className="mt-8 rounded-lg border border-border bg-card/50 p-4">
+          <p className="text-xs text-muted-foreground">
             Statistics are cached for 1 minute for better performance. Click the
             refresh button to fetch latest data.
           </p>
@@ -309,10 +309,10 @@ function QuickActionCard({
   return (
     <a
       href={href}
-      className="block rounded-lg border border-gray-800 bg-gray-800/50 p-6 backdrop-blur transition-colors hover:border-gray-700 hover:bg-gray-800"
+      className="block rounded-lg border border-border bg-card p-6 backdrop-blur transition-colors hover:border-border hover:bg-secondary"
     >
-      <h3 className="font-semibold text-white">{title}</h3>
-      <p className="mt-1 text-sm text-gray-400">{description}</p>
+      <h3 className="font-semibold text-foreground">{title}</h3>
+      <p className="mt-1 text-sm text-muted-foreground">{description}</p>
     </a>
   );
 }
