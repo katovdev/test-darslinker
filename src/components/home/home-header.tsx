@@ -258,20 +258,12 @@ export function HomeHeader() {
                   )}
                 </div>
               ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="hidden rounded-lg border border-border bg-secondary px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-secondary/80 sm:inline-flex whitespace-nowrap"
-                  >
-                    {t("auth.login")}
-                  </Link>
-                  <Link
-                    href="/login"
-                    className="hidden rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 sm:inline-flex whitespace-nowrap"
-                  >
-                    {t("home.getStarted")}
-                  </Link>
-                </>
+                <Link
+                  href="/login"
+                  className="hidden rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 sm:inline-flex whitespace-nowrap"
+                >
+                  {t("auth.login")}
+                </Link>
               )}
             </>
           )}
@@ -414,23 +406,13 @@ export function HomeHeader() {
 
                 </>
               ) : (
-                <>
-                  <Link
-                    href="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-lg border border-border bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-foreground transition-colors hover:border-primary"
-                  >
-                    {t("auth.login")}
-                  </Link>
-                  <Link
-                    href="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2.5 text-center text-sm font-semibold text-white shadow-lg shadow-[#7ea2d4]/25"
-                  >
-                    {t("home.getStarted")}
-                  </Link>
-
-                </>
+                <Link
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2.5 text-center text-sm font-semibold text-white shadow-lg shadow-[#7ea2d4]/25"
+                >
+                  {t("auth.login")}
+                </Link>
               )}
             </div>
           </nav>

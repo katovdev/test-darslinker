@@ -254,6 +254,7 @@ export const ru: Translations = {
     otpVerificationFailed: "Неверный код! Попробуйте снова.",
     loginFailed: "Ошибка входа",
     signUpViaTelegram: "Регистрация через Telegram",
+    newUserNote: "Новые пользователи регистрируются автоматически",
   },
 
   // Profile

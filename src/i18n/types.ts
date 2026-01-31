@@ -231,6 +231,7 @@ export interface Translations {
     otpVerificationFailed: string;
     loginFailed: string;
     signUpViaTelegram: string;
+    newUserNote: string;
   };
   profile: {
     editProfile: string;

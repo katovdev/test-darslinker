@@ -178,7 +178,7 @@ export default function LoginPage() {
             disabled={isLoading}
             className="w-full rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] py-3 font-semibold text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30 disabled:opacity-50"
           >
-            {isLoading ? t("common.loading") : t("auth.sendOtp")}
+            {isLoading ? t("common.loading") : t("auth.login")}
           </button>
         </form>
       ) : (
@@ -257,18 +257,9 @@ export default function LoginPage() {
         </div>
       )}
 
-      <div className="mt-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          {t("auth.noAccount")}{" "}
-          <button
-            type="button"
-            onClick={openTelegramBot}
-            className="font-medium text-primary transition-colors hover:text-primary/80"
-          >
-            {t("auth.signUpViaTelegram")}
-          </button>
-        </p>
-      </div>
+      <p className="mt-6 text-center text-xs text-muted-foreground">
+        {t("auth.newUserNote") || "Yangi foydalanuvchilar avtomatik ro'yxatdan o'tkaziladi"}
+      </p>
     </div>
   );
 }

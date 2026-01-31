@@ -253,6 +253,7 @@ export const en: Translations = {
     otpVerificationFailed: "Invalid code! Please try again.",
     loginFailed: "Login failed",
     signUpViaTelegram: "Sign up via Telegram",
+    newUserNote: "New users are registered automatically",
   },
 
   // Profile

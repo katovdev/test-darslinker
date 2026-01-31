@@ -194,6 +194,7 @@ export const uz: Translations = {
     confirmPassword: "Parolni tasdiqlash",
     forgotPassword: "Parolni unutdingizmi?",
     noAccount: "Hisobingiz yo'qmi?",
+    newUserNote: "Yangi foydalanuvchilar avtomatik ro'yxatdan o'tkaziladi",
     hasAccount: "Hisobingiz bormi?",
     signUp: "Ro'yxatdan o'tish",
     signIn: "Kirish",
