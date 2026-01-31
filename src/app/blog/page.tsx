@@ -145,9 +145,9 @@ export default function BlogPage() {
               </div>
               <button
                 type="submit"
-                className="rounded-xl bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-6 py-3 font-medium text-white shadow-lg shadow-[#7ea2d4]/25 transition-all hover:shadow-xl hover:shadow-[#7ea2d4]/30"
+                className="flex items-center justify-center rounded-xl border border-border bg-secondary/50 px-4 py-3 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
-                {t("blog.search")}
+                <Search className="h-5 w-5" />
               </button>
             </form>
 
