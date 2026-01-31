@@ -156,7 +156,7 @@ export default function BlogPage() {
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition-colors outline-none focus:border-[#7ea2d4] sm:w-48"
             >
-              <option value="all">{t("blog.allCategories")}</option>
+              <option value="all">Kategoriya</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
