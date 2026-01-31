@@ -190,19 +190,19 @@ export default function BlogDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-background">
         <HomeHeader />
         <main className="mx-auto max-w-3xl px-4 py-12">
           <div className="animate-pulse space-y-6">
-            <div className="h-5 w-20 rounded-full bg-gray-700" />
-            <div className="h-10 w-3/4 rounded bg-gray-700" />
+            <div className="h-5 w-20 rounded-full bg-muted" />
+            <div className="h-10 w-3/4 rounded bg-muted" />
             <div className="flex gap-4">
-              <div className="h-5 w-24 rounded bg-gray-700" />
-              <div className="h-5 w-24 rounded bg-gray-700" />
+              <div className="h-5 w-24 rounded bg-muted" />
+              <div className="h-5 w-24 rounded bg-muted" />
             </div>
             <div className="space-y-3 pt-4">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="h-4 w-full rounded bg-gray-700/50" />
+                <div key={i} className="h-4 w-full rounded bg-muted/50" />
               ))}
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function BlogDetailPage() {
         : t("blog.loadError") || "Failed to load blog";
 
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-background">
         <HomeHeader />
         <main className="mx-auto max-w-3xl px-4 py-20">
           <div className="flex flex-col items-center justify-center gap-4 text-center">
@@ -226,22 +226,22 @@ export default function BlogDetailPage() {
               <FileText className="h-8 w-8 text-red-400" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("blog.errorTitle")}
               </h3>
-              <p className="text-sm text-gray-400">{errorMessage}</p>
+              <p className="text-sm text-muted-foreground">{errorMessage}</p>
             </div>
             <div className="flex gap-3">
               <button
                 onClick={() => router.refresh()}
-                className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary/80"
               >
                 <RefreshCw className="h-4 w-4" />
                 {t("blog.retry")}
               </button>
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-blue-500/25"
+                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#7ea2d4]/25"
               >
                 {t("blog.backToBlogs")}
               </Link>
@@ -256,21 +256,21 @@ export default function BlogDetailPage() {
   if (!blog) return null;
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       <HomeHeader />
 
       {/* Article Header */}
-      <header className="relative border-b border-gray-800 px-4 py-12 sm:px-6 lg:px-8">
+      <header className="relative border-b border-border px-4 py-12 sm:px-6 lg:px-8">
         {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-blue-500/10 to-transparent blur-3xl" />
+          <div className="absolute top-0 left-1/2 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-b from-[#7ea2d4]/10 to-transparent blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-3xl">
           {/* Back link */}
           <Link
             href="/blog"
-            className="mb-6 inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+            className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
             {t("blog.backToBlogs")}
@@ -278,19 +278,19 @@ export default function BlogDetailPage() {
 
           {/* Category badge */}
           {blog.category && (
-            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">
+            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-[#7ea2d4]/10 px-3 py-1 text-sm font-medium text-[#7ea2d4]">
               <Tag className="h-3.5 w-3.5" />
               {blog.category}
             </div>
           )}
 
           {/* Title */}
-          <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
             {blog.title}
           </h1>
 
           {/* Meta */}
-          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400">
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
               {formatDate(blog.date)}
@@ -317,7 +317,7 @@ export default function BlogDetailPage() {
             {/* Share button */}
             <button
               onClick={handleShare}
-              className="flex items-center gap-1.5 transition-colors hover:text-white"
+              className="flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
               {copied ? (
                 <Check className="h-4 w-4 text-green-400" />
@@ -335,7 +335,7 @@ export default function BlogDetailPage() {
         <article className="mx-auto max-w-3xl">
           {/* Subtitle */}
           {blog.description && (
-            <p className="mb-8 text-xl leading-relaxed text-gray-400">
+            <p className="mb-8 text-xl leading-relaxed text-muted-foreground">
               {blog.description}
             </p>
           )}
@@ -343,11 +343,11 @@ export default function BlogDetailPage() {
           {/* Content */}
           {blog.content ? (
             <div
-              className="prose prose-invert prose-lg prose-headings:text-white prose-p:text-gray-300 prose-a:text-blue-400 prose-strong:text-white prose-code:text-blue-300 max-w-none"
+              className="prose prose-lg dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-[#7ea2d4] prose-strong:text-foreground prose-code:text-[#7ea2d4] max-w-none"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             />
           ) : (
-            <p className="text-gray-400">{t("blog.noContent")}</p>
+            <p className="text-muted-foreground">{t("blog.noContent")}</p>
           )}
         </article>
 
@@ -359,7 +359,7 @@ export default function BlogDetailPage() {
             className={`flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all ${
               blog.isLiked
                 ? "bg-red-500 text-white hover:bg-red-600"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-red-400"
+                : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-red-400"
             }`}
           >
             {isLiking ? (
