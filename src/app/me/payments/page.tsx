@@ -111,16 +111,16 @@ export default function StudentPaymentsPage() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10 rounded-full border border-gray-700 bg-gray-800/50"
+            className="h-10 w-10 rounded-full border border-border bg-secondary/50"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             Mening to&apos;lovlarim
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             Kurslar uchun to&apos;lovlar tarixi
           </p>
         </div>
@@ -128,14 +128,14 @@ export default function StudentPaymentsPage() {
           onClick={loadPayments}
           disabled={isLoading}
           variant="outline"
-          className="border-gray-700 bg-gray-800/50"
+          className="border-border bg-secondary/50"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           <span className="ml-2 hidden sm:inline">Yangilash</span>
         </Button>
       </div>
 
-      <Card className="border-gray-800 bg-gray-800/30">
+      <Card className="border-border bg-card">
         <CardContent className="p-4">
           <select
             value={statusFilter}
@@ -143,7 +143,7 @@ export default function StudentPaymentsPage() {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none sm:w-auto"
+            className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none sm:w-auto"
           >
             <option value="">Barcha holatlar</option>
             <option value="pending">Kutilmoqda</option>
@@ -164,16 +164,16 @@ export default function StudentPaymentsPage() {
           {Array.from({ length: 3 }).map((_, i) => (
             <Card
               key={i}
-              className="animate-pulse border-gray-800 bg-gray-800/30"
+              className="animate-pulse border-border bg-card"
             >
               <CardContent className="p-4">
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-16 rounded-lg bg-gray-700/50" />
+                  <div className="h-16 w-16 rounded-lg bg-secondary/50" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-4 w-2/3 rounded bg-gray-700/50" />
-                    <div className="h-3 w-1/3 rounded bg-gray-700/50" />
+                    <div className="h-4 w-2/3 rounded bg-secondary/50" />
+                    <div className="h-3 w-1/3 rounded bg-secondary/50" />
                   </div>
-                  <div className="h-6 w-24 rounded bg-gray-700/50" />
+                  <div className="h-6 w-24 rounded bg-secondary/50" />
                 </div>
               </CardContent>
             </Card>
@@ -182,13 +182,13 @@ export default function StudentPaymentsPage() {
       )}
 
       {!isLoading && payments.length === 0 && (
-        <Card className="border-gray-800 bg-gray-800/30">
+        <Card className="border-border bg-card">
           <CardContent className="py-12 text-center">
-            <CreditCard className="mx-auto h-12 w-12 text-gray-600" />
-            <h3 className="mt-4 text-lg font-medium text-white">
+            <CreditCard className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-4 text-lg font-medium text-foreground">
               To&apos;lovlar topilmadi
             </h3>
-            <p className="mt-2 text-gray-400">
+            <p className="mt-2 text-muted-foreground">
               Siz hali hech qanday kurs uchun to&apos;lov qilmadingiz
             </p>
           </CardContent>
@@ -200,12 +200,12 @@ export default function StudentPaymentsPage() {
           {payments.map((payment) => (
             <Card
               key={payment.id}
-              className="border-gray-800 bg-gray-800/30 transition-colors hover:border-gray-700"
+              className="border-border bg-card transition-colors hover:border-primary/30"
             >
               <CardContent className="p-4">
                 <div className="flex items-center gap-4">
                   {payment.course.thumbnail ? (
-                    <div className="relative h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-700">
+                    <div className="relative h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-secondary">
                       <img
                         src={payment.course.thumbnail}
                         alt={payment.course.title}
@@ -213,19 +213,19 @@ export default function StudentPaymentsPage() {
                       />
                     </div>
                   ) : (
-                    <div className="flex h-16 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-gray-700">
-                      <CreditCard className="h-6 w-6 text-gray-500" />
+                    <div className="flex h-16 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-secondary">
+                      <CreditCard className="h-6 w-6 text-muted-foreground" />
                     </div>
                   )}
 
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate font-medium text-white">
+                    <h3 className="truncate font-medium text-foreground">
                       {payment.course.title}
                     </h3>
-                    <p className="text-lg font-semibold text-blue-400">
+                    <p className="text-lg font-semibold text-primary">
                       {formatCurrency(payment.amount)}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       {formatDate(payment.createdAt)}
                     </p>
                   </div>
@@ -237,7 +237,7 @@ export default function StudentPaymentsPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => setSelectedImage(payment.checkImageUrl)}
-                        className="text-gray-400 hover:text-white"
+                        className="text-muted-foreground hover:text-foreground"
                       >
                         <Eye className="mr-1 h-4 w-4" />
                         Chek
@@ -276,7 +276,7 @@ export default function StudentPaymentsPage() {
 
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)} /{" "}
             {pagination.total}
@@ -287,7 +287,7 @@ export default function StudentPaymentsPage() {
               disabled={page === 1}
               variant="outline"
               size="sm"
-              className="border-gray-700 bg-gray-800"
+              className="border-border bg-secondary"
             >
               <ChevronLeft className="h-4 w-4" />
               Oldingi
@@ -297,7 +297,7 @@ export default function StudentPaymentsPage() {
               disabled={page === pagination.totalPages}
               variant="outline"
               size="sm"
-              className="border-gray-700 bg-gray-800"
+              className="border-border bg-secondary"
             >
               Keyingi
               <ChevronRight className="h-4 w-4" />

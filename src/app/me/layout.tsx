@@ -21,7 +21,7 @@ export default function MeLayout({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-20 blur-xl" />
@@ -34,25 +34,25 @@ export default function MeLayout({ children }: { children: React.ReactNode }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
           <div className="relative">
             <div className="absolute inset-0 h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-20 blur-xl" />
             <Loader2 className="relative mx-auto h-10 w-10 animate-spin text-blue-500" />
           </div>
-          <p className="mt-4 text-sm text-gray-400">Redirecting...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Redirecting...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-background">
       <HomeHeader />
       <main className="pt-16">
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
           {/* Navigation tabs */}
-          <nav className="mb-6 flex gap-1 overflow-x-auto rounded-lg border border-gray-800 bg-gray-800/30 p-1">
+          <nav className="mb-6 flex gap-1 overflow-x-auto rounded-lg border border-border bg-secondary/30 p-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = item.exact
@@ -66,8 +66,8 @@ export default function MeLayout({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
                     isActive
-                      ? "bg-gray-700 text-white"
-                      : "text-gray-400 hover:bg-gray-700/50 hover:text-white"
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
                   )}
                 >
                   <Icon className="h-4 w-4" />

@@ -119,11 +119,11 @@ export default function MyCoursesPage() {
             return (
               <div
                 key={course.id}
-                className="group rounded-xl border border-gray-800 bg-gray-800/30 p-4 transition-colors hover:border-gray-700"
+                className="group rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/30"
               >
                 <div className="flex gap-4">
                   {/* Thumbnail */}
-                  <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg bg-gray-700">
+                  <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg bg-secondary">
                     {course.thumbnail ? (
                       <img
                         src={course.thumbnail}
@@ -132,7 +132,7 @@ export default function MyCoursesPage() {
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center">
-                        <BookOpen className="h-8 w-8 text-gray-500" />
+                        <BookOpen className="h-8 w-8 text-muted-foreground" />
                       </div>
                     )}
                     {isCompleted && (
@@ -144,14 +144,14 @@ export default function MyCoursesPage() {
 
                   {/* Info */}
                   <div className="min-w-0 flex-1">
-                    <h3 className="mb-1 line-clamp-2 font-semibold text-white group-hover:text-green-400">
+                    <h3 className="mb-1 line-clamp-2 font-semibold text-foreground group-hover:text-primary">
                       {course.title}
                     </h3>
-                    <p className="mb-2 text-sm text-gray-400">
+                    <p className="mb-2 text-sm text-muted-foreground">
                       {course.teacher.firstName} {course.teacher.lastName}
                     </p>
 
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <BookOpen className="h-3.5 w-3.5" />
                         {course.lessonsCount} {t("course.lessons") || "lessons"}
@@ -167,13 +167,13 @@ export default function MyCoursesPage() {
                 {/* Progress */}
                 <div className="mt-4">
                   <div className="mb-1.5 flex items-center justify-between text-xs">
-                    <span className="text-gray-400">
+                    <span className="text-muted-foreground">
                       {isCompleted
                         ? t("course.completed") || "Completed"
                         : `${progress}% ${t("course.complete") || "complete"}`}
                     </span>
                     {course.completedLessons !== undefined && (
-                      <span className="text-gray-500">
+                      <span className="text-muted-foreground">
                         {course.completedLessons}/{course.lessonsCount}
                       </span>
                     )}
@@ -185,7 +185,7 @@ export default function MyCoursesPage() {
                 <div className="mt-4 flex items-center justify-between">
                   <Link
                     href={`/learn/${course.id}`}
-                    className="flex items-center gap-2 text-sm font-medium text-green-400 hover:text-green-300"
+                    className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80"
                   >
                     {isCompleted ? (
                       <>
@@ -202,7 +202,7 @@ export default function MyCoursesPage() {
 
                   <Link
                     href={`/courses/${course.slug}`}
-                    className="text-xs text-gray-500 hover:text-gray-400"
+                    className="text-xs text-muted-foreground hover:text-foreground"
                   >
                     {t("course.viewDetails") || "View Details"}
                     <ArrowRight className="ml-1 inline h-3 w-3" />

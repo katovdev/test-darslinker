@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
@@ -117,9 +118,15 @@ export function RoleSidebar({
   const t = useTranslations();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { logout: authLogout } = useAuth();
+  const { theme: currentTheme, setTheme } = useTheme();
 
   const themeConfig = themeClasses[theme];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     if (onLogout) {
@@ -144,7 +151,7 @@ export function RoleSidebar({
       {/* Mobile menu toggle button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-50 rounded-lg bg-gray-800 p-2 text-white lg:hidden"
+        className="fixed top-4 left-4 z-50 rounded-lg bg-card p-2 text-foreground shadow-md border border-border lg:hidden"
         aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
       >
         {isMobileMenuOpen ? (
@@ -166,14 +173,14 @@ export function RoleSidebar({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-40 h-screen w-64 transform border-r border-gray-800 bg-gray-900 transition-transform duration-300 ease-in-out lg:translate-x-0",
+          "fixed top-0 left-0 z-40 h-screen w-64 transform border-r border-border bg-card transition-transform duration-300 ease-in-out lg:translate-x-0",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
           className
         )}
       >
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex h-16 items-center gap-2 border-b border-gray-800 px-6">
+          <div className="flex h-16 items-center gap-2 border-b border-border px-6">
             <div
               className={cn(
                 "flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br",
@@ -185,8 +192,8 @@ export function RoleSidebar({
               </span>
             </div>
             <div>
-              <span className="text-lg font-semibold text-white">{title}</span>
-              <span className="text-sm text-gray-500"> {subtitle}</span>
+              <span className="text-lg font-semibold text-foreground">{title}</span>
+              <span className="text-sm text-muted-foreground"> {subtitle}</span>
             </div>
           </div>
 
@@ -204,7 +211,7 @@ export function RoleSidebar({
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                     active
                       ? themeConfig.active
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   )}
                 >
                   <Icon
@@ -228,16 +235,29 @@ export function RoleSidebar({
 
           {/* Info banner (optional) */}
           {infoBanner && (
-            <div className="border-t border-gray-800 px-3 py-3">
+            <div className="border-t border-border px-3 py-3">
               {infoBanner}
             </div>
           )}
 
-          {/* Logout button */}
-          <div className="border-t border-gray-800 p-3">
+          {/* Theme toggle and Logout */}
+          <div className="border-t border-border p-3 space-y-1">
+            {/* Theme toggle button */}
+            <button
+              onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              {mounted && currentTheme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+              {mounted && (currentTheme === "dark" ? (t("common.lightMode") || "Light Mode") : (t("common.darkMode") || "Dark Mode"))}
+            </button>
+            {/* Logout button */}
             <button
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               <LogOut className="h-5 w-5" />
               {t("common.logout") || "Logout"}
