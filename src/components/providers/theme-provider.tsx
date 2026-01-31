@@ -10,8 +10,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem={true}
+      defaultTheme="dark"
+      enableSystem={false}
       storageKey="darslinker-theme"
     >
       {children}
