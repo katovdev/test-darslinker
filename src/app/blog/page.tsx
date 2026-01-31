@@ -145,16 +145,16 @@ export default function BlogPage() {
               </div>
               <button
                 type="submit"
-                className="flex items-center justify-center rounded-xl border border-border bg-secondary/50 px-4 py-3 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
-                <Search className="h-5 w-5" />
+                Izlash
               </button>
             </form>
 
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition-colors outline-none focus:border-[#7ea2d4] sm:w-48"
+              className="rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground transition-colors outline-none focus:border-[#7ea2d4]"
             >
               <option value="all">Kategoriya</option>
               {categories.map((cat) => (
