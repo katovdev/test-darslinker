@@ -123,15 +123,9 @@ export default function BlogPage() {
         </div>
 
         <div className="mx-auto max-w-6xl text-center">
-          <span className="inline-block rounded-full bg-[#7ea2d4]/10 px-4 py-1.5 text-sm font-medium text-[#7ea2d4]">
-            {t("home.articlesLabel") || "Blog"}
-          </span>
-          <h1 className="mt-4 text-4xl font-bold text-foreground sm:text-5xl">
-            {t("blog.title")}
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
+            O'qituvchilar uchun foydali maqolalar
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            {t("home.articlesSubtitle")}
-          </p>
         </div>
       </section>
 
