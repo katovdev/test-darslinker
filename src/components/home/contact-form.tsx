@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { toast } from "sonner";
 import { Send, Loader2, Phone, Instagram, MessageCircle } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
@@ -15,6 +15,15 @@ export function ContactForm() {
     phone: "",
     message: "",
   });
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Scroll input into view when focused (fixes mobile keyboard issue)
+  const handleInputFocus = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // Small delay to wait for keyboard to open
+    setTimeout(() => {
+      e.target.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  }, []);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
@@ -51,7 +60,7 @@ export function ContactForm() {
   return (
     <section
       id="contact"
-      className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
+      className="relative px-4 py-16 pb-32 sm:px-6 sm:pb-16 lg:px-8 lg:py-20"
       style={{ scrollMarginTop: "100px" }}
     >
       <div className="mx-auto max-w-[1400px]">
@@ -101,7 +110,7 @@ export function ContactForm() {
             </div>
 
             {/* Right Side - Contact Form */}
-            <form onSubmit={handleSubmit} className="flex flex-col justify-center">
+            <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col justify-center">
           <div className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg sm:p-8">
             <div className="grid gap-6 sm:grid-cols-2">
               {/* Name */}
@@ -119,6 +128,7 @@ export function ContactForm() {
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
+                  onFocus={handleInputFocus}
                   placeholder={t("home.contactName")}
                   className="w-full rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
                 />
@@ -142,6 +152,7 @@ export function ContactForm() {
                     type="tel"
                     value={formData.phone}
                     onChange={handlePhoneChange}
+                    onFocus={handleInputFocus}
                     placeholder="XX XXX XX XX"
                     className="w-full rounded-xl border border-white/30 bg-white/10 py-3 pr-4 pl-24 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
                   />
@@ -163,7 +174,8 @@ export function ContactForm() {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, message: e.target.value }))
                 }
-                rows={5}
+                onFocus={handleInputFocus}
+                rows={4}
                 placeholder={t("home.contactMessagePlaceholder")}
                 className="w-full resize-none rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-white placeholder-white/60 transition-colors outline-none focus:border-white focus:ring-1 focus:ring-white"
               />
