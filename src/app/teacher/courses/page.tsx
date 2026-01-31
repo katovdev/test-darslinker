@@ -98,7 +98,7 @@ export default function TeacherCoursesPage() {
         );
       case "archived":
         return (
-          <span className="rounded-full bg-gray-500/10 px-2 py-1 text-xs font-medium text-gray-400">
+          <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
             {t("teacher.archived") || "Archived"}
           </span>
         );
@@ -123,10 +123,10 @@ export default function TeacherCoursesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("teacher.coursesTitle") || "My Courses"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             {t("teacher.coursesSubtitle") || "Manage your courses"}
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function TeacherCoursesPage() {
           <button
             onClick={loadCourses}
             disabled={isLoading}
-            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
           >
             <RefreshCw
               className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
@@ -143,7 +143,7 @@ export default function TeacherCoursesPage() {
           </button>
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-emerald-500"
           >
             <Plus className="h-4 w-4" />
             {t("teacher.createCourse") || "Yangi kurs"}
@@ -154,18 +154,18 @@ export default function TeacherCoursesPage() {
       <div className="flex flex-col gap-4 sm:flex-row">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               placeholder={t("teacher.searchCourses") || "Search courses..."}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-border bg-secondary py-2 pr-4 pl-10 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-emerald-500"
           >
             {t("common.search") || "Search"}
           </button>
@@ -177,7 +177,7 @@ export default function TeacherCoursesPage() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+          className="rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allStatuses") || "All Statuses"}</option>
           <option value="draft">{t("teacher.draft") || "Draft"}</option>
@@ -199,20 +199,20 @@ export default function TeacherCoursesPage() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="animate-pulse rounded-xl border border-gray-800 bg-gray-800/30 p-4"
+              className="animate-pulse rounded-xl border border-border bg-card p-4"
             >
-              <div className="mb-4 h-40 rounded-lg bg-gray-700/50" />
-              <div className="mb-2 h-5 w-3/4 rounded bg-gray-700/50" />
-              <div className="h-4 w-1/2 rounded bg-gray-700/50" />
+              <div className="mb-4 h-40 rounded-lg bg-secondary/50" />
+              <div className="mb-2 h-5 w-3/4 rounded bg-secondary/50" />
+              <div className="h-4 w-1/2 rounded bg-secondary/50" />
             </div>
           ))}
         </div>
       )}
 
       {!isLoading && courses.length === 0 && (
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-12 text-center">
-          <BookOpen className="mx-auto h-12 w-12 text-gray-600" />
-          <p className="mt-4 text-gray-400">
+        <div className="rounded-xl border border-border bg-card p-12 text-center">
+          <BookOpen className="mx-auto h-12 w-12 text-muted-foreground" />
+          <p className="mt-4 text-muted-foreground">
             {t("teacher.noCourses") || "No courses found"}
           </p>
         </div>
@@ -223,9 +223,9 @@ export default function TeacherCoursesPage() {
           {courses.map((course) => (
             <div
               key={course.id}
-              className="group overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30 transition-colors hover:border-gray-700"
+              className="group overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-border"
             >
-              <div className="relative h-40 bg-gray-700">
+              <div className="relative h-40 bg-secondary">
                 {course.thumbnail ? (
                   <img
                     src={course.thumbnail}
@@ -234,7 +234,7 @@ export default function TeacherCoursesPage() {
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center">
-                    <BookOpen className="h-12 w-12 text-gray-500" />
+                    <BookOpen className="h-12 w-12 text-muted-foreground" />
                   </div>
                 )}
                 <div className="absolute top-2 right-2 flex gap-2">
@@ -244,7 +244,7 @@ export default function TeacherCoursesPage() {
                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                   <button
                     onClick={() => router.push(`/teacher/courses/${course.id}`)}
-                    className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+                    className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-emerald-500"
                   >
                     <Settings className="h-4 w-4" />
                     {t("teacher.manageCourse") || "Boshqarish"}
@@ -252,15 +252,15 @@ export default function TeacherCoursesPage() {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="line-clamp-1 font-semibold text-white">
+                <h3 className="line-clamp-1 font-semibold text-foreground">
                   {course.title}
                 </h3>
                 {course.description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-gray-400">
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                     {course.description}
                   </p>
                 )}
-                <div className="mt-4 flex items-center justify-between text-sm text-gray-400">
+                <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1">
                       <Layers className="h-4 w-4" />
@@ -276,8 +276,8 @@ export default function TeacherCoursesPage() {
                     </span>
                   </div>
                 </div>
-                <div className="mt-3 flex items-center justify-between border-t border-gray-700 pt-3">
-                  <span className="text-sm text-gray-500">
+                <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+                  <span className="text-sm text-muted-foreground">
                     {formatDate(course.createdAt)}
                   </span>
                   {course.type === "paid" && (
@@ -294,7 +294,7 @@ export default function TeacherCoursesPage() {
 
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             {t("common.showing") || "Showing"}{" "}
             {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
@@ -304,7 +304,7 @@ export default function TeacherCoursesPage() {
             <button
               onClick={() => setPage(page - 1)}
               disabled={page === 1}
-              className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+              className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
               {t("common.previous") || "Previous"}
@@ -312,7 +312,7 @@ export default function TeacherCoursesPage() {
             <button
               onClick={() => setPage(page + 1)}
               disabled={page === pagination.totalPages}
-              className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+              className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
             >
               {t("common.next") || "Next"}
               <ChevronRight className="h-4 w-4" />

@@ -242,7 +242,7 @@ export default function AdminUsersPage() {
     };
     return (
       <span
-        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[role] || "bg-gray-500/10 text-gray-400"}`}
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[role] || "bg-muted text-muted-foreground"}`}
       >
         {role}
       </span>
@@ -257,7 +257,7 @@ export default function AdminUsersPage() {
     };
     return (
       <span
-        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || "bg-gray-500/10 text-gray-400"}`}
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || "bg-muted text-muted-foreground"}`}
       >
         {status}
       </span>
@@ -268,17 +268,17 @@ export default function AdminUsersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("admin.users") || "Users"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             {t("admin.usersSubtitle") || "Manage all users"}
           </p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-blue-700"
           >
             <Plus className="h-4 w-4" />
             {t("admin.addUser") || "Add User"}
@@ -286,7 +286,7 @@ export default function AdminUsersPage() {
           <button
             onClick={loadUsers}
             disabled={isLoading}
-            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
           >
             <RefreshCw
               className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
@@ -299,18 +299,18 @@ export default function AdminUsersPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("admin.searchUsers") || "Search users..."}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-border bg-secondary py-2 pr-4 pl-10 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
           >
             {t("blog.search") || "Search"}
           </button>
@@ -323,7 +323,7 @@ export default function AdminUsersPage() {
               setRoleFilter(e.target.value as RoleFilter);
               setPage(1);
             }}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
           >
             <option value="all">{t("admin.allRoles") || "All Roles"}</option>
             <option value="admin">Admin</option>
@@ -338,7 +338,7 @@ export default function AdminUsersPage() {
               setStatusFilter(e.target.value as StatusFilter);
               setPage(1);
             }}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
           >
             <option value="all">
               {t("admin.allStatuses") || "All Statuses"}
@@ -356,50 +356,50 @@ export default function AdminUsersPage() {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800 text-left">
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+              <tr className="border-b border-border text-left">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   User
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Phone
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Role
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Status
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Joined
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400"></th>
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground"></th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-gray-800">
+                  <tr key={i} className="border-b border-border">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 animate-pulse rounded-full bg-gray-700" />
-                        <div className="h-4 w-32 animate-pulse rounded bg-gray-700" />
+                        <div className="h-10 w-10 animate-pulse rounded-full bg-secondary" />
+                        <div className="h-4 w-32 animate-pulse rounded bg-secondary" />
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-24 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-24 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-16 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-16 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-20 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-20 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3" />
                   </tr>
@@ -407,8 +407,8 @@ export default function AdminUsersPage() {
               ) : users.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center">
-                    <Users className="mx-auto h-12 w-12 text-gray-600" />
-                    <p className="mt-2 text-gray-400">
+                    <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2 text-muted-foreground">
                       {t("admin.noUsers") || "No users found"}
                     </p>
                   </td>
@@ -417,30 +417,30 @@ export default function AdminUsersPage() {
                 users.map((user) => (
                   <tr
                     key={user.id}
-                    className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
+                    className="border-b border-border transition-colors hover:bg-secondary"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-white">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-medium text-foreground">
                           {user.firstName?.charAt(0)}
                           {user.lastName?.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-medium text-white">
+                          <p className="font-medium text-foreground">
                             {user.firstName} {user.lastName}
                           </p>
                           {user.username && (
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                               @{user.username}
                             </p>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-gray-300">{user.phone}</td>
+                    <td className="px-4 py-3 text-foreground">{user.phone}</td>
                     <td className="px-4 py-3">{getRoleBadge(user.role)}</td>
                     <td className="px-4 py-3">{getStatusBadge(user.status)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-400">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
@@ -517,8 +517,8 @@ export default function AdminUsersPage() {
         </div>
 
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
-            <p className="text-sm text-gray-400">
+          <div className="flex items-center justify-between border-t border-border px-4 py-3">
+            <p className="text-sm text-muted-foreground">
               Page {pagination.page} of {pagination.totalPages} (
               {pagination.total} users)
             </p>
@@ -526,7 +526,7 @@ export default function AdminUsersPage() {
               <button
                 onClick={() => setPage(page - 1)}
                 disabled={page <= 1}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 <ChevronLeft className="h-4 w-4" />
                 {t("blog.previous") || "Previous"}
@@ -534,7 +534,7 @@ export default function AdminUsersPage() {
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page >= pagination.totalPages}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 {t("blog.next") || "Next"}
                 <ChevronRight className="h-4 w-4" />
@@ -546,9 +546,9 @@ export default function AdminUsersPage() {
 
       {selectedUser && editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="w-full max-w-lg rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("admin.userProfile") || "User Profile"}
               </h3>
               <button
@@ -556,7 +556,7 @@ export default function AdminUsersPage() {
                   setSelectedUser(null);
                   setEditingUser(null);
                 }}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -564,22 +564,22 @@ export default function AdminUsersPage() {
 
             <div className="mt-6 space-y-4">
               <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-xl font-medium text-white">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-xl font-medium text-foreground">
                   {selectedUser.firstName?.charAt(0)}
                   {selectedUser.lastName?.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-gray-400">ID: {selectedUser.id}</p>
-                  <p className="text-gray-400">{selectedUser.phone}</p>
+                  <p className="text-muted-foreground">ID: {selectedUser.id}</p>
+                  <p className="text-muted-foreground">{selectedUser.phone}</p>
                   {selectedUser.username && (
-                    <p className="text-gray-500">@{selectedUser.username}</p>
+                    <p className="text-muted-foreground">@{selectedUser.username}</p>
                   )}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("auth.firstName") || "First Name"}
                   </label>
                   <input
@@ -591,11 +591,11 @@ export default function AdminUsersPage() {
                         firstName: e.target.value,
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("auth.lastName") || "Last Name"}
                   </label>
                   <input
@@ -607,14 +607,14 @@ export default function AdminUsersPage() {
                         lastName: e.target.value,
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("admin.role") || "Role"}
                   </label>
                   <select
@@ -622,7 +622,7 @@ export default function AdminUsersPage() {
                     onChange={(e) =>
                       setEditingUser({ ...editingUser, role: e.target.value })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="student">
                       {t("admin.student") || "Student"}
@@ -635,7 +635,7 @@ export default function AdminUsersPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("admin.status") || "Status"}
                   </label>
                   <select
@@ -643,7 +643,7 @@ export default function AdminUsersPage() {
                     onChange={(e) =>
                       setEditingUser({ ...editingUser, status: e.target.value })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="pending">
                       {t("admin.pending") || "Pending"}
@@ -658,7 +658,7 @@ export default function AdminUsersPage() {
                 </div>
               </div>
 
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted-foreground">
                 {t("admin.joined") || "Joined"}:{" "}
                 {new Date(selectedUser.createdAt).toLocaleDateString()}
               </div>
@@ -670,14 +670,14 @@ export default function AdminUsersPage() {
                   setSelectedUser(null);
                   setEditingUser(null);
                 }}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
               <button
                 onClick={handleSaveUser}
                 disabled={isUpdating === selectedUser.id}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700 disabled:opacity-50"
               >
                 {isUpdating === selectedUser.id ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />
@@ -692,14 +692,14 @@ export default function AdminUsersPage() {
 
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="w-full max-w-lg rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("admin.addUser") || "Add New User"}
               </h3>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -708,7 +708,7 @@ export default function AdminUsersPage() {
             <div className="mt-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     Telegram ID *
                   </label>
                   <input
@@ -718,11 +718,11 @@ export default function AdminUsersPage() {
                       setNewUser({ ...newUser, id: e.target.value })
                     }
                     placeholder="123456789"
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("auth.phone") || "Phone"} *
                   </label>
                   <input
@@ -732,14 +732,14 @@ export default function AdminUsersPage() {
                       setNewUser({ ...newUser, phone: e.target.value })
                     }
                     placeholder="+998901234567"
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("auth.firstName") || "First Name"} *
                   </label>
                   <input
@@ -748,11 +748,11 @@ export default function AdminUsersPage() {
                     onChange={(e) =>
                       setNewUser({ ...newUser, firstName: e.target.value })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("auth.lastName") || "Last Name"} *
                   </label>
                   <input
@@ -761,14 +761,14 @@ export default function AdminUsersPage() {
                     onChange={(e) =>
                       setNewUser({ ...newUser, lastName: e.target.value })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("admin.role") || "Role"}
                   </label>
                   <select
@@ -779,7 +779,7 @@ export default function AdminUsersPage() {
                         role: e.target.value as typeof newUser.role,
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="student">
                       {t("admin.student") || "Student"}
@@ -792,7 +792,7 @@ export default function AdminUsersPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("admin.status") || "Status"}
                   </label>
                   <select
@@ -803,7 +803,7 @@ export default function AdminUsersPage() {
                         status: e.target.value as typeof newUser.status,
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="active">
                       {t("admin.active") || "Active"}
@@ -819,7 +819,7 @@ export default function AdminUsersPage() {
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   Username
                 </label>
                 <input
@@ -829,14 +829,14 @@ export default function AdminUsersPage() {
                     setNewUser({ ...newUser, username: e.target.value })
                   }
                   placeholder="johndoe"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               {newUser.role === "teacher" && (
                 <>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       Business Name
                     </label>
                     <input
@@ -845,11 +845,11 @@ export default function AdminUsersPage() {
                       onChange={(e) =>
                         setNewUser({ ...newUser, businessName: e.target.value })
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       Specialization
                     </label>
                     <input
@@ -861,7 +861,7 @@ export default function AdminUsersPage() {
                           specialization: e.target.value,
                         })
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                     />
                   </div>
                 </>
@@ -871,7 +871,7 @@ export default function AdminUsersPage() {
             <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
@@ -884,7 +884,7 @@ export default function AdminUsersPage() {
                   !newUser.firstName ||
                   !newUser.lastName
                 }
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700 disabled:opacity-50"
               >
                 {isCreating ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />

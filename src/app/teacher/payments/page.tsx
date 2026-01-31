@@ -232,17 +232,17 @@ export default function TeacherPaymentsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("teacher.paymentsTitle") || "Payments"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             {t("teacher.paymentsSubtitle") || "Payments for your courses"}
           </p>
         </div>
         <button
           onClick={handleRefresh}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           {t("common.refresh") || "Refresh"}
@@ -256,7 +256,7 @@ export default function TeacherPaymentsPage() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+          className="rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allStatuses") || "All Statuses"}</option>
           <option value="pending">{t("teacher.pending") || "Pending"}</option>
@@ -274,7 +274,7 @@ export default function TeacherPaymentsPage() {
             setSelectedCourse(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+          className="rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none"
         >
           <option value="">{t("teacher.allCourses") || "All Courses"}</option>
           {courses.map((course) => (
@@ -296,14 +296,14 @@ export default function TeacherPaymentsPage() {
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className="animate-pulse rounded-xl border border-gray-800 bg-gray-800/30 p-4"
+              className="animate-pulse rounded-xl border border-border bg-card p-4"
             >
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                  <div className="h-4 w-32 rounded bg-gray-700/50" />
-                  <div className="h-3 w-24 rounded bg-gray-700/50" />
+                  <div className="h-4 w-32 rounded bg-secondary/50" />
+                  <div className="h-3 w-24 rounded bg-secondary/50" />
                 </div>
-                <div className="h-6 w-20 rounded bg-gray-700/50" />
+                <div className="h-6 w-20 rounded bg-secondary/50" />
               </div>
             </div>
           ))}
@@ -311,9 +311,9 @@ export default function TeacherPaymentsPage() {
       )}
 
       {!isLoading && payments.length === 0 && (
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-12 text-center">
-          <CreditCard className="mx-auto h-12 w-12 text-gray-600" />
-          <p className="mt-4 text-gray-400">
+        <div className="rounded-xl border border-border bg-card p-12 text-center">
+          <CreditCard className="mx-auto h-12 w-12 text-muted-foreground" />
+          <p className="mt-4 text-muted-foreground">
             {t("teacher.noPayments") || "No payments found"}
           </p>
         </div>
@@ -324,20 +324,20 @@ export default function TeacherPaymentsPage() {
           {payments.map((payment) => (
             <div
               key={payment.id}
-              className="rounded-xl border border-gray-800 bg-gray-800/30 p-4 transition-colors hover:border-gray-700"
+              className="rounded-xl border border-border bg-card p-4 transition-colors hover:border-border"
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <p className="font-medium text-white">
+                    <p className="font-medium text-foreground">
                       {payment.student.firstName} {payment.student.lastName}
                     </p>
                     {getStatusBadge(payment.status)}
                   </div>
-                  <p className="mt-1 text-sm text-gray-400">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     {payment.course.title}
                   </p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     {payment.student.phone} | {formatDate(payment.createdAt)}
                   </p>
                   {payment.rejectionReason && (
@@ -348,13 +348,13 @@ export default function TeacherPaymentsPage() {
                   )}
                 </div>
                 <div className="flex items-center gap-3">
-                  <p className="text-lg font-semibold text-white">
+                  <p className="text-lg font-semibold text-foreground">
                     {formatCurrency(payment.amount)}
                   </p>
                   {payment.checkImageUrl && (
                     <button
                       onClick={() => setSelectedImage(payment.checkImageUrl)}
-                      className="flex items-center gap-1 rounded-lg bg-gray-700 px-3 py-2 text-sm text-white transition-colors hover:bg-gray-600"
+                      className="flex items-center gap-1 rounded-lg bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:bg-muted"
                     >
                       <Eye className="h-4 w-4" />
                       {t("teacher.viewReceipt") || "Receipt"}
@@ -365,7 +365,7 @@ export default function TeacherPaymentsPage() {
                       <button
                         onClick={() => handleApprove(payment.id)}
                         disabled={approvingId === payment.id}
-                        className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
+                        className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-emerald-700 disabled:opacity-50"
                       >
                         {approvingId === payment.id ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -379,7 +379,7 @@ export default function TeacherPaymentsPage() {
                           setRejectModal({ paymentId: payment.id, reason: "" })
                         }
                         disabled={approvingId === payment.id}
-                        className="flex items-center gap-1 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+                        className="flex items-center gap-1 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-red-700 disabled:opacity-50"
                       >
                         <XCircle className="h-4 w-4" />
                         Rad etish
@@ -395,7 +395,7 @@ export default function TeacherPaymentsPage() {
 
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             {t("common.showing") || "Showing"}{" "}
             {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
@@ -405,7 +405,7 @@ export default function TeacherPaymentsPage() {
             <button
               onClick={() => setPage(page - 1)}
               disabled={page === 1}
-              className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+              className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
               {t("common.previous") || "Previous"}
@@ -413,7 +413,7 @@ export default function TeacherPaymentsPage() {
             <button
               onClick={() => setPage(page + 1)}
               disabled={page === pagination.totalPages}
-              className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+              className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
             >
               {t("common.next") || "Next"}
               <ChevronRight className="h-4 w-4" />
@@ -430,7 +430,7 @@ export default function TeacherPaymentsPage() {
           <div className="relative max-h-[90vh] max-w-4xl">
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-10 right-0 text-white hover:text-gray-300"
+              className="absolute -top-10 right-0 text-foreground hover:text-foreground"
             >
               <X className="h-8 w-8" />
             </button>
@@ -447,11 +447,11 @@ export default function TeacherPaymentsPage() {
       {/* Rejection Modal */}
       {rejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-xl border border-gray-700 bg-gray-800 p-6">
-            <h3 className="text-lg font-semibold text-white">
+          <div className="w-full max-w-md rounded-xl border border-border bg-secondary p-6">
+            <h3 className="text-lg font-semibold text-foreground">
               To&apos;lovni rad etish
             </h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               Rad etish sababini kiriting. Bu xabar talabaga yuboriladi.
             </p>
 
@@ -461,7 +461,7 @@ export default function TeacherPaymentsPage() {
                 setRejectModal({ ...rejectModal, reason: e.target.value })
               }
               placeholder="Rad etish sababi..."
-              className="mt-4 w-full rounded-lg border border-gray-700 bg-gray-900 p-3 text-white placeholder-gray-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none"
+              className="mt-4 w-full rounded-lg border border-border bg-background p-3 text-foreground placeholder-muted-foreground focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none"
               rows={3}
             />
 
@@ -469,14 +469,14 @@ export default function TeacherPaymentsPage() {
               <button
                 onClick={() => setRejectModal(null)}
                 disabled={isRejecting}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-600 disabled:opacity-50"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
               >
                 Bekor qilish
               </button>
               <button
                 onClick={handleReject}
                 disabled={isRejecting || !rejectModal.reason.trim()}
-                className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-red-700 disabled:opacity-50"
               >
                 {isRejecting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

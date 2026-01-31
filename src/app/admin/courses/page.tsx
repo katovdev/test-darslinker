@@ -251,11 +251,11 @@ export default function AdminCoursesPage() {
       active: "bg-blue-500/10 text-blue-400",
       approved: "bg-green-500/10 text-green-400",
       draft: "bg-yellow-500/10 text-yellow-400",
-      archived: "bg-gray-500/10 text-gray-400",
+      archived: "bg-muted text-muted-foreground",
     };
     return (
       <span
-        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || "bg-gray-500/10 text-gray-400"}`}
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || "bg-muted text-muted-foreground"}`}
       >
         {status}
       </span>
@@ -269,7 +269,7 @@ export default function AdminCoursesPage() {
     };
     return (
       <span
-        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[type] || "bg-gray-500/10 text-gray-400"}`}
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[type] || "bg-muted text-muted-foreground"}`}
       >
         {type}
       </span>
@@ -280,17 +280,17 @@ export default function AdminCoursesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("admin.courses") || "Courses"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             {t("teacher.manageYourCourses") || "Manage all courses"}
           </p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-blue-700"
           >
             <Plus className="h-4 w-4" />
             {t("admin.addCourse") || "Add Course"}
@@ -298,7 +298,7 @@ export default function AdminCoursesPage() {
           <button
             onClick={loadCourses}
             disabled={isLoading}
-            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
           >
             <RefreshCw
               className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
@@ -311,18 +311,18 @@ export default function AdminCoursesPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("course.searchCourses") || "Search courses..."}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-border bg-secondary py-2 pr-4 pl-10 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
           >
             {t("blog.search") || "Search"}
           </button>
@@ -335,7 +335,7 @@ export default function AdminCoursesPage() {
               setStatusFilter(e.target.value as StatusFilter);
               setPage(1);
             }}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
           >
             <option value="all">
               {t("admin.allStatuses") || "All Statuses"}
@@ -358,7 +358,7 @@ export default function AdminCoursesPage() {
               setTypeFilter(e.target.value as TypeFilter);
               setPage(1);
             }}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
           >
             <option value="all">All Types</option>
             <option value="free">{t("course.free") || "Free"}</option>
@@ -373,56 +373,56 @@ export default function AdminCoursesPage() {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800 text-left">
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+              <tr className="border-b border-border text-left">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Course
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Teacher
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Type
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Price
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Status
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Enrollments
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400"></th>
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground"></th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-gray-800">
+                  <tr key={i} className="border-b border-border">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="h-12 w-16 animate-pulse rounded bg-gray-700" />
-                        <div className="h-4 w-40 animate-pulse rounded bg-gray-700" />
+                        <div className="h-12 w-16 animate-pulse rounded bg-secondary" />
+                        <div className="h-4 w-40 animate-pulse rounded bg-secondary" />
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-24 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-24 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-12 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-20 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-20 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-16 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-12 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3" />
                   </tr>
@@ -430,8 +430,8 @@ export default function AdminCoursesPage() {
               ) : courses.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-4 py-12 text-center">
-                    <BookOpen className="mx-auto h-12 w-12 text-gray-600" />
-                    <p className="mt-2 text-gray-400">
+                    <BookOpen className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2 text-muted-foreground">
                       {t("teacher.noCourses") || "No courses found"}
                     </p>
                   </td>
@@ -440,7 +440,7 @@ export default function AdminCoursesPage() {
                 courses.map((course) => (
                   <tr
                     key={course.id}
-                    className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
+                    className="border-b border-border transition-colors hover:bg-secondary"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
@@ -451,32 +451,32 @@ export default function AdminCoursesPage() {
                             className="h-12 w-16 rounded object-cover"
                           />
                         ) : (
-                          <div className="flex h-12 w-16 items-center justify-center rounded bg-gray-700">
-                            <BookOpen className="h-5 w-5 text-gray-500" />
+                          <div className="flex h-12 w-16 items-center justify-center rounded bg-secondary">
+                            <BookOpen className="h-5 w-5 text-muted-foreground" />
                           </div>
                         )}
                         <div>
-                          <p className="font-medium text-white">
+                          <p className="font-medium text-foreground">
                             {course.title}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {course.modulesCount} modules
                           </p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="text-gray-300">
+                      <p className="text-foreground">
                         {course.teacher.firstName} {course.teacher.lastName}
                       </p>
                       {course.teacher.username && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           @{course.teacher.username}
                         </p>
                       )}
                     </td>
                     <td className="px-4 py-3">{getTypeBadge(course.type)}</td>
-                    <td className="px-4 py-3 text-gray-300">
+                    <td className="px-4 py-3 text-foreground">
                       {course.type === "free"
                         ? t("course.free") || "Free"
                         : formatCurrency(course.price)}
@@ -485,8 +485,8 @@ export default function AdminCoursesPage() {
                       {getStatusBadge(course.status)}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1 text-gray-300">
-                        <Users className="h-4 w-4 text-gray-500" />
+                      <div className="flex items-center gap-1 text-foreground">
+                        <Users className="h-4 w-4 text-muted-foreground" />
                         {course.enrollmentsCount}
                       </div>
                     </td>
@@ -583,8 +583,8 @@ export default function AdminCoursesPage() {
         </div>
 
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
-            <p className="text-sm text-gray-400">
+          <div className="flex items-center justify-between border-t border-border px-4 py-3">
+            <p className="text-sm text-muted-foreground">
               Page {pagination.page} of {pagination.totalPages} (
               {pagination.total} courses)
             </p>
@@ -592,7 +592,7 @@ export default function AdminCoursesPage() {
               <button
                 onClick={() => setPage(page - 1)}
                 disabled={page <= 1}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 <ChevronLeft className="h-4 w-4" />
                 {t("blog.previous") || "Previous"}
@@ -600,7 +600,7 @@ export default function AdminCoursesPage() {
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page >= pagination.totalPages}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 {t("blog.next") || "Next"}
                 <ChevronRight className="h-4 w-4" />
@@ -612,14 +612,14 @@ export default function AdminCoursesPage() {
 
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("admin.addCourse") || "Add New Course"}
               </h3>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -627,7 +627,7 @@ export default function AdminCoursesPage() {
 
             <div className="mt-6 space-y-4">
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   {t("admin.courseOwner") || "Course Owner"} *
                 </label>
                 <select
@@ -635,7 +635,7 @@ export default function AdminCoursesPage() {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, teacherId: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 >
                   <option value="">Select owner</option>
                   {teachers.map((user) => (
@@ -648,7 +648,7 @@ export default function AdminCoursesPage() {
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   {t("course.title") || "Title"} *
                 </label>
                 <input
@@ -657,12 +657,12 @@ export default function AdminCoursesPage() {
                   onChange={(e) =>
                     setNewCourse({ ...newCourse, title: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   Slug (optional)
                 </label>
                 <input
@@ -672,12 +672,12 @@ export default function AdminCoursesPage() {
                     setNewCourse({ ...newCourse, slug: e.target.value })
                   }
                   placeholder="auto-generated-if-empty"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   {t("course.description") || "Description"} *
                 </label>
                 <textarea
@@ -686,12 +686,12 @@ export default function AdminCoursesPage() {
                     setNewCourse({ ...newCourse, description: e.target.value })
                   }
                   rows={3}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   Thumbnail URL
                 </label>
                 <input
@@ -701,13 +701,13 @@ export default function AdminCoursesPage() {
                     setNewCourse({ ...newCourse, thumbnail: e.target.value })
                   }
                   placeholder="https://..."
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     Type
                   </label>
                   <select
@@ -718,14 +718,14 @@ export default function AdminCoursesPage() {
                         type: e.target.value as "free" | "paid",
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="free">{t("course.free") || "Free"}</option>
                     <option value="paid">Paid</option>
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     Status
                   </label>
                   <select
@@ -736,7 +736,7 @@ export default function AdminCoursesPage() {
                         status: e.target.value as typeof newCourse.status,
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="draft">Draft</option>
                     <option value="active">Active</option>
@@ -748,7 +748,7 @@ export default function AdminCoursesPage() {
 
               {newCourse.type === "paid" && (
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("course.price") || "Price"} (UZS)
                   </label>
                   <input
@@ -761,7 +761,7 @@ export default function AdminCoursesPage() {
                       })
                     }
                     min={0}
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
               )}
@@ -770,7 +770,7 @@ export default function AdminCoursesPage() {
             <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
@@ -782,7 +782,7 @@ export default function AdminCoursesPage() {
                   !newCourse.title ||
                   !newCourse.description
                 }
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700 disabled:opacity-50"
               >
                 {isCreating ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />
@@ -797,14 +797,14 @@ export default function AdminCoursesPage() {
 
       {editingCourse && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("teacher.editCourse") || "Edit Course"}
               </h3>
               <button
                 onClick={() => setEditingCourse(null)}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -812,7 +812,7 @@ export default function AdminCoursesPage() {
 
             <div className="mt-6 space-y-4">
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   {t("course.title") || "Title"}
                 </label>
                 <input
@@ -821,24 +821,24 @@ export default function AdminCoursesPage() {
                   onChange={(e) =>
                     setEditForm({ ...editForm, title: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">Slug</label>
+                <label className="mb-1 block text-sm text-muted-foreground">Slug</label>
                 <input
                   type="text"
                   value={editForm.slug}
                   onChange={(e) =>
                     setEditForm({ ...editForm, slug: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   {t("course.description") || "Description"}
                 </label>
                 <textarea
@@ -847,12 +847,12 @@ export default function AdminCoursesPage() {
                     setEditForm({ ...editForm, description: e.target.value })
                   }
                   rows={3}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm text-gray-400">
+                <label className="mb-1 block text-sm text-muted-foreground">
                   Thumbnail URL
                 </label>
                 <input
@@ -862,13 +862,13 @@ export default function AdminCoursesPage() {
                     setEditForm({ ...editForm, thumbnail: e.target.value })
                   }
                   placeholder="https://..."
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     Type
                   </label>
                   <select
@@ -879,14 +879,14 @@ export default function AdminCoursesPage() {
                         type: e.target.value as "free" | "paid",
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="free">{t("course.free") || "Free"}</option>
                     <option value="paid">Paid</option>
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     Status
                   </label>
                   <select
@@ -897,7 +897,7 @@ export default function AdminCoursesPage() {
                         status: e.target.value as typeof editForm.status,
                       })
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   >
                     <option value="draft">Draft</option>
                     <option value="active">Active</option>
@@ -909,7 +909,7 @@ export default function AdminCoursesPage() {
 
               {editForm.type === "paid" && (
                 <div>
-                  <label className="mb-1 block text-sm text-gray-400">
+                  <label className="mb-1 block text-sm text-muted-foreground">
                     {t("course.price") || "Price"} (UZS)
                   </label>
                   <input
@@ -922,7 +922,7 @@ export default function AdminCoursesPage() {
                       })
                     }
                     min={0}
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                   />
                 </div>
               )}
@@ -931,14 +931,14 @@ export default function AdminCoursesPage() {
             <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setEditingCourse(null)}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
               <button
                 onClick={handleUpdateCourse}
                 disabled={isUpdating === editingCourse.id}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700 disabled:opacity-50"
               >
                 {isUpdating === editingCourse.id ? (
                   <RefreshCw className="h-4 w-4 animate-spin" />

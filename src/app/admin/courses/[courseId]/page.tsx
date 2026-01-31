@@ -260,10 +260,10 @@ export default function AdminCourseBuilderPage() {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center gap-4">
         <AlertCircle className="h-12 w-12 text-red-500" />
-        <p className="text-gray-400">{error || "Course not found"}</p>
+        <p className="text-muted-foreground">{error || "Course not found"}</p>
         <button
           onClick={() => router.push("/admin/courses")}
-          className="flex items-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
+          className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-foreground hover:bg-secondary"
         >
           <ChevronLeft className="h-4 w-4" />
           Back to Courses
@@ -279,13 +279,13 @@ export default function AdminCourseBuilderPage() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.push("/admin/courses")}
-            className="flex items-center gap-1 text-gray-400 hover:text-white"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-white">Course Builder</h1>
-            <p className="mt-1 text-gray-400">{course.title}</p>
+            <h1 className="text-2xl font-bold text-foreground">Course Builder</h1>
+            <p className="mt-1 text-muted-foreground">{course.title}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -299,7 +299,7 @@ export default function AdminCourseBuilderPage() {
           <button
             onClick={handleSaveCourse}
             disabled={!hasChanges || isSaving}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-blue-500 disabled:opacity-50"
           >
             {isSaving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -314,38 +314,38 @@ export default function AdminCourseBuilderPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Course Settings */}
         <div className="space-y-4 lg:col-span-1">
-          <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-4">
-            <h2 className="mb-4 flex items-center gap-2 font-semibold text-white">
+          <div className="rounded-xl border border-border bg-card p-4">
+            <h2 className="mb-4 flex items-center gap-2 font-semibold text-foreground">
               <Settings className="h-5 w-5 text-blue-500" />
               Course Settings
             </h2>
 
             <div className="space-y-4">
               {/* Teacher info */}
-              <div className="rounded-lg bg-gray-800 p-3">
-                <div className="flex items-center gap-2 text-gray-400">
+              <div className="rounded-lg bg-secondary p-3">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <User className="h-4 w-4" />
                   <span className="text-xs">Course Owner</span>
                 </div>
-                <p className="mt-1 text-sm font-medium text-white">
+                <p className="mt-1 text-sm font-medium text-foreground">
                   {course.teacher?.firstName} {course.teacher?.lastName}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label className="text-sm font-medium text-foreground">
                   Course Title
                 </label>
                 <input
                   type="text"
                   value={editedCourse.title || ""}
                   onChange={(e) => handleCourseUpdate("title", e.target.value)}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label className="text-sm font-medium text-foreground">
                   Description
                 </label>
                 <textarea
@@ -354,12 +354,12 @@ export default function AdminCourseBuilderPage() {
                     handleCourseUpdate("description", e.target.value)
                   }
                   rows={4}
-                  className="w-full resize-none rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  className="w-full resize-none rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label className="text-sm font-medium text-foreground">
                   Type
                 </label>
                 <div className="flex gap-4">
@@ -371,25 +371,25 @@ export default function AdminCourseBuilderPage() {
                         handleCourseUpdate("type", "free");
                         handleCourseUpdate("price", 0);
                       }}
-                      className="h-4 w-4 border-gray-600 bg-gray-800 text-blue-500"
+                      className="h-4 w-4 border-border bg-secondary text-blue-500"
                     />
-                    <span className="text-white">Free</span>
+                    <span className="text-foreground">Free</span>
                   </label>
                   <label className="flex cursor-pointer items-center gap-2">
                     <input
                       type="radio"
                       checked={editedCourse.type === "paid"}
                       onChange={() => handleCourseUpdate("type", "paid")}
-                      className="h-4 w-4 border-gray-600 bg-gray-800 text-blue-500"
+                      className="h-4 w-4 border-border bg-secondary text-blue-500"
                     />
-                    <span className="text-white">Paid</span>
+                    <span className="text-foreground">Paid</span>
                   </label>
                 </div>
               </div>
 
               {editedCourse.type === "paid" && (
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-300">
+                  <label className="text-sm font-medium text-foreground">
                     Price (UZS)
                   </label>
                   <input
@@ -399,13 +399,13 @@ export default function AdminCourseBuilderPage() {
                       handleCourseUpdate("price", parseInt(e.target.value) || 0)
                     }
                     min={0}
-                    className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
                 </div>
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label className="text-sm font-medium text-foreground">
                   Status
                 </label>
                 <select
@@ -416,7 +416,7 @@ export default function AdminCourseBuilderPage() {
                       e.target.value as "draft" | "active"
                     )
                   }
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-secondary px-4 py-2 text-foreground focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 >
                   <option value="draft">Draft</option>
                   <option value="active">Active</option>
@@ -426,26 +426,26 @@ export default function AdminCourseBuilderPage() {
           </div>
 
           {/* Course Stats */}
-          <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-4">
-            <h3 className="mb-3 text-sm font-medium text-gray-400">
+          <div className="rounded-xl border border-border bg-card p-4">
+            <h3 className="mb-3 text-sm font-medium text-muted-foreground">
               Statistics
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg bg-gray-800 p-3">
-                <div className="flex items-center gap-2 text-gray-400">
+              <div className="rounded-lg bg-secondary p-3">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Layers className="h-4 w-4" />
                   <span className="text-xs">Modules</span>
                 </div>
-                <p className="mt-1 text-xl font-bold text-white">
+                <p className="mt-1 text-xl font-bold text-foreground">
                   {course.modules.length}
                 </p>
               </div>
-              <div className="rounded-lg bg-gray-800 p-3">
-                <div className="flex items-center gap-2 text-gray-400">
+              <div className="rounded-lg bg-secondary p-3">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <PlayCircle className="h-4 w-4" />
                   <span className="text-xs">Lessons</span>
                 </div>
-                <p className="mt-1 text-xl font-bold text-white">
+                <p className="mt-1 text-xl font-bold text-foreground">
                   {course.modules.reduce((acc, m) => acc + m.lessonsCount, 0)}
                 </p>
               </div>
@@ -456,13 +456,13 @@ export default function AdminCourseBuilderPage() {
         {/* Modules & Lessons */}
         <div className="lg:col-span-2">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="flex items-center gap-2 font-semibold text-white">
+            <h2 className="flex items-center gap-2 font-semibold text-foreground">
               <Layers className="h-5 w-5 text-blue-500" />
               Course Content
             </h2>
             <button
               onClick={() => setIsCreatingModule(true)}
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-500"
+              className="flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-blue-500"
             >
               <Plus className="h-4 w-4" />
               Add Module
@@ -470,12 +470,12 @@ export default function AdminCourseBuilderPage() {
           </div>
 
           {course.modules.length === 0 && !isCreatingModule ? (
-            <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-12 text-center">
-              <Layers className="mx-auto h-12 w-12 text-gray-600" />
-              <p className="mt-4 text-gray-400">No modules yet</p>
+            <div className="rounded-xl border border-border bg-card p-12 text-center">
+              <Layers className="mx-auto h-12 w-12 text-muted-foreground" />
+              <p className="mt-4 text-muted-foreground">No modules yet</p>
               <button
                 onClick={() => setIsCreatingModule(true)}
-                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-500"
               >
                 <Plus className="h-4 w-4" />
                 Create First Module
@@ -488,21 +488,21 @@ export default function AdminCourseBuilderPage() {
                 .map((mod) => (
                   <div
                     key={mod.id}
-                    className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30"
+                    className="overflow-hidden rounded-xl border border-border bg-card"
                   >
                     <div
-                      className="flex cursor-pointer items-center gap-3 p-4 hover:bg-gray-800/50"
+                      className="flex cursor-pointer items-center gap-3 p-4 hover:bg-secondary"
                       onClick={() => toggleModuleExpand(mod.id)}
                     >
-                      <GripVertical className="h-5 w-5 text-gray-600" />
+                      <GripVertical className="h-5 w-5 text-muted-foreground" />
                       {expandedModules[mod.id] ? (
-                        <ChevronDown className="h-5 w-5 text-gray-400" />
+                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
                       ) : (
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
                       )}
                       <div className="flex-1">
-                        <h3 className="font-medium text-white">{mod.title}</h3>
-                        <p className="text-sm text-gray-400">
+                        <h3 className="font-medium text-foreground">{mod.title}</h3>
+                        <p className="text-sm text-muted-foreground">
                           {mod.lessonsCount} lessons
                         </p>
                       </div>
@@ -511,7 +511,7 @@ export default function AdminCourseBuilderPage() {
                           e.stopPropagation();
                           setEditingModule(mod as unknown as Module);
                         }}
-                        className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                        className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
                       >
                         <Settings className="h-4 w-4" />
                       </button>
@@ -635,19 +635,19 @@ function ModuleLessons({
 
   if (isLoading) {
     return (
-      <div className="border-t border-gray-800 p-4">
+      <div className="border-t border-border p-4">
         <div className="flex items-center justify-center py-4">
-          <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="border-t border-gray-800">
+    <div className="border-t border-border">
       {lessons.length === 0 ? (
         <div className="p-4 text-center">
-          <p className="text-sm text-gray-400">No lessons yet</p>
+          <p className="text-sm text-muted-foreground">No lessons yet</p>
         </div>
       ) : (
         <div className="divide-y divide-gray-800">
@@ -656,33 +656,33 @@ function ModuleLessons({
             .map((lesson) => (
               <div
                 key={lesson.id}
-                className="flex cursor-pointer items-center gap-3 px-4 py-3 pl-14 hover:bg-gray-800/50"
+                className="flex cursor-pointer items-center gap-3 px-4 py-3 pl-14 hover:bg-secondary"
                 onClick={() => onEditLesson(lesson)}
               >
-                <GripVertical className="h-4 w-4 text-gray-600" />
+                <GripVertical className="h-4 w-4 text-muted-foreground" />
                 <PlayCircle className="h-4 w-4 text-blue-500" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-medium text-foreground">
                     {lesson.title}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Clock className="h-3 w-3" />
                   {formatDuration(lesson.durationMins)}
                 </div>
                 {lesson.videoUrl ? (
                   <Eye className="h-4 w-4 text-blue-500" />
                 ) : (
-                  <EyeOff className="h-4 w-4 text-gray-600" />
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
                 )}
               </div>
             ))}
         </div>
       )}
-      <div className="border-t border-gray-800 p-3">
+      <div className="border-t border-border p-3">
         <button
           onClick={onCreateLesson}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-700 py-2 text-sm text-gray-400 hover:border-blue-500 hover:text-blue-500"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border py-2 text-sm text-muted-foreground hover:border-blue-500 hover:text-blue-500"
         >
           <Plus className="h-4 w-4" />
           Add Lesson

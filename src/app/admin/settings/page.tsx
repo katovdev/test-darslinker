@@ -43,23 +43,23 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           {t("admin.settings") || "Settings"}
         </h1>
-        <p className="mt-1 text-gray-400">
+        <p className="mt-1 text-muted-foreground">
           {t("admin.settingsSubtitle") ||
             "Manage site settings and teacher pages"}
         </p>
       </div>
 
-      <div className="border-b border-gray-700">
+      <div className="border-b border-border">
         <div className="flex gap-4">
           <button
             onClick={() => setActiveTab("site")}
             className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
               activeTab === "site"
                 ? "border-emerald-500 text-emerald-400"
-                : "border-transparent text-gray-400 hover:text-gray-300"
+                : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
             <Globe className="h-4 w-4" />
@@ -70,7 +70,7 @@ export default function AdminSettingsPage() {
             className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
               activeTab === "teachers"
                 ? "border-emerald-500 text-emerald-400"
-                : "border-transparent text-gray-400 hover:text-gray-300"
+                : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
             <Users className="h-4 w-4" />
@@ -179,12 +179,12 @@ function SiteSettingsTab() {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="animate-pulse rounded-xl border border-gray-800 bg-gray-800/30 p-6"
+            className="animate-pulse rounded-xl border border-border bg-card p-6"
           >
-            <div className="mb-4 h-6 w-32 rounded bg-gray-700/50" />
+            <div className="mb-4 h-6 w-32 rounded bg-secondary/50" />
             <div className="space-y-3">
-              <div className="h-10 rounded bg-gray-700/50" />
-              <div className="h-10 rounded bg-gray-700/50" />
+              <div className="h-10 rounded bg-secondary/50" />
+              <div className="h-10 rounded bg-secondary/50" />
             </div>
           </div>
         ))}
@@ -206,27 +206,27 @@ function SiteSettingsTab() {
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <SearchIcon className="h-5 w-5 text-emerald-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.seoSettings") || "SEO Settings"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.siteTitle") || "Site Title"}
               </label>
               <input
                 type="text"
                 value={formData.siteTitle || ""}
                 onChange={(e) => updateField("siteTitle", e.target.value)}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.siteDescription") || "Meta Description"}
               </label>
               <textarea
@@ -235,11 +235,11 @@ function SiteSettingsTab() {
                   updateField("siteDescription", e.target.value || null)
                 }
                 rows={3}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.siteKeywords") || "Keywords (comma-separated)"}
               </label>
               <input
@@ -248,22 +248,22 @@ function SiteSettingsTab() {
                 onChange={(e) =>
                   updateField("siteKeywords", e.target.value || null)
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Share2 className="h-5 w-5 text-blue-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.openGraph") || "Open Graph"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.ogTitle") || "OG Title"}
               </label>
               <input
@@ -271,11 +271,11 @@ function SiteSettingsTab() {
                 value={formData.ogTitle || ""}
                 onChange={(e) => updateField("ogTitle", e.target.value || null)}
                 placeholder={formData.siteTitle || ""}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.ogDescription") || "OG Description"}
               </label>
               <textarea
@@ -284,33 +284,33 @@ function SiteSettingsTab() {
                   updateField("ogDescription", e.target.value || null)
                 }
                 rows={2}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.ogImage") || "OG Image URL"}
               </label>
               <input
                 type="url"
                 value={formData.ogImage || ""}
                 onChange={(e) => updateField("ogImage", e.target.value || null)}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Share2 className="h-5 w-5 text-sky-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.twitterCard") || "Twitter Card"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.cardType") || "Card Type"}
               </label>
               <select
@@ -321,14 +321,14 @@ function SiteSettingsTab() {
                     e.target.value as "summary" | "summary_large_image"
                   )
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               >
                 <option value="summary">Summary</option>
                 <option value="summary_large_image">Summary Large Image</option>
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.twitterSite") || "Twitter @username"}
               </label>
               <input
@@ -338,22 +338,22 @@ function SiteSettingsTab() {
                   updateField("twitterSite", e.target.value || null)
                 }
                 placeholder="@darslinker"
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-purple-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.analytics") || "Analytics"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.googleAnalytics") || "Google Analytics ID"}
               </label>
               <input
@@ -363,11 +363,11 @@ function SiteSettingsTab() {
                   updateField("googleAnalyticsId", e.target.value || null)
                 }
                 placeholder="G-XXXXXXXXXX"
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.facebookPixel") || "Facebook Pixel ID"}
               </label>
               <input
@@ -376,22 +376,22 @@ function SiteSettingsTab() {
                 onChange={(e) =>
                   updateField("facebookPixelId", e.target.value || null)
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Image className="h-5 w-5 text-pink-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.branding") || "Branding"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.faviconUrl") || "Favicon URL"}
               </label>
               <input
@@ -400,22 +400,22 @@ function SiteSettingsTab() {
                 onChange={(e) =>
                   updateField("faviconUrl", e.target.value || null)
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.logoUrl") || "Logo URL"}
               </label>
               <input
                 type="url"
                 value={formData.logoUrl || ""}
                 onChange={(e) => updateField("logoUrl", e.target.value || null)}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 {t("admin.footerText") || "Footer Text"}
               </label>
               <input
@@ -424,22 +424,22 @@ function SiteSettingsTab() {
                 onChange={(e) =>
                   updateField("footerText", e.target.value || null)
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Mail className="h-5 w-5 text-orange-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.contactInfo") || "Contact Info"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 flex items-center gap-1 text-sm text-gray-400">
+              <label className="mb-1 flex items-center gap-1 text-sm text-muted-foreground">
                 <Mail className="h-3 w-3" />
                 {t("admin.supportEmail") || "Support Email"}
               </label>
@@ -449,11 +449,11 @@ function SiteSettingsTab() {
                 onChange={(e) =>
                   updateField("supportEmail", e.target.value || null)
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 flex items-center gap-1 text-sm text-gray-400">
+              <label className="mb-1 flex items-center gap-1 text-sm text-muted-foreground">
                 <Phone className="h-3 w-3" />
                 {t("admin.supportPhone") || "Support Phone"}
               </label>
@@ -463,11 +463,11 @@ function SiteSettingsTab() {
                 onChange={(e) =>
                   updateField("supportPhone", e.target.value || null)
                 }
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 flex items-center gap-1 text-sm text-gray-400">
+              <label className="mb-1 flex items-center gap-1 text-sm text-muted-foreground">
                 <MapPin className="h-3 w-3" />
                 {t("admin.address") || "Address"}
               </label>
@@ -475,22 +475,22 @@ function SiteSettingsTab() {
                 type="text"
                 value={formData.address || ""}
                 onChange={(e) => updateField("address", e.target.value || null)}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Share2 className="h-5 w-5 text-cyan-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.socialLinks") || "Social Links"}
             </h3>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 Telegram
               </label>
               <input
@@ -498,11 +498,11 @@ function SiteSettingsTab() {
                 value={formData.socialLinks?.telegram || ""}
                 onChange={(e) => updateSocialLink("telegram", e.target.value)}
                 placeholder="https://t.me/..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 Instagram
               </label>
               <input
@@ -510,11 +510,11 @@ function SiteSettingsTab() {
                 value={formData.socialLinks?.instagram || ""}
                 onChange={(e) => updateSocialLink("instagram", e.target.value)}
                 placeholder="https://instagram.com/..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 YouTube
               </label>
               <input
@@ -522,11 +522,11 @@ function SiteSettingsTab() {
                 value={formData.socialLinks?.youtube || ""}
                 onChange={(e) => updateSocialLink("youtube", e.target.value)}
                 placeholder="https://youtube.com/..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-400">
+              <label className="mb-1 block text-sm text-muted-foreground">
                 Facebook
               </label>
               <input
@@ -534,26 +534,26 @@ function SiteSettingsTab() {
                 value={formData.socialLinks?.facebook || ""}
                 onChange={(e) => updateSocialLink("facebook", e.target.value)}
                 placeholder="https://facebook.com/..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex items-center gap-2">
             <Settings className="h-5 w-5 text-yellow-400" />
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("admin.featureFlags") || "Feature Flags"}
             </h3>
           </div>
           <div className="space-y-4">
             <label className="flex items-center justify-between">
               <div>
-                <span className="text-white">
+                <span className="text-foreground">
                   {t("admin.maintenanceMode") || "Maintenance Mode"}
                 </span>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {t("admin.maintenanceModeDesc") ||
                     "Disable site access for visitors"}
                 </p>
@@ -563,7 +563,7 @@ function SiteSettingsTab() {
                   updateField("maintenanceMode", !formData.maintenanceMode)
                 }
                 className={`relative h-6 w-11 rounded-full transition-colors ${
-                  formData.maintenanceMode ? "bg-red-500" : "bg-gray-600"
+                  formData.maintenanceMode ? "bg-red-500" : "bg-muted"
                 }`}
               >
                 <span
@@ -575,10 +575,10 @@ function SiteSettingsTab() {
             </label>
             <label className="flex items-center justify-between">
               <div>
-                <span className="text-white">
+                <span className="text-foreground">
                   {t("admin.registrationEnabled") || "Registration Enabled"}
                 </span>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {t("admin.registrationEnabledDesc") ||
                     "Allow new user registration"}
                 </p>
@@ -593,7 +593,7 @@ function SiteSettingsTab() {
                 className={`relative h-6 w-11 rounded-full transition-colors ${
                   formData.registrationEnabled
                     ? "bg-emerald-500"
-                    : "bg-gray-600"
+                    : "bg-muted"
                 }`}
               >
                 <span
@@ -611,7 +611,7 @@ function SiteSettingsTab() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-medium text-foreground transition-colors hover:bg-emerald-500 disabled:opacity-50"
         >
           <Save className={`h-4 w-4 ${isSaving ? "animate-spin" : ""}`} />
           {isSaving
@@ -745,18 +745,18 @@ function TeacherPagesTab() {
       <div className="flex gap-4">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <SearchIcon className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <SearchIcon className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               placeholder={t("admin.searchTeachers") || "Search teachers..."}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-400 focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-border bg-secondary py-2 pr-4 pl-10 text-foreground placeholder-muted-foreground focus:border-emerald-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-emerald-500"
           >
             {t("common.search") || "Search"}
           </button>
@@ -764,7 +764,7 @@ function TeacherPagesTab() {
         <button
           onClick={loadTeachers}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           {t("common.refresh") || "Refresh"}
@@ -776,16 +776,16 @@ function TeacherPagesTab() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="animate-pulse rounded-xl border border-gray-800 bg-gray-800/30 p-4"
+              className="animate-pulse rounded-xl border border-border bg-card p-4"
             >
               <div className="mb-4 flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-gray-700/50" />
+                <div className="h-12 w-12 rounded-full bg-secondary/50" />
                 <div className="flex-1">
-                  <div className="mb-1 h-4 w-24 rounded bg-gray-700/50" />
-                  <div className="h-3 w-16 rounded bg-gray-700/50" />
+                  <div className="mb-1 h-4 w-24 rounded bg-secondary/50" />
+                  <div className="h-3 w-16 rounded bg-secondary/50" />
                 </div>
               </div>
-              <div className="h-8 rounded bg-gray-700/50" />
+              <div className="h-8 rounded bg-secondary/50" />
             </div>
           ))}
         </div>
@@ -796,7 +796,7 @@ function TeacherPagesTab() {
           {teachers.map((teacher) => (
             <div
               key={teacher.id}
-              className="rounded-xl border border-gray-800 bg-gray-800/30 p-4"
+              className="rounded-xl border border-border bg-card p-4"
             >
               <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20">
@@ -817,11 +817,11 @@ function TeacherPagesTab() {
                   )}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-foreground">
                     {teacher.businessName ||
                       `${teacher.firstName} ${teacher.lastName}`}
                   </h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     @{teacher.username || teacher.id}
                   </p>
                 </div>
@@ -831,13 +831,13 @@ function TeacherPagesTab() {
                   <AlertTriangle className="h-5 w-5 text-yellow-400" />
                 )}
               </div>
-              <div className="mb-4 flex gap-4 text-sm text-gray-400">
+              <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
                 <span>{teacher.coursesCount} courses</span>
                 <span>{teacher.studentsCount} students</span>
               </div>
               <button
                 onClick={() => openEditModal(teacher.id)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm font-medium text-white transition-colors hover:border-emerald-500 hover:text-emerald-400"
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-secondary px-3 py-2 text-sm font-medium text-foreground transition-colors hover:border-emerald-500 hover:text-emerald-400"
               >
                 <Edit className="h-4 w-4" />
                 {t("admin.editSettings") || "Edit Settings"}
@@ -848,9 +848,9 @@ function TeacherPagesTab() {
       )}
 
       {!isLoading && teachers.length === 0 && (
-        <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-12 text-center">
-          <Users className="mx-auto h-12 w-12 text-gray-600" />
-          <p className="mt-4 text-gray-400">
+        <div className="rounded-xl border border-border bg-card p-12 text-center">
+          <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+          <p className="mt-4 text-muted-foreground">
             {t("admin.noTeachers") || "No teachers found"}
           </p>
         </div>
@@ -858,7 +858,7 @@ function TeacherPagesTab() {
 
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             {t("common.showing") || "Showing"}{" "}
             {(pagination.page - 1) * pagination.limit + 1}-
             {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
@@ -868,7 +868,7 @@ function TeacherPagesTab() {
             <button
               onClick={() => setPage(page - 1)}
               disabled={page === 1}
-              className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+              className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
               {t("common.previous") || "Previous"}
@@ -876,7 +876,7 @@ function TeacherPagesTab() {
             <button
               onClick={() => setPage(page + 1)}
               disabled={page === pagination.totalPages}
-              className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+              className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
             >
               {t("common.next") || "Next"}
               <ChevronRight className="h-4 w-4" />
@@ -887,29 +887,29 @@ function TeacherPagesTab() {
 
       {editingTeacher && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gray-700 bg-gray-900 p-6">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-background p-6">
             <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-foreground">
                 {t("admin.editTeacherPage") || "Edit Teacher Page"}:{" "}
                 {editingTeacher.teacher.firstName}{" "}
                 {editingTeacher.teacher.lastName}
               </h2>
               <button
                 onClick={() => setEditingTeacher(null)}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-800 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             <div className="space-y-6">
-              <div className="rounded-lg border border-gray-800 p-4">
-                <h3 className="mb-4 font-semibold text-white">
+              <div className="rounded-lg border border-border p-4">
+                <h3 className="mb-4 font-semibold text-foreground">
                   {t("admin.pageSeo") || "Page SEO"}
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.metaTitle") || "Meta Title"}
                     </label>
                     <input
@@ -918,11 +918,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("metaTitle", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.metaDescription") || "Meta Description"}
                     </label>
                     <textarea
@@ -934,19 +934,19 @@ function TeacherPagesTab() {
                         )
                       }
                       rows={2}
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-800 p-4">
-                <h3 className="mb-4 font-semibold text-white">
+              <div className="rounded-lg border border-border p-4">
+                <h3 className="mb-4 font-semibold text-foreground">
                   {t("admin.branding") || "Branding"}
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.bannerUrl") || "Banner Image URL"}
                     </label>
                     <input
@@ -955,11 +955,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("bannerUrl", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.tagline") || "Tagline"}
                     </label>
                     <input
@@ -968,11 +968,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("tagline", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.aboutText") || "About Text"}
                     </label>
                     <textarea
@@ -981,19 +981,19 @@ function TeacherPagesTab() {
                         updateEditField("aboutText", e.target.value || null)
                       }
                       rows={4}
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-800 p-4">
-                <h3 className="mb-4 font-semibold text-white">
+              <div className="rounded-lg border border-border p-4">
+                <h3 className="mb-4 font-semibold text-foreground">
                   {t("admin.socialLinks") || "Social Links"}
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       Telegram
                     </label>
                     <input
@@ -1002,11 +1002,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("telegramUrl", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       Instagram
                     </label>
                     <input
@@ -1015,11 +1015,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("instagramUrl", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       YouTube
                     </label>
                     <input
@@ -1028,11 +1028,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("youtubeUrl", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       Website
                     </label>
                     <input
@@ -1041,11 +1041,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("websiteUrl", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       LinkedIn
                     </label>
                     <input
@@ -1054,19 +1054,19 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("linkedinUrl", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-800 p-4">
-                <h3 className="mb-4 font-semibold text-white">
+              <div className="rounded-lg border border-border p-4">
+                <h3 className="mb-4 font-semibold text-foreground">
                   {t("admin.displaySettings") || "Display Settings"}
                 </h3>
                 <div className="space-y-4">
                   <label className="flex items-center justify-between">
-                    <span className="text-white">
+                    <span className="text-foreground">
                       {t("admin.showCoursesCount") || "Show Courses Count"}
                     </span>
                     <button
@@ -1079,7 +1079,7 @@ function TeacherPagesTab() {
                       className={`relative h-6 w-11 rounded-full transition-colors ${
                         editForm.showCoursesCount
                           ? "bg-emerald-500"
-                          : "bg-gray-600"
+                          : "bg-muted"
                       }`}
                     >
                       <span
@@ -1090,7 +1090,7 @@ function TeacherPagesTab() {
                     </button>
                   </label>
                   <label className="flex items-center justify-between">
-                    <span className="text-white">
+                    <span className="text-foreground">
                       {t("admin.showStudentsCount") || "Show Students Count"}
                     </span>
                     <button
@@ -1103,7 +1103,7 @@ function TeacherPagesTab() {
                       className={`relative h-6 w-11 rounded-full transition-colors ${
                         editForm.showStudentsCount
                           ? "bg-emerald-500"
-                          : "bg-gray-600"
+                          : "bg-muted"
                       }`}
                     >
                       <span
@@ -1114,7 +1114,7 @@ function TeacherPagesTab() {
                     </button>
                   </label>
                   <label className="flex items-center justify-between">
-                    <span className="text-white">
+                    <span className="text-foreground">
                       {t("admin.showRating") || "Show Rating"}
                     </span>
                     <button
@@ -1122,7 +1122,7 @@ function TeacherPagesTab() {
                         updateEditField("showRating", !editForm.showRating)
                       }
                       className={`relative h-6 w-11 rounded-full transition-colors ${
-                        editForm.showRating ? "bg-emerald-500" : "bg-gray-600"
+                        editForm.showRating ? "bg-emerald-500" : "bg-muted"
                       }`}
                     >
                       <span
@@ -1135,13 +1135,13 @@ function TeacherPagesTab() {
                 </div>
               </div>
 
-              <div className="rounded-lg border border-gray-800 p-4">
-                <h3 className="mb-4 font-semibold text-white">
+              <div className="rounded-lg border border-border p-4">
+                <h3 className="mb-4 font-semibold text-foreground">
                   {t("admin.publicContact") || "Public Contact"}
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.publicEmail") || "Public Email"}
                     </label>
                     <input
@@ -1150,11 +1150,11 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("publicEmail", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm text-gray-400">
+                    <label className="mb-1 block text-sm text-muted-foreground">
                       {t("admin.publicPhone") || "Public Phone"}
                     </label>
                     <input
@@ -1163,7 +1163,7 @@ function TeacherPagesTab() {
                       onChange={(e) =>
                         updateEditField("publicPhone", e.target.value || null)
                       }
-                      className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-foreground focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -1173,14 +1173,14 @@ function TeacherPagesTab() {
             <div className="mt-6 flex justify-end gap-3">
               <button
                 onClick={() => setEditingTeacher(null)}
-                className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white transition-colors hover:bg-gray-700"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-foreground transition-colors hover:bg-secondary"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
               <button
                 onClick={handleSaveTeacher}
                 disabled={isSaving}
-                className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 font-medium text-foreground transition-colors hover:bg-emerald-500 disabled:opacity-50"
               >
                 <Save className={`h-4 w-4 ${isSaving ? "animate-spin" : ""}`} />
                 {isSaving

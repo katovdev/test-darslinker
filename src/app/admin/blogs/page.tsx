@@ -336,7 +336,7 @@ export default function AdminBlogsPage() {
         );
       case "archived":
         return (
-          <span className="rounded-full bg-gray-500/10 px-2 py-0.5 text-xs font-medium text-gray-400">
+          <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
             Archived
           </span>
         );
@@ -359,10 +359,10 @@ export default function AdminBlogsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("admin.blogs") || "Blogs"}
           </h1>
-          <p className="mt-1 text-gray-400">
+          <p className="mt-1 text-muted-foreground">
             {t("admin.blogsSubtitle") || "Manage blog posts"}
           </p>
         </div>
@@ -370,7 +370,7 @@ export default function AdminBlogsPage() {
           <button
             onClick={loadBlogs}
             disabled={isLoading}
-            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary disabled:opacity-50"
           >
             <RefreshCw
               className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
@@ -378,14 +378,14 @@ export default function AdminBlogsPage() {
             {t("common.refresh") || "Refresh"}
           </button>
           <button
-            className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-600 hover:bg-gray-700"
+            className="flex items-center gap-2 rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-secondary"
             onClick={() => setIsCategoryModalOpen(true)}
           >
             <Archive className="h-4 w-4" />
             Categories
           </button>
           <button
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-blue-700"
             onClick={handleOpenCreateModal}
           >
             <Plus className="h-4 w-4" />
@@ -397,18 +397,18 @@ export default function AdminBlogsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <form onSubmit={handleSearch} className="flex flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-500" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("blog.search") || "Search blogs..."}
-              className="w-full rounded-lg border border-gray-700 bg-gray-800 py-2 pr-4 pl-10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-border bg-secondary py-2 pr-4 pl-10 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
           >
             {t("blog.search") || "Search"}
           </button>
@@ -421,7 +421,7 @@ export default function AdminBlogsPage() {
               setCategoryFilter(e.target.value);
               setPage(1);
             }}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
           >
             <option value="all">
               {t("blog.allCategories") || "All Categories"}
@@ -439,7 +439,7 @@ export default function AdminBlogsPage() {
               setStatusFilter(e.target.value as StatusFilter);
               setPage(1);
             }}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground focus:border-blue-500 focus:outline-none"
           >
             <option value="all">
               {t("admin.allStatuses") || "All Statuses"}
@@ -457,47 +457,47 @@ export default function AdminBlogsPage() {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-800/30">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800 text-left">
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+              <tr className="border-b border-border text-left">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Title
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Category
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Status
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Likes
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground">
                   Created
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400"></th>
+                <th className="px-4 py-3 text-sm font-medium text-muted-foreground"></th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b border-gray-800">
+                  <tr key={i} className="border-b border-border">
                     <td className="px-4 py-3">
-                      <div className="h-4 w-48 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-48 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-24 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-24 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-16 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-16 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-12 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-12 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="h-4 w-20 animate-pulse rounded bg-gray-700" />
+                      <div className="h-4 w-20 animate-pulse rounded bg-secondary" />
                     </td>
                     <td className="px-4 py-3" />
                   </tr>
@@ -505,8 +505,8 @@ export default function AdminBlogsPage() {
               ) : blogs.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center">
-                    <FileText className="mx-auto h-12 w-12 text-gray-600" />
-                    <p className="mt-2 text-gray-400">
+                    <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2 text-muted-foreground">
                       {t("blog.noBlogs") || "No blogs found"}
                     </p>
                   </td>
@@ -515,13 +515,13 @@ export default function AdminBlogsPage() {
                 blogs.map((blog) => (
                   <tr
                     key={blog.id}
-                    className="border-b border-gray-800 transition-colors hover:bg-gray-800/50"
+                    className="border-b border-border transition-colors hover:bg-secondary"
                   >
                     <td className="px-4 py-3">
                       <div>
-                        <p className="font-medium text-white">{blog.title}</p>
+                        <p className="font-medium text-foreground">{blog.title}</p>
                         {blog.subtitle && (
-                          <p className="mt-1 line-clamp-1 text-sm text-gray-500">
+                          <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
                             {blog.subtitle}
                           </p>
                         )}
@@ -533,17 +533,17 @@ export default function AdminBlogsPage() {
                           {blog.category.name}
                         </span>
                       ) : (
-                        <span className="text-gray-500">-</span>
+                        <span className="text-muted-foreground">-</span>
                       )}
                     </td>
                     <td className="px-4 py-3">{getStatusBadge(blog.status)}</td>
                     <td className="px-4 py-3">
-                      <span className="flex items-center gap-1 text-gray-300">
+                      <span className="flex items-center gap-1 text-foreground">
                         <Heart className="h-3.5 w-3.5" />
                         {blog.likesCount || 0}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-400">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {formatDate(blog.createdAt)}
                     </td>
                     <td className="px-4 py-3">
@@ -638,8 +638,8 @@ export default function AdminBlogsPage() {
         </div>
 
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
-            <p className="text-sm text-gray-400">
+          <div className="flex items-center justify-between border-t border-border px-4 py-3">
+            <p className="text-sm text-muted-foreground">
               Page {pagination.page} of {pagination.totalPages} (
               {pagination.total} blogs)
             </p>
@@ -647,7 +647,7 @@ export default function AdminBlogsPage() {
               <button
                 onClick={() => setPage(page - 1)}
                 disabled={page <= 1}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 <ChevronLeft className="h-4 w-4" />
                 {t("blog.previous") || "Previous"}
@@ -655,7 +655,7 @@ export default function AdminBlogsPage() {
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page >= pagination.totalPages}
-                className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+                className="flex items-center gap-1 rounded-lg border border-border bg-secondary px-3 py-1.5 text-sm text-foreground disabled:opacity-50"
               >
                 {t("blog.next") || "Next"}
                 <ChevronRight className="h-4 w-4" />
@@ -667,14 +667,14 @@ export default function AdminBlogsPage() {
 
       {selectedBlog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("admin.blogDetails") || "Blog Details"}
               </h3>
               <button
                 onClick={() => setSelectedBlog(null)}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -682,11 +682,11 @@ export default function AdminBlogsPage() {
 
             <div className="mt-6 space-y-4">
               <div>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-xl font-bold text-foreground">
                   {selectedBlog.title}
                 </h2>
                 {selectedBlog.subtitle && (
-                  <p className="mt-1 text-gray-400">{selectedBlog.subtitle}</p>
+                  <p className="mt-1 text-muted-foreground">{selectedBlog.subtitle}</p>
                 )}
               </div>
 
@@ -699,47 +699,47 @@ export default function AdminBlogsPage() {
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-4 rounded-lg bg-gray-900 p-4">
+              <div className="grid grid-cols-2 gap-4 rounded-lg bg-background p-4">
                 <div>
-                  <p className="text-sm text-gray-500">Likes</p>
-                  <p className="flex items-center gap-1 text-lg font-semibold text-white">
+                  <p className="text-sm text-muted-foreground">Likes</p>
+                  <p className="flex items-center gap-1 text-lg font-semibold text-foreground">
                     <Heart className="h-4 w-4" />
                     {selectedBlog.likesCount || 0}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Created</p>
-                  <p className="text-white">
+                  <p className="text-sm text-muted-foreground">Created</p>
+                  <p className="text-foreground">
                     {formatDate(selectedBlog.createdAt)}
                   </p>
                 </div>
                 {selectedBlog.publishedAt && (
                   <div>
-                    <p className="text-sm text-gray-500">Published</p>
-                    <p className="text-white">
+                    <p className="text-sm text-muted-foreground">Published</p>
+                    <p className="text-foreground">
                       {formatDate(selectedBlog.publishedAt)}
                     </p>
                   </div>
                 )}
                 {selectedBlog.slug && (
                   <div>
-                    <p className="text-sm text-gray-500">Slug</p>
-                    <p className="text-white">{selectedBlog.slug}</p>
+                    <p className="text-sm text-muted-foreground">Slug</p>
+                    <p className="text-foreground">{selectedBlog.slug}</p>
                   </div>
                 )}
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Author</p>
-                <p className="text-white">
+                <p className="text-sm text-muted-foreground">Author</p>
+                <p className="text-foreground">
                   {selectedBlog.author.firstName} {selectedBlog.author.lastName}
                 </p>
               </div>
 
               {selectedBlog.content && (
                 <div>
-                  <p className="mb-2 text-sm text-gray-500">Content Preview</p>
-                  <div className="max-h-48 overflow-y-auto rounded-lg bg-gray-900 p-4">
+                  <p className="mb-2 text-sm text-muted-foreground">Content Preview</p>
+                  <div className="max-h-48 overflow-y-auto rounded-lg bg-background p-4">
                     <div
                       className="prose prose-invert prose-sm max-w-none"
                       dangerouslySetInnerHTML={{
@@ -754,7 +754,7 @@ export default function AdminBlogsPage() {
             <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setSelectedBlog(null)}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {t("common.close") || "Close"}
               </button>
@@ -763,7 +763,7 @@ export default function AdminBlogsPage() {
                   href={`/blog/${selectedBlog.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700"
                 >
                   View on Site
                 </a>
@@ -775,9 +775,9 @@ export default function AdminBlogsPage() {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {editingBlog
                   ? "Edit Blog"
                   : t("admin.createBlog") || "Create Blog"}
@@ -785,7 +785,7 @@ export default function AdminBlogsPage() {
               <button
                 onClick={handleCloseModal}
                 disabled={isSaving}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white disabled:opacity-50"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground disabled:opacity-50"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -794,7 +794,7 @@ export default function AdminBlogsPage() {
             <div className="mt-6 space-y-4">
               {/* Title */}
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-300">
+                <label className="mb-1 block text-sm font-medium text-foreground">
                   Title <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -802,13 +802,13 @@ export default function AdminBlogsPage() {
                   value={formData.title}
                   onChange={(e) => handleFormChange("title", e.target.value)}
                   placeholder="Enter blog title..."
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
                   disabled={isSaving}
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-300">
+                <label className="mb-1 block text-sm font-medium text-foreground">
                   Subtitle
                 </label>
                 <input
@@ -816,14 +816,14 @@ export default function AdminBlogsPage() {
                   value={formData.subtitle}
                   onChange={(e) => handleFormChange("subtitle", e.target.value)}
                   placeholder="Enter subtitle (optional)..."
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
                   disabled={isSaving}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-300">
+                  <label className="mb-1 block text-sm font-medium text-foreground">
                     Category
                   </label>
                   <select
@@ -831,7 +831,7 @@ export default function AdminBlogsPage() {
                     onChange={(e) =>
                       handleFormChange("categoryId", e.target.value)
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                     disabled={isSaving}
                   >
                     <option value="">No Category</option>
@@ -844,7 +844,7 @@ export default function AdminBlogsPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-300">
+                  <label className="mb-1 block text-sm font-medium text-foreground">
                     Status
                   </label>
                   <select
@@ -855,7 +855,7 @@ export default function AdminBlogsPage() {
                         e.target.value as "draft" | "published"
                       )
                     }
-                    className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground focus:border-blue-500 focus:outline-none"
                     disabled={isSaving}
                   >
                     <option value="draft">Draft</option>
@@ -865,7 +865,7 @@ export default function AdminBlogsPage() {
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-300">
+                <label className="mb-1 block text-sm font-medium text-foreground">
                   Thumbnail URL
                 </label>
                 <input
@@ -875,13 +875,13 @@ export default function AdminBlogsPage() {
                     handleFormChange("thumbnail", e.target.value)
                   }
                   placeholder="https://example.com/image.jpg"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
                   disabled={isSaving}
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-300">
+                <label className="mb-1 block text-sm font-medium text-foreground">
                   Content <span className="text-red-400">*</span>
                 </label>
                 <textarea
@@ -889,10 +889,10 @@ export default function AdminBlogsPage() {
                   onChange={(e) => handleFormChange("content", e.target.value)}
                   placeholder="Write your blog content here... (HTML supported)"
                   rows={12}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-2 text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
                   disabled={isSaving}
                 />
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   HTML tags are supported for formatting.
                 </p>
               </div>
@@ -902,14 +902,14 @@ export default function AdminBlogsPage() {
               <button
                 onClick={handleCloseModal}
                 disabled={isSaving}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600 disabled:opacity-50"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-50"
               >
                 {t("common.cancel") || "Cancel"}
               </button>
               <button
                 onClick={handleSaveBlog}
                 disabled={isSaving}
-                className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700 disabled:opacity-50"
               >
                 {isSaving ? (
                   <>
@@ -930,21 +930,21 @@ export default function AdminBlogsPage() {
 
       {isCategoryModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-gray-700 bg-gray-800 p-6">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-secondary p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 Manage Categories
               </h3>
               <button
                 onClick={() => setIsCategoryModalOpen(false)}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="mt-6 space-y-3 rounded-lg bg-gray-900 p-4">
-              <h4 className="text-sm font-medium text-gray-300">
+            <div className="mt-6 space-y-3 rounded-lg bg-background p-4">
+              <h4 className="text-sm font-medium text-foreground">
                 Create New Category
               </h4>
               <input
@@ -952,7 +952,7 @@ export default function AdminBlogsPage() {
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 placeholder="Category name..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
                 disabled={isSavingCategory}
               />
               <input
@@ -960,13 +960,13 @@ export default function AdminBlogsPage() {
                 value={newCategoryDescription}
                 onChange={(e) => setNewCategoryDescription(e.target.value)}
                 placeholder="Description (optional)..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-foreground placeholder-muted-foreground focus:border-blue-500 focus:outline-none"
                 disabled={isSavingCategory}
               />
               <button
                 onClick={handleCreateCategory}
                 disabled={isSavingCategory || !newCategoryName.trim()}
-                className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-foreground hover:bg-blue-700 disabled:opacity-50"
               >
                 {isSavingCategory ? (
                   <>
@@ -983,35 +983,35 @@ export default function AdminBlogsPage() {
             </div>
 
             <div className="mt-6">
-              <h4 className="mb-3 text-sm font-medium text-gray-300">
+              <h4 className="mb-3 text-sm font-medium text-foreground">
                 Existing Categories ({categories.length})
               </h4>
               {categories.length === 0 ? (
-                <p className="text-sm text-gray-500">No categories yet.</p>
+                <p className="text-sm text-muted-foreground">No categories yet.</p>
               ) : (
                 <div className="space-y-2">
                   {categories.map((category) => (
                     <div
                       key={category.id}
-                      className="flex items-center justify-between rounded-lg bg-gray-900 px-4 py-3"
+                      className="flex items-center justify-between rounded-lg bg-background px-4 py-3"
                     >
                       <div>
-                        <p className="font-medium text-white">
+                        <p className="font-medium text-foreground">
                           {category.name}
                         </p>
                         {category.description && (
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {category.description}
                           </p>
                         )}
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-muted-foreground">
                           {category.blogsCount || 0} blogs
                         </p>
                       </div>
                       <button
                         onClick={() => handleDeleteCategory(category.id)}
                         disabled={deletingCategoryId === category.id}
-                        className="rounded-lg p-2 text-red-400 hover:bg-gray-800 disabled:opacity-50"
+                        className="rounded-lg p-2 text-red-400 hover:bg-secondary disabled:opacity-50"
                       >
                         {deletingCategoryId === category.id ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -1028,7 +1028,7 @@ export default function AdminBlogsPage() {
             <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setIsCategoryModalOpen(false)}
-                className="rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600"
+                className="rounded-lg border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
               >
                 {t("common.close") || "Close"}
               </button>
