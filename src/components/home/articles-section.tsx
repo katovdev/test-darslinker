@@ -21,12 +21,19 @@ export function ArticlesSection() {
         >
           <div className="mx-auto">
             {/* Section header */}
-            <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
-                  {t("home.articlesTitle")}
-                </h2>
-              </div>
+            <div className="text-center sm:text-left">
+              <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+                {t("home.articlesTitle")}
+              </h2>
+            </div>
+
+            {/* Articles grid */}
+            <div className="mt-12">
+              <ArticlesGrid limit={3} className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [&>*:nth-child(3)]:hidden [&>*:nth-child(3)]:lg:block" />
+            </div>
+
+            {/* View all link - at bottom */}
+            <div className="mt-8 text-center">
               <Link
                 href="/blog"
                 className="group inline-flex items-center gap-2 text-foreground transition-colors hover:text-primary"
@@ -34,11 +41,6 @@ export function ArticlesSection() {
                 {t("home.viewAllArticles")}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-            </div>
-
-            {/* Articles grid */}
-            <div className="mt-12">
-              <ArticlesGrid limit={3} />
             </div>
           </div>
         </div>
