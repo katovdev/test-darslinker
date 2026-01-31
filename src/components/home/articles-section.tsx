@@ -16,8 +16,7 @@ export function ArticlesSection() {
     >
       <div className="mx-auto max-w-[1400px]">
         <div
-          className="rounded-[40px] border-2 px-6 py-16 sm:px-8 lg:px-12 lg:py-20"
-          style={{ borderColor: "#7ea2d4" }}
+          className="rounded-2xl border-2 border-[#7ea2d4] px-6 py-12 sm:border-0 sm:px-8 sm:py-0 lg:px-12"
         >
           <div className="mx-auto">
             {/* Section header */}
