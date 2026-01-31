@@ -164,13 +164,94 @@ export default function PricingPage() {
             </p>
           </div>
 
-          {/* Pricing Table */}
-          <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+          {/* Mobile Cards Layout */}
+          <div className="grid gap-6 md:hidden">
+            {plans.map((plan) => (
+              <div
+                key={plan.nameKey}
+                className={`relative rounded-2xl border bg-card p-6 ${
+                  plan.recommended
+                    ? "border-[#7ea2d4] shadow-lg shadow-[#7ea2d4]/10"
+                    : "border-border"
+                }`}
+              >
+                {plan.recommended && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-1.5 text-xs font-medium text-white shadow-lg">
+                      <Sparkles className="h-3 w-3" />
+                      Tavsiya etiladi
+                    </span>
+                  </div>
+                )}
+
+                {/* Plan Header */}
+                <div className="text-center mb-6 pt-2">
+                  <h3 className="text-2xl font-bold text-foreground mb-2">
+                    {t(`pricing.${plan.nameKey}`)}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {plan.description}
+                  </p>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-3xl font-bold text-foreground">
+                      {plan.price}
+                    </span>
+                    {plan.price !== "Bepul" && (
+                      <span className="text-sm text-muted-foreground">so'm/oy</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Features List */}
+                <div className="space-y-3 mb-6">
+                  {plan.allFeatures.map((feature) => (
+                    <div
+                      key={feature.key}
+                      className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
+                    >
+                      <span className="text-sm text-muted-foreground">
+                        {featureLabels[feature.key]}
+                      </span>
+                      <span className="text-sm font-medium">
+                        {typeof feature.included === "string" ? (
+                          <span className="text-foreground">{feature.included}</span>
+                        ) : feature.included ? (
+                          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#7ea2d4]/20">
+                            <Check className="h-3 w-3 text-[#7ea2d4]" />
+                          </div>
+                        ) : (
+                          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-muted">
+                            <X className="h-3 w-3 text-muted-foreground" />
+                          </div>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <Link
+                  href="/register"
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold transition-all ${
+                    plan.recommended
+                      ? "bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] text-white shadow-lg shadow-[#7ea2d4]/25 hover:shadow-xl hover:shadow-[#7ea2d4]/30"
+                      : "border border-border bg-secondary text-foreground hover:border-[#7ea2d4] hover:bg-secondary/80"
+                  }`}
+                >
+                  Tanlash
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table Layout */}
+          <div className="hidden md:block rounded-2xl border border-border bg-card overflow-hidden">
             <table className="w-full">
               {/* Header Row with Plan Names and Prices */}
               <thead>
                 <tr className="border-b border-border bg-secondary/50">
-                  <th className="px-4 py-6 text-left text-sm font-medium text-muted-foreground w-1/4">
+                  <th className="px-6 py-6 text-left text-sm font-medium text-muted-foreground w-1/4">
                     Imkoniyatlar
                   </th>
                   {plans.map((plan) => (
@@ -182,14 +263,14 @@ export default function PricingPage() {
                             Tavsiya etiladi
                           </span>
                         )}
-                        <span className="text-xl sm:text-2xl font-bold text-foreground">
+                        <span className="text-2xl font-bold text-foreground">
                           {t(`pricing.${plan.nameKey}`)}
                         </span>
-                        <p className="text-xs text-muted-foreground leading-relaxed max-w-[180px] font-normal rounded-lg bg-secondary/50 px-2 py-1.5">
+                        <p className="text-xs text-muted-foreground leading-relaxed max-w-[200px] font-normal rounded-lg bg-secondary/50 px-3 py-2">
                           {plan.description}
                         </p>
                         <div className="flex items-baseline gap-1 mt-1">
-                          <span className="text-lg sm:text-xl font-bold text-foreground">
+                          <span className="text-xl font-bold text-foreground">
                             {plan.price}
                           </span>
                           {plan.price !== "Bepul" && (
@@ -206,7 +287,7 @@ export default function PricingPage() {
               <tbody className="divide-y divide-border">
                 {Object.keys(featureLabels).map((featureKey) => (
                   <tr key={featureKey} className="hover:bg-secondary/30 transition-colors">
-                    <td className="px-4 py-4 text-sm text-muted-foreground">
+                    <td className="px-6 py-4 text-sm text-muted-foreground">
                       {featureLabels[featureKey]}
                     </td>
                     {plans.map((plan) => {
@@ -228,7 +309,7 @@ export default function PricingPage() {
               {/* CTA Row */}
               <tfoot>
                 <tr className="border-t border-border">
-                  <td className="px-4 py-6"></td>
+                  <td className="px-6 py-6"></td>
                   {plans.map((plan) => (
                     <td key={plan.nameKey} className="px-4 py-6 text-center">
                       <Link
