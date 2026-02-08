@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Check, ArrowRight, Sparkles, X, MessageCircle, FileText, ChevronDown } from "lucide-react";
+import { Check, ArrowRight, Flame, X, MessageCircle, FileText, ChevronDown } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 
 interface PlanFeature {
@@ -30,7 +30,7 @@ const plans: Plan[] = [
     displayFeatures: [
       { key: "courses", label: "Kurslar", included: "1" },
       { key: "admins", label: "Adminlar", included: "1" },
-      { key: "students", label: "O'quvchilar", included: "20" },
+      { key: "students", label: "O'quvchilar", included: "100" },
       { key: "contentSecurity", label: "Kontent xavfsizligi", included: true },
       { key: "support", label: "Qo'llab-quvvatlash", included: true },
       { key: "studentAnalytics", label: "O'quvchilar tahlili", included: true },
@@ -46,7 +46,7 @@ const plans: Plan[] = [
     displayFeatures: [
       { key: "courses", label: "Kurslar", included: "3" },
       { key: "admins", label: "Adminlar", included: "3" },
-      { key: "students", label: "O'quvchilar", included: "cheksiz" },
+      { key: "students", label: "O'quvchilar", included: "∞" },
       { key: "includesAll", label: "Minimaldagi imkoniyatlar", included: true },
       { key: "onlineMeetings", label: "Onlayn uchrashuvlar", included: true },
       { key: "certificates", label: "Sertifikatlar", included: true },
@@ -61,7 +61,7 @@ const plans: Plan[] = [
     displayFeatures: [
       { key: "courses", label: "Kurslar", included: "6" },
       { key: "admins", label: "Adminlar", included: "6" },
-      { key: "students", label: "O'quvchilar", included: "cheksiz" },
+      { key: "students", label: "O'quvchilar", included: "∞" },
       { key: "includesAll", label: "Standartdagi imkoniyatlar", included: true },
       { key: "customBranding", label: "Shaxsiy brending", included: true },
       { key: "seo", label: "SEO", included: true },
@@ -190,7 +190,7 @@ export function PricingSection() {
                       {plan.recommended && (
                         <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 z-10">
                           <div className="inline-flex items-center gap-1 rounded-b-lg bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-2 py-0.5 text-[10px] font-semibold text-white shadow-md">
-                            <Sparkles className="h-2.5 w-2.5" />
+                            <Flame className="h-2.5 w-2.5" />
                             Tavsiya
                           </div>
                         </div>
@@ -327,7 +327,7 @@ export function PricingSection() {
                     {plan.recommended && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                         <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-[#7ea2d4]/25">
-                          <Sparkles className="h-3 w-3" />
+                          <Flame className="h-3 w-3" />
                           {t("pricing.recommended")}
                         </div>
                       </div>

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Check, X, Sparkles, Loader2, ArrowRight } from "lucide-react";
+import { Check, X, Flame, Loader2, ArrowRight } from "lucide-react";
 import { useTranslations } from "@/hooks/use-locale";
 import { useAuth } from "@/context/auth-context";
 import { HomeHeader, HomeFooter } from "@/components/home";
@@ -29,7 +29,7 @@ const plans: Plan[] = [
     allFeatures: [
       { key: "courses", included: "1" },
       { key: "admins", included: "1" },
-      { key: "students", included: "20" },
+      { key: "students", included: "100" },
       { key: "support", included: true },
       { key: "analytics", included: true },
       { key: "telegramBot", included: true },
@@ -49,7 +49,7 @@ const plans: Plan[] = [
     allFeatures: [
       { key: "courses", included: "3" },
       { key: "admins", included: "3" },
-      { key: "students", included: "Cheksiz" },
+      { key: "students", included: "∞" },
       { key: "support", included: true },
       { key: "analytics", included: true },
       { key: "telegramBot", included: true },
@@ -68,7 +68,7 @@ const plans: Plan[] = [
     allFeatures: [
       { key: "courses", included: "6" },
       { key: "admins", included: "6" },
-      { key: "students", included: "Cheksiz" },
+      { key: "students", included: "∞" },
       { key: "support", included: true },
       { key: "analytics", included: true },
       { key: "telegramBot", included: true },
@@ -178,7 +178,7 @@ export default function PricingPage() {
                 {plan.recommended && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-4 py-1.5 text-xs font-medium text-white shadow-lg">
-                      <Sparkles className="h-3 w-3" />
+                      <Flame className="h-3 w-3" />
                       Tavsiya etiladi
                     </span>
                   </div>
@@ -259,7 +259,7 @@ export default function PricingPage() {
                       <div className="flex flex-col items-center gap-2">
                         {plan.recommended && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#7ea2d4] to-[#5b8ac4] px-3 py-1 text-xs font-medium text-white">
-                            <Sparkles className="h-3 w-3" />
+                            <Flame className="h-3 w-3" />
                             Tavsiya etiladi
                           </span>
                         )}
